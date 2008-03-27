@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: HSQLDB database plugin
+Bundle-SymbolicName: net.bioclipse.hsqldb; singleton:=true
+Bundle-Version: 0.0.1
+Bundle-Activator: net.bioclipse.hsqldb.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ net.bioclipse
+Eclipse-LazyStart: true
+Export-Package: net.bioclipse.hsqldb,
+ org.hsqldb,
+ org.hsqldb.index,
+ org.hsqldb.jdbc,
+ org.hsqldb.lib,
+ org.hsqldb.lib.java,
+ org.hsqldb.persist,
+ org.hsqldb.resources,
+ org.hsqldb.rowio,
+ org.hsqldb.sample,
+ org.hsqldb.scriptio,
+ org.hsqldb.store,
+ org.hsqldb.types,
+ org.hsqldb.util,
+ org.hsqldb.util.sqltool
+Bundle-ClassPath: .,
+ lib/hsqldb.jar
