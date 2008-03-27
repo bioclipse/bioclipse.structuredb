@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-lazy-init="true">
+
+	<bean 
+		id="dataSource"
+	   	class="org.apache.commons.dbcp.BasicDataSource"
+	   	destroy-method="close">
+	   	
+	   	<property name="driverClassName">
+	   		<value>org.hsqldb.jdbcDriver</value>
+	   	</property>
+	   	
+	  	<property name="url">
+	   		<value>jdbc:hsqldb:hsql://localhost/testServer</value>
+	   	</property>
+	   	
+	</bean>
+	
+	<bean 
+		id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+		
+	 	<property name="dataSource">
+	 		<ref local="dataSource" />
+	 	</property>
+	 	<property name="nestedTransactionAllowed">
+			<value>true</value>
+		</property>
+  	</bean>
+  	
+  	<bean id="sqlMapClient" 
+	      class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="sqlMapConfig.xml" />
+		<property name="dataSource"     ref="dataSource" />
+	</bean>
+	
+	<bean id="fetchIntroductionAdvisor" 
+	      class="net.bioclipse.structuredb.persistency.dao.FetchIntroductionAdvisor" />
+	 
+	<bean id="daoTarget"
+          class="net.bioclipse.structuredb.persistency.dao.GenericDao" abstract="true">
+        <property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	
+	<bean id="abstractDAO"
+        class="org.springframework.aop.framework.ProxyFactoryBean" abstract="true">
+        <property name="interceptorNames">
+            <list>
+                <value>fetchIntroductionAdvisor</value>
+            </list>
+        </property>
+	</bean>
+	
+<!-- THE DAOS -->
+
+	<bean id="structureDaoTarget"
+          class="net.bioclipse.structuredb.persistency.dao.StructureDao" abstract="true">
+        <property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	
+	<bean id="structureDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.structuredb.persistency.dao.IStructureDao</value>
+		</property>
+		<property name="target">
+			<bean parent="structureDaoTarget">
+        	</bean>
+		</property>
+	</bean>
+	
+	<bean id="userDaoTarget"
+          class="net.bioclipse.structuredb.persistency.dao.UserDao" abstract="true">
+        <property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	
+	<bean id="userDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.structuredb.persistency.dao.IUserDao</value>
+		</property>
+		<property name="target">
+			<bean parent="userDaoTarget" />
+		</property>
+	</bean>
+	
+	<bean id="libraryDaoTarget"
+          class="net.bioclipse.structuredb.persistency.dao.LibraryDao" abstract="true">
+        <property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	
+	<bean id="libraryDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.structuredb.persistency.dao.ILibraryDao</value>
+		</property>
+		<property name="target">
+			<bean parent="libraryDaoTarget" />
+		</property>
+	</bean>
+</beans>

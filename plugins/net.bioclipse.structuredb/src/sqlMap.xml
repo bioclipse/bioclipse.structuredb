@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBatis.com//iBatis.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--+
+    | Copyright (c) 2007 Bioclipse Project
+    | All rights reserved. This program and the accompanying materials
+    | are made available under the terms of the Eclipse Public License v1.0
+    | which accompanies this distribution, and is available at
+    | http://www.eclipse.org/legal/epl-v10.html
+    +-->
+<sqlMap>
+<!--+
+    | RESULTMAPS
+    +-->
+	<resultMap class="BaseObject" id="BaseObject">
+		<result property="id"         column="id"                               />
+		<result property="name"       column="name"                             />
+		<result property="created"    column="created"                          />
+		<result property="edited"     column="edited"                           />
+		<result property="creator"    column="creator"    select="User.getById" />
+		<result property="lastEditor" column="lastEditor" select="User.getById" />
+	</resultMap>
+
+	<resultMap class="Library" id="Library" extends="BaseObject">
+		<result property="structures" column="id" select="Library.getStructures" />
+	</resultMap>
+	
+	<resultMap class="Structure" id="Structure" extends="BaseObject">
+		<result property="library"           column="library" select="Library.getById" />
+		<result property="fingerPrintString" column="fingerPrintString"                />
+		<result property="smiles"            column="smiles"                           />
+		<result property="moleculeCML"       column="molecule"                         />
+	</resultMap>
+
+	<resultMap class="Structure" id="Structure-without-library" extends="BaseObject">
+		<result property="fingerPrintString" column="fingerPrintString"                />
+		<result property="smiles"            column="smiles"                           />
+		<result property="moleculeCML"       column="molecule"                         />
+	</resultMap>
+	
+	<resultMap class="User" id="User" extends="BaseObject">
+		<result property="userName"      column="userName" />
+		<result property="passWordMd5"   column="passWord" />
+		<result property="sudoer"        column="sudoer"   />
+	</resultMap>
+
+<!--+
+    | SQL FRAGMENTS
+    +-->
+	<sql id="BaseObject-fields">
+		b.id         AS id,
+		b.name       AS name,
+		b.created    AS created,
+		b.edited     AS edited,
+		b.creator    AS creator,
+		b.lastEditor AS lastEditor	
+	</sql>
+	
+	<sql id="Structure-fields">
+		s.library           AS library,
+		<include refid="Structure-fields-without-library" />
+	</sql>
+	
+	<sql id="Structure-fields-without-library">
+		s.fingerPrintString AS fingerPrintString,
+		s.smiles            AS smiles,
+		s.molecule          AS molecule		
+	</sql>
+	
+	<sql id="User-fields">
+		u.userName AS userName,
+		u.passWord AS passWord,
+		u.sudoer   AS sudoer
+	</sql>
+	
+<!--+
+    | INSERT STATEMENTS
+    +-->
+	<insert id="BaseObject.insert">
+		INSERT INTO BaseObject (  id,     name,     created,     edited,     creator,        lastEditor )
+			            VALUES ('$id$', '$name$', '$created$', '$edited$', '$creator.id$', '$lastEditor.id$')
+	</insert>
+	
+	<insert id="BaseObject.insertGod">
+		INSERT INTO BaseObject (   id,       name   )
+		                VALUES ( '$id$',   '$name$' );
+	</insert>
+	
+	<insert id="User.insert">
+		INSERT INTO User (   id,     userName,     passWord,        sudoer,     baseObject )
+			      VALUES ( '$id$', '$userName$', '$passWordMd5$', '$sudoer$', '$id$'       );
+	</insert>
+	
+	<insert id="Structure.insert">
+		INSERT INTO Structure (   id,     baseObject, library,        smiles,     fingerPrintString,     molecule      )
+		               VALUES ( '$id$', '$id$',     '$library.id$', '$smiles$', '$fingerPrintString$', '$moleculeCML$' ); 
+	</insert>
+	
+	<insert id="Structure.insertWithoutLibrary">
+		INSERT INTO Structure (   id,     baseObject, smiles,     fingerPrintString,     molecule      )
+		               VALUES ( '$id$', '$id$',     '$smiles$', '$fingerPrintString$', '$moleculeCML$' );
+	</insert>
+	
+	<insert id="Library.insert">
+		INSERT INTO Library (   id,     baseObject )
+		             VALUES ( '$id$', '$id$'       );
+	</insert>
+	
+<!--+
+    | SELECT STATEMENTS
+    +-->
+	<select id="Structure.getById" parameterClass="String" resultMap="Structure">
+		SELECT 
+			<include refid="BaseObject-fields" />, 
+			<include refid="Structure-fields"  />
+		FROM
+			Structure s INNER JOIN BaseObject b ON
+			s.baseObject = b.id
+		WHERE 
+			s.id = #value#
+	</select>
+	
+	<select id="User.getById" parameterClass="String" resultMap="User">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="User-fields"       />
+		FROM
+			User u INNER JOIN BaseObject b ON
+			u.baseObject = b.id
+		WHERE 
+			u.id = #value#
+	</select>
+	
+	<select id="Library.getById" resultMap="Library" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />
+		FROM
+			Library l INNER JOIN BaseObject b ON
+			l.baseObject = b.id
+		WHERE 
+			l.id = #value#
+	</select>
+	
+	<select id="Library.getStructures" resultMap="Structure-without-library" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="Structure-fields-without-library"  />
+		FROM
+			Structure s INNER JOIN BaseObject b ON
+			s.baseObject = b.id
+		WHERE 
+			s.library = #value#
+	</select>
+	
+	<select id="Structure.getAll" resultMap="Structure">
+		SELECT
+			<include refid="BaseObject-fields" />, 
+			<include refid="Structure-fields"  />
+		FROM
+			Structure s INNER JOIN BaseObject b ON
+			s.baseObject = b.id
+	</select>
+	
+	<select id="Library.getAll" resultMap="Library">
+		SELECT
+			<include refid="BaseObject-fields" />
+		FROM
+			Library l INNER JOIN BaseObject b ON
+			l.baseObject = b.id
+	</select>
+
+	<select id="User.getAll" resultMap="User">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="User-fields"       />
+		FROM
+			User u INNER JOIN BaseObject b ON
+			u.baseObject = b.id
+	</select>
+	
+<!--+
+    | DELETE STATEMENTS
+    +-->	
+	<delete id="User.delete" parameterClass="String">
+		DELETE FROM User
+		WHERE id='$value$';
+	</delete>
+	
+	<delete id="Structure.delete" parameterClass="String">
+		DELETE FROM Structure
+		WHERE id='$value$';
+	</delete>
+	
+	<delete id="Library.delete" parameterClass="String">
+		DELETE FROM Library
+		WHERE id='$value$';
+	</delete>
+	
+<!--+
+    | UPDATE STATEMENTS
+    +-->
+    <update id="BaseObject.update" parameterClass="BaseObject">
+    	UPDATE 
+    		BaseObject
+    	SET 
+			name       = '$name$',
+			created    = '$created$',
+			edited     = '$edited$',
+			creator    = '$creator.id$',
+			lastEditor = '$lastEditor.id$'	
+		WHERE
+			id = '$id$'
+    </update>
+    
+    <update id="User.update" parameterClass="User">
+    	UPDATE 
+    		User
+    	SET 
+	    	userName = '$userName$',
+			passWord = '$passWordMd5$',
+			sudoer   = '$sudoer$'
+		WHERE
+			id = '$id$'
+    </update>
+    
+    <update id="Library.update" parameterClass="Library">
+    	
+    </update>
+    
+    <update id="Structure.update" parameterClass="Structure">
+    	UPDATE 
+    		Structure
+    	SET 
+	    	library           = '$library.id$',
+	    	smiles            = '$smiles$',
+	    	fingerPrintString = '$fingerPrintString$',
+	    	molecule          = '$moleculeCML$'
+		WHERE
+			id = '$id$'
+    </update>
+    
+    <update id="Structure-without-library.update" parameterClass="Structure">
+    	UPDATE 
+    		Structure
+    	SET 
+	    	smiles            = '$smiles$',
+	    	fingerPrintString = '$fingerPrintString$',
+	    	molecule          = '$moleculeCML$'
+		WHERE
+			id = '$id$'
+    </update>
+    
+</sqlMap>

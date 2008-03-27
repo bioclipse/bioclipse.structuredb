@@ -1,0 +1,148 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Bioclipse Project
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     
+ *******************************************************************************/
+package net.bioclipse.structuredb.persistency.tables;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class TableCreator {
+
+	public static final String[] SQL_FILES_RUNORDER = { "BaseObject.sql", 
+	                                                      "User.sql",
+	                                                      "Library.sql",
+	                                                      "Structure.sql" };
+	
+	public static final TableCreator INSTANCE = new TableCreator();
+	
+	private List<String> createTableStatements = new ArrayList<String>();
+	private List<String> alterTableStatements  = new ArrayList<String>();
+	
+	private TableCreator() {
+		
+	}
+	
+	public void createTables(String url) {
+		try {
+			
+			Class.forName("org.hsqldb.jdbcDriver");
+			
+			Connection con = getConnection(url);
+			
+			String path = this.getClass().getClassLoader().getResource("net/bioclipse/structuredb/persistency/tables").getPath();
+			for( String sqlFile : SQL_FILES_RUNORDER ) {
+				Scanner scanner = new Scanner( new File(path + File.separator + sqlFile) );
+				while( scanner.hasNextLine() ) {
+					String sql = readStatement(scanner);
+					if( sql.matches("^CREATE.*$") ) {
+						createTableStatements.add(sql);
+					}
+					else if( sql.matches("^ALTER.*$") ) {
+						alterTableStatements.add(sql);
+					}
+					else if( sql.matches("^--.*$") ) {
+						//ignore commented lines
+					}
+					else {
+						throw new RuntimeException("Unknown sql commando neither create nor alter:" + sql);
+					}
+				}
+			}
+			for( String createStatement : createTableStatements ) {
+				String dropStatement = createDropStatement(createStatement);
+				runStatement( con, dropStatement );
+			}
+			for( String createStatement : createTableStatements ) {
+				runStatement( con, createStatement );
+			}
+			for( String alterStatement : alterTableStatements ) {
+				runStatement( con, alterStatement );
+			}
+		}
+		catch (ClassNotFoundException e) {
+			throw new IllegalStateException("Could not find the jdbcDriver class", e);
+		} catch (FileNotFoundException e) {
+			throw new IllegalStateException("Could not find the sqlfile", e);
+		}
+	}
+
+	private String createDropStatement(String createStatement) {
+		String result = "DROP TABLE";
+		Pattern regexp = Pattern.compile("^CREATE\\s+TABLE\\s+(\\w+)");
+		Matcher m = regexp.matcher(createStatement);
+		if( !m.find() ) {
+			throw new IllegalArgumentException("Did not find a create table statement");
+		}
+		result = result + " " + m.group(1) + " IF EXISTS CASCADE;";
+		return result;
+	}
+
+	private String readStatement(Scanner scanner) {
+		StringBuilder result = new StringBuilder();
+		String line;
+		Pattern p = Pattern.compile(".*;$");
+		Matcher m;
+		do {
+			line = scanner.nextLine();
+			result.append(line);
+			m = p.matcher(line);
+		}
+		while( !m.find() );  //<== Still doesn't work
+		return result.toString();
+	}
+
+	private void runStatement(Connection con, String statement) {
+		try {
+			Statement stmt = con.createStatement();
+			System.out.println(statement);
+			stmt.executeUpdate(statement);
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException("error running statement", e);
+		}
+	}
+
+	private Connection getConnection(String url) {
+		Connection conn = null;
+		boolean gotConnection = false;
+		int slept = 0;
+		Exception exception = null;
+		while(!gotConnection && slept < 5000) {
+			try {
+				conn = DriverManager.getConnection(url);
+				gotConnection = true;
+			} catch (SQLException e) {
+				exception = e;
+				try {
+					int sleepTime = 100;
+					Thread.sleep(sleepTime);
+					slept += sleepTime;
+					
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+		if( !gotConnection ) {
+			throw new RuntimeException("Could not get connection to database", exception);
+		}
+		return conn;
+	}
+
+}

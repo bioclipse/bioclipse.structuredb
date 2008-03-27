@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Structuredb Plug-in
+Bundle-SymbolicName: net.bioclipse.structuredb; singleton:=true
+Bundle-Version: 0.1.1
+Bundle-Activator: net.bioclipse.structuredb.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ net.bioclipse.cdk,
+ net.bioclipse.hsqldb,
+ net.bioclipse.database,
+ net.bioclipse.usermanager
+Eclipse-LazyStart: true
+Bundle-ClassPath: libs/ibatis-2.3.0.677.jar,
+ libs/spring.jar,
+ libs/commons-dbcp-1.2.1.jar,
+ libs/commons-pool-1.3.jar,
+ .
+Export-Package: net.bioclipse.structuredb,
+ net.bioclipse.structuredb.domain,
+ net.bioclipse.structuredb.persistency.dao,
+ net.bioclipse.structuredb.persistency.tables,
+ net.bioclipse.structuredb.views,
+ org.apache.commons.dbcp

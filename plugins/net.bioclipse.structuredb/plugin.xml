@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Sample Category"
+            id="net.bioclipse.structuredb">
+      </category>
+      <view
+            name="Sample View"
+            icon="icons/sample.gif"
+            category="net.bioclipse.structuredb"
+            class="net.bioclipse.structuredb.views.SampleView"
+            id="net.bioclipse.structuredb.views.SampleView">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.ui.resourcePerspective">
+         <view
+               ratio="0.5"
+               relative="org.eclipse.ui.views.TaskList"
+               relationship="right"
+               id="net.bioclipse.structuredb.views.SampleView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="net.bioclipse.database.dataSourceType">
+      <databaseType
+            class="net.bioclipse.structuredb.Structuredb"
+            name="net.bioclipse.structuredb.StructuredbDataBaseType">
+      </databaseType>
+   </extension>
+   <extension
+         point="net.bioclipse.usermanager.accountType">
+      <AccountType
+            name="net.bioclipse.structuredb.AccountType">
+         <property
+               name="net.bioclipse.structuredb.url"
+               required="true">
+         </property>
+         <property
+               name="net.bioclipse.structuredb.type"
+               required="true">
+         </property>
+         <property
+               name="net.bioclipse.structuredb.name"
+               required="true">
+         </property>
+      </AccountType>
+   </extension>
+
+</plugin>
