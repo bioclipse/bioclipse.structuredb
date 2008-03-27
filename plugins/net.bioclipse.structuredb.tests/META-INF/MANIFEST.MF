@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Structuredb Plug-in for tests
+Bundle-SymbolicName: net.bioclipse.structuredb.tests;singleton:=true
+Bundle-Version: 0.0.1
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ net.bioclipse.structuredb,
+ net.bioclipse.cdk,
+ net.bioclipse.hsqldb
+Eclipse-LazyStart: false
+Bundle-ClassPath: .,
+ libs/spring.jar,
+ libs/spring-mock.jar
