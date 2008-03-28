@@ -22,7 +22,12 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+import net.bioclipse.core.util.LogUtils;
+
 public class TableCreator {
+    
+    private static final Logger logger = Logger.getLogger(TableCreator.class);
 
 	public static final String[] SQL_FILES_RUNORDER = { "BaseObject.sql", 
 	                                                      "User.sql",
@@ -135,7 +140,7 @@ public class TableCreator {
 					slept += sleepTime;
 					
 				} catch (InterruptedException e1) {
-					e1.printStackTrace();
+				    LogUtils.debugTrace(logger, e1);
 				}
 			}
 		}

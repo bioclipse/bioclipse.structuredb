@@ -2,6 +2,9 @@ package net.bioclipse.hsqldb;
 
 import static org.junit.Assert.*;
 
+import org.apache.log4j.Logger;
+import net.bioclipse.core.util.LogUtils;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,6 +13,7 @@ import org.junit.Test;
 
 public class HsqldbTest {
 
+    private static final Logger logger = Logger.getLogger(HsqldbTest.class);
 	@Test
 	public void testCreatingExtraDatabases() {
 		String database = this.getClass().getClassLoader().getResource(".").toString();
@@ -48,7 +52,7 @@ public class HsqldbTest {
 					slept += sleepTime;
 					
 				} catch (InterruptedException e1) {
-					e1.printStackTrace();
+					LogUtils.debugTrace(logger, e1);
 				}
 			}
 		}

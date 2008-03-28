@@ -1,5 +1,8 @@
 package net.bioclipse.structuredb.dialogs;
 
+import org.apache.log4j.Logger;
+import net.bioclipse.core.util.LogUtils;
+
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -27,6 +30,9 @@ import org.eclipse.swt.events.SelectionEvent;
 */
 public class CreateStructureDatabaseDialog extends org.eclipse.swt.widgets.Dialog {
 
+    private static final Logger logger = 
+        Logger.getLogger(CreateStructureDatabaseDialog.class);
+    
 	private Shell dialogShell;
 	private Label NameLabel;
 	private Text nameText;
@@ -39,13 +45,17 @@ public class CreateStructureDatabaseDialog extends org.eclipse.swt.widgets.Dialo
 	* org.eclipse.swt.widgets.Dialog inside a new Shell.
 	*/
 	public static void main(String[] args) {
-		try {
+		// since we're running outside of Bioclipse environment, configure
+	    // logging to print to console
+	    org.apache.log4j.BasicConfigurator.configure();
+		
+	    try {
 			Display display = Display.getDefault();
 			Shell shell = new Shell(display);
 			CreateStructureDatabaseDialog inst = new CreateStructureDatabaseDialog(shell, SWT.NULL);
 			inst.open();
 		} catch (Exception e) {
-			e.printStackTrace();
+		    LogUtils.debugTrace(logger, e);
 		}
 	}
 
@@ -124,7 +134,7 @@ public class CreateStructureDatabaseDialog extends org.eclipse.swt.widgets.Dialo
 					display.sleep();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+		    LogUtils.debugTrace(logger, e);
 		}
 	}
 

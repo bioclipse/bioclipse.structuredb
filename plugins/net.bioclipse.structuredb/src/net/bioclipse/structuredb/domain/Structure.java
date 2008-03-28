@@ -16,6 +16,9 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.BitSet;
 
+import org.apache.log4j.Logger;
+import net.bioclipse.core.util.LogUtils;
+
 import org.openscience.cdk.AtomContainer;
 import org.openscience.cdk.ChemFile;
 import org.openscience.cdk.exception.CDKException;
@@ -33,6 +36,8 @@ import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
  */
 public class Structure extends BaseObject {
 
+    private static final Logger logger = Logger.getLogger(Structure.class);
+    
 	private AtomContainer molecule;
 	private BitSet        fingerPrint;
 	private String        fingerPrintString;  //TODO: Do the persisting of the fingerprint in a nicer way
@@ -204,7 +209,7 @@ public class Structure extends BaseObject {
 			cmlWriter.write(molecule);
 		} catch (CDKException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+		    LogUtils.debugTrace(logger, e);
 		}
 		return stringWriter.toString();
 	}

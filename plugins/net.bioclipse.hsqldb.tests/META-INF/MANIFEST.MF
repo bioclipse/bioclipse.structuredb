@@ -5,5 +5,7 @@ Bundle-SymbolicName: net.bioclipse.hsqldb.tests
 Bundle-Version: 1.0.0
 Bundle-Activator: net.bioclipse.hsqldb.Activator
 Require-Bundle: org.eclipse.core.runtime,
- net.bioclipse.hsqldb
+ net.bioclipse.hsqldb,
+ net.bioclipse.core
 Eclipse-LazyStart: true
+Import-Package: org.apache.log4j

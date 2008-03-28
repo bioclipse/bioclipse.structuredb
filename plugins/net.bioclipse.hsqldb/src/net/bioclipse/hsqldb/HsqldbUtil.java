@@ -19,11 +19,17 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+import net.bioclipse.core.util.LogUtils;
+
+
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.ui.PlatformUI;
 import org.hsqldb.Server;
 
 public class HsqldbUtil {
+    
+    private static final Logger logger = Logger.getLogger(HsqldbUtil.class);
 
 	private static Server server;
 	private final static HsqldbUtil instance = new HsqldbUtil();
@@ -102,7 +108,7 @@ public class HsqldbUtil {
 		catch (RuntimeException e) {
 			//now the server is dead
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			LogUtils.debugTrace(logger, e);
 		}
 		names.put(nextFreePos,   name);
 		paths.put(nextFreePos++, path);

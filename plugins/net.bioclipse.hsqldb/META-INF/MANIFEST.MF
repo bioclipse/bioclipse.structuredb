@@ -6,7 +6,8 @@ Bundle-Version: 0.0.1
 Bundle-Activator: net.bioclipse.hsqldb.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ net.bioclipse.core
 Eclipse-LazyStart: true
 Export-Package: net.bioclipse.hsqldb,
  org.hsqldb,
@@ -25,3 +26,4 @@ Export-Package: net.bioclipse.hsqldb,
  org.hsqldb.util.sqltool
 Bundle-ClassPath: .,
  lib/hsqldb.jar
+Import-Package: org.apache.log4j
