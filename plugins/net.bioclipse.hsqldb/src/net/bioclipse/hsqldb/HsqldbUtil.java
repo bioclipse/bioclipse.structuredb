@@ -19,8 +19,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.bioclipse.preferences.IPreferenceConstants;
-
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.ui.PlatformUI;
 import org.hsqldb.Server;
 
@@ -47,7 +46,7 @@ public class HsqldbUtil {
 	public void startHsqldbServer() {
 
 		final String database = 
-			PlatformUI.getPreferenceStore().getString(IPreferenceConstants.FILEVIEWER_HOME_PATH) 
+			ResourcesPlugin.getWorkspace().getRoot().getLocation().toString() 
 			+ File.separator + ".database";
 
 		try {

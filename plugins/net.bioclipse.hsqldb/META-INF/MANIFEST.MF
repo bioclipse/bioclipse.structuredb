@@ -6,7 +6,7 @@ Bundle-Version: 0.0.1
 Bundle-Activator: net.bioclipse.hsqldb.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- net.bioclipse
+ org.eclipse.core.resources
 Eclipse-LazyStart: true
 Export-Package: net.bioclipse.hsqldb,
  org.hsqldb,
