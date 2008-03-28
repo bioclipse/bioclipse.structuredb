@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests Plug-in
+Bundle-SymbolicName: net.bioclipse.hsqldb.tests
+Bundle-Version: 1.0.0
+Bundle-Activator: net.bioclipse.hsqldb.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ net.bioclipse.hsqldb
+Eclipse-LazyStart: true
