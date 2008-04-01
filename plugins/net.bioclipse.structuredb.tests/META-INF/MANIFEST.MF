@@ -12,3 +12,5 @@ Eclipse-LazyStart: false
 Bundle-ClassPath: .,
  libs/spring.jar,
  libs/spring-mock.jar
+Import-Package: org.apache.commons.logging;version="1.0.4",
+ org.apache.log4j

@@ -128,6 +128,6 @@ public abstract class GenericDaoTest<DomainType extends BaseObject> extends Abst
 	}
 	
 	protected String[] getConfigLocations() {
-		return new String[] { "classpath:applicationContext.xml" };
+		return new String[] { "META-INF/spring/applicationContext.xml" };
 	}
 }

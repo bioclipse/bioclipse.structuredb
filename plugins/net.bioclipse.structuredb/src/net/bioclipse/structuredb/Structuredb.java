@@ -10,36 +10,23 @@
  *******************************************************************************/
 package net.bioclipse.structuredb;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.dbcp.BasicDataSource;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
+import net.bioclipse.services.views.model.AbstractServiceContainer;
+import net.bioclipse.services.views.model.IDatabaseType;
+import net.bioclipse.structuredb.dialogs.CreateStructureDatabaseDialog;
+import net.bioclipse.usermanager.Activator;
+import net.bioclipse.usermanager.IUserManagerListener;
+import net.bioclipse.usermanager.UserManagerEvent;
+import net.bioclipse.usermanager.business.IUserManager;
+
+import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.PlatformUI;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-
-import net.bioclipse.database.DatabaseModelEvent;
-import net.bioclipse.database.IDataSource;
-import net.bioclipse.database.IDataSourceType;
-import net.bioclipse.database.IDatabaseModelListener;
-import net.bioclipse.hsqldb.HsqldbUtil;
-import net.bioclipse.structuredb.dialogs.CreateStructureDatabaseDialog;
-import net.bioclipse.usermanager.IUserManagerListener;
-import net.bioclipse.usermanager.UserManager;
-import net.bioclipse.usermanager.UserManagerEvent;
 
 /**
  * This class is responsible for the different structuredb datasources in the
@@ -48,18 +35,19 @@ import net.bioclipse.usermanager.UserManagerEvent;
  * @author jonalv
  *
  */
-public class Structuredb implements IDataSourceType, IUserManagerListener {
+public class Structuredb extends AbstractServiceContainer 
+                         implements IUserManagerListener, IDatabaseType {
 
+	private final Logger logger = Logger.getLogger( this.getClass() );
+	
 	private final String name = "Structure Database";
 
 	private List<StructuredbDataSource>  dataSources;
-	private List<IDatabaseModelListener> modelListeners;
 	
 	private IAction createDatabaseAction;
 	
 	public Structuredb() {
 		dataSources    = new ArrayList<StructuredbDataSource>();
-		modelListeners = new ArrayList<IDatabaseModelListener>();
 		createActions();
 	}
 	
@@ -68,10 +56,10 @@ public class Structuredb implements IDataSourceType, IUserManagerListener {
 			@Override
 			public void run() {
 				CreateStructureDatabaseDialog dialog = 
-					new CreateStructureDatabaseDialog( PlatformUI.
-							                           getWorkbench().
-							                           getActiveWorkbenchWindow().
-							                           getShell(), 
+					new CreateStructureDatabaseDialog( PlatformUI
+							                           .getWorkbench()
+							                           .getActiveWorkbenchWindow()
+							                           .getShell(), 
 							                           SWT.NONE );
 				dialog.open();
 				//TODO: create the new database
@@ -95,16 +83,23 @@ public class Structuredb implements IDataSourceType, IUserManagerListener {
 		return name;
 	}
 
-	public void receiveKeyringEvent(UserManagerEvent event) {
+	public void fillContextMenu(IMenuManager manager) {
+		manager.add( createDatabaseAction );
+	}
 
-		switch (event) {
+	public void fireUpdate() {
+	}
+
+	@Override
+	public void receiveUserManagerEvent(UserManagerEvent event) {
 		
+		switch (event) {
+
 		case LOGIN:
-			for( String id : UserManager.getInstance().getAccountIdsByAccountTypeName("net.bioclipse.structuredb.AccountType") ) {
-				UserManager um = UserManager.getInstance(); 
-				dataSources.add( createDataSource( um.getProperty(id, "url"), 
-						                           um.getUserName(id), 
-						                           um.getPassword(id) ) );
+			IUserManager um = Activator.getDefault().getUserManager();
+			for ( String id : um.getAccountIdsByAccountTypeName(
+			                  "net.bioclipse.structuredb.AccountType" ) ) {
+				
 			}
 			break;
 			
@@ -114,58 +109,24 @@ public class Structuredb implements IDataSourceType, IUserManagerListener {
 			
 		default:
 			break;
-		}
+		}		
 	}
-	
-	/**
-	 * Creates datasource and the corresponding database.
-	 * 
-	 * @param url 
-	 * @param username
-	 * @param password
-	 * @return
-	 */
-	public StructuredbDataSource createDataSource(String url, String username, String password) {
-		ApplicationContext context = new FileSystemXmlApplicationContext( getPluginURL() + 
-		                                                                  "src" +
-		                                                                  File.separator + 
-		                                                                  "applicationContext.xml" );
 
-		BasicDataSource basicDataSource = (BasicDataSource) context.getBean("dataSource");
-		basicDataSource.setUrl( url );
-		basicDataSource.setUsername( username );
-		basicDataSource.setPassword( password );
+	@Override
+	public void createChildren() {
+//		BasicDataSource basicDataSource = (BasicDataSource) context.getBean("dataSource");
+//		basicDataSource.setUrl( url );
+//		basicDataSource.setUsername( username );
+//		basicDataSource.setPassword( password );
 		
-		StructuredbDataSource dataSource = new StructuredbDataSource(context);
-		dataSources.add(dataSource);
-		fireUpdate();
-		return dataSource;
-	}
-	
-	public static URL getPluginURL() {
-		try {
-	        return FileLocator.toFileURL(Platform.getBundle("net.bioclipse.structuredb").getEntry("/"));
-        }
-        catch (IOException e) {
-	        throw new RuntimeException("could not locate config file for Spring", e);
-        }
+//		StructuredbDataSource dataSource = new StructuredbDataSource(context);
+//		dataSources.add(dataSource);
+		fireUpdate();		
 	}
 
-	public void fillContextMenu(IMenuManager manager) {
-		manager.add( createDatabaseAction );
-	}
-
-	public void addListener(IDatabaseModelListener listener) {
-		modelListeners.add(listener);
-	}
-
-	public void removeListener(IDatabaseModelListener listener) {
-		modelListeners.remove(listener);
-	}
-	
-	public void fireUpdate() {
-		for( IDatabaseModelListener l : modelListeners) {
-			l.modelUpdated( new DatabaseModelEvent(this) );
-		}
+	@Override
+	public Object getAdapter(Class adapter) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

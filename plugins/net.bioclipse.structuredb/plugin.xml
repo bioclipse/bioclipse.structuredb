@@ -29,13 +29,6 @@
       </perspectiveExtension>
    </extension>
    <extension
-         point="net.bioclipse.database.dataSourceType">
-      <databaseType
-            class="net.bioclipse.structuredb.Structuredb"
-            name="net.bioclipse.structuredb.StructuredbDataBaseType">
-      </databaseType>
-   </extension>
-   <extension
          point="net.bioclipse.usermanager.accountType">
       <AccountType
             name="net.bioclipse.structuredb.AccountType">
