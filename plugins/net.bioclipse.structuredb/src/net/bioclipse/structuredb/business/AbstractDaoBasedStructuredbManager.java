@@ -7,8 +7,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
-
-public abstract class AbstractDaoBasedStructuredbManager implements StructuredbManager {
+public abstract class AbstractDaoBasedStructuredbManager 
+                      implements StructuredbManager {
 
 
 }
