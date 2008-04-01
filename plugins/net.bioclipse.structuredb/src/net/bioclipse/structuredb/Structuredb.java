@@ -90,7 +90,6 @@ public class Structuredb extends AbstractServiceContainer
 	public void fireUpdate() {
 	}
 
-	@Override
 	public void receiveUserManagerEvent(UserManagerEvent event) {
 		
 		switch (event) {
@@ -124,7 +123,6 @@ public class Structuredb extends AbstractServiceContainer
 		fireUpdate();		
 	}
 
-	@Override
 	public Object getAdapter(Class adapter) {
 		// TODO Auto-generated method stub
 		return null;
