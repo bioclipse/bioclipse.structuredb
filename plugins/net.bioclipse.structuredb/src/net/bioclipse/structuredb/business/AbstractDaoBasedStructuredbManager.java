@@ -7,10 +7,6 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
-import java.util.List;
-
-import net.bioclipse.structuredb.StructuredbDataSource;
-import net.bioclipse.structuredb.domain.Library;
 
 public abstract class AbstractDaoBasedStructuredbManager implements StructuredbManager {
 

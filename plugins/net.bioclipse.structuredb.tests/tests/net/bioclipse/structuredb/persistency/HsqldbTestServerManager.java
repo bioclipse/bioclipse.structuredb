@@ -10,17 +10,6 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Scanner;
-
 import net.bioclipse.structuredb.persistency.tables.TableCreator;
 
 import org.hsqldb.Server;

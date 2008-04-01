@@ -3,7 +3,6 @@ package net.bioclipse.structuredb.persistency.dao;
 import java.sql.Timestamp;
 import java.util.List;
 
-import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.domain.BaseObject;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.persistency.HsqldbTestServerManager;
