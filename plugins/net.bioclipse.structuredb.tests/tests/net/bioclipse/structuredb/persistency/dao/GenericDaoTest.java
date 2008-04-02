@@ -1,8 +1,10 @@
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
 
+import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.BaseObject;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.persistency.HsqldbTestServerManager;
@@ -127,6 +129,19 @@ public abstract class GenericDaoTest<DomainType extends BaseObject> extends Abst
 	}
 	
 	protected String[] getConfigLocations() {
-		return new String[] { "META-INF/spring/applicationContext.xml" };
+		String path = Structuredb.class.getClassLoader()
+		                         .getResource(".")
+		                         .toString();
+		
+		int index = path.lastIndexOf( File.separator            );
+		index     = path.lastIndexOf( File.separator, index - 1 );
+		index     = path.lastIndexOf( ".", index - 1            );
+
+		path = path.substring(0, index);
+		
+		path += File.separator + "META-INF" 
+		      + File.separator + "spring" 
+		      + File.separator + "applicationContext.xml";
+		return new String[] { path };
 	}
 }
