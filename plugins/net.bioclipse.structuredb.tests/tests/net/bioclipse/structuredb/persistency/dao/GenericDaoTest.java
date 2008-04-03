@@ -33,10 +33,10 @@ public abstract class GenericDaoTest<DomainType extends BaseObject> extends Abst
 	
 	private Class<DomainType> domainClass;
 	
-	protected User god;
-	
 	protected DomainType object1;
 	protected DomainType object2;
+	
+	protected User testUser;
 
 	/**
 	 * @param c Class for the domain type to be tested
@@ -50,11 +50,10 @@ public abstract class GenericDaoTest<DomainType extends BaseObject> extends Abst
 	public void onSetUpInTransaction() throws Exception {
 		super.onSetUpInTransaction();
 		
-		god = new User("God", "god", "fiat lux");
-		
+		testUser = new User("TestUser", "username", "password");
 		IUserDao userDao = (IUserDao) applicationContext.getBean("userDao");
+		userDao.insert(testUser);
 		
-		userDao.persistGodObject(god);
 		String daoName = domainClass.getSimpleName() + "Dao";
 		daoName = firstToLowerCase(daoName);
 		dao = (IGenericDao<DomainType>) applicationContext.getBean(daoName);
@@ -80,8 +79,8 @@ public abstract class GenericDaoTest<DomainType extends BaseObject> extends Abst
 		Timestamp now = new Timestamp( System.currentTimeMillis() );
 		object.setCreated(now);
 		object.setEdited(now);
-		object.setCreator(god);
-		object.setLastEditor(god);
+		object.setCreator(testUser);
+		object.setLastEditor(testUser);
 	}
 
 	/**

@@ -26,13 +26,12 @@ public class UserDao extends GenericDao<User> implements IUserDao {
 
 	@Override
 	public void insert(User user) {
-		getSqlMapClientTemplate().insert( "BaseObject.insert", user );
+		if(user.getCreator() != null)
+			getSqlMapClientTemplate().insert( "BaseObject.insert", user );
+		else 
+			getSqlMapClientTemplate().insert( 
+					"BaseObject.insertWithoutAuditInfo", user );
 		getSqlMapClientTemplate().insert( "User.insert",       user );
-	}
-
-	public void persistGodObject(User user) {
-		getSqlMapClientTemplate().insert( "BaseObject.insertGod", user );
-		getSqlMapClientTemplate().insert( "User.insert",          user );
 	}
 	
 	@Override

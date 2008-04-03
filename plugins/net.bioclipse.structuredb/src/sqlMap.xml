@@ -80,10 +80,10 @@
 			            VALUES ('$id$', '$name$', '$created$', '$edited$', '$creator.id$', '$lastEditor.id$')
 	</insert>
 	
-	<insert id="BaseObject.insertGod">
-		INSERT INTO BaseObject (   id,       name   )
-		                VALUES ( '$id$',   '$name$' );
-	</insert>
+	<insert id="BaseObject.insertWithoutAuditInfo">
+        INSERT INTO BaseObject (  id,     name )
+                        VALUES ('$id$', '$name$')
+    </insert>
 	
 	<insert id="User.insert">
 		INSERT INTO User (   id,     userName,     passWord,        sudoer,     baseObject )

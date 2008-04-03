@@ -22,12 +22,4 @@ public class UserDaoTest extends GenericDaoTest<User> {
 		super(User.class);
 	}
 	
-	public void testPersistGod() {
-		
-		IUserDao userDao = (IUserDao) dao;
-		User loaded = userDao.getById( god.getId() );
-		
-		assertNotNull( "The loaded object should not be null", loaded );
-		assertTrue( god.hasValuesEqualTo(loaded) );
-	}
 }

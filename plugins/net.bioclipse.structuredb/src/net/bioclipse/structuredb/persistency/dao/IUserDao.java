@@ -14,5 +14,4 @@ import net.bioclipse.structuredb.domain.User;
 
 public interface IUserDao extends IGenericDao<User> {
 
-	public void persistGodObject(User user);
 }

@@ -140,13 +140,13 @@ public class BaseObject {
 			}
 		}
 		if( this.lastEditor != null ) {
-			if( !this.creator.hasValuesEqualTo(obj.getLastEditor()) ) {
+			if( !this.lastEditor.hasValuesEqualTo(obj.getLastEditor()) ) {
 				return false;
 			}
 		}
 		
-		return name.equals( obj.name ) 
-		      && id.equals(obj.id);
+		return name.equals( obj.getName() ) 
+		      && id.equals( obj.getId()   );
 	}
 	
 	/**
