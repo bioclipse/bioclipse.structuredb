@@ -8,10 +8,12 @@ Require-Bundle: org.eclipse.ui,
  net.bioclipse.structuredb,
  net.bioclipse.cdk,
  net.bioclipse.hsqldb,
- org.junit4
+ org.junit4,
+ slf4j.api
 Eclipse-LazyStart: false
 Bundle-ClassPath: .,
  libs/spring.jar,
- libs/spring-mock.jar
+ libs/spring-mock.jar,
+ libs/slf4j-simple-1.5.0.jar
 Import-Package: org.apache.commons.logging;version="1.0.4",
  org.apache.log4j
