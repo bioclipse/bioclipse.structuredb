@@ -17,6 +17,8 @@ import java.io.StringWriter;
 import java.util.BitSet;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IResource;
+
 import net.bioclipse.core.util.LogUtils;
 
 import org.openscience.cdk.AtomContainer;
@@ -34,7 +36,8 @@ import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
  * @author jonalv
  *
  */
-public class Structure extends BaseObject {
+public class Structure extends BaseObject 
+                       implements net.bioclipse.core.domain.IMolecule {
 
     private static final Logger logger = Logger.getLogger(Structure.class);
     
@@ -64,11 +67,13 @@ public class Structure extends BaseObject {
 			fingerPrintString = makeFingerPrintString(fingerPrint);
 		} catch (Exception e) {
 			//If this happens often maybe something else is needed
-			throw new IllegalArgumentException("could not create fingerPrint for Atomcontainer:" + name);  
+			throw new IllegalArgumentException(
+					"could not create fingerPrint for Atomcontainer:" + name);  
 		}
 		
 		SmilesGenerator sg = new SmilesGenerator();
-		//If molecule often isn't an instance of IMolecule maybee something else is needed
+		//If molecule often isn't an instance of IMolecule
+		//maybe something else is needed
 		smiles = sg.createSMILES( (IMolecule) molecule );  
 	}
 	
@@ -89,9 +94,6 @@ public class Structure extends BaseObject {
 		this.library           = structure.getLibrary();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.bioclipse.pcm.domain.PCMBaseObject#hasValuesEqualTo(net.bioclipse.pcm.domain.PCMBaseObject)
-	 */
 	public boolean hasValuesEqualTo( BaseObject object ) {
 		
    		if( !super.hasValuesEqualTo(object) ) {
@@ -148,7 +150,8 @@ public class Structure extends BaseObject {
 	private BitSet makeFingerPrint(String fingerPrintString) {
 		BitSet fingerPrint = new BitSet( fingerPrintString.length() );
 		for(int i = 0 ; i < fingerPrintString.length() ; i++) {
-			fingerPrint.set( i, fingerPrintString.charAt(i) == '1' ? true : false );
+			fingerPrint.set( i, fingerPrintString.charAt(i) == '1' ? true 
+					                                               : false );
 		}
 		return fingerPrint;
 	}
@@ -219,9 +222,28 @@ public class Structure extends BaseObject {
 		CMLReader cmlReader = new CMLReader(inputStream);
 		try {
 			IChemFile readFile = (IChemFile)cmlReader.read( new ChemFile() );
-			molecule = (AtomContainer)ChemFileManipulator.getAllAtomContainers(readFile).get(0);
+			molecule = (AtomContainer)ChemFileManipulator
+			                          .getAllAtomContainers(readFile).get(0);
 		} catch (CDKException e) {
 			throw new RuntimeException("failed to read molecule", e);
 		}
+	}
+
+	public boolean has3dCoords() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public IResource getResource() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getUID() {
+		return getId();
+	}
+
+	public Object getAdapter(Class adapter) {
+		return null;
 	}
 }
