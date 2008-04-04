@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package net.bioclipse.structuredb.privatebusiness;
+package net.bioclipse.structuredb.internalbusiness;
 
 import net.bioclipse.structuredb.persistency.dao.ILibraryDao;
 import net.bioclipse.structuredb.persistency.dao.IStructureDao;
