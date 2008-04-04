@@ -8,5 +8,6 @@ CREATE TABLE User (
 	PRIMARY KEY (id)
 );
 
-ALTER TABLE User ADD UNIQUE (id); 
+ALTER TABLE User ADD UNIQUE (id);
+ALTER TABLE User ADD UNIQUE (userName); 
 ALTER TABLE User ADD FOREIGN KEY (baseObject) REFERENCES BaseObject(id);

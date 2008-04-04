@@ -19,12 +19,15 @@ import java.util.BitSet;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
 
+import net.bioclipse.cdk.domain.ICDKMolecule;
+import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.util.LogUtils;
 
 import org.openscience.cdk.AtomContainer;
 import org.openscience.cdk.ChemFile;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.fingerprint.Fingerprinter;
+import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IChemFile;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.io.CMLReader;
@@ -41,10 +44,10 @@ public class Structure extends BaseObject
 
     private static final Logger logger = Logger.getLogger(Structure.class);
     
-	private AtomContainer molecule;
-	private BitSet        fingerPrint;
-	private String        fingerPrintString;  //TODO: Do the persisting of the fingerprint in a nicer way
-	private String        smiles;
+	private IAtomContainer atomContainer;
+	private BitSet         fingerPrint;
+	private String         fingerPrintString;  //TODO: Do the persisting of the fingerprint in a nicer way
+	private String         smiles;
 	
 	private Library library;
 	
@@ -52,14 +55,15 @@ public class Structure extends BaseObject
 		super();
 		fingerPrint = new BitSet();
 		this.fingerPrintString = makeFingerPrintString(fingerPrint);
-		molecule    = new AtomContainer();
+		atomContainer    = new AtomContainer();
 		smiles      = "";
 	}
 	
+	@Deprecated
 	public Structure( String name, AtomContainer molecule ) {
 		
 		super(name);
-		this.molecule = molecule;
+		this.atomContainer = molecule;
 		
 		Fingerprinter fingerprinter = new Fingerprinter();
 		try {
@@ -72,9 +76,19 @@ public class Structure extends BaseObject
 		}
 		
 		SmilesGenerator sg = new SmilesGenerator();
-		//If molecule often isn't an instance of IMolecule
+		//If atomContainer often isn't an instance of IMolecule
 		//maybe something else is needed
 		smiles = sg.createSMILES( (IMolecule) molecule );  
+	}
+	
+	public Structure( String name, ICDKMolecule cdkMolecule ) 
+		   throws BioclipseException {
+
+		super(name);
+		fingerPrintString = cdkMolecule.getFingerprint();
+		fingerPrint       = makeFingerPrint(fingerPrintString);
+		atomContainer     = cdkMolecule.getAtomContainer();
+		smiles            = cdkMolecule.getSmiles();
 	}
 	
 	/**
@@ -87,7 +101,7 @@ public class Structure extends BaseObject
 		
 		super(structure);
 		
-		this.molecule          = structure.getMolecule();
+		this.atomContainer     = structure.getMolecule();
 		this.fingerPrint       = (BitSet)structure.getFingerPrint().clone();
 		this.fingerPrintString = makeFingerPrintString(fingerPrint);
 		this.smiles            = structure.getSmiles();
@@ -107,21 +121,21 @@ public class Structure extends BaseObject
 		
 		return fingerPrint.equals( structure.getFingerPrint() )
 		       &&   smiles.equals( structure.getSmiles()      );
-//		       && molecule.equals( structure.getMolecule()    ); //TODO: can give false positives without?
+//		       && atomContainer.equals( structure.getMolecule()    ); //TODO: can give false positives without?
 	}
 	
 	/**
 	 * @return the CDK AtomContainer
 	 */
-	public AtomContainer getMolecule() {
-		return molecule;
+	public IAtomContainer getMolecule() {
+		return atomContainer;
 	}
 
 	/**
-	 * @param molecule the CDK molecule to set
+	 * @param atomContainer the CDK atomContainer to set
 	 */
-	public void setMolecule(AtomContainer molecule) {
-		this.molecule = molecule;
+	public void setMolecule(IAtomContainer molecule) {
+		this.atomContainer = molecule;
 	}
 
 	/**
@@ -209,7 +223,7 @@ public class Structure extends BaseObject
 		StringWriter stringWriter = new StringWriter();
 		CMLWriter cmlWriter       = new CMLWriter(stringWriter);
 		try {
-			cmlWriter.write(molecule);
+			cmlWriter.write(atomContainer);
 		} catch (CDKException e) {
 			// TODO Auto-generated catch block
 		    LogUtils.debugTrace(logger, e);
@@ -222,10 +236,10 @@ public class Structure extends BaseObject
 		CMLReader cmlReader = new CMLReader(inputStream);
 		try {
 			IChemFile readFile = (IChemFile)cmlReader.read( new ChemFile() );
-			molecule = (AtomContainer)ChemFileManipulator
+			atomContainer = (AtomContainer)ChemFileManipulator
 			                          .getAllAtomContainers(readFile).get(0);
 		} catch (CDKException e) {
-			throw new RuntimeException("failed to read molecule", e);
+			throw new RuntimeException("failed to read atomContainer", e);
 		}
 	}
 

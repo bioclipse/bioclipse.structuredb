@@ -33,7 +33,7 @@ public class User extends BaseObject {
 	
 	public User() {
 		super();
-		userName           = "";
+		userName           = "user" + getId();
 		passWordMd5        = passwordEncryptor.encryptPassword("");
 		createdBaseObjects = new HashSet<BaseObject>();
 	}

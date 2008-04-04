@@ -12,8 +12,11 @@ package net.bioclipse.structuredb.privatebusiness;
 
 import java.util.List;
 
+import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.structuredb.StructuredbDataSource;
 import net.bioclipse.structuredb.domain.Library;
+import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.User;
 
 public interface IStructuredbInstanceManager {
 
@@ -24,4 +27,19 @@ public interface IStructuredbInstanceManager {
 	 * @return all libraries in the database
 	 */
 	public List<Library> getAllLibraries( StructuredbDataSource database );
+	
+	public void update(Library library);
+	
+	public void update(User user);
+	
+	public void update(Structure structure);
+	
+	public User createUser( String  username,
+			                String  password, 
+			                boolean sudoer );
+	
+	public Library createLibrary(String name);
+	
+	public Structure createStructure( String name, 
+			                          ICDKMolecule cdkMolecule );
 }

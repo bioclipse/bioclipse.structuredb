@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.eclipse.core.resources.IResource;
+
+import net.bioclipse.core.domain.IBioObject;
+
 /**
  * A baseclass for all domain objects. 
  * It creates a unique id for the object and contains code for comparisons 
@@ -24,7 +28,7 @@ import java.util.UUID;
  * 
  * @author jonalv
  */
-public class BaseObject {
+public class BaseObject implements IBioObject {
 
 	private String id; //36 chars long unique id 
 	private String name;
@@ -244,5 +248,19 @@ public class BaseObject {
 
 	public void setEdited(Timestamp edited) {
 		this.edited = edited;
+	}
+
+	public IResource getResource() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getUID() {
+		return getId();
+	}
+
+	public Object getAdapter(Class adapter) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

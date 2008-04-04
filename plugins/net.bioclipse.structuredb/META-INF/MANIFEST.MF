@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.ui,
  org.springframework.bundle.spring.beans,
  org.springframework.bundle.spring.context,
  org.springframework.bundle.spring.tx,
- org.springframework.bundle.spring.jdbc
+ org.springframework.bundle.spring.jdbc,
+ net.bioclipse.cdk.business
 Eclipse-LazyStart: true
 Bundle-ClassPath: libs/ibatis-2.3.0.677.jar,
  libs/commons-dbcp-1.2.1.jar,
