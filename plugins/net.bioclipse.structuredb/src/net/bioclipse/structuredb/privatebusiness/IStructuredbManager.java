@@ -8,7 +8,7 @@
  * Contributors:
  *     
  *******************************************************************************/
-package net.bioclipse.structuredb.business;
+package net.bioclipse.structuredb.privatebusiness;
 
 import java.util.List;
 

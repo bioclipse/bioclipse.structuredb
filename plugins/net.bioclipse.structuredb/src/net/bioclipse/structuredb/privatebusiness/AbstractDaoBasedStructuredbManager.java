@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package net.bioclipse.structuredb.business;
+package net.bioclipse.structuredb.privatebusiness;
 
 public abstract class AbstractDaoBasedStructuredbManager 
                       implements StructuredbManager {
