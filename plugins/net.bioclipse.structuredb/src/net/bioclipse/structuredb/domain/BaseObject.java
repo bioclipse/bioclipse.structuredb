@@ -149,7 +149,7 @@ public class BaseObject implements IBioObject {
 			}
 		}
 		
-		return name.equals( obj.getName() ) 
+		return getName().equals( obj.getName() ) 
 		      && id.equals( obj.getId()   );
 	}
 	

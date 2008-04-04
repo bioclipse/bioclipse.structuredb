@@ -20,9 +20,9 @@ public class UserTest {
 	@Test
 	public void testHasValuesEqualTo() {
 		
-		User user1 = new User( "full username", "username", "password");
+		User user1 = new User( "username", "password");
 		User user2 = new User(user1);
-		User user3 = new User( "full username", "another username", "password");
+		User user3 = new User( "another username", "password");
 		
 		assertTrue(  user1.hasValuesEqualTo(user2) );
 		assertFalse( user1.hasValuesEqualTo(user3) );

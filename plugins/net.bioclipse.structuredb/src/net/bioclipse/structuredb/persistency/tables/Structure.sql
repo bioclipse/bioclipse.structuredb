@@ -1,6 +1,7 @@
 CREATE TABLE Structure (
 	id                VARCHAR(36) NOT NULL,
 	baseObject        VARCHAR(36) NOT NULL,
+    name              VARCHAR(50) NOT NULL,
 	library           VARCHAR(36),
 	fingerprintString VARCHAR(2000),
 	smiles            VARCHAR(5000),

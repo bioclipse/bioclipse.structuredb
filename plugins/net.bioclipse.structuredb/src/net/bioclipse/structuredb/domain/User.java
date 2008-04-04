@@ -38,8 +38,8 @@ public class User extends BaseObject {
 		createdBaseObjects = new HashSet<BaseObject>();
 	}
 
-	public User(String name, String userName, String password) {
-		super(name);
+	public User(String userName, String password) {
+		super(userName);
 		this.userName      = userName;
 		passWordMd5        = passwordEncryptor.encryptPassword(password);
 		createdBaseObjects = new HashSet<BaseObject>();
@@ -172,5 +172,15 @@ public class User extends BaseObject {
 		if( baseObject.getCreator() != null ) {
 			baseObject.setCreator(null);
 		}
+	}
+	
+	@Override
+	public void setName(String name) {
+		userName = name;
+	}
+	
+	@Override
+	public String getName() {
+		return userName;
 	}
 }

@@ -50,7 +50,7 @@ public abstract class GenericDaoTest<DomainType extends BaseObject> extends Abst
 	public void onSetUpInTransaction() throws Exception {
 		super.onSetUpInTransaction();
 		
-		testUser = new User("TestUser", "username", "password");
+		testUser = new User("username", "password");
 		IUserDao userDao = (IUserDao) applicationContext.getBean("userDao");
 		userDao.insert(testUser);
 		

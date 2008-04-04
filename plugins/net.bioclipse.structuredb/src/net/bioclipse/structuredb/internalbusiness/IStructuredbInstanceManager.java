@@ -48,4 +48,16 @@ public interface IStructuredbInstanceManager {
 	public void delete(User user);
 	
 	public void delete(Structure structure);
+	
+	public List<Structure> retrieveAllStructures();
+	
+	public List<Library> retrieveAllLibraries();
+	
+	public List<User> retrieveAllUsers();
+	
+	public User retrieveUserByName(String username);
+	
+	public List<Structure> retrieveStructureByName(String name);
+	
+	public List<Library> retrieveLibrary(String name);
 }

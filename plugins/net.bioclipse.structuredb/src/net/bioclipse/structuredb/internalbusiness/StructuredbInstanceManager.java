@@ -72,4 +72,34 @@ public class StructuredbInstanceManager
 		
 	}
 
+	public List<Library> retrieveAllLibraries() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Structure> retrieveAllStructures() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<User> retrieveAllUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Library> retrieveLibrary(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Structure> retrieveStructureByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public User retrieveUserByName(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -13,7 +13,6 @@
     +-->
 	<resultMap class="BaseObject" id="BaseObject">
 		<result property="id"         column="id"                               />
-		<result property="name"       column="name"                             />
 		<result property="created"    column="created"                          />
 		<result property="edited"     column="edited"                           />
 		<result property="creator"    column="creator"    select="User.getById" />
@@ -22,6 +21,7 @@
 
 	<resultMap class="Library" id="Library" extends="BaseObject">
 		<result property="structures" column="id" select="Library.getStructures" />
+		<result property="name"       column="name"                              />
 	</resultMap>
 	
 	<resultMap class="Structure" id="Structure" extends="BaseObject">
@@ -29,12 +29,14 @@
 		<result property="fingerPrintString" column="fingerPrintString"                />
 		<result property="smiles"            column="smiles"                           />
 		<result property="moleculeCML"       column="molecule"                         />
+		<result property="name"              column="name"                             />
 	</resultMap>
 
 	<resultMap class="Structure" id="Structure-without-library" extends="BaseObject">
 		<result property="fingerPrintString" column="fingerPrintString"                />
 		<result property="smiles"            column="smiles"                           />
 		<result property="moleculeCML"       column="molecule"                         />
+		<result property="name"              column="name"                             />
 	</resultMap>
 	
 	<resultMap class="User" id="User" extends="BaseObject">
@@ -48,7 +50,6 @@
     +-->
 	<sql id="BaseObject-fields">
 		b.id         AS id,
-		b.name       AS name,
 		b.created    AS created,
 		b.edited     AS edited,
 		b.creator    AS creator,
@@ -63,7 +64,8 @@
 	<sql id="Structure-fields-without-library">
 		s.fingerPrintString AS fingerPrintString,
 		s.smiles            AS smiles,
-		s.molecule          AS molecule		
+		s.molecule          AS molecule,
+		s.name              AS name	
 	</sql>
 	
 	<sql id="User-fields">
@@ -72,17 +74,21 @@
 		u.sudoer   AS sudoer
 	</sql>
 	
+	<sql id="Library-fields">
+	   l.name AS name
+	</sql>
+	
 <!--+
     | INSERT STATEMENTS
     +-->
 	<insert id="BaseObject.insert">
-		INSERT INTO BaseObject (  id,     name,     created,     edited,     creator,        lastEditor )
-			            VALUES ('$id$', '$name$', '$created$', '$edited$', '$creator.id$', '$lastEditor.id$')
+		INSERT INTO BaseObject (  id,     created,     edited,     creator,        lastEditor )
+			            VALUES ('$id$', '$created$', '$edited$', '$creator.id$', '$lastEditor.id$')
 	</insert>
 	
 	<insert id="BaseObject.insertWithoutAuditInfo">
-        INSERT INTO BaseObject (  id,     name )
-                        VALUES ('$id$', '$name$')
+        INSERT INTO BaseObject (  id   )
+                        VALUES ('$id$' )
     </insert>
 	
 	<insert id="User.insert">
@@ -91,18 +97,18 @@
 	</insert>
 	
 	<insert id="Structure.insert">
-		INSERT INTO Structure (   id,     baseObject, library,        smiles,     fingerPrintString,     molecule      )
-		               VALUES ( '$id$', '$id$',     '$library.id$', '$smiles$', '$fingerPrintString$', '$moleculeCML$' ); 
+		INSERT INTO Structure (   id,     name,     baseObject, library,        smiles,     fingerPrintString,     molecule      )
+		               VALUES ( '$id$', '$name$', '$id$',     '$library.id$', '$smiles$', '$fingerPrintString$', '$moleculeCML$' ); 
 	</insert>
 	
 	<insert id="Structure.insertWithoutLibrary">
-		INSERT INTO Structure (   id,     baseObject, smiles,     fingerPrintString,     molecule      )
-		               VALUES ( '$id$', '$id$',     '$smiles$', '$fingerPrintString$', '$moleculeCML$' );
+		INSERT INTO Structure (   id,     name,     baseObject, smiles,     fingerPrintString,     molecule      )
+		               VALUES ( '$id$', '$name$', '$id$',     '$smiles$', '$fingerPrintString$', '$moleculeCML$' );
 	</insert>
 	
 	<insert id="Library.insert">
-		INSERT INTO Library (   id,     baseObject )
-		             VALUES ( '$id$', '$id$'       );
+		INSERT INTO Library (   id,     baseObject, name   )
+		             VALUES ( '$id$', '$id$',     '$name$' );
 	</insert>
 	
 <!--+
@@ -132,7 +138,8 @@
 	
 	<select id="Library.getById" resultMap="Library" parameterClass="String">
 		SELECT 
-			<include refid="BaseObject-fields" />
+			<include refid="BaseObject-fields" />,
+			<include refid="Library-fields"    />
 		FROM
 			Library l INNER JOIN BaseObject b ON
 			l.baseObject = b.id
@@ -162,7 +169,8 @@
 	
 	<select id="Library.getAll" resultMap="Library">
 		SELECT
-			<include refid="BaseObject-fields" />
+			<include refid="BaseObject-fields" />,
+			<include refid="Library-fields"    />
 		FROM
 			Library l INNER JOIN BaseObject b ON
 			l.baseObject = b.id
@@ -192,7 +200,6 @@
     	UPDATE 
     		BaseObject
     	SET 
-			name       = '$name$',
 			created    = '$created$',
 			edited     = '$edited$',
 			creator    = '$creator.id$',
@@ -213,7 +220,12 @@
     </update>
     
     <update id="Library.update" parameterClass="Library">
-    	
+        UPDATE
+            Library
+        SET
+            name = '$name$'
+        WHERE
+            id = '$id$'    	
     </update>
     
     <update id="Structure.update" parameterClass="Structure">
@@ -223,7 +235,8 @@
 	    	library           = '$library.id$',
 	    	smiles            = '$smiles$',
 	    	fingerPrintString = '$fingerPrintString$',
-	    	molecule          = '$moleculeCML$'
+	    	molecule          = '$moleculeCML$',
+	    	name              = '$name$'
 		WHERE
 			id = '$id$'
     </update>
@@ -234,7 +247,8 @@
     	SET 
 	    	smiles            = '$smiles$',
 	    	fingerPrintString = '$fingerPrintString$',
-	    	molecule          = '$moleculeCML$'
+	    	molecule          = '$moleculeCML$',
+	    	name              = '$name$'
 		WHERE
 			id = '$id$'
     </update>
