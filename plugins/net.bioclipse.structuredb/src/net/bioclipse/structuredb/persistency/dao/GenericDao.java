@@ -38,7 +38,8 @@ public class GenericDao<T> extends SqlMapClientDaoSupport implements IGenericDao
 	 * @see net.bioclipse.pcm.dao.IGenericDao#delete(java.lang.String)
 	 */
 	public void delete(String id) {
-		getSqlMapClientTemplate().delete(type.getSimpleName() + ".delete", id);
+		getSqlMapClientTemplate().delete("BaseObject.delete", id);
+		//The rest should be deleted by cascades in the database
 	}
 
 	/* (non-Javadoc)

@@ -49,6 +49,10 @@ public class Structure extends BaseObject
 	private String         fingerPrintString;  //TODO: Do the persisting of the fingerprint in a nicer way
 	private String         smiles;
 	
+	/**
+	 * The library this structure belongs to. 
+	 * Is null if the structure doesn't belong to any library
+	 */
 	private Library library;
 	
 	public Structure() {
@@ -185,7 +189,8 @@ public class Structure extends BaseObject
 	}
 
 	/**
-	 * @return the library containing this structure
+	 * @return the library containing this structure or null 
+	 * if the structure isn't in any library
 	 */
 	public Library getLibrary() {
 		return library;

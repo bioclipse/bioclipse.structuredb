@@ -10,5 +10,5 @@ CREATE TABLE Structure (
 );
 
 ALTER TABLE Structure ADD UNIQUE (id); 
-ALTER TABLE Structure ADD FOREIGN KEY (baseObject) REFERENCES BaseObject(id);
-ALTER TABLE Structure ADD FOREIGN KEY (library)    REFERENCES Library(id);
+ALTER TABLE Structure ADD FOREIGN KEY (baseObject) REFERENCES BaseObject(id) ON DELETE CASCADE;
+ALTER TABLE Structure ADD FOREIGN KEY (library)    REFERENCES Library(id) ON DELETE SET NULL;

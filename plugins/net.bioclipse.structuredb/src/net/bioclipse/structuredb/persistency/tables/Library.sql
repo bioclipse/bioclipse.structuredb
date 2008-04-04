@@ -6,4 +6,4 @@ CREATE TABLE Library (
 );
 
 ALTER TABLE Library ADD UNIQUE (id); 
-ALTER TABLE Library ADD FOREIGN KEY (baseObject) REFERENCES BaseObject(id);
+ALTER TABLE Library ADD FOREIGN KEY (baseObject) REFERENCES BaseObject(id) ON DELETE CASCADE;

@@ -11,6 +11,7 @@
 package net.bioclipse.structuredb.persistency.dao;
 
 import net.bioclipse.structuredb.domain.Library;
+import net.bioclipse.structuredb.domain.Structure;
 
 /**
  * @author jonalv
@@ -20,5 +21,24 @@ public class LibraryDaoTest extends GenericDaoTest<Library> {
 
 	public LibraryDaoTest() {
 		super(Library.class);
+	}
+	
+	@Override
+	public void testDelete() {
+		
+		IStructureDao structureDao 
+		= (IStructureDao) applicationContext.getBean("structureDao");
+		
+		Structure structure = new Structure();
+		structure.setCreator(testUser);
+		structure.setLastEditor(testUser);
+		structureDao.insert(structure);
+		object1.addStructure(structure);
+		dao.update(object1);
+		assertNotNull(structure.getLibrary());
+		super.testDelete();
+		
+		structure = structureDao.getById( structure.getId() );
+		assertNull( structure.getLibrary() );
 	}
 }

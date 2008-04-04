@@ -112,7 +112,11 @@ public abstract class GenericDaoTest<DomainType extends BaseObject> extends Abst
 		String sql = "SELECT COUNT(*) FROM " + domainClass.getSimpleName() + " WHERE id='" + object1.getId() + "'";
 		System.out.println(sql);
 		int numberof = jdbcTemplate.queryForInt(sql);
-		assertEquals( "The object should be deleted", 0, numberof);
+		assertEquals( "The entry should be deleted", 0, numberof);
+		sql = "SELECT COUNT(*) FROM BaseObject WHERE id='" + object1.getId() + "'";
+		System.out.println(sql);
+		numberof = jdbcTemplate.queryForInt(sql);
+		assertEquals( "The entry should be deleted", 0, numberof);
 	}
 	
 	/**

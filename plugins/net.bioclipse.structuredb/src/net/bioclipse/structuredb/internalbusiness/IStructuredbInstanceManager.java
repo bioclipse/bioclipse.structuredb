@@ -42,4 +42,10 @@ public interface IStructuredbInstanceManager {
 	
 	public Structure createStructure( String name, 
 			                          ICDKMolecule cdkMolecule );
+	
+	public void delete(Library library);
+	
+	public void delete(User user);
+	
+	public void delete(Structure structure);
 }

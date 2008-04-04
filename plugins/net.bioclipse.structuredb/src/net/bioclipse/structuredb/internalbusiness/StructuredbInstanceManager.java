@@ -57,4 +57,19 @@ public class StructuredbInstanceManager
 		
 	}
 
+	public void delete(Library library) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void delete(User user) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void delete(Structure structure) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
