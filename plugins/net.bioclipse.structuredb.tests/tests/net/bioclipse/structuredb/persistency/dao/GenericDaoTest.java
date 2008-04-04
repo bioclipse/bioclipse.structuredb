@@ -129,18 +129,18 @@ public abstract class GenericDaoTest<DomainType extends BaseObject> extends Abst
 	
 	protected String[] getConfigLocations() {
 		String path = Structuredb.class.getClassLoader()
-		                         .getResource(".")
+		                         .getResource("applicationContext.xml")
 		                         .toString();
 		
-		int index = path.lastIndexOf( File.separator            );
-		index     = path.lastIndexOf( File.separator, index - 1 );
-		index     = path.lastIndexOf( ".", index - 1            );
-
-		path = path.substring(0, index);
-		
-		path += File.separator + "META-INF" 
-		      + File.separator + "spring" 
-		      + File.separator + "applicationContext.xml";
+//		int index = path.lastIndexOf( File.separator            );
+//		index     = path.lastIndexOf( File.separator, index - 1 );
+//		index     = path.lastIndexOf( ".", index - 1            );
+//
+//		path = path.substring(0, index);
+//		
+//		path += File.separator + "META-INF" 
+//		      + File.separator + "spring" 
+//		      + File.separator + "";
 		return new String[] { path };
 	}
 }
