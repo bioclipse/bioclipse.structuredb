@@ -15,7 +15,7 @@ import java.util.List;
 import net.bioclipse.structuredb.StructuredbDataSource;
 import net.bioclipse.structuredb.domain.Library;
 
-public interface StructuredbManager {
+public interface IStructuredbInstanceManager {
 
 	/**
 	 * Get all libraries in the given structure database
