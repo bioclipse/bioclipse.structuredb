@@ -63,7 +63,6 @@ public class Structure extends BaseObject
 		smiles      = "";
 	}
 	
-	@Deprecated
 	public Structure( String name, AtomContainer molecule ) {
 		
 		super(name);

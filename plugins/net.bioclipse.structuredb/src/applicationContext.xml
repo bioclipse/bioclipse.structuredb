@@ -116,4 +116,35 @@
 			<bean parent="libraryDaoTarget" />
 		</property>
 	</bean>
+	
+	<bean id="structuredbInstanceManagerTarget"
+	      class="net.bioclipse.structuredb.internalbusiness.StructuredbInstanceManager">
+	   <property name="userDao">
+	       <ref local="userDao"/>
+	   </property>
+	   <property name="structureDao">
+           <ref local="structureDao"/>
+       </property>
+       <property name="libraryDao">
+           <ref local="libraryDao"/>
+       </property>
+	</bean>
+	
+	<bean id="structuredbInstanceManager"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref local="transactionManager" />
+        </property>
+        <property name="target">
+            <ref local="structuredbInstanceManagerTarget"/>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">
+                    PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+                </prop>
+            </props>
+        </property>
+    </bean>
+	
 </beans>

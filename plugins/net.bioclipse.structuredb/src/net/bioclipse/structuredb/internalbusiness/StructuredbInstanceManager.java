@@ -12,8 +12,9 @@ package net.bioclipse.structuredb.internalbusiness;
 
 import java.util.List;
 
+import org.openscience.cdk.AtomContainer;
+
 import net.bioclipse.cdk.domain.ICDKMolecule;
-import net.bioclipse.structuredb.StructuredbDataSource;
 import net.bioclipse.structuredb.domain.Library;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
@@ -21,11 +22,6 @@ import net.bioclipse.structuredb.domain.User;
 public class StructuredbInstanceManager 
 	   extends AbstractStructuredbInstanceManager 
 	   implements IStructuredbInstanceManager {
-
-	public List<Library> getAllLibraries(StructuredbDataSource database) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public Library createLibrary(String name) {
 		// TODO Auto-generated method stub
@@ -37,24 +33,14 @@ public class StructuredbInstanceManager
 		return null;
 	}
 
-	public User createUser(String username, String password, boolean sudoer) {
+	public Structure createStructure(String name, AtomContainer atomContainer) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void update(Library library) {
+	public User createUser(String username, String password, boolean sudoer) {
 		// TODO Auto-generated method stub
-		
-	}
-
-	public void update(User user) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void update(Structure structure) {
-		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 	public void delete(Library library) {
@@ -87,7 +73,7 @@ public class StructuredbInstanceManager
 		return null;
 	}
 
-	public List<Library> retrieveLibrary(String name) {
+	public Library retrieveLibraryByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -100,6 +86,21 @@ public class StructuredbInstanceManager
 	public User retrieveUserByName(String username) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void update(Library library) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void update(User user) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void update(Structure structure) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

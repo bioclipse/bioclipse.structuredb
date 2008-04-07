@@ -29,6 +29,7 @@ Bundle-ClassPath: libs/ibatis-2.3.0.677.jar,
  .
 Export-Package: net.bioclipse.structuredb,
  net.bioclipse.structuredb.domain,
+ net.bioclipse.structuredb.internalbusiness,
  net.bioclipse.structuredb.persistency.dao,
  net.bioclipse.structuredb.persistency.tables,
  net.bioclipse.structuredb.views,

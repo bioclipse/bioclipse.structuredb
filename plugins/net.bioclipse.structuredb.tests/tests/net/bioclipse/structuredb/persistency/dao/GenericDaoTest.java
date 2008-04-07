@@ -22,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @param <DomainType>
  */
-public abstract class GenericDaoTest<DomainType extends BaseObject> extends AbstractAnnotationAwareTransactionalTests  {
+public abstract class GenericDaoTest<DomainType extends BaseObject> 
+                extends AbstractAnnotationAwareTransactionalTests  {
 
 	static {
 		HsqldbTestServerManager.INSTANCE.startServer();
@@ -106,17 +107,33 @@ public abstract class GenericDaoTest<DomainType extends BaseObject> extends Abst
 	 * tests deleting of an instance of the domain type handled by the tested dao 
 	 */
 	public void testDelete() {
+		
+		String sqlDomainObject 
+			= "SELECT COUNT(*) FROM " + domainClass.getSimpleName() 
+			  + " WHERE id='" + object1.getId() + "'";
+		String sqlBaseObject 
+			= "SELECT COUNT(*) FROM BaseObject WHERE id='" 
+			  + object1.getId() + "'";
+		
+		int numberInDomainTableBefore = jdbcTemplate
+		                                .queryForInt(sqlDomainObject);
+		int numberInBaseTableBefore = jdbcTemplate
+		                              .queryForInt(sqlBaseObject);
+		
 		dao.delete( object1.getId() );
 		DomainType loadedObject1 = dao.getById( object1.getId() );
 		assertNull(loadedObject1);
-		String sql = "SELECT COUNT(*) FROM " + domainClass.getSimpleName() + " WHERE id='" + object1.getId() + "'";
-		System.out.println(sql);
-		int numberof = jdbcTemplate.queryForInt(sql);
-		assertEquals( "The entry should be deleted", 0, numberof);
-		sql = "SELECT COUNT(*) FROM BaseObject WHERE id='" + object1.getId() + "'";
-		System.out.println(sql);
-		numberof = jdbcTemplate.queryForInt(sql);
-		assertEquals( "The entry should be deleted", 0, numberof);
+		
+		int numberInBaseTableAfter = jdbcTemplate.queryForInt(sqlBaseObject);
+		assertEquals( "The entry should be deleted", 
+				      numberInBaseTableBefore - 1, 
+				      numberInBaseTableAfter );
+		
+		int numberInDomainTableAfter = jdbcTemplate
+		                               .queryForInt(sqlDomainObject);
+		assertEquals( "The entry should be deleted", 
+				      numberInDomainTableBefore - 1, 
+				      numberInDomainTableAfter );
 	}
 	
 	/**
@@ -136,15 +153,6 @@ public abstract class GenericDaoTest<DomainType extends BaseObject> extends Abst
 		                         .getResource("applicationContext.xml")
 		                         .toString();
 		
-//		int index = path.lastIndexOf( File.separator            );
-//		index     = path.lastIndexOf( File.separator, index - 1 );
-//		index     = path.lastIndexOf( ".", index - 1            );
-//
-//		path = path.substring(0, index);
-//		
-//		path += File.separator + "META-INF" 
-//		      + File.separator + "spring" 
-//		      + File.separator + "";
 		return new String[] { path };
 	}
 }
