@@ -18,7 +18,7 @@ import net.bioclipse.structuredb.domain.Library;
  * @author jonalv
  *
  */
-public class LibraryDao extends GenericDao<Library> {
+public class LibraryDao extends GenericDao<Library> implements ILibraryDao {
 
 	public LibraryDao() {
 		super(Library.class);
@@ -34,5 +34,9 @@ public class LibraryDao extends GenericDao<Library> {
 	public void update(Library library) {
 		getSqlMapClientTemplate().update( "BaseObject.update", library );
 		getSqlMapClientTemplate().update( "Library.update",    library );
+	}
+
+	public Library getByName(String name) {
+		return null;
 	}
 }

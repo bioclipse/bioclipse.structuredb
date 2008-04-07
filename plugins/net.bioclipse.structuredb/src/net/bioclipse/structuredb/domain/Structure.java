@@ -88,8 +88,8 @@ public class Structure extends BaseObject
 		   throws BioclipseException {
 
 		super(name);
-		fingerPrintString = cdkMolecule.getFingerprint();
-		fingerPrint       = makeFingerPrint(fingerPrintString);
+		fingerPrint       = cdkMolecule.getFingerprint(false);
+		fingerPrintString = makeFingerPrintString(fingerPrint);
 		atomContainer     = cdkMolecule.getAtomContainer();
 		smiles            = cdkMolecule.getSmiles();
 	}

@@ -39,4 +39,8 @@ public class UserDao extends GenericDao<User> implements IUserDao {
 		getSqlMapClientTemplate().update( "BaseObject.update", user );
 		getSqlMapClientTemplate().update( "User.update",       user );
 	}
+
+	public User getByUserName(String username) {
+		return null;
+	}
 }

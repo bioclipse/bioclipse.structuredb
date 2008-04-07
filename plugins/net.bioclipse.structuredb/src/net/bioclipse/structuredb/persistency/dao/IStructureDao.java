@@ -10,9 +10,12 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.util.List;
+
 import net.bioclipse.structuredb.domain.Structure;
 
 public interface IStructureDao extends IGenericDao<Structure> {
 
+	public List<Structure> getByName(String name);
 	
 }

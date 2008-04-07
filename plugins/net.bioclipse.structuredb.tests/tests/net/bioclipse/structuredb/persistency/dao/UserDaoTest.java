@@ -22,4 +22,10 @@ public class UserDaoTest extends GenericDaoTest<User> {
 		super(User.class);
 	}
 	
+	public void testGetByUsername() {
+		User user = new User("me", "me", true);
+		dao.insert(user);
+		assertEquals( user, 
+				      ( (IUserDao)dao ).getByUserName(user.getUserName()) );
+	}
 }

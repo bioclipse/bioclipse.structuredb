@@ -14,4 +14,6 @@ import net.bioclipse.structuredb.domain.Library;
 
 public interface ILibraryDao extends IGenericDao<Library> {
 
+	public Library getByName(String name);
+
 }

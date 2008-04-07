@@ -41,4 +41,11 @@ public class LibraryDaoTest extends GenericDaoTest<Library> {
 		structure = structureDao.getById( structure.getId() );
 		assertNull( structure.getLibrary() );
 	}
+	
+	public void testGetByName() {
+		Library library = new Library("library");
+		dao.insert(library);
+		assertEquals( library, 
+				      ( (ILibraryDao)dao ).getByName(library.getName()) );
+	}
 }

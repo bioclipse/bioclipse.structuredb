@@ -38,9 +38,10 @@ public class User extends BaseObject {
 		createdBaseObjects = new HashSet<BaseObject>();
 	}
 
-	public User(String userName, String password) {
+	public User(String userName, String password, boolean sudoer) {
 		super(userName);
 		this.userName      = userName;
+		this.sudoer        = sudoer;
 		passWordMd5        = passwordEncryptor.encryptPassword(password);
 		createdBaseObjects = new HashSet<BaseObject>();
 	}

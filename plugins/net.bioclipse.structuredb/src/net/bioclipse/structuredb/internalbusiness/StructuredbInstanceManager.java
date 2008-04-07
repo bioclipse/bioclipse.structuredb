@@ -15,6 +15,8 @@ import java.util.List;
 import org.openscience.cdk.AtomContainer;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
+import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.domain.BioList;
 import net.bioclipse.structuredb.domain.Library;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
@@ -24,83 +26,79 @@ public class StructuredbInstanceManager
 	   implements IStructuredbInstanceManager {
 
 	public Library createLibrary(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		Library library = new Library(name);
+		libraryDao.insert(library);
+		return library;
 	}
 
-	public Structure createStructure(String name, ICDKMolecule cdkMolecule) {
-		// TODO Auto-generated method stub
-		return null;
+	public Structure createStructure(String name, ICDKMolecule cdkMolecule) 
+	                 throws BioclipseException {
+		
+		Structure structure = new Structure(name, cdkMolecule);
+		structureDao.insert(structure);
+		return structure;
 	}
 
 	public Structure createStructure(String name, AtomContainer atomContainer) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Structure structure = new Structure(name, atomContainer);
+		structureDao.insert(structure);
+		return structure;
 	}
 
 	public User createUser(String username, String password, boolean sudoer) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		User user = new User(username, password, sudoer);
+		userDao.insert(user);
+		return user;
 	}
 
 	public void delete(Library library) {
-		// TODO Auto-generated method stub
-		
+		libraryDao.delete( library.getId() );
 	}
 
 	public void delete(User user) {
-		// TODO Auto-generated method stub
-		
+		userDao.delete( user.getId() );
 	}
 
 	public void delete(Structure structure) {
-		// TODO Auto-generated method stub
-		
+		structureDao.delete( structure.getId() );
 	}
 
 	public List<Library> retrieveAllLibraries() {
-		// TODO Auto-generated method stub
-		return null;
+		return new BioList<Library>( libraryDao.getAll() );
 	}
 
 	public List<Structure> retrieveAllStructures() {
-		// TODO Auto-generated method stub
-		return null;
+		return new BioList<Structure>( structureDao.getAll() );
 	}
 
 	public List<User> retrieveAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		return new BioList<User>( userDao.getAll() );
 	}
 
 	public Library retrieveLibraryByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return libraryDao.getByName(name);
 	}
 
 	public List<Structure> retrieveStructureByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return structureDao.getByName(name);
 	}
 
-	public User retrieveUserByName(String username) {
-		// TODO Auto-generated method stub
-		return null;
+	public User retrieveUserByUsername(String username) {
+		return userDao.getByUserName(username);
 	}
 
 	public void update(Library library) {
-		// TODO Auto-generated method stub
-		
+		libraryDao.update(library);
 	}
 
 	public void update(User user) {
-		// TODO Auto-generated method stub
-		
+		userDao.update(user);
 	}
 
 	public void update(Structure structure) {
-		// TODO Auto-generated method stub
-		
+		structureDao.update(structure);
 	}
 
 }

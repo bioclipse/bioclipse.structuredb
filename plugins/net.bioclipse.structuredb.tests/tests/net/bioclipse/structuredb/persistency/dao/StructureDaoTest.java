@@ -10,6 +10,11 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.util.List;
+
+import org.openscience.cdk.exception.CDKException;
+
+import testData.TestData;
 import net.bioclipse.structuredb.domain.Library;
 import net.bioclipse.structuredb.domain.Structure;
 
@@ -57,5 +62,18 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
 		dao.update(structure);
 		Structure updated = dao.getById( structure.getId() );
 		assertTrue( structure.hasValuesEqualTo(updated) );
+	}
+	
+	public void testGetByName() throws CDKException {
+		Structure structure1 = new Structure( "structure",
+				                              TestData.getCycloOctan() );
+		Structure structure2 = new Structure( "structure", 
+				                              TestData.getCycloPropane() );
+		dao.insert(structure1);
+		dao.insert(structure2);
+		
+		List<Structure> saved = ((IStructureDao)dao).getByName("structure");
+		assertTrue( saved.contains(structure1) );
+		assertTrue( saved.contains(structure2) );
 	}
 }

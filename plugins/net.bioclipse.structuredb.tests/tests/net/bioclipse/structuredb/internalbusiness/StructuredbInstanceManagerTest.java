@@ -149,7 +149,7 @@ public class StructuredbInstanceManagerTest
 		assertNotNull(user);
 		
 		assertEquals( user,
-				      manager.retrieveUserByName("username") );
+				      manager.retrieveUserByUsername("username") );
 	}
 
 	public void testUpdateLibrary() {

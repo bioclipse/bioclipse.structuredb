@@ -15,6 +15,7 @@ import java.util.List;
 import org.openscience.cdk.AtomContainer;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
+import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.structuredb.StructuredbDataSource;
 import net.bioclipse.structuredb.domain.Library;
 import net.bioclipse.structuredb.domain.Structure;
@@ -75,9 +76,11 @@ public interface IStructuredbInstanceManager {
 	 * @param name
 	 * @param cdkMolecule
 	 * @return the created Structure
+	 * @throws BioclipseException 
 	 */
 	public Structure createStructure( String name, 
-			                          ICDKMolecule cdkMolecule );
+			                          ICDKMolecule cdkMolecule ) 
+		   throws BioclipseException;
 	
 	/**
 	 * Creates a new Structure from a given <code>AtomContainer</code> and 
@@ -132,7 +135,7 @@ public interface IStructuredbInstanceManager {
 	 * @param username
 	 * @return a user or null if no such user exists
 	 */
-	public User retrieveUserByName(String username);
+	public User retrieveUserByUsername(String username);
 	
 	/**
 	 * Loads all structures with a given name from the database
