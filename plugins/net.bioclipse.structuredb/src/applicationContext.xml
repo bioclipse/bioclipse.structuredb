@@ -77,6 +77,11 @@
 			<bean parent="structureDaoTarget">
         	</bean>
 		</property>
+		<property name="interceptorNames">
+            <list>
+                <value>auditCreationAdvisor</value>
+            </list>
+        </property>
 	</bean>
 	
 	<bean id="userDaoTarget"
@@ -96,6 +101,11 @@
 		<property name="target">
 			<bean parent="userDaoTarget" />
 		</property>
+		<property name="interceptorNames">
+            <list>
+                <value>auditCreationAdvisor</value>
+            </list>
+        </property>
 	</bean>
 	
 	<bean id="folderDaoTarget"
@@ -115,6 +125,11 @@
 		<property name="target">
 			<bean parent="folderDaoTarget" />
 		</property>
+		<property name="interceptorNames">
+            <list>
+                <value>auditCreationAdvisor</value>
+            </list>
+        </property>
 	</bean>
 	
 	<bean id="structuredbInstanceManagerTarget"
@@ -147,4 +162,13 @@
         </property>
     </bean>
 	
+    <bean id="auditCreationAdvisor"
+        class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="advice"  ref="auditCreationAdvice" />
+        <property name="pattern" value="insert.*" />
+    </bean>
+	
+	<bean id="auditCreationAdvice"
+        class="net.bioclipse.structuredb.internalbusiness.AuditCreationAdvice">
+    </bean>
 </beans>

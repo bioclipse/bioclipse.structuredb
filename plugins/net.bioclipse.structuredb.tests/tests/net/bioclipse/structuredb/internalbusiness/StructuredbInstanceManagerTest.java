@@ -21,6 +21,7 @@ import net.bioclipse.structuredb.persistency.dao.IFolderDao;
 import net.bioclipse.structuredb.persistency.dao.IStructureDao;
 import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
+import org.openscience.cdk.AtomContainer;
 import org.openscience.cdk.exception.CDKException;
 import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests;
 
@@ -31,7 +32,7 @@ public class StructuredbInstanceManagerTest
 	
 	protected IStructuredbInstanceManager manager;
 	
-	protected IFolderDao   folderDao;
+	protected IFolderDao    folderDao;
 	protected IUserDao      userDao;
 	protected IStructureDao structureDao;
 
@@ -43,74 +44,92 @@ public class StructuredbInstanceManagerTest
 		HsqldbTestServerManager.INSTANCE.startServer();
 		HsqldbTestServerManager.INSTANCE.setupTestEnvironment();
 	}
-
 	
 	@Override
 	protected void onSetUpBeforeTransaction() throws Exception {
 		super.onSetUpBeforeTransaction();
 		manager = (IStructuredbInstanceManager) 
         	      applicationContext.getBean("structuredbInstanceManager");
+		folderDao    = (IFolderDao) applicationContext
+		                            .getBean("folderDao");
+		structureDao = (IStructureDao) applicationContext
+		                               .getBean("structureDao");
+		userDao      = (IUserDao) applicationContext.getBean("userDao");
 	}
 	
-	public void testCreateLibrary() {
-		Folder folder = manager.createLibrary("testLibrary");
-		assertTrue( folderDao.getAll().contains(folder) );
+	private Folder createFolder(String name) {
+		Folder folder = new Folder(name);
+		manager.insertFolder(folder);
+		return folder;
 	}
-
-	public void testCreateStructureAtomContainer() throws CDKException {
+	
+	public void testInsertFolder() {
 		
-		Structure structure = manager
-		                      .createStructure( "CycloOctan", 
-		                    		            TestData.getCycloOctan() );
-		assertTrue( structureDao.getAll().contains(structure) );
-	}
-	
-	public void testCreateStructureICDKMolecule() {
-		fail("Not yet implemented, waiting for ICDKMolecule");
+		assertTrue( folderDao.getAll().contains(createFolder("testFolder")) );
 	}
 
-	public void testCreateUser() {
-		User user = manager.createUser("newuser", "secret", true);
-		assertTrue( userDao.getAll().contains(user) );
+	private Structure createStructure( String name, 
+			                           AtomContainer atomContainer) 
+	        throws CDKException {
+	
+		Structure structure = new Structure( name, atomContainer );
+	    manager.insertStructure(structure);
+		return structure;
+	}
+	
+	public void testInsertStructure() throws CDKException {
+		assertTrue( structureDao
+				    .getAll().contains( 
+				    		createStructure( "CycloOctan", 
+				    				         TestData.getCycloOctan())) );
+	}
+
+	private User createUser(String username, String password, boolean sudoer) {
+		User user = new User(username, password, sudoer);
+		manager.insertUser(user);
+		return user;
+	}
+	
+	public void testInsertUser() {
+
+		assertTrue( userDao.getAll()
+				    .contains(createUser("username", "secrest", false)) );
 	}
 
 	public void testDeleteLibrary() {
-		Folder folder = manager.createLibrary("testLibrary");
+		Folder folder = createFolder("testFolder");
 		assertTrue( folderDao.getAll().contains(folder) );
 		manager.delete(folder);
 		assertFalse( folderDao.getAll().contains(folder) );
 	}
 
 	public void testDeleteUser() {
-		User user = manager.createUser("newuser", "secret", true);
+		User user = createUser("username", "secrest", true);
 		assertTrue( userDao.getAll().contains(user) );
 		manager.delete(user);
 		assertFalse( userDao.getAll().contains(user) );
 	}
 
 	public void testDeleteStructure() throws CDKException {
-		Structure structure = manager
-                              .createStructure( "CycloOctan", 
-      		                                    TestData.getCycloOctan() );
+		Structure structure = createStructure( "CycloOcan", 
+				                               TestData.getCycloOctan() );
 		assertTrue( structureDao.getAll().contains(structure) );
 		manager.delete(structure);
 		assertFalse( structureDao.getAll().contains(structure) );
 	}
 
 	public void testRetrieveAllLibraries() {
-		Folder library1 = manager.createLibrary("testLibrary1");
-		Folder library2 = manager.createLibrary("testLibrary2");
+		Folder folder1 = createFolder("testLibrary1");
+		Folder folder2 = createFolder("testLibrary2");
 		
 		assertTrue( folderDao.getAll().containsAll( 
-				Arrays.asList(new Folder[] {library1, library2}) ) );
+				Arrays.asList(new Folder[] {folder1, folder2}) ) );
 	}
 
 	public void testRetrieveAllStructures() throws CDKException {
-		Structure structure1 = manager
-		                       .createStructure( "CycloOctan", 
+		Structure structure1 = createStructure( "CycloOctan", 
 				                                 TestData.getCycloOctan() );
-		Structure structure2 = manager
-                               .createStructure( "CycloPropane", 
+		Structure structure2 = createStructure( "CycloPropane", 
                                                  TestData.getCycloPropane() );
 		
 		assertTrue( structureDao.getAll().containsAll(
@@ -118,15 +137,15 @@ public class StructuredbInstanceManagerTest
 	}
 
 	public void testRetrieveAllUsers() {
-		User user1 = manager.createUser("username1", "secret", false);
-		User user2 = manager.createUser("username2", "masterkey", true);
+		User user1 = createUser("username1", "secret", false);
+		User user2 = createUser("username2", "masterkey", true);
 		
 		assertTrue( userDao.getAll().containsAll( 
 				Arrays.asList(new User[] {user1, user2}) ) );
 	}
 
 	public void testRetrieveLibraryByName() {
-		Folder folder = manager.createLibrary("testLibrary1");
+		Folder folder = createFolder("testLibrary1");
 		
 		assertNotNull(folder);
 		
@@ -135,8 +154,7 @@ public class StructuredbInstanceManagerTest
 	}
 
 	public void testRetrieveStructureByName() throws CDKException {
-		Structure structure = manager
-                              .createStructure( "CycloOctan", 
+		Structure structure = createStructure( "CycloOctan", 
                                                 TestData.getCycloOctan() );
 		assertTrue( manager
 				    .retrieveStructureByName("CycloOctan")
@@ -144,7 +162,7 @@ public class StructuredbInstanceManagerTest
 	}
 
 	public void testRetrieveUserByName() {
-		User user = manager.createUser("username", "secret", false);
+		User user = createUser("username", "secret", false);
 		
 		assertNotNull(user);
 		
@@ -153,22 +171,21 @@ public class StructuredbInstanceManagerTest
 	}
 
 	public void testUpdateLibrary() {
-		Folder folder = manager.createLibrary("testLibrary");
+		Folder folder = createFolder("testLibrary");
 		folder.setName("edited");
 		manager.update(folder);
 		assertEquals( folder, folderDao.getById(folder.getId()) );
 	}
 
 	public void testUpdateUser() {
-		User user = manager.createUser("username", "secret", false);
+		User user = createUser("username", "secret", false);
 		user.setName("edited");
 		manager.update(user);
 		assertEquals( user, userDao.getById(user.getId()) );
 	}
 
 	public void testUpdateStructure() throws CDKException {
-		Structure structure = manager
-                             .createStructure( "CycloOctan", 
+		Structure structure = createStructure( "CycloOctan", 
                                                TestData.getCycloOctan() );
 		structure.setName("edited");
 		manager.update(structure);

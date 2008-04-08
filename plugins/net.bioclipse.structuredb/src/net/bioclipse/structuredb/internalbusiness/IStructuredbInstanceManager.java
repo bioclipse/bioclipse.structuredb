@@ -49,50 +49,26 @@ public interface IStructuredbInstanceManager {
 	public void update(Structure structure);
 	
 	/**
-	 * Creates a new user with the given username, password and sudoer flag 
-	 * and persists it to the database
+	 * Insert a user into the database
 	 * 
-	 * @param username
-	 * @param password
-	 * @param sudoer
-	 * @return the created User
+	 * @param user to be inserted
 	 */
-	public User createUser( String  username,
-			                String  password, 
-			                boolean sudoer );
+	public void insertUser( User user );
 	
 	/**
-	 * Creates a new Folder with the given name and persists it to the database
+	 * Insert a folder into the database
 	 * 
-	 * @param name
-	 * @return the created library
+	 * @param folder to be inserted
 	 */
-	public Folder createLibrary(String name);
+	public void insertFolder( Folder folder );
 	
 	/**
-	 * Creates a new Structure from a given <code>ICDKMolecule</code> and 
-	 * persists it to the database
+	 * Insert a structure into the database
 	 * 
-	 * @param name
-	 * @param cdkMolecule
-	 * @return the created Structure
-	 * @throws BioclipseException 
+	 * @param structure to be inserted
 	 */
-	public Structure createStructure( String name, 
-			                          ICDKMolecule cdkMolecule ) 
-		   throws BioclipseException;
+	public void insertStructure( Structure structure ); 
 	
-	/**
-	 * Creates a new Structure from a given <code>AtomContainer</code> and 
-	 * persists it to the database
-	 * 
-	 * @param name
-	 * @param atomContainer
-	 * @return the created Structure
-	 */
-	public Structure createStructure( String name, 
-			                          AtomContainer atomContainer );
-
 	/**
 	 * Removes the given library from the database.
 	 * 
@@ -153,5 +129,13 @@ public interface IStructuredbInstanceManager {
 	 */
 	public Folder retrieveLibraryByName(String name);
 
-
+	/**
+	 * @return the logged in user
+	 */
+	public User getLoggedInUser();
+	
+	/**
+	 * @param user to set as logged in
+	 */
+	public void setLoggedInUser(User user);
 }

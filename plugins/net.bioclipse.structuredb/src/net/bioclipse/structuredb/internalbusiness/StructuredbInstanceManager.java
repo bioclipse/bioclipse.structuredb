@@ -12,10 +12,6 @@ package net.bioclipse.structuredb.internalbusiness;
 
 import java.util.List;
 
-import org.openscience.cdk.AtomContainer;
-
-import net.bioclipse.cdk.domain.ICDKMolecule;
-import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.BioList;
 import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
@@ -25,32 +21,24 @@ public class StructuredbInstanceManager
 	   extends AbstractStructuredbInstanceManager 
 	   implements IStructuredbInstanceManager {
 
+	private User loggedInUser;
+	
 	public Folder createLibrary(String name) {
 		Folder folder = new Folder(name);
 		folderDao.insert(folder);
 		return folder;
 	}
 
-	public Structure createStructure(String name, ICDKMolecule cdkMolecule) 
-	                 throws BioclipseException {
-		
-		Structure structure = new Structure(name, cdkMolecule);
-		structureDao.insert(structure);
-		return structure;
+	public void insertFolder(Folder folder) {
+		folderDao.insert(folder);
 	}
 
-	public Structure createStructure(String name, AtomContainer atomContainer) {
-		
-		Structure structure = new Structure(name, atomContainer);
+	public void insertStructure(Structure structure) {
 		structureDao.insert(structure);
-		return structure;
 	}
 
-	public User createUser(String username, String password, boolean sudoer) {
-		
-		User user = new User(username, password, sudoer);
+	public void insertUser(User user) {
 		userDao.insert(user);
-		return user;
 	}
 
 	public void delete(Folder folder) {
@@ -101,4 +89,11 @@ public class StructuredbInstanceManager
 		structureDao.update(structure);
 	}
 
+	public User getLoggedInUser() {
+		return loggedInUser;
+	}
+
+	public void setLoggedInUser(User user) {
+		this.loggedInUser = user;
+	}
 }
