@@ -13,11 +13,11 @@ package net.bioclipse.structuredb.internalbusiness;
 import java.util.Arrays;
 
 import net.bioclipse.structuredb.Structuredb;
-import net.bioclipse.structuredb.domain.Library;
+import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.persistency.HsqldbTestServerManager;
-import net.bioclipse.structuredb.persistency.dao.ILibraryDao;
+import net.bioclipse.structuredb.persistency.dao.IFolderDao;
 import net.bioclipse.structuredb.persistency.dao.IStructureDao;
 import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
@@ -31,7 +31,7 @@ public class StructuredbInstanceManagerTest
 	
 	protected IStructuredbInstanceManager manager;
 	
-	protected ILibraryDao   libraryDao;
+	protected IFolderDao   folderDao;
 	protected IUserDao      userDao;
 	protected IStructureDao structureDao;
 
@@ -53,8 +53,8 @@ public class StructuredbInstanceManagerTest
 	}
 	
 	public void testCreateLibrary() {
-		Library library = manager.createLibrary("testLibrary");
-		assertTrue( libraryDao.getAll().contains(library) );
+		Folder folder = manager.createLibrary("testLibrary");
+		assertTrue( folderDao.getAll().contains(folder) );
 	}
 
 	public void testCreateStructureAtomContainer() throws CDKException {
@@ -75,10 +75,10 @@ public class StructuredbInstanceManagerTest
 	}
 
 	public void testDeleteLibrary() {
-		Library library = manager.createLibrary("testLibrary");
-		assertTrue( libraryDao.getAll().contains(library) );
-		manager.delete(library);
-		assertFalse( libraryDao.getAll().contains(library) );
+		Folder folder = manager.createLibrary("testLibrary");
+		assertTrue( folderDao.getAll().contains(folder) );
+		manager.delete(folder);
+		assertFalse( folderDao.getAll().contains(folder) );
 	}
 
 	public void testDeleteUser() {
@@ -98,11 +98,11 @@ public class StructuredbInstanceManagerTest
 	}
 
 	public void testRetrieveAllLibraries() {
-		Library library1 = manager.createLibrary("testLibrary1");
-		Library library2 = manager.createLibrary("testLibrary2");
+		Folder library1 = manager.createLibrary("testLibrary1");
+		Folder library2 = manager.createLibrary("testLibrary2");
 		
-		assertTrue( libraryDao.getAll().containsAll( 
-				Arrays.asList(new Library[] {library1, library2}) ) );
+		assertTrue( folderDao.getAll().containsAll( 
+				Arrays.asList(new Folder[] {library1, library2}) ) );
 	}
 
 	public void testRetrieveAllStructures() throws CDKException {
@@ -126,11 +126,11 @@ public class StructuredbInstanceManagerTest
 	}
 
 	public void testRetrieveLibraryByName() {
-		Library library = manager.createLibrary("testLibrary1");
+		Folder folder = manager.createLibrary("testLibrary1");
 		
-		assertNotNull(library);
+		assertNotNull(folder);
 		
-		assertEquals( library, 
+		assertEquals( folder, 
 				      manager.retrieveLibraryByName("testLibrary1") );
 	}
 
@@ -153,10 +153,10 @@ public class StructuredbInstanceManagerTest
 	}
 
 	public void testUpdateLibrary() {
-		Library library = manager.createLibrary("testLibrary");
-		library.setName("edited");
-		manager.update(library);
-		assertEquals( library, libraryDao.getById(library.getId()) );
+		Folder folder = manager.createLibrary("testLibrary");
+		folder.setName("edited");
+		manager.update(folder);
+		assertEquals( folder, folderDao.getById(folder.getId()) );
 	}
 
 	public void testUpdateUser() {

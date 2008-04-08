@@ -41,6 +41,7 @@ public class UserDao extends GenericDao<User> implements IUserDao {
 	}
 
 	public User getByUserName(String username) {
-		return null;
+		return (User)getSqlMapClientTemplate()
+		       .queryForObject( "User.getByUsername", username );
 	}
 }

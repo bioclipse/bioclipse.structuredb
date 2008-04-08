@@ -17,7 +17,7 @@ import org.openscience.cdk.AtomContainer;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.structuredb.StructuredbDataSource;
-import net.bioclipse.structuredb.domain.Library;
+import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 
@@ -30,9 +30,9 @@ public interface IStructuredbInstanceManager {
 	/**
 	 * Persists changes in a given library retrieved from the database.
 	 * 
-	 * @param library
+	 * @param folder
 	 */
-	public void update(Library library);
+	public void update(Folder folder);
 	
 	/**
 	 * Persists changes in a given user retrieved from the database.
@@ -62,12 +62,12 @@ public interface IStructuredbInstanceManager {
 			                boolean sudoer );
 	
 	/**
-	 * Creates a new Library with the given name and persists it to the database
+	 * Creates a new Folder with the given name and persists it to the database
 	 * 
 	 * @param name
 	 * @return the created library
 	 */
-	public Library createLibrary(String name);
+	public Folder createLibrary(String name);
 	
 	/**
 	 * Creates a new Structure from a given <code>ICDKMolecule</code> and 
@@ -96,9 +96,9 @@ public interface IStructuredbInstanceManager {
 	/**
 	 * Removes the given library from the database.
 	 * 
-	 * @param library
+	 * @param folder
 	 */
-	public void delete(Library library);
+	public void delete(Folder folder);
 	
 	/**
 	 * Removes the given user from the database
@@ -122,7 +122,7 @@ public interface IStructuredbInstanceManager {
 	/**
 	 * @return all libraries
 	 */
-	public List<Library> retrieveAllLibraries();
+	public List<Folder> retrieveAllLibraries();
 	
 	/**
 	 * @return all users
@@ -151,7 +151,7 @@ public interface IStructuredbInstanceManager {
 	 * @param name
 	 * @return a library or null if no such library exists
 	 */
-	public Library retrieveLibraryByName(String name);
+	public Folder retrieveLibraryByName(String name);
 
 
 }

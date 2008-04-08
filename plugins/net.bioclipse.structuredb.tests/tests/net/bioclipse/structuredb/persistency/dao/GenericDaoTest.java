@@ -62,8 +62,8 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
 			object1 = domainClass.newInstance();
 			object2 = domainClass.newInstance();
 			object2.setName("otherName");
-			setCreatorAndEditor(object1);
-			setCreatorAndEditor(object2);
+			addCreatorAndEditor(object1);
+			addCreatorAndEditor(object2);
 		} 
 		catch (Exception e) {
 			fail( e.toString() );
@@ -76,7 +76,7 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
 		return Character.toLowerCase( daoName.charAt(0) ) + daoName.substring(1);
 	}
 
-	protected void setCreatorAndEditor(BaseObject object) {
+	protected void addCreatorAndEditor(BaseObject object) {
 		Timestamp now = new Timestamp( System.currentTimeMillis() );
 		object.setCreated(now);
 		object.setEdited(now);

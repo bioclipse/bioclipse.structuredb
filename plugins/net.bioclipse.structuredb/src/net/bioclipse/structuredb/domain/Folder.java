@@ -14,21 +14,21 @@ package net.bioclipse.structuredb.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Library extends BaseObject {
+public class Folder extends BaseObject {
 
 	private List<Structure> structures;
 	
-	public Library() {
+	public Folder() {
 		super();
 		structures = new ArrayList<Structure>();
 	}
 
-	public Library(Library library) {
-		super(library);
-		this.structures = new ArrayList<Structure>( library.getStructures() );
+	public Folder(Folder folder) {
+		super(folder);
+		this.structures = new ArrayList<Structure>( folder.getStructures() );
 	}
 
-	public Library(String name) {
+	public Folder(String name) {
 		super(name);
 		structures = new ArrayList<Structure>();
 	}
@@ -41,11 +41,11 @@ public class Library extends BaseObject {
 		if( !super.hasValuesEqualTo(obj) ) {
 			return false;
 		}
-		if( !(obj instanceof Library) ) {
+		if( !(obj instanceof Folder) ) {
 			return false;
 		}
-		Library library = (Library)obj;
-		return objectsInHasSameValues(library.getStructures(), structures);
+		Folder folder = (Folder)obj;
+		return objectsInHasSameValues(folder.getStructures(), structures);
 	}
 
 	/**
@@ -69,8 +69,8 @@ public class Library extends BaseObject {
 	 */
 	public void addStructure(Structure structure) {
 		structures.add(structure);
-		if( structure.getLibrary() != this ) {
-			structure.setLibrary(this);
+		if( structure.getFolder() != this ) {
+			structure.setFolder(this);
 		}
 	}
 
@@ -81,8 +81,8 @@ public class Library extends BaseObject {
 	 */
 	public void removeStructure(Structure structure) {
 		structures.remove(structure);
-		if( structure.getLibrary() != null ) {
-			structure.setLibrary(null);
+		if( structure.getFolder() != null ) {
+			structure.setFolder(null);
 		}
 	}
 }

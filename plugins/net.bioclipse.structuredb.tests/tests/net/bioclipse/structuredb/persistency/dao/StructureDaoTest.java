@@ -15,7 +15,7 @@ import java.util.List;
 import org.openscience.cdk.exception.CDKException;
 
 import testData.TestData;
-import net.bioclipse.structuredb.domain.Library;
+import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
 
 public class StructureDaoTest extends GenericDaoTest<Structure> {
@@ -26,35 +26,35 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
 	
 	public void testPersistStructureWithLibrary() {
 		
-		Library library = new Library();
-		ILibraryDao libraryDao = (ILibraryDao) applicationContext.getBean("libraryDao");
-		setCreatorAndEditor(library);
-		libraryDao.insert(library);
+		Folder folder = new Folder();
+		IFolderDao folderDao = (IFolderDao) applicationContext.getBean("folderDao");
+		addCreatorAndEditor(folder);
+		folderDao.insert(folder);
 		
 		Structure structure = new Structure();
-		structure.setLibrary(library);
-		setCreatorAndEditor(structure);
+		structure.setFolder(folder);
+		addCreatorAndEditor(structure);
 		dao.insert(structure);
 		
 		Structure loaded = dao.getById( structure.getId() );
 		assertNotNull("The lodaded object shuold not be null", loaded);
 		assertNotSame(structure, loaded);
 		assertTrue( structure.hasValuesEqualTo(loaded) );
-		assertTrue( structure.getLibrary().hasValuesEqualTo(loaded.getLibrary()) );
+		assertTrue( structure.getFolder().hasValuesEqualTo(loaded.getFolder()) );
 	}
 	
 	@Override
 	public void testUpdate() {
 		super.testUpdate();
 		
-		Library library = new Library();
-		ILibraryDao libraryDao = (ILibraryDao) applicationContext.getBean("libraryDao");
-		setCreatorAndEditor(library);
-		libraryDao.insert(library);
+		Folder folder = new Folder();
+		IFolderDao folderDao = (IFolderDao) applicationContext.getBean("folderDao");
+		addCreatorAndEditor(folder);
+		folderDao.insert(folder);
 		
 		Structure structure = new Structure();
-		structure.setLibrary(library);
-		setCreatorAndEditor(structure);
+		structure.setFolder(folder);
+		addCreatorAndEditor(structure);
 		dao.insert(structure);
 		
 		Structure loaded = dao.getById( structure.getId() );
@@ -69,6 +69,8 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
 				                              TestData.getCycloOctan() );
 		Structure structure2 = new Structure( "structure", 
 				                              TestData.getCycloPropane() );
+		addCreatorAndEditor(structure1);
+		addCreatorAndEditor(structure2);
 		dao.insert(structure1);
 		dao.insert(structure2);
 		

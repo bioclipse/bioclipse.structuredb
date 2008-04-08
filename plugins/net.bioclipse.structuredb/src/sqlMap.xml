@@ -19,20 +19,20 @@
 		<result property="lastEditor" column="lastEditor" select="User.getById" />
 	</resultMap>
 
-	<resultMap class="Library" id="Library" extends="BaseObject">
-		<result property="structures" column="id" select="Library.getStructures" />
-		<result property="name"       column="name"                              />
+	<resultMap class="Folder" id="Folder" extends="BaseObject">
+		<result property="structures" column="id" select="Folder.getStructures" />
+		<result property="name"       column="name"                             />
 	</resultMap>
 	
 	<resultMap class="Structure" id="Structure" extends="BaseObject">
-		<result property="library"           column="library" select="Library.getById" />
-		<result property="fingerPrintString" column="fingerPrintString"                />
-		<result property="smiles"            column="smiles"                           />
-		<result property="moleculeCML"       column="molecule"                         />
-		<result property="name"              column="name"                             />
+		<result property="folder"            column="folder" select="Folder.getById" />
+		<result property="fingerPrintString" column="fingerPrintString"              />
+		<result property="smiles"            column="smiles"                         />
+		<result property="moleculeCML"       column="molecule"                       />
+		<result property="name"              column="name"                           />
 	</resultMap>
 
-	<resultMap class="Structure" id="Structure-without-library" extends="BaseObject">
+	<resultMap class="Structure" id="Structure-without-folder" extends="BaseObject">
 		<result property="fingerPrintString" column="fingerPrintString"                />
 		<result property="smiles"            column="smiles"                           />
 		<result property="moleculeCML"       column="molecule"                         />
@@ -57,11 +57,11 @@
 	</sql>
 	
 	<sql id="Structure-fields">
-		s.library           AS library,
-		<include refid="Structure-fields-without-library" />
+		s.folder           AS folder,
+		<include refid="Structure-fields-without-folder" />
 	</sql>
 	
-	<sql id="Structure-fields-without-library">
+	<sql id="Structure-fields-without-folder">
 		s.fingerPrintString AS fingerPrintString,
 		s.smiles            AS smiles,
 		s.molecule          AS molecule,
@@ -74,7 +74,7 @@
 		u.sudoer   AS sudoer
 	</sql>
 	
-	<sql id="Library-fields">
+	<sql id="Folder-fields">
 	   l.name AS name
 	</sql>
 	
@@ -97,17 +97,17 @@
 	</insert>
 	
 	<insert id="Structure.insert">
-		INSERT INTO Structure (   id,     name,     baseObject, library,        smiles,     fingerPrintString,     molecule      )
-		               VALUES ( '$id$', '$name$', '$id$',     '$library.id$', '$smiles$', '$fingerPrintString$', '$moleculeCML$' ); 
+		INSERT INTO Structure (   id,     name,     baseObject, folder,        smiles,     fingerPrintString,     molecule      )
+		               VALUES ( '$id$', '$name$', '$id$',     '$folder.id$', '$smiles$', '$fingerPrintString$', '$moleculeCML$' ); 
 	</insert>
 	
-	<insert id="Structure.insertWithoutLibrary">
+	<insert id="Structure.insertWithoutFolder">
 		INSERT INTO Structure (   id,     name,     baseObject, smiles,     fingerPrintString,     molecule      )
 		               VALUES ( '$id$', '$name$', '$id$',     '$smiles$', '$fingerPrintString$', '$moleculeCML$' );
 	</insert>
 	
-	<insert id="Library.insert">
-		INSERT INTO Library (   id,     baseObject, name   )
+	<insert id="Folder.insert">
+		INSERT INTO Folder (   id,     baseObject, name   )
 		             VALUES ( '$id$', '$id$',     '$name$' );
 	</insert>
 	
@@ -136,26 +136,48 @@
 			u.id = #value#
 	</select>
 	
-	<select id="Library.getById" resultMap="Library" parameterClass="String">
+	<select id="User.getByUsername" parameterClass="String" resultMap="User">
+        SELECT 
+            <include refid="BaseObject-fields" />,
+            <include refid="User-fields"       />
+        FROM
+            User u INNER JOIN BaseObject b ON
+            u.baseObject = b.id
+        WHERE 
+            u.username = #value#
+    </select>
+	
+	<select id="Folder.getById" resultMap="Folder" parameterClass="String">
 		SELECT 
 			<include refid="BaseObject-fields" />,
-			<include refid="Library-fields"    />
+			<include refid="Folder-fields"    />
 		FROM
-			Library l INNER JOIN BaseObject b ON
+			Folder l INNER JOIN BaseObject b ON
 			l.baseObject = b.id
 		WHERE 
 			l.id = #value#
 	</select>
 	
-	<select id="Library.getStructures" resultMap="Structure-without-library" parameterClass="String">
+	<select id="Folder.getByName" resultMap="Folder" parameterClass="String">
+        SELECT 
+            <include refid="BaseObject-fields" />,
+            <include refid="Folder-fields"    />
+        FROM
+            Folder l INNER JOIN BaseObject b ON
+            l.baseObject = b.id
+        WHERE 
+            l.name = #value#
+    </select>
+	
+	<select id="Folder.getStructures" resultMap="Structure-without-folder" parameterClass="String">
 		SELECT 
 			<include refid="BaseObject-fields" />,
-			<include refid="Structure-fields-without-library"  />
+			<include refid="Structure-fields-without-folder"  />
 		FROM
 			Structure s INNER JOIN BaseObject b ON
 			s.baseObject = b.id
 		WHERE 
-			s.library = #value#
+			s.folder = #value#
 	</select>
 	
 	<select id="Structure.getAll" resultMap="Structure">
@@ -167,12 +189,23 @@
 			s.baseObject = b.id
 	</select>
 	
-	<select id="Library.getAll" resultMap="Library">
+	<select id="Structure.getByName" resultMap="Structure" parameterClass="String">
+        SELECT
+            <include refid="BaseObject-fields" />, 
+            <include refid="Structure-fields"  />
+        FROM
+            Structure s INNER JOIN BaseObject b ON
+            s.baseObject = b.id
+        WHERE
+            s.name = #value#
+    </select>
+	
+	<select id="Folder.getAll" resultMap="Folder">
 		SELECT
 			<include refid="BaseObject-fields" />,
-			<include refid="Library-fields"    />
+			<include refid="Folder-fields"     />
 		FROM
-			Library l INNER JOIN BaseObject b ON
+			Folder l INNER JOIN BaseObject b ON
 			l.baseObject = b.id
 	</select>
 
@@ -219,9 +252,9 @@
 			id = '$id$'
     </update>
     
-    <update id="Library.update" parameterClass="Library">
+    <update id="Folder.update" parameterClass="Folder">
         UPDATE
-            Library
+            Folder
         SET
             name = '$name$'
         WHERE
@@ -232,7 +265,7 @@
     	UPDATE 
     		Structure
     	SET 
-	    	library           = '$library.id$',
+	    	folder            = '$folder.id$',
 	    	smiles            = '$smiles$',
 	    	fingerPrintString = '$fingerPrintString$',
 	    	molecule          = '$moleculeCML$',
@@ -241,7 +274,7 @@
 			id = '$id$'
     </update>
     
-    <update id="Structure-without-library.update" parameterClass="Structure">
+    <update id="Structure-without-folder.update" parameterClass="Structure">
     	UPDATE 
     		Structure
     	SET 

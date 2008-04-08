@@ -10,6 +10,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.util.List;
+
 import net.bioclipse.structuredb.domain.Structure;
 
 /**
@@ -18,7 +20,7 @@ import net.bioclipse.structuredb.domain.Structure;
  * @author jonalv
  *
  */
-public class StructureDao extends GenericDao<Structure> {
+public class StructureDao extends GenericDao<Structure> implements IStructureDao {
 
 	public StructureDao() {
 		super(Structure.class);
@@ -30,22 +32,27 @@ public class StructureDao extends GenericDao<Structure> {
 		getSqlMapClientTemplate().update( "BaseObject.insert", structure );
 		
 		//TODO: Figure out a better way to do this:
-		if( structure.getLibrary() != null ) {
+		if( structure.getFolder() != null ) {
 			getSqlMapClientTemplate().update( type.getSimpleName() + ".insert", structure );
 		}
 		else {
-			getSqlMapClientTemplate().update( type.getSimpleName() + ".insertWithoutLibrary", structure );
+			getSqlMapClientTemplate().update( type.getSimpleName() + ".insertWithoutFolder", structure );
 		}
 	}
 	
 	@Override
 	public void update(Structure structure) {
-		if(structure.getLibrary() == null) {
-			getSqlMapClientTemplate().update( "Structure-without-library.update", structure );
+		if(structure.getFolder() == null) {
+			getSqlMapClientTemplate().update( "Structure-without-folder.update", structure );
 		}
 		else {
 			getSqlMapClientTemplate().update( "Structure.update",  structure );
 		}
 		getSqlMapClientTemplate().update( "BaseObject.update", structure );
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Structure> getByName(String name) {
+		return getSqlMapClientTemplate().queryForList( "Structure.getByName" );
 	}
 }

@@ -7,14 +7,14 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
 
-import net.bioclipse.structuredb.persistency.dao.ILibraryDao;
+import net.bioclipse.structuredb.persistency.dao.IFolderDao;
 import net.bioclipse.structuredb.persistency.dao.IStructureDao;
 import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
 public abstract class AbstractStructuredbInstanceManager 
                       implements IStructuredbInstanceManager {
 
-	protected ILibraryDao   libraryDao;
+	protected IFolderDao   folderDao;
 	protected IStructureDao structureDao;
 	protected IUserDao      userDao;
 	
@@ -22,12 +22,12 @@ public abstract class AbstractStructuredbInstanceManager
 		
 	}
 
-	public ILibraryDao getLibraryDao() {
-		return libraryDao;
+	public IFolderDao getLibraryDao() {
+		return folderDao;
 	}
 
-	public void setLibraryDao(ILibraryDao libraryDao) {
-		this.libraryDao = libraryDao;
+	public void setLibraryDao(IFolderDao folderDao) {
+		this.folderDao = folderDao;
 	}
 
 	public IStructureDao getStructureDao() {

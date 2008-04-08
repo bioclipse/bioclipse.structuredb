@@ -50,10 +50,10 @@ public class Structure extends BaseObject
 	private String         smiles;
 	
 	/**
-	 * The library this structure belongs to. 
-	 * Is null if the structure doesn't belong to any library
+	 * The folder this structure belongs to. 
+	 * Is null if the structure doesn't belong to any folder
 	 */
-	private Library library;
+	private Folder folder;
 	
 	public Structure() {
 		super();
@@ -108,7 +108,7 @@ public class Structure extends BaseObject
 		this.fingerPrint       = (BitSet)structure.getFingerPrint().clone();
 		this.fingerPrintString = makeFingerPrintString(fingerPrint);
 		this.smiles            = structure.getSmiles();
-		this.library           = structure.getLibrary();
+		this.folder           = structure.getFolder();
 	}
 
 	public boolean hasValuesEqualTo( BaseObject object ) {
@@ -188,29 +188,29 @@ public class Structure extends BaseObject
 	}
 
 	/**
-	 * @return the library containing this structure or null 
-	 * if the structure isn't in any library
+	 * @return the folder containing this structure or null 
+	 * if the structure isn't in any folder
 	 */
-	public Library getLibrary() {
-		return library;
+	public Folder getFolder() {
+		return folder;
 	}
 
 	/**
-	 * Places this structure in a library
+	 * Places this structure in a folder
 	 * 
-	 * @param library the library to place the structure in
+	 * @param folder the folder to place the structure in
 	 */
-	public void setLibrary(Library library) {
+	public void setFolder(Folder folder) {
 		
-		Library oldLibrary = this.library;
-		this.library = library;
+		Folder oldFolder = this.folder;
+		this.folder = folder;
 		
-		if( oldLibrary != null && oldLibrary != library ) {
-			oldLibrary.removeStructure(this);
+		if( oldFolder != null && oldFolder != folder ) {
+			oldFolder.removeStructure(this);
 		}
 		
-		if( library != null && !library.getStructures().contains(this) ) {
-			library.addStructure( this );
+		if( folder != null && !folder.getStructures().contains(this) ) {
+			folder.addStructure( this );
 		}
 	}
 

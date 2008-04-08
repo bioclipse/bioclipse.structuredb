@@ -17,7 +17,7 @@ import org.openscience.cdk.AtomContainer;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.BioList;
-import net.bioclipse.structuredb.domain.Library;
+import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 
@@ -25,10 +25,10 @@ public class StructuredbInstanceManager
 	   extends AbstractStructuredbInstanceManager 
 	   implements IStructuredbInstanceManager {
 
-	public Library createLibrary(String name) {
-		Library library = new Library(name);
-		libraryDao.insert(library);
-		return library;
+	public Folder createLibrary(String name) {
+		Folder folder = new Folder(name);
+		folderDao.insert(folder);
+		return folder;
 	}
 
 	public Structure createStructure(String name, ICDKMolecule cdkMolecule) 
@@ -53,8 +53,8 @@ public class StructuredbInstanceManager
 		return user;
 	}
 
-	public void delete(Library library) {
-		libraryDao.delete( library.getId() );
+	public void delete(Folder folder) {
+		folderDao.delete( folder.getId() );
 	}
 
 	public void delete(User user) {
@@ -65,8 +65,8 @@ public class StructuredbInstanceManager
 		structureDao.delete( structure.getId() );
 	}
 
-	public List<Library> retrieveAllLibraries() {
-		return new BioList<Library>( libraryDao.getAll() );
+	public List<Folder> retrieveAllLibraries() {
+		return new BioList<Folder>( folderDao.getAll() );
 	}
 
 	public List<Structure> retrieveAllStructures() {
@@ -77,8 +77,8 @@ public class StructuredbInstanceManager
 		return new BioList<User>( userDao.getAll() );
 	}
 
-	public Library retrieveLibraryByName(String name) {
-		return libraryDao.getByName(name);
+	public Folder retrieveLibraryByName(String name) {
+		return folderDao.getByName(name);
 	}
 
 	public List<Structure> retrieveStructureByName(String name) {
@@ -89,8 +89,8 @@ public class StructuredbInstanceManager
 		return userDao.getByUserName(username);
 	}
 
-	public void update(Library library) {
-		libraryDao.update(library);
+	public void update(Folder folder) {
+		folderDao.update(folder);
 	}
 
 	public void update(User user) {

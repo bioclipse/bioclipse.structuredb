@@ -10,10 +10,10 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
-import net.bioclipse.structuredb.domain.Library;
+import net.bioclipse.structuredb.domain.Folder;
 
-public interface ILibraryDao extends IGenericDao<Library> {
+public interface IFolderDao extends IGenericDao<Folder> {
 
-	public Library getByName(String name);
+	public Folder getByName(String name);
 
 }

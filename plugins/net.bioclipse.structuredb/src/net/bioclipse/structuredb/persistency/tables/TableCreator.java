@@ -30,9 +30,9 @@ public class TableCreator {
     private static final Logger logger = Logger.getLogger(TableCreator.class);
 
 	public static final String[] SQL_FILES_RUNORDER = { "BaseObject.sql", 
-	                                                      "User.sql",
-	                                                      "Library.sql",
-	                                                      "Structure.sql" };
+	                                                    "User.sql",
+	                                                    "Folder.sql",
+	                                                    "Structure.sql" };
 	
 	public static final TableCreator INSTANCE = new TableCreator();
 	
@@ -149,5 +149,4 @@ public class TableCreator {
 		}
 		return conn;
 	}
-
 }
