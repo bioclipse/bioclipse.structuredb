@@ -54,7 +54,21 @@ public class StructuredbInstanceManagerTest
 		                            .getBean("folderDao");
 		structureDao = (IStructureDao) applicationContext
 		                               .getBean("structureDao");
-		userDao      = (IUserDao) applicationContext.getBean("userDao");
+		userDao      = (IUserDao) applicationContext
+		                          .getBean("userDao");
+	}
+	
+	@Override
+	protected void onSetUpInTransaction() throws Exception {
+		super.onSetUpInTransaction();
+		( (ILoggedInUserKeeper) applicationContext
+                .getBean("loggedInUserKeeper") )
+                .setLoggedInUser(null);
+		User testUser = new User("username", "password", true);
+		userDao.insert(testUser);
+		( (ILoggedInUserKeeper) applicationContext
+				                .getBean("loggedInUserKeeper") )
+				                .setLoggedInUser(testUser);
 	}
 	
 	private Folder createFolder(String name) {
@@ -93,7 +107,7 @@ public class StructuredbInstanceManagerTest
 	public void testInsertUser() {
 
 		assertTrue( userDao.getAll()
-				    .contains(createUser("username", "secrest", false)) );
+				    .contains(createUser("another username", "secrest", false)) );
 	}
 
 	public void testDeleteLibrary() {
@@ -104,7 +118,7 @@ public class StructuredbInstanceManagerTest
 	}
 
 	public void testDeleteUser() {
-		User user = createUser("username", "secrest", true);
+		User user = createUser("another username", "secrest", true);
 		assertTrue( userDao.getAll().contains(user) );
 		manager.delete(user);
 		assertFalse( userDao.getAll().contains(user) );
@@ -162,7 +176,7 @@ public class StructuredbInstanceManagerTest
 	}
 
 	public void testRetrieveUserByName() {
-		User user = createUser("username", "secret", false);
+		User user = createUser("another username", "secret", false);
 		
 		assertNotNull(user);
 		
@@ -178,7 +192,7 @@ public class StructuredbInstanceManagerTest
 	}
 
 	public void testUpdateUser() {
-		User user = createUser("username", "secret", false);
+		User user = createUser("another username", "secret", false);
 		user.setName("edited");
 		manager.update(user);
 		assertEquals( user, userDao.getById(user.getId()) );

@@ -163,12 +163,19 @@
     </bean>
 	
     <bean id="auditCreationAdvisor"
-        class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+          class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
         <property name="advice"  ref="auditCreationAdvice" />
-        <property name="pattern" value="insert.*" />
+        <property name="pattern" value=".*insert" />
     </bean>
 	
 	<bean id="auditCreationAdvice"
         class="net.bioclipse.structuredb.internalbusiness.AuditCreationAdvice">
+        <property name="loggedInUserKeeper">
+            <ref local="loggedInUserKeeper"/>
+        </property>
     </bean>
+    
+    <bean id="loggedInUserKeeper"
+          class="net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper">
+    </bean>      
 </beans>

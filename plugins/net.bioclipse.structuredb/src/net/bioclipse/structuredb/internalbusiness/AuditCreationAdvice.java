@@ -18,6 +18,8 @@ import net.bioclipse.usermanager.business.IUserManager;
 
 public class AuditCreationAdvice implements IAuditAdvice {
 
+	private ILoggedInUserKeeper loggedInUserKeeper;
+	
 	public void before(Method method, Object[] args, Object target)
 			throws Throwable {
 		
@@ -26,9 +28,11 @@ public class AuditCreationAdvice implements IAuditAdvice {
 		baseObject.setCreated( new Timestamp(now) );
 		baseObject.setEdited(  new Timestamp(now) );
 		
-		IStructuredbInstanceManager manager 
-			= (IStructuredbInstanceManager)target;
-		baseObject.setCreator(    manager.getLoggedInUser() );
-		baseObject.setLastEditor( manager.getLoggedInUser() );
+		baseObject.setCreator(    loggedInUserKeeper.getLoggedInUser() );
+		baseObject.setLastEditor( loggedInUserKeeper.getLoggedInUser() );
+	}
+
+	public void setLoggedInUserKeeper( ILoggedInUserKeeper keeper) {
+		this.loggedInUserKeeper	= keeper;
 	}
 }

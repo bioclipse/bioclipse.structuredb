@@ -7,6 +7,7 @@ import java.util.List;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.BaseObject;
 import net.bioclipse.structuredb.domain.User;
+import net.bioclipse.structuredb.internalbusiness.ILoggedInUserKeeper;
 import net.bioclipse.structuredb.persistency.HsqldbTestServerManager;
 
 import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests;
@@ -52,8 +53,15 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
 		super.onSetUpInTransaction();
 		
 		testUser = new User("username", "password", true);
+		
+		((ILoggedInUserKeeper)applicationContext.getBean("loggedInUserKeeper"))
+		.setLoggedInUser(null);
+		
 		IUserDao userDao = (IUserDao) applicationContext.getBean("userDao");
 		userDao.insert(testUser);
+		
+		((ILoggedInUserKeeper)applicationContext.getBean("loggedInUserKeeper"))
+		.setLoggedInUser(testUser);
 		
 		String daoName = domainClass.getSimpleName() + "Dao";
 		daoName = firstToLowerCase(daoName);
