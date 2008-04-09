@@ -44,6 +44,8 @@ public class TableCreator {
 	}
 	
 	public void createTables(String url) {
+		createTableStatements.clear();
+		alterTableStatements.clear();
 		try {
 			
 			Class.forName("org.hsqldb.jdbcDriver");

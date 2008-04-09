@@ -13,10 +13,11 @@ package net.bioclipse.structuredb.persistency;
 import net.bioclipse.structuredb.persistency.tables.TableCreator;
 
 import org.hsqldb.Server;
+import org.hsqldb.ServerConstants;
 
 public class HsqldbTestServerManager {
 
-	private Thread server;
+	private Server server;
 	
 	public static final HsqldbTestServerManager INSTANCE = new HsqldbTestServerManager();
 	
@@ -24,7 +25,8 @@ public class HsqldbTestServerManager {
 	}
 	
 	public boolean serverIsAlive() {
-		return server != null && server.isAlive();
+		return server != null && 
+			   server.getState() == ServerConstants.SERVER_STATE_ONLINE;
 	}
 	
 	public void startServer() {
@@ -42,6 +44,10 @@ public class HsqldbTestServerManager {
         server.setLogWriter(null);
         server.setErrWriter(null);
         server.start();
+	}
+	
+	public void stopServer() {
+		server.stop();
 	}
 
 	public void setupTestEnvironment() {
