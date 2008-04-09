@@ -11,6 +11,7 @@
 package net.bioclipse.structuredb.internalbusiness;
 
 import java.util.Arrays;
+import java.util.List;
 
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Folder;
@@ -78,8 +79,9 @@ public class StructuredbInstanceManagerTest
 	}
 	
 	public void testInsertFolder() {
-		
-		assertTrue( folderDao.getAll().contains(createFolder("testFolder")) );
+		Folder folder = createFolder("testFolder");
+		List<Folder> allFolders = folderDao.getAll(); 
+		assertTrue( allFolders.contains(folder) );
 	}
 
 	private Structure createStructure( String name, 
@@ -92,10 +94,11 @@ public class StructuredbInstanceManagerTest
 	}
 	
 	public void testInsertStructure() throws CDKException {
-		assertTrue( structureDao
-				    .getAll().contains( 
-				    		createStructure( "CycloOctan", 
-				    				         TestData.getCycloOctan())) );
+		
+		Structure structure = createStructure( "CycloOctan", 
+		                                       TestData.getCycloOctan() );
+		List<Structure> allStructures = structureDao.getAll(); 
+		assertTrue( allStructures.contains(structure) );
 	}
 
 	private User createUser(String username, String password, boolean sudoer) {
@@ -106,8 +109,9 @@ public class StructuredbInstanceManagerTest
 	
 	public void testInsertUser() {
 
-		assertTrue( userDao.getAll()
-				    .contains(createUser("another username", "secrest", false)) );
+		User user = createUser("another username", "secrest", false);
+		List<User> allUsers = userDao.getAll(); 
+		assertTrue( allUsers.contains(user) );
 	}
 
 	public void testDeleteLibrary() {
@@ -181,7 +185,7 @@ public class StructuredbInstanceManagerTest
 		assertNotNull(user);
 		
 		assertEquals( user,
-				      manager.retrieveUserByUsername("username") );
+				      manager.retrieveUserByUsername("another username") );
 	}
 
 	public void testUpdateLibrary() {
