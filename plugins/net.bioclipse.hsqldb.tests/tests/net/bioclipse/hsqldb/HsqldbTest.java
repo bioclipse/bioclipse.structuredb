@@ -33,11 +33,8 @@ public class HsqldbTest {
 
     	testGettingConnection();
     	
-		String database = this.getClass()
-		                      .getClassLoader().getResource(".").toString();
-
-		HsqldbUtil.getInstance().addDatabase(database, "testDatabase");
-		HsqldbUtil.getInstance().addDatabase(database, "testDatabase2");
+		HsqldbUtil.getInstance().addDatabase("testDatabase");
+		HsqldbUtil.getInstance().addDatabase("testDatabase2");
 		Connection con1 
 			= getConnection("jdbc:hsqldb:hsql://127.0.0.1/testDatabase");
 		Connection con2 

@@ -12,6 +12,7 @@
 package net.bioclipse.hsqldb;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,9 +30,37 @@ import org.eclipse.ui.PlatformUI;
 import org.hsqldb.Server;
 import org.hsqldb.ServerConstants;
 
+
+
 public class HsqldbUtil {
+
+	private static final Logger logger = Logger.getLogger(HsqldbUtil.class);
+	private static String fileFolder;
+	static {
+		String path;
+		try {
+			 path = ResourcesPlugin.getWorkspace()
+			                       .getRoot()
+			                       .getLocation()
+			                       .toString() 
+		                           + File.separator 
+		                           + ".hsqldbDatabases";
+		}
+		catch (IllegalStateException e) {
+			path = HsqldbUtil.class.getClassLoader()
+			                       .getResource(".").toString();
+		}
+		path += File.separator + "hsqldbDatabases" + File.separator;
+		File f = new File(path);
+		try {
+			f.createNewFile();
+		} catch (IOException e) {
+			LogUtils.debugTrace(logger, e);
+		}
+		fileFolder = path;
+	}
+	
     
-    private static final Logger logger = Logger.getLogger(HsqldbUtil.class);
 
 	private static Server server;
 	private final static HsqldbUtil instance = new HsqldbUtil();
@@ -118,7 +147,7 @@ public class HsqldbUtil {
 		Activator.getDefault().setHsqldbServer(null);
 	}
 	
-	public void addDatabase(String path, String name) {
+	public void addDatabase(String name) {
 		server.stop();
 		try {
 			while(true) {
@@ -132,11 +161,12 @@ public class HsqldbUtil {
 			LogUtils.debugTrace(logger, e);
 		}
 		names.put(nextFreePos,   name);
-		paths.put(nextFreePos++, path);
+		paths.put(nextFreePos++, fileFolder + name);
 		
 		server = new Server();
 		server.setLogWriter(null);
         server.setErrWriter(null);
+        
 		for( int key : names.keySet() ) {
 			server.setDatabasePath( key, paths.get(key) );
 			server.setDatabaseName( key, names.get(key) );
