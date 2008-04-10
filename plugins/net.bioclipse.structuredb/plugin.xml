@@ -2,49 +2,75 @@
 <?eclipse version="3.2"?>
 <plugin>
 
-   <extension
+    <extension
          point="org.eclipse.ui.views">
-      <category
+        <category
             name="Sample Category"
             id="net.bioclipse.structuredb">
-      </category>
-      <view
+        </category>
+        <view
             name="Sample View"
             icon="icons/sample.gif"
             category="net.bioclipse.structuredb"
             class="net.bioclipse.structuredb.views.SampleView"
             id="net.bioclipse.structuredb.views.SampleView">
-      </view>
-   </extension>
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
+        </view>
+    </extension>
+    <extension
+        point="org.eclipse.ui.perspectiveExtensions">
+        <perspectiveExtension
             targetID="org.eclipse.ui.resourcePerspective">
-         <view
+            <view
                ratio="0.5"
                relative="org.eclipse.ui.views.TaskList"
                relationship="right"
                id="net.bioclipse.structuredb.views.SampleView">
-         </view>
-      </perspectiveExtension>
-   </extension>
-   <extension
-         point="net.bioclipse.usermanager.accountType">
-      <AccountType
+            </view>
+        </perspectiveExtension>
+    </extension>
+    <extension
+        point="net.bioclipse.usermanager.accountType">
+        <AccountType
             name="net.bioclipse.structuredb.AccountType">
-         <property
-               name="net.bioclipse.structuredb.url"
-               required="true">
-         </property>
-         <property
-               name="net.bioclipse.structuredb.type"
-               required="true">
-         </property>
-         <property
-               name="net.bioclipse.structuredb.name"
-               required="true">
-         </property>
-      </AccountType>
-   </extension>
-
+            <property
+                name="net.bioclipse.structuredb.url"
+                required="true">
+            </property>
+            <property
+                name="net.bioclipse.structuredb.type"
+                required="true">
+            </property>
+            <property
+                name="net.bioclipse.structuredb.name"
+                required="true">
+            </property>
+        </AccountType>
+    </extension>
+    
+    <extension
+      point="net.bioclipse.services">
+        <databaseType
+            id="net.bioclipse.structuredb"
+            icon="icons/db_16.gif"
+            class="net.bioclipse.structuredb.StructuredbFactory"
+            name="StructureDB"
+            category="net.bioclipse.services.databases.local">
+        </databaseType>
+    </extension>
+    
+    <extension point="org.eclipse.ui.popupMenus">
+        <objectContribution
+            adaptable="false"
+            id="net.bioclipse.structuredb.createNewAction"
+            objectClass="net.bioclipse.structuredb.Structuredb">
+            <action
+                class="net.bioclipse.structuredb.actions.CreateStructuredbAction"
+                enablesFor="1"
+                icon="icons/db_16.gif"
+                id="net.bioclipse.structuredb.actions.CreateStructuredbAction"
+                label="Create new Structure Database..."
+                menubarPath="additions"
+                tooltip="Open a dialog for creating a new Structure Database"/>
+        </objectContribution>
+    </extension>
 </plugin>

@@ -11,10 +11,15 @@
 package net.bioclipse.structuredb;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.bioclipse.services.views.model.AbstractServiceContainer;
 import net.bioclipse.services.views.model.IDatabaseType;
+import net.bioclipse.services.views.model.IServiceObject;
 import net.bioclipse.structuredb.dialogs.CreateStructureDatabaseDialog;
 import net.bioclipse.usermanager.Activator;
 import net.bioclipse.usermanager.IUserManagerListener;
@@ -42,37 +47,9 @@ public class Structuredb extends AbstractServiceContainer
 	
 	private final String name = "Structure Database";
 
-	private List<StructuredbDataSource>  dataSources;
-	
 	private IAction createDatabaseAction;
 	
 	public Structuredb() {
-		dataSources    = new ArrayList<StructuredbDataSource>();
-		createActions();
-	}
-	
-	private void createActions() {
-		createDatabaseAction = new Action("Create new Structure Database") {
-			@Override
-			public void run() {
-				CreateStructureDatabaseDialog dialog = 
-					new CreateStructureDatabaseDialog( PlatformUI
-							                           .getWorkbench()
-							                           .getActiveWorkbenchWindow()
-							                           .getShell(), 
-							                           SWT.NONE );
-				dialog.open();
-				//TODO: create the new database
-			}
-		};
-	}
-
-	public StructuredbDataSource[] getDataSources() {
-		return dataSources.toArray(new StructuredbDataSource[0]);
-	}
-
-	public boolean hasDataSources() {
-		return dataSources.size() > 0;
 	}
 	
 	public String getName() {
@@ -85,9 +62,6 @@ public class Structuredb extends AbstractServiceContainer
 
 	public void fillContextMenu(IMenuManager manager) {
 		manager.add( createDatabaseAction );
-	}
-
-	public void fireUpdate() {
 	}
 
 	public void receiveUserManagerEvent(UserManagerEvent event) {
@@ -103,7 +77,7 @@ public class Structuredb extends AbstractServiceContainer
 			break;
 			
 		case LOGOUT:
-			dataSources.clear();
+			setChildren( new ArrayList<IServiceObject>() );
 			break;
 			
 		default:
@@ -118,9 +92,9 @@ public class Structuredb extends AbstractServiceContainer
 //		basicDataSource.setUsername( username );
 //		basicDataSource.setPassword( password );
 		
-//		StructuredbDataSource dataSource = new StructuredbDataSource(context);
-//		dataSources.add(dataSource);
-		fireUpdate();		
+//		StructuredbInstance dataSource = new StructuredbInstance(context);
+//		instances.add(dataSource);
+		setChildren(new ArrayList<IServiceObject>());
 	}
 
 	public Object getAdapter(Class adapter) {
