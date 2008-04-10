@@ -12,6 +12,7 @@
 package net.bioclipse.hsqldb;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -26,6 +27,7 @@ import net.bioclipse.core.util.LogUtils;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.ui.PlatformUI;
 import org.hsqldb.Server;
+import org.hsqldb.ServerConstants;
 
 public class HsqldbUtil {
     
@@ -39,6 +41,11 @@ public class HsqldbUtil {
 	private Map<Integer, String> names = new HashMap<Integer, String>();
 	
 	private HsqldbUtil() {
+		try {
+			Class.forName("org.hsqldb.jdbcDriver");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 		server = new Server();
 	}
 	
@@ -46,25 +53,39 @@ public class HsqldbUtil {
 		return instance;
 	}
 	
+	public boolean serverIsAlive() {
+		return server != null && 
+			   server.getState() == ServerConstants.SERVER_STATE_ONLINE;
+	}
+	
 	/**
 	 * Starts the Hsqldb server with one local database
 	 */
 	public void startHsqldbServer() {
 
-		final String database = 
-			ResourcesPlugin.getWorkspace().getRoot().getLocation().toString() 
-			+ File.separator + ".database";
-
+		if( serverIsAlive() ) {
+			logger.debug( "startHsqldbServer called but the " +
+					      "server was alredy running" );
+			return;
+		}
+		
+		String database;
 		try {
-			server.checkRunning(false);
+			 database =	ResourcesPlugin.getWorkspace()
+			                           .getRoot()
+			                           .getLocation()
+			                           .toString() 
+			                           + File.separator + ".database";
 		}
-		catch(RuntimeException e) {
-			return; //Server is already running
+		catch (IllegalStateException e) {
+			database = this.getClass()
+                           .getClassLoader().getResource(".").toString();
 		}
-		server.setDatabaseName(0, "local");
+
+		server.setDatabaseName(0, "localServer");
         server.setDatabasePath(0, database);
-        server.setLogWriter(null);
-        server.setErrWriter(null);
+        server.setLogWriter( new PrintWriter(System.out) );
+        server.setErrWriter( new PrintWriter(System.err) );
         server.start();
 	}
 	

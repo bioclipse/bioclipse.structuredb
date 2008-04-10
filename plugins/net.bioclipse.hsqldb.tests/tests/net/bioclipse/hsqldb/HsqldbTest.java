@@ -11,26 +11,37 @@ import java.sql.SQLException;
 
 import org.junit.Test;
 
+/**
+ * @author jonalv
+ *
+ */
 public class HsqldbTest {
 
     private static final Logger logger = Logger.getLogger(HsqldbTest.class);
-	@Test
+
+    @Test
+    public void testGettingConnection() {
+
+    	HsqldbUtil.getInstance().startHsqldbServer();
+    	Connection con 
+			= getConnection("jdbc:hsqldb:hsql://127.0.0.1/localServer");
+    	assertNotNull(con);
+    }
+    
+    @Test
 	public void testCreatingExtraDatabases() {
-		String database = this.getClass().getClassLoader().getResource(".").toString();
-//		HsqldbUtil.getInstance().startHsqldbServer();
+
+    	testGettingConnection();
+    	
+		String database = this.getClass()
+		                      .getClassLoader().getResource(".").toString();
+
 		HsqldbUtil.getInstance().addDatabase(database, "testDatabase");
-		
-		try {
-			Class.forName("org.hsqldb.jdbcDriver");
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-		
-		Connection con = getConnection("jdbc:hsqldb:hsql://127.0.0.1/testDatabase");
-		assertNotNull(con);
 		HsqldbUtil.getInstance().addDatabase(database, "testDatabase2");
-		Connection con1 = getConnection("jdbc:hsqldb:hsql://127.0.0.1/testDatabase");
-		Connection con2 = getConnection("jdbc:hsqldb:hsql://127.0.0.1/testDatabase2");
+		Connection con1 
+			= getConnection("jdbc:hsqldb:hsql://127.0.0.1/testDatabase");
+		Connection con2 
+			= getConnection("jdbc:hsqldb:hsql://127.0.0.1/testDatabase2");
 		assertNotNull(con1);
 		assertNotNull(con2);
 	}
@@ -57,7 +68,8 @@ public class HsqldbTest {
 			}
 		}
 		if( !gotConnection ) {
-			throw new RuntimeException("Could not get connection to database", exception);
+			throw new RuntimeException( "Could not get connection to database", 
+					                    exception );
 		}
 		return conn;
 	}
