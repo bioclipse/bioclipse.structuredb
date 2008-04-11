@@ -75,7 +75,9 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
 		dao.insert(structure2);
 		
 		List<Structure> saved = ((IStructureDao)dao).getByName("structure");
-		assertTrue( saved.contains(structure1) );
-		assertTrue( saved.contains(structure2) );
+		assertTrue(  saved.contains(structure1) );
+		assertTrue(  saved.contains(structure2) );
+		assertFalse( saved.contains(object1)    );
+		assertFalse( saved.contains(object2)    );
 	}
 }
