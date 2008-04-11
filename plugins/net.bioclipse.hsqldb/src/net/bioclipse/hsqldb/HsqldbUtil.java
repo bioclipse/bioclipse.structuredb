@@ -43,14 +43,13 @@ public class HsqldbUtil {
 			                       .getRoot()
 			                       .getLocation()
 			                       .toString() 
-		                           + File.separator 
-		                           + ".hsqldbDatabases";
+		                           + File.separator; 
 		}
 		catch (IllegalStateException e) {
 			path = HsqldbUtil.class.getClassLoader()
 			                       .getResource(".").toString();
 		}
-		path += File.separator + "hsqldbDatabases" + File.separator;
+		path += ".hsqldbDatabases" + File.separator;
 		File f = new File(path);
 		try {
 			f.createNewFile();
@@ -108,7 +107,8 @@ public class HsqldbUtil {
 		}
 		catch (IllegalStateException e) {
 			database = this.getClass()
-                           .getClassLoader().getResource(".").toString();
+                           .getClassLoader().getResource(".").toString()
+                           + ".database";
 		}
 
 		server.setDatabaseName(0, "localServer");
