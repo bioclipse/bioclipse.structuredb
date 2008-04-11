@@ -168,7 +168,7 @@ public class StructuredbInstanceManagerTest
 		assertNotNull(folder);
 		
 		assertEquals( folder, 
-				      manager.retrieveLibraryByName("testLibrary1") );
+				      manager.retrieveFolderByName("testLibrary1") );
 	}
 
 	public void testRetrieveStructureByName() throws CDKException {

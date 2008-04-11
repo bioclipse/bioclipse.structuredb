@@ -65,7 +65,7 @@ public class StructuredbInstanceManager
 		return new BioList<User>( userDao.getAll() );
 	}
 
-	public Folder retrieveLibraryByName(String name) {
+	public Folder retrieveFolderByName(String name) {
 		return folderDao.getByName(name);
 	}
 

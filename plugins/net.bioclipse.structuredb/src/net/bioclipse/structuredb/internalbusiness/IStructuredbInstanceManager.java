@@ -127,7 +127,7 @@ public interface IStructuredbInstanceManager {
 	 * @param name
 	 * @return a library or null if no such library exists
 	 */
-	public Folder retrieveLibraryByName(String name);
+	public Folder retrieveFolderByName(String name);
 
 	/**
 	 * @return the logged in user

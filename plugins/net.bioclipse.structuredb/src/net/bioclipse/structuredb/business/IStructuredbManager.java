@@ -73,13 +73,13 @@ public interface IStructuredbManager extends IBioclipseManager {
 	 * 
 	 * @param databaseName
 	 * @param folderName
-	 * @return
+	 * @return a folder
 	 */
 	@PublishedMethod ( params = "String databaseName, String folderName",
 			           methodSummary = "Fetches a folder by a given name" +
 			           		           "from a database with a given name" )
-	public Structure retrieveFolderByName( String databaseName, 
-			                               String folderName );
+	public Folder retrieveFolderByName( String databaseName, 
+			                            String folderName );
 	
 	/**
 	 * Retrieves a user with a given username from a database with a given name
