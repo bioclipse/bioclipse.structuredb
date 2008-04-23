@@ -19,6 +19,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.orm.ibatis.SqlMapClientFactoryBean;
 
 /**
+ * This bean changes the config location for the sqlMapClient bean. This is 
+ * needed since the sqlMapClient bean seems to look at the wrong location 
+ * by default. 
+ * 
  * @author jonalv
  */
 public class SQLMapPathBeanPostProcessor implements BeanPostProcessor {
@@ -30,6 +34,7 @@ public class SQLMapPathBeanPostProcessor implements BeanPostProcessor {
 
 	public Object postProcessBeforeInitialization(Object bean, String beanName)
 			throws BeansException {
+		
 		if( beanName.equals("sqlMapClient") &&
 			bean instanceof SqlMapClientFactoryBean	) {
 			
@@ -37,6 +42,7 @@ public class SQLMapPathBeanPostProcessor implements BeanPostProcessor {
 	                                 .getClassLoader()
 	                                 .getResource("sqlMapConfig.xml")
 		                             .toString();
+		
 			if( path.contains("file:") ) {
 				path = path.substring( 5 );
 			}
