@@ -148,6 +148,15 @@ public class HsqldbUtil {
 	}
 	
 	public void addDatabase(String name) {
+		
+		//This is a hack to circumvent a strange deadlock problem. 
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		server.stop();
 		try {
 			while(true) {
