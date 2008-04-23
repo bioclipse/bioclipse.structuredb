@@ -19,6 +19,9 @@ import javax.naming.OperationNotSupportedException;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.eclipse.core.runtime.Platform;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.io.FileSystemResource;
@@ -66,7 +69,7 @@ public class StructuredbManager implements IStructuredbManager {
 	
 	private void setUpApplicationcontext(String databaseName, boolean local) {
 		
-		ApplicationContext context = new FileSystemXmlApplicationContext( 
+		FileSystemXmlApplicationContext context = new FileSystemXmlApplicationContext( 
 				Structuredb.class
 				           .getClassLoader()
                            .getResource("applicationContext.xml")

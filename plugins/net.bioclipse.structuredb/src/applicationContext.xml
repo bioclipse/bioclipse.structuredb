@@ -29,6 +29,11 @@
 		</property>
   	</bean>
   	
+  	<bean id="sqlMapPathBeanPostProcessor"
+  	      class="net.bioclipse.structuredb.internalbusiness.SQLMapPathBeanPostProcessor"
+  	      lazy-init="false">
+  	</bean>
+  	
   	<bean id="sqlMapClient" 
 	      class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
 		<property name="configLocation" value="sqlMapConfig.xml" />

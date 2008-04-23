@@ -15,11 +15,17 @@ import java.io.File;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Folder;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 public class StructuredbManagerTest 
        extends AbstractDependencyInjectionSpringContextTests {
 
+	private String location;
+	
 	@Override
 	protected String[] getConfigLocations() {
 		String loc = Structuredb.class
@@ -38,6 +44,7 @@ public class StructuredbManagerTest
 	}
 	
 	public void testCreatingTwoFolderInTwoDatabases() {
+		
 		IStructuredbManager manager 
 			= (IStructuredbManager) applicationContext
 			                        .getBean("structuredbManagerTarget");
