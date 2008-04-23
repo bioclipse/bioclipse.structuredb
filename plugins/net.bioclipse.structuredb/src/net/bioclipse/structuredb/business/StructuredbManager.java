@@ -11,6 +11,7 @@
 package net.bioclipse.structuredb.business;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +40,17 @@ import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
+import net.bioclipse.structuredb.persistency.dao.IUserDao;
 import net.bioclipse.structuredb.persistency.tables.TableCreator;
 
 public class StructuredbManager implements IStructuredbManager {
 
-	private Map<String, IStructuredbInstanceManager> instances 
+	//Package protected for testing purposes
+	Map<String, IStructuredbInstanceManager> instances 
 		= new HashMap<String, IStructuredbInstanceManager>();
-	
-	private Map<String, ApplicationContext> applicationContexts 
+
+	//Package protected for testing purposes
+	Map<String, ApplicationContext> applicationContexts 
 		= new HashMap<String, ApplicationContext>();
 	
 	public void createLocalInstance(String databaseName)
@@ -85,6 +89,13 @@ public class StructuredbManager implements IStructuredbManager {
 			throw new RuntimeException( "non-local databases not " +
 					                    "supported in this version" );
 		}
+		IUserDao userDao = (IUserDao) context.getBean("userDao");
+		User admin = new User("admin", "", true );
+		admin.setCreator(admin);
+		Timestamp now = new Timestamp( System.currentTimeMillis() );
+		admin.setCreated(now);
+		admin.setEdited(now);
+		userDao.insert(admin);
 		applicationContexts.put(databaseName, context);
 	}
 

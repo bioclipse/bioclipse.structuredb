@@ -25,6 +25,10 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import net.bioclipse.core.util.LogUtils;
 
+/**
+ * @author jonalv
+ *
+ */
 public class TableCreator {
     
     private static final Logger logger = Logger.getLogger(TableCreator.class);
