@@ -30,8 +30,10 @@ import org.eclipse.ui.PlatformUI;
 import org.hsqldb.Server;
 import org.hsqldb.ServerConstants;
 
-
-
+/**
+ * @author jonalv
+ *
+ */
 public class HsqldbUtil {
 
 	private static final Logger logger = Logger.getLogger(HsqldbUtil.class);
@@ -58,8 +60,6 @@ public class HsqldbUtil {
 		}
 		fileFolder = path;
 	}
-	
-    
 
 	private static Server server;
 	private final static HsqldbUtil instance = new HsqldbUtil();
@@ -116,7 +116,28 @@ public class HsqldbUtil {
         server.setLogWriter( new PrintWriter(System.out) );
         server.setErrWriter( new PrintWriter(System.err) );
         server.start();
+        waitFor(ServerConstants.SERVER_STATE_ONLINE);
 	}
+	
+	private void waitFor(int serverConstant) {
+		long waited = 0;
+		long sleepTime = 500;
+		do {
+			if( server.getState() == serverConstant ) {
+				return;
+			}
+			try {
+				Thread.sleep(sleepTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			waited += sleepTime;
+		}
+		while( waited < 15000 ); 
+		throw new RuntimeException( "Waited to long for server to get " +
+				                    "to state: " + serverConstant );
+	}
+
 	
 	/**
 	 * Stops the Hsqldb-server
@@ -182,5 +203,6 @@ public class HsqldbUtil {
 		}
 
 		server.start();
+		waitFor(ServerConstants.SERVER_STATE_ONLINE);
 	}
 }
