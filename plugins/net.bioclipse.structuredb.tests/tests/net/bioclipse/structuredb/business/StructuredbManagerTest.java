@@ -29,8 +29,6 @@ import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 public class StructuredbManagerTest 
        extends AbstractDependencyInjectionSpringContextTests {
 
-	private String location;
-	
 	@Override
 	protected String[] getConfigLocations() {
 		String loc = Structuredb.class
@@ -71,9 +69,14 @@ public class StructuredbManagerTest
 					                .retrieveUserByUsername("admin") );
 		}
 		
-		Folder f = manager.createFolder(database1, "testFolder1");
-		assertNotNull(f);
-		Folder g = manager.createFolder(database2, "testFolder2");
-		assertNotNull(g);
+		Folder f2 = manager.createFolder(database2, "testFolder2");
+		assertNotNull(f2);
+		Folder f1 = manager.createFolder(database1, "testFolder1");
+		assertNotNull(f1);
+		
+		assertEquals( f2, 
+				      manager.retrieveFolderByName( database2, f2.getName() ) );
+		assertEquals( f1, 
+			          manager.retrieveFolderByName( database1, f1.getName() ) );
 	}
 }

@@ -63,17 +63,53 @@ public class StructuredbManager implements IStructuredbManager {
 		HsqldbUtil.getInstance().addDatabase(databaseName);
 		TableCreator.INSTANCE.createTables( "jdbc:hsqldb:hsql://127.0.0.1/"
 				                             + databaseName );
-		setUpApplicationcontext(databaseName, true);
+		
+		Map<String, IStructuredbInstanceManager> newInstances 
+			= new HashMap<String, IStructuredbInstanceManager>();
+	
+		Map<String, ApplicationContext> newApplicationContexts
+			= new HashMap<String, ApplicationContext>();
+		
+		for( String nameKey : instances.keySet() ) {
+			//TODO: The day we not only handle local databases the row here 
+			//      below will need to change
+			newApplicationContexts.put( nameKey, 
+					                    getApplicationcontext(nameKey, true) );
+			newInstances.put( 
+					nameKey, 
+					(IStructuredbInstanceManager) 
+						newApplicationContexts
+						.get( nameKey )
+					    .getBean("structuredbInstanceManager") );
+		}
+		
+		instances           = newInstances;
+		applicationContexts = newApplicationContexts;
+		
+		applicationContexts.put( databaseName,  
+				                 getApplicationcontext(databaseName, true) );
 		instances.put( 
 				databaseName, 
 				(IStructuredbInstanceManager) 
 					applicationContexts.get( databaseName)
-				                       .getBean("structuredbInstanceManager"));
+				                       .getBean("structuredbInstanceManager") );
+		createAdmin( applicationContexts.get(databaseName) );
 	}
 	
-	private void setUpApplicationcontext(String databaseName, boolean local) {
-		
-		FileSystemXmlApplicationContext context = new FileSystemXmlApplicationContext( 
+	private void createAdmin(ApplicationContext context) {
+		IUserDao userDao = (IUserDao) context.getBean("userDao");
+		User admin = new User("admin", "", true );
+		admin.setCreator(admin);
+		Timestamp now = new Timestamp( System.currentTimeMillis() );
+		admin.setCreated(now);
+		admin.setEdited(now);
+		userDao.insert(admin);
+	}
+
+	private ApplicationContext getApplicationcontext( String databaseName, 
+			                                            boolean local ) {
+		FileSystemXmlApplicationContext context 
+			= new FileSystemXmlApplicationContext( 
 				Structuredb.class
 				           .getClassLoader()
                            .getResource("applicationContext.xml")
@@ -89,14 +125,7 @@ public class StructuredbManager implements IStructuredbManager {
 			throw new RuntimeException( "non-local databases not " +
 					                    "supported in this version" );
 		}
-		IUserDao userDao = (IUserDao) context.getBean("userDao");
-		User admin = new User("admin", "", true );
-		admin.setCreator(admin);
-		Timestamp now = new Timestamp( System.currentTimeMillis() );
-		admin.setCreated(now);
-		admin.setEdited(now);
-		userDao.insert(admin);
-		applicationContexts.put(databaseName, context);
+		return context;
 	}
 
 	public Folder createFolder(String databaseName, String folderName)
