@@ -11,9 +11,15 @@
 package net.bioclipse.structuredb.business;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
+import net.bioclipse.cdk.business.CDKManager;
+import net.bioclipse.cdk.business.ICDKManager;
+import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Folder;
+import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.internalbusiness.ILoggedInUserKeeper;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
@@ -25,6 +31,8 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+
+import testData.TestData;
 
 public class StructuredbManagerTest 
        extends AbstractDependencyInjectionSpringContextTests {
@@ -60,13 +68,7 @@ public class StructuredbManagerTest
 		for( ApplicationContext context : 
 			 ((StructuredbManager)manager).applicationContexts.values() ) {
 			
-			LoggedInUserKeeper keeper = (LoggedInUserKeeper) 
-			                            context.getBean("loggedInUserKeeper");
-			IStructuredbInstanceManager internalManager 
-				= (IStructuredbInstanceManager) 
-				  context.getBean("structuredbInstanceManager"); 
-			keeper.setLoggedInUser( internalManager
-					                .retrieveUserByUsername("admin") );
+			setALoggedInUser(context);
 		}
 		
 		Folder f2 = manager.createFolder(database2, "testFolder2");
@@ -78,5 +80,60 @@ public class StructuredbManagerTest
 				      manager.retrieveFolderByName( database2, f2.getName() ) );
 		assertEquals( f1, 
 			          manager.retrieveFolderByName( database1, f1.getName() ) );
+	}
+	
+	public void testCreatingAndRetrievingStructures() throws BioclipseException, 
+	                                                         IOException {
+		
+		IStructuredbManager manager 
+		= (IStructuredbManager) applicationContext
+		                        .getBean("structuredbManagerTarget");
+		String db = "structureDatabase";
+		manager.createLocalInstance(db);
+		ICDKManager cdk = new CDKManager();
+		
+		Structure structure1 = manager
+		                      .createStructure( 
+		                    		  db, 
+				                      "cyclo propane", 
+				                      cdk.loadMolecule( 
+				                    		  TestData
+				                    		  .class
+				                    		  .getClassLoader()
+				                    		  .getResourceAsStream(
+				                    		  "testData/cyclopropane.mol")) );
+		
+		Structure structure2 = manager
+						       .createStructure( 
+						      		  db, 
+						              "cyclo octane", 
+						              cdk.loadMolecule(
+						            		  TestData
+				                    		  .class
+				                    		  .getClassLoader()
+				                    		  .getResourceAsStream(
+						            		  "testData/cyclooctan.mol")) );
+		
+		assertEquals( structure1, 
+				      manager
+				      .retrieveStructureByName( db, structure1.getName() ) );
+		assertEquals( structure2, 
+			          manager
+			          .retrieveStructureByName( db, structure2.getName() ) );
+		
+		List<Structure> structures = manager.retrieveAllStructures(db);
+		
+		assertTrue( structures.contains(structure1) );
+		assertTrue( structures.contains(structure2) );
+	}
+
+	private void setALoggedInUser(ApplicationContext context) {
+		LoggedInUserKeeper keeper = (LoggedInUserKeeper) 
+		context.getBean("loggedInUserKeeper");
+		IStructuredbInstanceManager internalManager 
+			= (IStructuredbInstanceManager) 
+		context.getBean("structuredbInstanceManager"); 
+		keeper.setLoggedInUser( internalManager
+				                .retrieveUserByUsername("admin") );
 	}
 }
