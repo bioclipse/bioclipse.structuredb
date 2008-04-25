@@ -21,12 +21,10 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import net.bioclipse.core.util.LogUtils;
 
-
+import org.apache.log4j.Logger;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.ui.PlatformUI;
 import org.hsqldb.Server;
 import org.hsqldb.ServerConstants;
 
@@ -134,7 +132,7 @@ public class HsqldbUtil {
 			waited += sleepTime;
 		}
 		while( waited < 15000 ); 
-		throw new RuntimeException( "Waited to long for server to get " +
+		throw new RuntimeException( "Waited too long for server to get " +
 				                    "to state: " + serverConstant );
 	}
 
@@ -159,10 +157,12 @@ public class HsqldbUtil {
 			stmt.close();
 		} 
 		catch (SQLException e) {
-			throw new IllegalArgumentException("Could not perform shutdown statement", e);
+			throw new IllegalStateException(
+			        "Could not perform shutdown statement", e);
 		} 
 		catch (ClassNotFoundException e) {
-			throw new IllegalStateException("Could not find the jdbcDriver class", e);
+			throw new IllegalStateException(
+			        "Could not find the jdbcDriver class", e);
 		}
 		// no need to close a dead connection!
 		Activator.getDefault().setHsqldbServer(null);
