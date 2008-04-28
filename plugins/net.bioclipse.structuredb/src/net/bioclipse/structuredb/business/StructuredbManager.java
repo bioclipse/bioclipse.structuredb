@@ -114,8 +114,9 @@ public class StructuredbManager implements IStructuredbManager {
 			dataSource.setUrl( "jdbc:hsqldb:hsql://127.0.0.1/" + databaseName );
 		}
 		else {
-			throw new RuntimeException( "non-local databases not " +
-					                    "supported in this version" );
+			throw new UnsupportedOperationException( 
+					"non-local databases not " +
+					"supported in this version" );
 		}
 		return context;
 	}
@@ -125,7 +126,7 @@ public class StructuredbManager implements IStructuredbManager {
 		
 		Folder folder = new Folder(folderName);
 		instances.get(databaseName).insertFolder(folder);
-		logger.debug("Folder" + folderName + "created in " + databaseName);
+		logger.debug("Folder " + folderName + " created in " + databaseName);
 		return folder;
 	}
 
