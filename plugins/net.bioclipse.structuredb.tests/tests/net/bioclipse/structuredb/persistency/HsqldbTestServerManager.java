@@ -52,6 +52,5 @@ public class HsqldbTestServerManager {
 
 	public void setupTestEnvironment() {
 		TableCreator.INSTANCE.createTables("jdbc:hsqldb:hsql://127.0.0.1/testServer");
-		
 	}
 }

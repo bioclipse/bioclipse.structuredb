@@ -51,11 +51,8 @@ public class HsqldbUtil {
 		}
 		path += ".hsqldbDatabases" + File.separator;
 		File f = new File(path);
-		try {
-			f.createNewFile();
-		} catch (IOException e) {
-			LogUtils.debugTrace(logger, e);
-		}
+		f.mkdir();
+		logger.debug("created directory: " + f + " for storing databasefile");
 		fileFolder = path;
 	}
 
@@ -95,26 +92,20 @@ public class HsqldbUtil {
 			return;
 		}
 		
-		String database;
-		try {
-			 database =	ResourcesPlugin.getWorkspace()
-			                           .getRoot()
-			                           .getLocation()
-			                           .toString() 
-			                           + File.separator + ".database";
-		}
-		catch (IllegalStateException e) {
-			database = this.getClass()
-                           .getClassLoader().getResource(".").toString()
-                           + ".database";
-		}
+		String database = fileFolder + "local.hsqldb";
 
 		server.setDatabaseName(0, "localServer");
         server.setDatabasePath(0, database);
         server.setLogWriter( new PrintWriter(System.out) );
         server.setErrWriter( new PrintWriter(System.err) );
-        server.start();
+        Thread serverThread = new Thread() {
+        	public void run() {
+        		server.start();
+        	}
+        };
+        serverThread.run();
         waitFor(ServerConstants.SERVER_STATE_ONLINE);
+        logger.debug("HSQLDB server online");
 	}
 	
 	private void waitFor(int serverConstant) {
@@ -125,17 +116,17 @@ public class HsqldbUtil {
 				return;
 			}
 			try {
+				System.out.println("The time is now " + waited + ", " + Thread.currentThread().hashCode());
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			waited += sleepTime;
 		}
-		while( waited < 15000 ); 
+		while( waited < 5000 ); 
 		throw new RuntimeException( "Waited too long for server to get " +
 				                    "to state: " + serverConstant );
 	}
-
 	
 	/**
 	 * Stops the Hsqldb-server
@@ -146,7 +137,7 @@ public class HsqldbUtil {
 
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
-			String url = "jdbc:hsqldb:hsql://127.0.0.1";
+			String url = "jdbc:hsqldb:hsql://127.0.0.1/localServer";
 			Connection con;
 			
 			con = DriverManager.getConnection(url);
@@ -165,36 +156,38 @@ public class HsqldbUtil {
 			        "Could not find the jdbcDriver class", e);
 		}
 		// no need to close a dead connection!
-		Activator.getDefault().setHsqldbServer(null);
+		try {
+			Activator.getDefault().setHsqldbServer(null);
+		}
+		catch (Error e) {
+			LogUtils.debugTrace(logger, e);
+		}
 	}
 	
 	public void addDatabase(String name) {
 		
-		server.stop();
-		try {
-			while(true) {
-				server.checkRunning(true);
-				Thread.sleep(100);
-			}
-		}
-		catch (RuntimeException e) {
-			//now the server is dead
-		} catch (InterruptedException e) {
-			LogUtils.debugTrace(logger, e);
-		}
-		names.put(nextFreePos,   name);
-		paths.put(nextFreePos++, fileFolder + name);
+		stopHsqldbServer();
+		server.shutdown();
+		waitFor(ServerConstants.SERVER_STATE_SHUTDOWN);
 		
-		server = new Server();
-		server.setLogWriter(null);
-        server.setErrWriter(null);
-        
-		for( int key : names.keySet() ) {
-			server.setDatabasePath( key, paths.get(key) );
-			server.setDatabaseName( key, names.get(key) );
-		}
-
-		server.start();
+		String path = fileFolder + name;
+		
+		names.put(nextFreePos, name);
+		paths.put(nextFreePos, path);
+		
+		server.setDatabasePath( nextFreePos,   path );
+		server.setDatabaseName( nextFreePos++, name );
+		
+		logger.debug( "Database named " + name 
+				      + " is gonna be saved at " + path );
+		
+		Thread thread = new Thread() {
+			public void run() {
+				server.start();
+			}
+		};
+		thread.start();
 		waitFor(ServerConstants.SERVER_STATE_ONLINE);
+		logger.debug("HSQLDB server online");
 	}
 }

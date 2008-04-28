@@ -20,15 +20,9 @@ import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
-import net.bioclipse.structuredb.internalbusiness.ILoggedInUserKeeper;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
-import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
@@ -54,7 +48,7 @@ public class StructuredbManagerTest
 		return new String[] {loc};
 	}
 	
-	public void testCreatingTwoFolderInTwoDatabases() {
+	public void testCreatingTwoFoldersInTwoDatabases() {
 		
 		IStructuredbManager manager 
 			= (IStructuredbManager) applicationContext
