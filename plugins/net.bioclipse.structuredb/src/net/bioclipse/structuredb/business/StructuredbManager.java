@@ -10,27 +10,10 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.naming.OperationNotSupportedException;
-
-import org.apache.commons.dbcp.BasicDataSource;
-import org.eclipse.core.runtime.Platform;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.orm.ibatis.SqlMapClientFactoryBean;
-
-import com.ibatis.sqlmap.client.SqlMapClient;
-import com.sun.corba.se.impl.resolver.FileResolverImpl;
-import com.sun.org.apache.bcel.internal.generic.LNEG;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
@@ -43,8 +26,15 @@ import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.persistency.dao.IUserDao;
 import net.bioclipse.structuredb.persistency.tables.TableCreator;
 
+import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
 public class StructuredbManager implements IStructuredbManager {
 
+	private Logger logger = Logger.getLogger(StructuredbManager.class);
+	
 	//Package protected for testing purposes
 	Map<String, IStructuredbInstanceManager> instances 
 		= new HashMap<String, IStructuredbInstanceManager>();
@@ -94,6 +84,8 @@ public class StructuredbManager implements IStructuredbManager {
 					applicationContexts.get( databaseName)
 				                       .getBean("structuredbInstanceManager") );
 		createAdmin( applicationContexts.get(databaseName) );
+		logger.info( "A new local instance of Structuredb named" 
+				      + databaseName + " has been created" );
 	}
 	
 	private void createAdmin(ApplicationContext context) {
@@ -133,6 +125,7 @@ public class StructuredbManager implements IStructuredbManager {
 		
 		Folder folder = new Folder(folderName);
 		instances.get(databaseName).insertFolder(folder);
+		logger.debug("Folder" + folderName + "created in " + databaseName);
 		return folder;
 	}
 
