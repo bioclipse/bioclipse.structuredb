@@ -10,6 +10,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency;
 
+import java.io.PrintWriter;
+
 import net.bioclipse.structuredb.persistency.tables.TableCreator;
 
 import org.hsqldb.Server;
@@ -41,8 +43,8 @@ public class HsqldbTestServerManager {
 		Server server = new Server();
         server.setDatabaseName(0, "testServer");
         server.setDatabasePath(0, database);
-        server.setLogWriter(null);
-        server.setErrWriter(null);
+        server.setLogWriter( new PrintWriter(System.out) );
+        server.setErrWriter( new PrintWriter(System.out) );
         server.start();
 	}
 	

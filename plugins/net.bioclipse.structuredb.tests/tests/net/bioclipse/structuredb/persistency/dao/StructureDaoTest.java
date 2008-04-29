@@ -10,6 +10,7 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openscience.cdk.exception.CDKException;
@@ -64,20 +65,30 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
 		assertTrue( structure.hasValuesEqualTo(updated) );
 	}
 	
+	@SuppressWarnings("serial")
 	public void testGetByName() throws CDKException {
-		Structure structure1 = new Structure( "structure",
-				                              TestData.getCycloOctan() );
-		Structure structure2 = new Structure( "structure", 
-				                              TestData.getCycloPropane() );
+		final Structure structure1 = new Structure( "structure",
+				                                    TestData
+				                                    .getCycloOctan() );
+		final Structure structure2 = new Structure( "structure", 
+				                                    TestData
+				                                    .getCycloPropane() );
 		addCreatorAndEditor(structure1);
 		addCreatorAndEditor(structure2);
 		dao.insert(structure1);
 		dao.insert(structure2);
 		
-		List<Structure> saved = ((IStructureDao)dao).getByName("structure");
-		assertTrue(  saved.contains(structure1) );
-		assertTrue(  saved.contains(structure2) );
-		assertFalse( saved.contains(object1)    );
-		assertFalse( saved.contains(object2)    );
+		List<Structure> structures = new ArrayList<Structure>() {{
+			add(structure1);
+			add(structure2);
+		}};
+		
+		assertTrue( dao.getAll().containsAll(structures) );
+		
+		List<Structure> saved = ( (IStructureDao)dao ).getByName(
+				                  structure1.getName() );
+		assertTrue(  saved.containsAll(structures) );
+		assertFalse( saved.contains(object1)       );
+		assertFalse( saved.contains(object2)       );
 	}
 }

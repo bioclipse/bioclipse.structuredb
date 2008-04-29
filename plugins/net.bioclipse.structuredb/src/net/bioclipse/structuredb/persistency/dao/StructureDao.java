@@ -20,7 +20,8 @@ import net.bioclipse.structuredb.domain.Structure;
  * @author jonalv
  *
  */
-public class StructureDao extends GenericDao<Structure> implements IStructureDao {
+public class StructureDao extends GenericDao<Structure> 
+                          implements IStructureDao {
 
 	public StructureDao() {
 		super(Structure.class);
@@ -33,17 +34,20 @@ public class StructureDao extends GenericDao<Structure> implements IStructureDao
 		
 		//TODO: Figure out a better way to do this:
 		if( structure.getFolder() != null ) {
-			getSqlMapClientTemplate().update( type.getSimpleName() + ".insert", structure );
+			getSqlMapClientTemplate()
+			.update( type.getSimpleName() + ".insert", structure );
 		}
 		else {
-			getSqlMapClientTemplate().update( type.getSimpleName() + ".insertWithoutFolder", structure );
+			getSqlMapClientTemplate()
+			.update( type.getSimpleName() + ".insertWithoutFolder", structure );
 		}
 	}
 	
 	@Override
 	public void update(Structure structure) {
 		if(structure.getFolder() == null) {
-			getSqlMapClientTemplate().update( "Structure-without-folder.update", structure );
+			getSqlMapClientTemplate()
+			.update( "Structure-without-folder.update", structure );
 		}
 		else {
 			getSqlMapClientTemplate().update( "Structure.update",  structure );
@@ -53,6 +57,7 @@ public class StructureDao extends GenericDao<Structure> implements IStructureDao
 
 	@SuppressWarnings("unchecked")
 	public List<Structure> getByName(String name) {
-		return getSqlMapClientTemplate().queryForList( "Structure.getByName" );
+		return getSqlMapClientTemplate()
+		       .queryForList( "Structure.getByName", name );
 	}
 }
