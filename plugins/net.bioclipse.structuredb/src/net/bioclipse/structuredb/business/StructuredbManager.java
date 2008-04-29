@@ -31,6 +31,9 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+/**
+ * @author jonalv
+ */
 public class StructuredbManager implements IStructuredbManager {
 
 	private Logger logger = Logger.getLogger(StructuredbManager.class);
@@ -183,4 +186,8 @@ public class StructuredbManager implements IStructuredbManager {
 		return null;
 	}
 
+	public void addStructuresFromSDF(String databaseName, String filePath) {
+		// TODO Auto-generated method stub
+		
+	}
 }

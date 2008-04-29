@@ -10,6 +10,7 @@
  *******************************************************************************/
 package testData;
 
+import java.io.File;
 import java.io.InputStream;
 
 import org.openscience.cdk.AtomContainer;
@@ -42,5 +43,12 @@ public abstract class TestData {
 		InputStream ins = TestData.class.getClassLoader().getResourceAsStream(path);
 		MDLReader reader = new MDLReader(ins);
 		return (AtomContainer) reader.read( (ChemObject)new Molecule() );
+	}
+	
+	public static String getTestSDFFilePath() {
+		return TestData.class
+                       .getClassLoader()
+	                   .getResource("testData/test.sdf")
+	                   .getPath();
 	}
 }

@@ -130,4 +130,17 @@ public class StructuredbManagerTest
 		keeper.setLoggedInUser( internalManager
 				                .retrieveUserByUsername("admin") );
 	}
+	
+	public void testImportingSDFFile() {
+		IStructuredbManager manager 
+			= (IStructuredbManager) applicationContext
+			                        .getBean("structuredbManagerTarget");
+		manager.addStructuresFromSDF( StructuredbManager.DEFAULT_DATABASE, 
+				                      TestData.getTestSDFFilePath() );
+		Folder folder  
+			= manager.retrieveFolderByName( StructuredbManager.DEFAULT_DATABASE, 
+			                                "test" );
+		assertNotNull(folder);
+		assertEquals( 2, folder.getStructures().size() );
+	}
 }
