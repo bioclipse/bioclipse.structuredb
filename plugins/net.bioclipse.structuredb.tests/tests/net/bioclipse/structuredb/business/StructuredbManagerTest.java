@@ -43,15 +43,15 @@ public class StructuredbManagerTest
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
 		
-		if(setUpWasRun) {
-			return;
-		} 
-		setUpWasRun = true;
-		
 		manager = (IStructuredbManager) applicationContext
 		                                .getBean("structuredbManagerTarget");
 		assertNotNull(manager);
 
+		if(setUpWasRun) {
+			return;
+		}
+		setUpWasRun = true;
+		
 		manager.createLocalInstance(database1);
 		manager.createLocalInstance(database2);
 		
@@ -96,18 +96,17 @@ public class StructuredbManagerTest
 	                                                         IOException {
 		ICDKManager cdk = new CDKManager();
 		
-		ICDKMolecule mol1=cdk.loadMolecule( 
-      		  TestData
-    		  .class
-    		  .getClassLoader()
-    		  .getResourceAsStream(
-    		  "testData/0037.cml"));
+		ICDKMolecule mol1 = cdk.loadMolecule( TestData
+    		                                  .class
+    		                                  .getClassLoader()
+    		                                  .getResourceAsStream(
+    		                                  "testData/0037.cml") );
 		assertNotNull(mol1);
 		
 		Structure structure1 = manager
-		                      .createStructure( 
-		                    		  database1, 
-				                      "0037", mol1);
+		                      .createStructure( database1, 
+				                                "0037", 
+				                                mol1 );
 		assertNotNull(structure1);
 		
 		Structure structure2 = manager
