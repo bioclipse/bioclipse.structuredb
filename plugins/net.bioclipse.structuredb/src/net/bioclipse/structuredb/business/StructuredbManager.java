@@ -10,13 +10,22 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.bioclipse.cdk.business.CDKManager;
+import net.bioclipse.cdk.business.ICDKManager;
+import net.bioclipse.cdk.domain.CDKMolecule;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Folder;
@@ -28,6 +37,7 @@ import net.bioclipse.structuredb.persistency.tables.TableCreator;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
+import org.openscience.cdk.CDKConstants;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -37,6 +47,14 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 public class StructuredbManager implements IStructuredbManager {
 
 	private Logger logger = Logger.getLogger(StructuredbManager.class);
+	
+	/* 
+	 * This isn't super if cdk starts using AOP for fancy stuff in the future 
+	 * but we don't want the recorded variant and this is a solution that is 
+	 * reasonably easy to test. Should cdk start using fancy stuff real 
+	 * integration testing running the OSGI layer is needed.
+	 */
+	private ICDKManager cdk = new CDKManager();
 	
 	//Package protected for testing purposes
 	Map<String, IStructuredbInstanceManager> instances 
@@ -186,8 +204,33 @@ public class StructuredbManager implements IStructuredbManager {
 		return null;
 	}
 
-	public void addStructuresFromSDF(String databaseName, String filePath) {
-		// TODO Auto-generated method stub
+	public void addStructuresFromSDF(String databaseName, String filePath) throws BioclipseException {
+		Iterator<ICDKMolecule> iterator;
+		try {
+			iterator 
+				= cdk.creatMoleculeIterator( new FileInputStream(filePath) );
+		} catch (FileNotFoundException e) {
+			throw new IllegalArgumentException( 
+					"Could not open file:" + filePath );
+		}
+		File file = new File(filePath);
+		Folder f = 	createFolder( databaseName, 
+				                  file.getName().replaceAll("\\..*?$", "") );
 		
+		while ( iterator.hasNext() ) {
+			ICDKMolecule molecule = iterator.next();
+			
+			Object title = molecule.getAtomContainer()
+			                       .getProperty(CDKConstants.TITLE);
+			
+			Structure s 
+				= new Structure( title == null ? ""
+						                       : title.toString(),
+						         molecule);
+			
+			instances.get(databaseName).insertStructure(s);
+			f.addStructure(s);
+			instances.get(databaseName).update(f);
+		}
 	}
 }

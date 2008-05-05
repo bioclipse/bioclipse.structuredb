@@ -27,8 +27,6 @@ import net.bioclipse.structuredb.domain.User;
 @PublishedClass ("Handles structure databases")
 public interface IStructuredbManager extends IBioclipseManager {
 
-	public static final String DEFAULT_DATABASE = "localServer";
-	
 	/**
 	 * Creates a local database instance
 	 * 
@@ -193,6 +191,7 @@ public interface IStructuredbManager extends IBioclipseManager {
 	 * a folder named after the file
 	 * 
 	 * @param path
+	 * @throws BioclipseException 
 	 */
 	@PublishedMethod ( params = "String databaseName, String filePath",
 			           methodSummary = "Saves all structures in a given sdf " +
@@ -200,5 +199,5 @@ public interface IStructuredbManager extends IBioclipseManager {
 			           		           "name. The strucutres are stored in " +
 			           		           "library named after the name of the " +
 			           		           "sdf file")
-	public void addStructuresFromSDF(String databaseName, String filePath);
+	public void addStructuresFromSDF(String databaseName, String filePath) throws BioclipseException;
 }

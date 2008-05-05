@@ -33,6 +33,35 @@ import testData.TestData;
 public class StructuredbManagerTest 
        extends AbstractDependencyInjectionSpringContextTests {
 
+	private IStructuredbManager manager; 
+	private String database1 = "database1";
+	private String database2 = "database2";
+	
+	private static boolean setUpWasRun = false;
+	
+	@Override
+	protected void onSetUp() throws Exception {
+		super.onSetUp();
+		
+		if(setUpWasRun) {
+			return;
+		} 
+		setUpWasRun = true;
+		
+		manager = (IStructuredbManager) applicationContext
+		                                .getBean("structuredbManagerTarget");
+		assertNotNull(manager);
+
+		manager.createLocalInstance(database1);
+		manager.createLocalInstance(database2);
+		
+		for( ApplicationContext context : 
+			 ((StructuredbManager)manager).applicationContexts.values() ) {
+			
+			setALoggedInUser(context);
+		}
+	}
+	
 	@Override
 	protected String[] getConfigLocations() {
 		String loc = Structuredb.class
@@ -52,21 +81,6 @@ public class StructuredbManagerTest
 	
 	public void testCreatingTwoFoldersInTwoDatabases() {
 		
-		IStructuredbManager manager 
-			= (IStructuredbManager) applicationContext
-			                        .getBean("structuredbManagerTarget");
-		assertNotNull(manager);
-		String database1 = "database1";
-		String database2 = "database2";
-		manager.createLocalInstance(database1);
-		manager.createLocalInstance(database2);
-		
-		for( ApplicationContext context : 
-			 ((StructuredbManager)manager).applicationContexts.values() ) {
-			
-			setALoggedInUser(context);
-		}
-		
 		Folder f2 = manager.createFolder(database2, "testFolder2");
 		assertNotNull(f2);
 		Folder f1 = manager.createFolder(database1, "testFolder1");
@@ -80,12 +94,6 @@ public class StructuredbManagerTest
 	
 	public void testCreatingAndRetrievingStructures() throws BioclipseException, 
 	                                                         IOException {
-		
-		IStructuredbManager manager 
-		= (IStructuredbManager) applicationContext
-		                        .getBean("structuredbManagerTarget");
-		String db = "structureDatabase";
-		manager.createLocalInstance(db);
 		ICDKManager cdk = new CDKManager();
 		
 		ICDKMolecule mol1=cdk.loadMolecule( 
@@ -98,13 +106,13 @@ public class StructuredbManagerTest
 		
 		Structure structure1 = manager
 		                      .createStructure( 
-		                    		  db, 
+		                    		  database1, 
 				                      "0037", mol1);
 		assertNotNull(structure1);
 		
 		Structure structure2 = manager
 						       .createStructure( 
-						      		  db, 
+						      		  database1, 
 						              "0106", 
 						              cdk.loadMolecule(
 						            		  TestData
@@ -117,12 +125,14 @@ public class StructuredbManagerTest
 
 		assertEquals( structure1, 
 				      manager
-				      .retrieveStructureByName( db, structure1.getName() ) );
+				      .retrieveStructureByName( database1, 
+				    		                    structure1.getName() ) );
 		assertEquals( structure2, 
 			          manager
-			          .retrieveStructureByName( db, structure2.getName() ) );
+			          .retrieveStructureByName( database1, 
+			        		                    structure2.getName() ) );
 		
-		List<Structure> structures = manager.retrieveAllStructures(db);
+		List<Structure> structures = manager.retrieveAllStructures(database1);
 		
 		assertTrue( structures.contains(structure1) );
 		assertTrue( structures.contains(structure2) );
@@ -138,14 +148,14 @@ public class StructuredbManagerTest
 				                .retrieveUserByUsername("admin") );
 	}
 	
-	public void testImportingSDFFile() {
+	public void testImportingSDFFile() throws BioclipseException {
 		IStructuredbManager manager 
 			= (IStructuredbManager) applicationContext
 			                        .getBean("structuredbManagerTarget");
-		manager.addStructuresFromSDF( StructuredbManager.DEFAULT_DATABASE, 
+		manager.addStructuresFromSDF( database1, 
 				                      TestData.getTestSDFFilePath() );
 		Folder folder  
-			= manager.retrieveFolderByName( StructuredbManager.DEFAULT_DATABASE, 
+			= manager.retrieveFolderByName( database1, 
 			                                "test" );
 		assertNotNull(folder);
 		assertEquals( 2, folder.getStructures().size() );
