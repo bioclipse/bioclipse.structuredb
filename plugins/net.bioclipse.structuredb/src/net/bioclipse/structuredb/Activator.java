@@ -11,18 +11,10 @@
 
 package net.bioclipse.structuredb;
 
-import java.io.IOException;
-import java.net.URL;
-
-import net.bioclipse.hsqldb.HsqldbUtil;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -35,8 +27,6 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 
-	private ApplicationContext applicationContext;
-	
 	/**
 	 * The constructor
 	 */
@@ -51,7 +41,6 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		HsqldbUtil.getInstance().startHsqldbServer();
 	}
 
 	/*
@@ -81,31 +70,5 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
-	}
-	
-	/**
-	 * @return the Spring ApplicationContext
-	 */
-	public ApplicationContext getApplicationContext() {
-		
-		if(applicationContext == null) {
-			try {
-				applicationContext = new FileSystemXmlApplicationContext( getPluginURL() + 
-				                                                          "src" +
-				                                                          java.io.File.separator + 
-				                                                          "applicationContext.xml" );
-			} catch (Exception e) {
-				throw new RuntimeException("Could not create applicationContext", e);
-			}
-		}
-		return applicationContext;
-	}
-	
-	/**
-	 * @return the URL for this plugin
-	 * @throws IOException
-	 */
-	public static URL getPluginURL() throws IOException {
-        return FileLocator.toFileURL( Platform.getBundle(PLUGIN_ID).getEntry("/") );
 	}
 }

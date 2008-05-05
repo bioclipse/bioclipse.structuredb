@@ -20,27 +20,20 @@ public class HsqldbTest {
     private static final Logger logger = Logger.getLogger(HsqldbTest.class);
 
     @Test
-    public void testGettingConnection() {
-
-    	HsqldbUtil.getInstance().startHsqldbServer();
-    	Connection con 
-			= getConnection("jdbc:hsqldb:hsql://127.0.0.1/localServer");
-    	assertNotNull(con);
-    }
-    
-    @Test
 	public void testCreatingExtraDatabases() {
 
-    	testGettingConnection();
-    	
-		HsqldbUtil.getInstance().addDatabase("testDatabase");
-		HsqldbUtil.getInstance().addDatabase("testDatabase2");
-		Connection con1 
-			= getConnection("jdbc:hsqldb:hsql://127.0.0.1/testDatabase");
-		Connection con2 
-			= getConnection("jdbc:hsqldb:hsql://127.0.0.1/testDatabase2");
+    	   	
+		String url1 
+			= HsqldbUtil.getInstance().getConnectionUrl("testDatabase");
+		String url2 
+			= HsqldbUtil.getInstance().getConnectionUrl("testDatabase2");
+		Connection con1 = getConnection(url1);
+		Connection con2 = getConnection(url2);
+		
 		assertNotNull(con1);
 		assertNotNull(con2);
+		
+		HsqldbUtil.getInstance().stopAllDatabaseInstances();
 	}
 	
 	private Connection getConnection(String url) {

@@ -26,8 +26,6 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 	
-	private Thread hsqldbServerThread;
-	
 	/**
 	 * The constructor
 	 */
@@ -51,10 +49,7 @@ public class Activator extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		
 		try {
-			if( hsqldbServerIsRunning() ) {
-				HsqldbUtil.getInstance().stopHsqldbServer();
-				System.out.println("server stopped");
-			}
+			HsqldbUtil.getInstance().stopAllDatabaseInstances();
 		}
 		finally {
 			plugin = null;
@@ -81,17 +76,4 @@ public class Activator extends AbstractUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
-
-	public Thread getHsqldbServer() {
-		return hsqldbServerThread;
-	}
-
-	public void setHsqldbServer(Thread hsqldbServer) {
-		this.hsqldbServerThread = hsqldbServer;
-	}
-
-	public boolean hsqldbServerIsRunning() {
-		return hsqldbServerThread != null ;
-	}
-	
 }

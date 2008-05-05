@@ -53,9 +53,8 @@ public class StructuredbManager implements IStructuredbManager {
 			throw new IllegalArgumentException( "Database name already used: " 
 					                            + databaseName );
 		}
-		HsqldbUtil.getInstance().addDatabase(databaseName);
-		TableCreator.INSTANCE.createTables( "jdbc:hsqldb:hsql://127.0.0.1/"
-				                             + databaseName );
+		TableCreator.INSTANCE.createTables( 
+				HsqldbUtil.getInstance().getConnectionUrl(databaseName) );
 		
 		Map<String, IStructuredbInstanceManager> newInstances 
 			= new HashMap<String, IStructuredbInstanceManager>();
@@ -114,7 +113,8 @@ public class StructuredbManager implements IStructuredbManager {
 			= (BasicDataSource) context.getBean("dataSource");
 		
 		if(local) {
-			dataSource.setUrl( "jdbc:hsqldb:hsql://127.0.0.1/" + databaseName );
+			dataSource.setUrl( 
+					HsqldbUtil.getInstance().getConnectionUrl(databaseName) );
 		}
 		else {
 			throw new UnsupportedOperationException( 
