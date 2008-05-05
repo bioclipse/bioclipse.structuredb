@@ -16,7 +16,9 @@ import java.util.List;
 
 import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
+import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
@@ -86,28 +88,33 @@ public class StructuredbManagerTest
 		manager.createLocalInstance(db);
 		ICDKManager cdk = new CDKManager();
 		
+		ICDKMolecule mol1=cdk.loadMolecule( 
+      		  TestData
+    		  .class
+    		  .getClassLoader()
+    		  .getResourceAsStream(
+    		  "testData/0037.cml"));
+		assertNotNull(mol1);
+		
 		Structure structure1 = manager
 		                      .createStructure( 
 		                    		  db, 
-				                      "cyclo propane", 
-				                      cdk.loadMolecule( 
-				                    		  TestData
-				                    		  .class
-				                    		  .getClassLoader()
-				                    		  .getResourceAsStream(
-				                    		  "testData/cyclopropane.mol")) );
+				                      "0037", mol1);
+		assertNotNull(structure1);
 		
 		Structure structure2 = manager
 						       .createStructure( 
 						      		  db, 
-						              "cyclo octane", 
+						              "0106", 
 						              cdk.loadMolecule(
 						            		  TestData
 				                    		  .class
 				                    		  .getClassLoader()
 				                    		  .getResourceAsStream(
-						            		  "testData/cyclooctan.mol")) );
-		
+						            		  "testData/0106.cml")) );
+
+		assertNotNull(structure2);
+
 		assertEquals( structure1, 
 				      manager
 				      .retrieveStructureByName( db, structure1.getName() ) );
