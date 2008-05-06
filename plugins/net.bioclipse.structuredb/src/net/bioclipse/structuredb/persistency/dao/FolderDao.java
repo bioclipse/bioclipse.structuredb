@@ -10,7 +10,10 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.sql.SQLException;
+
 import net.bioclipse.structuredb.domain.Folder;
+import net.bioclipse.structuredb.domain.Structure;
 
 /**
  * The folderDao persists and loads libraries
@@ -33,7 +36,7 @@ public class FolderDao extends GenericDao<Folder> implements IFolderDao {
 	@Override
 	public void update(Folder folder) {
 		getSqlMapClientTemplate().update( "BaseObject.update", folder );
-		getSqlMapClientTemplate().update( "Folder.update",    folder );
+		getSqlMapClientTemplate().update( "Folder.update",     folder );
 	}
 
 	public Folder getByName(String name) {

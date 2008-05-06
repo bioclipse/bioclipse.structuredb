@@ -31,6 +31,18 @@ public class StructuredbInstanceManager
 
 	public void insertFolder(Folder folder) {
 		folderDao.insert(folder);
+		persistRelatedStructures(folder);
+	}
+	
+	private void persistRelatedStructures(Folder folder) {
+		for( Structure s : folder.getStructures() ) {
+			if( structureDao.getById(s.getId()) == null) {
+				structureDao.insert(s);
+			}
+			else {
+				structureDao.update(s);
+			}
+		}
 	}
 
 	public void insertStructure(Structure structure) {
@@ -79,6 +91,7 @@ public class StructuredbInstanceManager
 
 	public void update(Folder folder) {
 		folderDao.update(folder);
+		persistRelatedStructures(folder);
 	}
 
 	public void update(User user) {
