@@ -49,4 +49,15 @@ public class FolderDaoTest extends GenericDaoTest<Folder> {
 		assertEquals( folder, 
 				      ( (IFolderDao)dao ).getByName(folder.getName()) );
 	}
+	
+	public void testPuttingStructureInFolder() {
+		Folder folder = new Folder("folder");
+		Structure structure = new Structure();
+		addCreatorAndEditor(folder);
+		addCreatorAndEditor(structure);
+		folder.addStructure(structure);
+		dao.insert(folder);
+		Folder fetched = ( (IFolderDao)dao ).getByName( folder.getName() );
+		assertTrue( folder.hasValuesEqualTo(fetched) );
+	}
 }
