@@ -122,14 +122,14 @@ public class StructuredbManagerTest
 
 		assertNotNull(structure2);
 
-		assertEquals( structure1, 
-				      manager
-				      .retrieveStructureByName( database1, 
-				    		                    structure1.getName() ) );
-		assertEquals( structure2, 
-			          manager
-			          .retrieveStructureByName( database1, 
-			        		                    structure2.getName() ) );
+		assertTrue( manager
+				    .retrieveStructuresByName( database1, 
+				                              structure1.getName() )
+				    .contains(structure1) );
+		assertTrue( manager
+			        .retrieveStructuresByName( database1, 
+			        		                    structure2.getName() )
+			        .contains(structure2) );
 		
 		List<Structure> structures = manager.retrieveAllStructures(database1);
 		

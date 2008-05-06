@@ -64,8 +64,8 @@ public interface IStructuredbManager extends IBioclipseManager {
 	@PublishedMethod ( params = "String databaseName, String name", 
 			           methodSummary = "Fetches all structures by a given " +
 			           		           "name from a database with a given name")
-	public List<Structure> retrieveStructureByName( String databaseName, 
-			                                        String structureName );
+	public List<Structure> retrieveStructuresByName( String databaseName, 
+			                                         String structureName );
 	
 	/**
 	 * Retrieves a folder with a given name from a database with a given name

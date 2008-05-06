@@ -52,7 +52,8 @@ public class StructuredbManager implements IStructuredbManager {
 	 * This isn't super if cdk starts using AOP for fancy stuff in the future 
 	 * but we don't want the recorded variant and this is a solution that is 
 	 * reasonably easy to test. Should cdk start using fancy stuff real 
-	 * integration testing running the OSGI layer is needed.
+	 * integration testing running the OSGI layer is needed and this instance 
+	 * would need to come from the OSGI service container
 	 */
 	private ICDKManager cdk = new CDKManager();
 	
@@ -147,14 +148,20 @@ public class StructuredbManager implements IStructuredbManager {
 		
 		Folder folder = new Folder(folderName);
 		instances.get(databaseName).insertFolder(folder);
-		logger.debug("Folder " + folderName + " created in " + databaseName);
+		logger.debug("Folder " + folderName + " inserted in " + databaseName);
 		return folder;
 	}
 
-	public Structure createStructure(String databaseName, String moleculeName,
-			ICDKMolecule cdkMolecule) throws BioclipseException {
-		// TODO Auto-generated method stub
-		return null;
+	public Structure createStructure( String databaseName, 
+			                          String moleculeName,
+			                          ICDKMolecule cdkMolecule) 
+	                                  throws BioclipseException {
+		
+		Structure s = new Structure( moleculeName, cdkMolecule );
+		instances.get(databaseName).insertStructure(s);
+		logger.debug( "Structure " + moleculeName 
+				      + " inserted in " + databaseName );
+		return s;
 	}
 
 	public User createUser(String databaseName, String username,
@@ -174,8 +181,7 @@ public class StructuredbManager implements IStructuredbManager {
 	}
 
 	public List<Structure> retrieveAllStructures(String databaseName) {
-		// TODO Auto-generated method stub
-		return null;
+		return instances.get(databaseName).retrieveAllStructures();
 	}
 
 	public List<User> retrieveAllUser(String databaseName) {
@@ -188,10 +194,10 @@ public class StructuredbManager implements IStructuredbManager {
 		return instances.get(databaseName).retrieveFolderByName(folderName);
 	}
 
-	public List<Structure> retrieveStructureByName(String databaseName,
-			String structureName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Structure> retrieveStructuresByName( String databaseName,
+			                                        String structureName ) {
+		return instances.get(databaseName)
+		                .retrieveStructureByName(structureName);
 	}
 
 	public User retrieveUserByName(String databaseName, String username) {
