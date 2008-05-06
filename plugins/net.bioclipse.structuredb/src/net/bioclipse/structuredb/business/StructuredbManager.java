@@ -58,7 +58,7 @@ public class StructuredbManager implements IStructuredbManager {
 	private ICDKManager cdk = new CDKManager();
 	
 	//Package protected for testing purposes
-	Map<String, IStructuredbInstanceManager> instances 
+	Map<String, IStructuredbInstanceManager> internalManagers 
 		= new HashMap<String, IStructuredbInstanceManager>();
 
 	//Package protected for testing purposes
@@ -68,7 +68,7 @@ public class StructuredbManager implements IStructuredbManager {
 	public void createLocalInstance(String databaseName)
 		throws IllegalArgumentException {
 
-		if( instances.containsKey(databaseName) ) {
+		if( internalManagers.containsKey(databaseName) ) {
 			throw new IllegalArgumentException( "Database name already used: " 
 					                            + databaseName );
 		}
@@ -81,7 +81,7 @@ public class StructuredbManager implements IStructuredbManager {
 		Map<String, ApplicationContext> newApplicationContexts
 			= new HashMap<String, ApplicationContext>();
 		
-		for( String nameKey : instances.keySet() ) {
+		for( String nameKey : internalManagers.keySet() ) {
 			//TODO: The day we not only handle local databases the row here 
 			//      below will need to change
 			newApplicationContexts.put( nameKey, 
@@ -94,12 +94,12 @@ public class StructuredbManager implements IStructuredbManager {
 					    .getBean("structuredbInstanceManager") );
 		}
 		
-		instances           = newInstances;
+		internalManagers    = newInstances;
 		applicationContexts = newApplicationContexts;
 		
 		applicationContexts.put( databaseName,  
 				                 getApplicationcontext(databaseName, true) );
-		instances.put( 
+		internalManagers.put( 
 				databaseName, 
 				(IStructuredbInstanceManager) 
 					applicationContexts.get( databaseName)
@@ -147,7 +147,7 @@ public class StructuredbManager implements IStructuredbManager {
 			throws IllegalArgumentException {
 		
 		Folder folder = new Folder(folderName);
-		instances.get(databaseName).insertFolder(folder);
+		internalManagers.get(databaseName).insertFolder(folder);
 		logger.debug("Folder " + folderName + " inserted in " + databaseName);
 		return folder;
 	}
@@ -158,16 +158,20 @@ public class StructuredbManager implements IStructuredbManager {
 	                                  throws BioclipseException {
 		
 		Structure s = new Structure( moleculeName, cdkMolecule );
-		instances.get(databaseName).insertStructure(s);
+		internalManagers.get(databaseName).insertStructure(s);
 		logger.debug( "Structure " + moleculeName 
 				      + " inserted in " + databaseName );
 		return s;
 	}
 
-	public User createUser(String databaseName, String username,
-			String password, boolean sudoer) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+	public User createUser( String databaseName, 
+			                String username,
+			                String password, 
+			                boolean sudoer) throws IllegalArgumentException {
+
+		User user = new User(username, password, sudoer);
+		internalManagers.get(databaseName).insertUser(user);
+		return user;
 	}
 
 	public void removeLocalInstance(String databaseName) {
@@ -176,32 +180,33 @@ public class StructuredbManager implements IStructuredbManager {
 	}
 
 	public List<Folder> retrieveAllFolders(String databaseName) {
-		return instances.get(databaseName).retrieveAllFolders();
+		return internalManagers.get(databaseName).retrieveAllFolders();
 	}
 
 	public List<Structure> retrieveAllStructures(String databaseName) {
-		return instances.get(databaseName).retrieveAllStructures();
+		return internalManagers.get(databaseName).retrieveAllStructures();
 	}
 
-	public List<User> retrieveAllUser(String databaseName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<User> retrieveAllUsers(String databaseName) {
+		return internalManagers.get(databaseName).retrieveAllUsers();
 	}
 
-	public Folder retrieveFolderByName(String databaseName, String folderName) {
+	public Folder retrieveFolderByName( String databaseName, 
+			                            String folderName ) {
 
-		return instances.get(databaseName).retrieveFolderByName(folderName);
+		return internalManagers.get(databaseName)
+		                       .retrieveFolderByName(folderName);
 	}
 
 	public List<Structure> retrieveStructuresByName( String databaseName,
-			                                        String structureName ) {
-		return instances.get(databaseName)
-		                .retrieveStructureByName(structureName);
+			                                         String structureName ) {
+		return internalManagers.get(databaseName)
+		                       .retrieveStructureByName(structureName);
 	}
 
 	public User retrieveUserByName(String databaseName, String username) {
-		// TODO Auto-generated method stub
-		return null;
+		return internalManagers.get(databaseName)
+		                       .retrieveUserByUsername(username);
 	}
 
 	public String getNamespace() {
@@ -209,7 +214,9 @@ public class StructuredbManager implements IStructuredbManager {
 		return null;
 	}
 
-	public void addStructuresFromSDF(String databaseName, String filePath) throws BioclipseException {
+	public void addStructuresFromSDF( String databaseName, 
+			                          String filePath ) 
+	                                  throws BioclipseException {
 		Iterator<ICDKMolecule> iterator;
 		try {
 			iterator 
@@ -233,9 +240,9 @@ public class StructuredbManager implements IStructuredbManager {
 						                       : title.toString(),
 						         molecule);
 			
-			instances.get(databaseName).insertStructure(s);
+			internalManagers.get(databaseName).insertStructure(s);
 			f.addStructure(s);
-			instances.get(databaseName).update(f);
+			internalManagers.get(databaseName).update(f);
 		}
 	}
 }

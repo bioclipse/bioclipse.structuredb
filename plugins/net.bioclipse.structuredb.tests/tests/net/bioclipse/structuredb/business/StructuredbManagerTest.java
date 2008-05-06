@@ -22,6 +22,7 @@ import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
 
@@ -171,5 +172,17 @@ public class StructuredbManagerTest
 		List<Folder> folders = manager.retrieveAllFolders(database1);	
 		assertTrue( folders.contains(folder1) );
 		assertTrue( folders.contains(folder2) );
+	}
+	
+	public void testCreatingAndRetrievingUsers() {
+		User user1 = manager.createUser(database1, "user1", "", true);
+		User user2 = manager.createUser(database1, "user2", "", true);
+		assertNotNull(user1);
+		assertNotNull(user2);
+		assertEquals( user1,
+				      manager.retrieveUserByName(database1, user1.getName()) );
+		List<User> users = manager.retrieveAllUsers(database1);
+		assertTrue( users.contains(user1) );
+		assertTrue( users.contains(user2) );
 	}
 }

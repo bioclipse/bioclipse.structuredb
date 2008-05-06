@@ -184,7 +184,7 @@ public interface IStructuredbManager extends IBioclipseManager {
 	@PublishedMethod ( params = "String databaseName", 
 			           methodSummary = "Fetches all users from a database " +
 			           		           "with a given name")
-	public List<User> retrieveAllUser( String databaseName );
+	public List<User> retrieveAllUsers( String databaseName );
 	
 	/**
 	 * Persists all structures in a sdf file in the specified database in 
