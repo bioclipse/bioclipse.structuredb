@@ -64,9 +64,8 @@ public class HsqldbUtil {
 		if( path.startsWith("file:") ) {
 			path = path.substring(5);
 		}
-		path += ".hsqldbDatabases" + File.separator;
+		path += ".hsqldbDatabases";
 		File f = new File(path);
-		f.mkdir();
 		logger.debug("created directory: " + path + " for storing databasefile");
 		fileFolder = path;
 	}
