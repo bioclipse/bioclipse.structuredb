@@ -11,9 +11,14 @@
 
 package net.bioclipse.structuredb;
 
+import net.bioclipse.core.util.LogUtils;
+import net.bioclipse.structuredb.business.IStructuredbManager;
+
+import org.apache.log4j.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -21,11 +26,15 @@ import org.springframework.context.ApplicationContext;
  */
 public class Activator extends AbstractUIPlugin {
 
+	private Logger logger = Logger.getLogger(Activator.class);
+	
 	// The plug-in ID
 	public static final String PLUGIN_ID = "net.bioclipse.structuredb";
 
 	// The shared instance
 	private static Activator plugin;
+	
+	private ServiceTracker finderTracker;
 
 	/**
 	 * The constructor
@@ -41,6 +50,10 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
+		finderTracker = new ServiceTracker( context, 
+                                            IStructuredbManager.class.getName(), 
+                                            null );
+		finderTracker.open();
 	}
 
 	/*
@@ -70,5 +83,19 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+
+	public Object getStructuredbManager() {
+		IStructuredbManager manager = null;
+		try {
+			manager = (IStructuredbManager) finderTracker.waitForService(1000*10);
+		} catch (InterruptedException e) {
+			logger.warn("Exception occurred while attempting to get the StructuredbManager" + e);
+		    LogUtils.debugTrace(logger, e);
+		}
+		if(manager == null) {
+			throw new IllegalStateException("Could not get the structuredb manager");
+		}
+		return manager;
 	}
 }

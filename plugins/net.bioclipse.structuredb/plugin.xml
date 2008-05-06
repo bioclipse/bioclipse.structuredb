@@ -73,4 +73,12 @@
                 tooltip="Open a dialog for creating a new Structure Database"/>
         </objectContribution>
     </extension>
+    
+    <extension
+         point="net.bioclipse.scripting.contribution">
+      <scriptContribution
+            id="net.bioclipse.structuredb.StructuredbManager"
+            service="net.bioclipse.structuredb.business.StructuredbManagerFactory">
+      </scriptContribution>
+   </extension>
 </plugin>

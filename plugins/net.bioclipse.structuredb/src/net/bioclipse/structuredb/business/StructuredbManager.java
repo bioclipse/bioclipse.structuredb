@@ -120,7 +120,7 @@ public class StructuredbManager implements IStructuredbManager {
 	}
 
 	private ApplicationContext getApplicationcontext( String databaseName, 
-			                                            boolean local ) {
+			                                          boolean local ) {
 		FileSystemXmlApplicationContext context 
 			= new FileSystemXmlApplicationContext( 
 				Structuredb.class
@@ -175,8 +175,8 @@ public class StructuredbManager implements IStructuredbManager {
 	}
 
 	public void removeLocalInstance(String databaseName) {
-		// TODO Auto-generated method stub
-
+		//TODO FIXME
+		logger.info("StructuredbManager.removeLocalInstance -- FIXME");
 	}
 
 	public List<Folder> retrieveAllFolders(String databaseName) {
@@ -210,8 +210,7 @@ public class StructuredbManager implements IStructuredbManager {
 	}
 
 	public String getNamespace() {
-		// TODO Auto-generated method stub
-		return null;
+		return "structuredb";
 	}
 
 	public void addStructuresFromSDF( String databaseName, 
