@@ -98,7 +98,7 @@ public interface IStructuredbInstanceManager {
 	/**
 	 * @return all libraries
 	 */
-	public List<Folder> retrieveAllLibraries();
+	public List<Folder> retrieveAllFolders();
 	
 	/**
 	 * @return all users

@@ -176,8 +176,7 @@ public class StructuredbManager implements IStructuredbManager {
 	}
 
 	public List<Folder> retrieveAllFolders(String databaseName) {
-		// TODO Auto-generated method stub
-		return null;
+		return instances.get(databaseName).retrieveAllFolders();
 	}
 
 	public List<Structure> retrieveAllStructures(String databaseName) {

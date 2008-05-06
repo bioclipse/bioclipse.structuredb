@@ -53,7 +53,7 @@ public class StructuredbInstanceManager
 		structureDao.delete( structure.getId() );
 	}
 
-	public List<Folder> retrieveAllLibraries() {
+	public List<Folder> retrieveAllFolders() {
 		return new BioList<Folder>( folderDao.getAll() );
 	}
 

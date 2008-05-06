@@ -159,4 +159,17 @@ public class StructuredbManagerTest
 		assertNotNull(folder);
 		assertEquals( 2, folder.getStructures().size() );
 	}
+	
+	public void testCreatingAndRetrievingFolders() {
+		Folder folder1 = manager.createFolder(database1, "folder1");
+		Folder folder2 = manager.createFolder(database1, "folder2");
+		assertNotNull(folder1);
+		assertNotNull(folder2);
+		assertEquals( folder1, 
+				      manager
+				      .retrieveFolderByName( database1, folder1.getName() ) );
+		List<Folder> folders = manager.retrieveAllFolders(database1);	
+		assertTrue( folders.contains(folder1) );
+		assertTrue( folders.contains(folder2) );
+	}
 }
