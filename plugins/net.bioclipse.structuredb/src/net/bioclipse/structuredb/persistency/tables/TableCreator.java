@@ -56,9 +56,12 @@ public class TableCreator {
 			
 			Connection con = getConnection(url);
 			
-			String path = this.getClass().getClassLoader().getResource("net/bioclipse/structuredb/persistency/tables").getPath();
 			for( String sqlFile : SQL_FILES_RUNORDER ) {
-				Scanner scanner = new Scanner( new File(path + File.separator + sqlFile) );
+				Scanner scanner = new Scanner( 
+					this.getClass()
+					    .getResourceAsStream(
+					    		"/net/bioclipse/structuredb/persistency/tables"
+					    		+ File.separator + sqlFile ) );
 				while( scanner.hasNextLine() ) {
 					String sql = readStatement(scanner);
 					if( sql.matches("^CREATE.*$") ) {
@@ -88,8 +91,6 @@ public class TableCreator {
 		}
 		catch (ClassNotFoundException e) {
 			throw new IllegalStateException("Could not find the jdbcDriver class", e);
-		} catch (FileNotFoundException e) {
-			throw new IllegalStateException("Could not find the sqlfile", e);
 		}
 	}
 

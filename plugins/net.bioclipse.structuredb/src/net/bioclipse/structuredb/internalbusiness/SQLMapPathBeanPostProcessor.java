@@ -10,12 +10,15 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
 
+import java.net.URL;
+
 import net.bioclipse.structuredb.Structuredb;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.orm.ibatis.SqlMapClientFactoryBean;
 
 /**
@@ -37,18 +40,23 @@ public class SQLMapPathBeanPostProcessor implements BeanPostProcessor {
 		
 		if( beanName.equals("sqlMapClient") &&
 			bean instanceof SqlMapClientFactoryBean	) {
-			
-			String path = Structuredb.class
-	                                 .getClassLoader()
-	                                 .getResource("sqlMapConfig.xml")
-		                             .toString();
 		
-			if( path.contains("file:") ) {
-				path = path.substring( 5 );
-			}
+//			path = FileLocator.toFileURL( 
+//			      	  Structuredb.class
+//	                             .getClassLoader()
+//	                             .getResource("sqlMapConfig.xml") )
+//	                             .getPath();
+			
+			URL url = Structuredb.class
+	                             .getClassLoader()
+	                             .getResource("sqlMapConfig.xml");
+		
+//			if( path.contains("file:") ) {
+//				path = path.substring( 5 );
+//			}
 			
 			( (SqlMapClientFactoryBean)bean ).setConfigLocation( 
-					new FileSystemResource(path) );
+					new UrlResource(url) );
 		}
 		return bean;
 	}
