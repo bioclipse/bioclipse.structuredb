@@ -19,15 +19,15 @@ import org.eclipse.ui.actions.ActionDelegate;
 
 public class CreateStructuredbAction extends ActionDelegate {
 
-	@Override
-	public void run(IAction action) {
-		CreateStructureDatabaseDialog dialog = 
-			new CreateStructureDatabaseDialog( PlatformUI
-					                           .getWorkbench()
-					                           .getActiveWorkbenchWindow()
-					                           .getShell(), 
-					                           SWT.NONE );
-		dialog.open();
-		//TODO: create the new database
-	}
+    @Override
+    public void run(IAction action) {
+        CreateStructureDatabaseDialog dialog = 
+            new CreateStructureDatabaseDialog( PlatformUI
+                                               .getWorkbench()
+                                               .getActiveWorkbenchWindow()
+                                               .getShell(), 
+                                               SWT.NONE );
+        dialog.open();
+        //TODO: create the new database
+    }
 }

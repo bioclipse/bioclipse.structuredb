@@ -26,76 +26,76 @@ import org.springframework.context.ApplicationContext;
  */
 public class StructuredbInstance implements IStructuredbInstance {
 
-	private ApplicationContext context;
-	private String name;
-	private Structuredb structuredb;
-	
-	public StructuredbInstance( Structuredb structuredb) {
-		this.structuredb = structuredb;
-	}
-	
-	public List<IServiceObject> getChildren() {
-		return new ArrayList<IServiceObject>();
-	}
+    private ApplicationContext context;
+    private String name;
+    private Structuredb structuredb;
+    
+    public StructuredbInstance( Structuredb structuredb) {
+        this.structuredb = structuredb;
+    }
+    
+    public List<IServiceObject> getChildren() {
+        return new ArrayList<IServiceObject>();
+    }
 
-	public String getIcon() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public String getIcon() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	public String getId() {
-		return "net.bioclipse.structuredb - " + name;
-	}
+    public String getId() {
+        return "net.bioclipse.structuredb - " + name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public IServiceContainer getParent() {
-		return structuredb;
-	}
+    public IServiceContainer getParent() {
+        return structuredb;
+    }
 
-	public String getParentID() {
-		return "net.bioclipse.structuredb";
-	}
+    public String getParentID() {
+        return "net.bioclipse.structuredb";
+    }
 
-	public void setIcon(String icon) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setIcon(String icon) {
+        // TODO Auto-generated method stub
+        
+    }
 
-	public void setId(String id) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setId(String id) {
+        // TODO Auto-generated method stub
+        
+    }
 
-	public void setName(String name) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setName(String name) {
+        // TODO Auto-generated method stub
+        
+    }
 
-	public void setParent(IServiceContainer parent) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setParent(IServiceContainer parent) {
+        // TODO Auto-generated method stub
+        
+    }
 
-	public void setParentID(String parentID) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setParentID(String parentID) {
+        // TODO Auto-generated method stub
+        
+    }
 
-	public IResource getResource() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public IResource getResource() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	public String getUID() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public String getUID() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	public Object getAdapter(Class adapter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Object getAdapter(Class adapter) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

@@ -16,17 +16,17 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 
 public class StructuredbFactory implements IExecutableExtension,
-		IExecutableExtensionFactory {
+        IExecutableExtensionFactory {
 
-	private Structuredb structuredb;
-	
-	public void setInitializationData( IConfigurationElement config,
-			                           String propertyName, 
-			                           Object data ) throws CoreException {
-		structuredb = new Structuredb();
-	}
+    private Structuredb structuredb;
+    
+    public void setInitializationData( IConfigurationElement config,
+                                       String propertyName, 
+                                       Object data ) throws CoreException {
+        structuredb = new Structuredb();
+    }
 
-	public Object create() throws CoreException {
-		return this.structuredb;
-	}
+    public Object create() throws CoreException {
+        return this.structuredb;
+    }
 }

@@ -18,9 +18,9 @@ import org.springframework.aop.support.DefaultIntroductionAdvisor;
  */
 public class FetchIntroductionAdvisor extends DefaultIntroductionAdvisor {
 
-	private static final long serialVersionUID = -6956114827617421806L;
+    private static final long serialVersionUID = -6956114827617421806L;
 
-	public FetchIntroductionAdvisor() {
-		super( new FetchIntroductionInterceptor() );
-	}
+    public FetchIntroductionAdvisor() {
+        super( new FetchIntroductionInterceptor() );
+    }
 }

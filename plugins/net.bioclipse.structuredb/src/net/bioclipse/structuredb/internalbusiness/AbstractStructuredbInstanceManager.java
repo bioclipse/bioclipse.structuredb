@@ -14,35 +14,35 @@ import net.bioclipse.structuredb.persistency.dao.IUserDao;
 public abstract class AbstractStructuredbInstanceManager 
                       implements IStructuredbInstanceManager {
 
-	protected IFolderDao    folderDao;
-	protected IStructureDao structureDao;
-	protected IUserDao      userDao;
-	
-	public AbstractStructuredbInstanceManager() {
-		
-	}
+    protected IFolderDao    folderDao;
+    protected IStructureDao structureDao;
+    protected IUserDao      userDao;
+    
+    public AbstractStructuredbInstanceManager() {
+        
+    }
 
-	public IFolderDao getFolderDao() {
-		return folderDao;
-	}
+    public IFolderDao getFolderDao() {
+        return folderDao;
+    }
 
-	public void setFolderDao(IFolderDao folderDao) {
-		this.folderDao = folderDao;
-	}
+    public void setFolderDao(IFolderDao folderDao) {
+        this.folderDao = folderDao;
+    }
 
-	public IStructureDao getStructureDao() {
-		return structureDao;
-	}
+    public IStructureDao getStructureDao() {
+        return structureDao;
+    }
 
-	public void setStructureDao(IStructureDao structureDao) {
-		this.structureDao = structureDao;
-	}
+    public void setStructureDao(IStructureDao structureDao) {
+        this.structureDao = structureDao;
+    }
 
-	public IUserDao getUserDao() {
-		return userDao;
-	}
+    public IUserDao getUserDao() {
+        return userDao;
+    }
 
-	public void setUserDao(IUserDao userDao) {
-		this.userDao = userDao;
-	}
+    public void setUserDao(IUserDao userDao) {
+        this.userDao = userDao;
+    }
 }

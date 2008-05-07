@@ -15,7 +15,7 @@ import net.bioclipse.usermanager.IUserManagerListener;
 
 public interface ILoggedInUserKeeper extends IUserManagerListener {
 
-	public User getLoggedInUser();
+    public User getLoggedInUser();
 
-	void setLoggedInUser(User root);
+    void setLoggedInUser(User root);
 }

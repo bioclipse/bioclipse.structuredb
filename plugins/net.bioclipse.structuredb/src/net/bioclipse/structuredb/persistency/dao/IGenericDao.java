@@ -10,8 +10,8 @@ import java.util.List;
  * @param <T> The domain object the dao should work with
  */
 public interface IGenericDao<T> {
-	
-	/** persist the object using INSERT statement*/
+    
+    /** persist the object using INSERT statement*/
     public void insert(T instance);
     
     /** saves changes to the object using UPDATE statement */

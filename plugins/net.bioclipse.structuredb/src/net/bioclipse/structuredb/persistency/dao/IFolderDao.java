@@ -14,6 +14,6 @@ import net.bioclipse.structuredb.domain.Folder;
 
 public interface IFolderDao extends IGenericDao<Folder> {
 
-	public Folder getByName(String name);
+    public Folder getByName(String name);
 
 }

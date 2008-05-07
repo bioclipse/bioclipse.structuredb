@@ -14,5 +14,5 @@ import net.bioclipse.structuredb.domain.User;
 
 public interface IUserDao extends IGenericDao<User> {
 
-	public User getByUserName(String username);
+    public User getByUserName(String username);
 }

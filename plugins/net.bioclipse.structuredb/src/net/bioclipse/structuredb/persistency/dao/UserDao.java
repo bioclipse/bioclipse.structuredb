@@ -20,28 +20,28 @@ import net.bioclipse.structuredb.domain.User;
  */
 public class UserDao extends GenericDao<User> implements IUserDao {
 
-	public UserDao() {
-		super(User.class);
-	}
+    public UserDao() {
+        super(User.class);
+    }
 
-	@Override
-	public void insert(User user) {
-		if(user.getCreator() != null)
-			getSqlMapClientTemplate().insert( "BaseObject.insert", user );
-		else 
-			getSqlMapClientTemplate().insert( 
-					"BaseObject.insertWithoutAuditInfo", user );
-		getSqlMapClientTemplate().insert( "User.insert",       user );
-	}
-	
-	@Override
-	public void update(User user) {
-		getSqlMapClientTemplate().update( "BaseObject.update", user );
-		getSqlMapClientTemplate().update( "User.update",       user );
-	}
+    @Override
+    public void insert(User user) {
+        if(user.getCreator() != null)
+            getSqlMapClientTemplate().insert( "BaseObject.insert", user );
+        else 
+            getSqlMapClientTemplate().insert( 
+                    "BaseObject.insertWithoutAuditInfo", user );
+        getSqlMapClientTemplate().insert( "User.insert",       user );
+    }
+    
+    @Override
+    public void update(User user) {
+        getSqlMapClientTemplate().update( "BaseObject.update", user );
+        getSqlMapClientTemplate().update( "User.update",       user );
+    }
 
-	public User getByUserName(String username) {
-		return (User)getSqlMapClientTemplate()
-		       .queryForObject( "User.getByUsername", username );
-	}
+    public User getByUserName(String username) {
+        return (User)getSqlMapClientTemplate()
+               .queryForObject( "User.getByUsername", username );
+    }
 }

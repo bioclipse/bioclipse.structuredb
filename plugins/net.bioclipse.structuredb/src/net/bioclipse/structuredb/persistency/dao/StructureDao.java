@@ -23,41 +23,41 @@ import net.bioclipse.structuredb.domain.Structure;
 public class StructureDao extends GenericDao<Structure> 
                           implements IStructureDao {
 
-	public StructureDao() {
-		super(Structure.class);
-	}
+    public StructureDao() {
+        super(Structure.class);
+    }
 
-	@Override
-	public void insert(Structure structure) {
-		
-		getSqlMapClientTemplate().update( "BaseObject.insert", structure );
-		
-		//TODO: Figure out a better way to do this:
-		if( structure.getFolder() != null ) {
-			getSqlMapClientTemplate()
-			.update( type.getSimpleName() + ".insert", structure );
-		}
-		else {
-			getSqlMapClientTemplate()
-			.update( type.getSimpleName() + ".insertWithoutFolder", structure );
-		}
-	}
-	
-	@Override
-	public void update(Structure structure) {
-		if(structure.getFolder() == null) {
-			getSqlMapClientTemplate()
-			.update( "Structure-without-folder.update", structure );
-		}
-		else {
-			getSqlMapClientTemplate().update( "Structure.update",  structure );
-		}
-		getSqlMapClientTemplate().update( "BaseObject.update", structure );
-	}
+    @Override
+    public void insert(Structure structure) {
+        
+        getSqlMapClientTemplate().update( "BaseObject.insert", structure );
+        
+        //TODO: Figure out a better way to do this:
+        if( structure.getFolder() != null ) {
+            getSqlMapClientTemplate()
+            .update( type.getSimpleName() + ".insert", structure );
+        }
+        else {
+            getSqlMapClientTemplate()
+            .update( type.getSimpleName() + ".insertWithoutFolder", structure );
+        }
+    }
+    
+    @Override
+    public void update(Structure structure) {
+        if(structure.getFolder() == null) {
+            getSqlMapClientTemplate()
+            .update( "Structure-without-folder.update", structure );
+        }
+        else {
+            getSqlMapClientTemplate().update( "Structure.update",  structure );
+        }
+        getSqlMapClientTemplate().update( "BaseObject.update", structure );
+    }
 
-	@SuppressWarnings("unchecked")
-	public List<Structure> getByName(String name) {
-		return getSqlMapClientTemplate()
-		       .queryForList( "Structure.getByName", name );
-	}
+    @SuppressWarnings("unchecked")
+    public List<Structure> getByName(String name) {
+        return getSqlMapClientTemplate()
+               .queryForList( "Structure.getByName", name );
+    }
 }

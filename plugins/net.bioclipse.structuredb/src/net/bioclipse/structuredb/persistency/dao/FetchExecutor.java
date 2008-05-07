@@ -21,7 +21,7 @@ import java.util.List;
  */
 public interface FetchExecutor<T> {
 
-	/**
+    /**
      * Execute a fetch of multiple objects with the appropriate arguments
      */
     List<T> executeListFetch( Method method, Object[] queryArgs );

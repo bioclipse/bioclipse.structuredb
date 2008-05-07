@@ -16,73 +16,73 @@ import java.util.List;
 
 public class Folder extends BaseObject {
 
-	private List<Structure> structures;
-	
-	public Folder() {
-		super();
-		structures = new ArrayList<Structure>();
-	}
+    private List<Structure> structures;
+    
+    public Folder() {
+        super();
+        structures = new ArrayList<Structure>();
+    }
 
-	public Folder(Folder folder) {
-		super(folder);
-		this.structures = new ArrayList<Structure>( folder.getStructures() );
-	}
+    public Folder(Folder folder) {
+        super(folder);
+        this.structures = new ArrayList<Structure>( folder.getStructures() );
+    }
 
-	public Folder(String name) {
-		super(name);
-		structures = new ArrayList<Structure>();
-	}
-	
-	/* (non-Javadoc)
-	 * @see net.bioclipse.structuredb.domain.BaseObject#hasValuesEqualTo(net.bioclipse.structuredb.domain.BaseObject)
-	 */
-	public boolean hasValuesEqualTo( BaseObject obj ) {
-		
-		if( !super.hasValuesEqualTo(obj) ) {
-			return false;
-		}
-		if( !(obj instanceof Folder) ) {
-			return false;
-		}
-		Folder folder = (Folder)obj;
-		return objectsInHasSameValues(folder.getStructures(), structures);
-	}
+    public Folder(String name) {
+        super(name);
+        structures = new ArrayList<Structure>();
+    }
+    
+    /* (non-Javadoc)
+     * @see net.bioclipse.structuredb.domain.BaseObject#hasValuesEqualTo(net.bioclipse.structuredb.domain.BaseObject)
+     */
+    public boolean hasValuesEqualTo( BaseObject obj ) {
+        
+        if( !super.hasValuesEqualTo(obj) ) {
+            return false;
+        }
+        if( !(obj instanceof Folder) ) {
+            return false;
+        }
+        Folder folder = (Folder)obj;
+        return objectsInHasSameValues(folder.getStructures(), structures);
+    }
 
-	/**
-	 * @return the structures in the library 
-	 */
-	public List<Structure> getStructures() {
-		return structures;
-	}
+    /**
+     * @return the structures in the library 
+     */
+    public List<Structure> getStructures() {
+        return structures;
+    }
 
-	/**
-	 * @param structures the structures to set
-	 */
-	public void setStructures(List<Structure> structures) {
-		this.structures = structures;
-	}
+    /**
+     * @param structures the structures to set
+     */
+    public void setStructures(List<Structure> structures) {
+        this.structures = structures;
+    }
 
-	/**
-	 * Adds a structure to the library
-	 * 
-	 * @param structure the structure to add
-	 */
-	public void addStructure(Structure structure) {
-		structures.add(structure);
-		if( structure.getFolder() != this ) {
-			structure.setFolder(this);
-		}
-	}
+    /**
+     * Adds a structure to the library
+     * 
+     * @param structure the structure to add
+     */
+    public void addStructure(Structure structure) {
+        structures.add(structure);
+        if( structure.getFolder() != this ) {
+            structure.setFolder(this);
+        }
+    }
 
-	/**
-	 * Removes a structure from the library
-	 * 
-	 * @param structure the structure to remove
-	 */
-	public void removeStructure(Structure structure) {
-		structures.remove(structure);
-		if( structure.getFolder() != null ) {
-			structure.setFolder(null);
-		}
-	}
+    /**
+     * Removes a structure from the library
+     * 
+     * @param structure the structure to remove
+     */
+    public void removeStructure(Structure structure) {
+        structures.remove(structure);
+        if( structure.getFolder() != null ) {
+            structure.setFolder(null);
+        }
+    }
 }

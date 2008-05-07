@@ -27,20 +27,20 @@ import org.eclipse.core.runtime.IExecutableExtensionFactory;
 public class StructuredbManagerFactory implements IExecutableExtension, 
                                                   IExecutableExtensionFactory {
 
-	private Logger logger = Logger.getLogger(StructuredbManagerFactory.class);
-	private Object structuredbManager;
-	
-	public void setInitializationData( IConfigurationElement config,
-			                           String propertyName, 
-			                           Object data ) throws CoreException {
-	
-		logger.debug("StructuredbManagerFactory.setInitializationData");
-		structuredbManager = Activator.getDefault().getStructuredbManager();
-	}
+    private Logger logger = Logger.getLogger(StructuredbManagerFactory.class);
+    private Object structuredbManager;
+    
+    public void setInitializationData( IConfigurationElement config,
+                                       String propertyName, 
+                                       Object data ) throws CoreException {
+    
+        logger.debug("StructuredbManagerFactory.setInitializationData");
+        structuredbManager = Activator.getDefault().getStructuredbManager();
+    }
 
-	public Object create() throws CoreException {
-		
-		logger.debug("StructuredbManagerFactory.create");
-		return structuredbManager;
-	}
+    public Object create() throws CoreException {
+        
+        logger.debug("StructuredbManagerFactory.create");
+        return structuredbManager;
+    }
 }

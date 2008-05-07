@@ -27,28 +27,28 @@ import org.openscience.cdk.io.MDLReader;
  */
 public abstract class TestData {
 
-	private TestData() {
-	}
-	
-	public static AtomContainer getCycloPropane() throws CDKException {
-		return readFromFile( "testData/cyclopropane.mol" );
-		
-	}
-	
-	public static AtomContainer getCycloOctan() throws CDKException {
-		return readFromFile( "testData/cyclooctan.mol" );
-	}
-	
-	public static AtomContainer readFromFile(String path) throws CDKException {
-		InputStream ins = TestData.class.getClassLoader().getResourceAsStream(path);
-		MDLReader reader = new MDLReader(ins);
-		return (AtomContainer) reader.read( (ChemObject)new Molecule() );
-	}
-	
-	public static String getTestSDFFilePath() {
-		return TestData.class
+    private TestData() {
+    }
+    
+    public static AtomContainer getCycloPropane() throws CDKException {
+        return readFromFile( "testData/cyclopropane.mol" );
+        
+    }
+    
+    public static AtomContainer getCycloOctan() throws CDKException {
+        return readFromFile( "testData/cyclooctan.mol" );
+    }
+    
+    public static AtomContainer readFromFile(String path) throws CDKException {
+        InputStream ins = TestData.class.getClassLoader().getResourceAsStream(path);
+        MDLReader reader = new MDLReader(ins);
+        return (AtomContainer) reader.read( (ChemObject)new Molecule() );
+    }
+    
+    public static String getTestSDFFilePath() {
+        return TestData.class
                        .getClassLoader()
-	                   .getResource("testData/test.sdf")
-	                   .getPath();
-	}
+                       .getResource("testData/test.sdf")
+                       .getPath();
+    }
 }

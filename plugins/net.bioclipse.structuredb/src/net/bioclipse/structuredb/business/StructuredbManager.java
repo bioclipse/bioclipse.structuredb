@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     
+ *
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
@@ -47,205 +47,205 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
  */
 public class StructuredbManager implements IStructuredbManager {
 
-	private Logger logger = Logger.getLogger(StructuredbManager.class);
-	
-	/* 
-	 * This isn't super if cdk starts using AOP for fancy stuff in the future 
-	 * but we don't want the recorded variant and this is a solution that is 
-	 * reasonably easy to test. Should cdk start using fancy stuff real 
-	 * integration testing running the OSGI layer is needed and this instance 
-	 * would need to come from the OSGI service container
-	 */
-	private ICDKManager cdk = new CDKManager();
-	
-	//Package protected for testing purposes
-	Map<String, IStructuredbInstanceManager> internalManagers 
-		= new HashMap<String, IStructuredbInstanceManager>();
+    private Logger logger = Logger.getLogger(StructuredbManager.class);
 
-	//Package protected for testing purposes
-	Map<String, ApplicationContext> applicationContexts 
-		= new HashMap<String, ApplicationContext>();
-	
-	public void createLocalInstance(String databaseName)
-		throws IllegalArgumentException {
+    /*
+     * This isn't super if cdk starts using AOP for fancy stuff in the future
+     * but we don't want the recorded variant and this is a solution that is
+     * reasonably easy to test. Should cdk start using fancy stuff real
+     * integration testing running the OSGI layer is needed and this instance
+     * would need to come from the OSGI service container
+     */
+    private ICDKManager cdk = new CDKManager();
 
-		if( internalManagers.containsKey(databaseName) ) {
-			throw new IllegalArgumentException( "Database name already used: " 
-					                            + databaseName );
-		}
-		TableCreator.INSTANCE.createTables( 
-				HsqldbUtil.getInstance().getConnectionUrl(databaseName) );
-		
-		Map<String, IStructuredbInstanceManager> newInstances 
-			= new HashMap<String, IStructuredbInstanceManager>();
-	
-		Map<String, ApplicationContext> newApplicationContexts
-			= new HashMap<String, ApplicationContext>();
-		
-		for( String nameKey : internalManagers.keySet() ) {
-			//TODO: The day we not only handle local databases the row here 
-			//      below will need to change
-			newApplicationContexts.put( nameKey, 
-					                    getApplicationcontext(nameKey, true) );
-			newInstances.put( 
-					nameKey, 
-					(IStructuredbInstanceManager) 
-						newApplicationContexts
-						.get( nameKey )
-					    .getBean("structuredbInstanceManager") );
-		}
-		
-		internalManagers    = newInstances;
-		applicationContexts = newApplicationContexts;
-		
-		applicationContexts.put( databaseName,  
-				                 getApplicationcontext(databaseName, true) );
-		internalManagers.put( 
-				databaseName, 
-				(IStructuredbInstanceManager) 
-					applicationContexts.get( databaseName)
-				                       .getBean("structuredbInstanceManager") );
-		createLocalUser( applicationContexts.get(databaseName) );
-		logger.info( "A new local instance of Structuredb named" 
-				      + databaseName + " has been created" );
-	}
-	
-	private void createLocalUser(ApplicationContext context) {
-		IUserDao userDao = (IUserDao) context.getBean("userDao");
-		User localUser = new User("local", "", true );
-		localUser.setCreator(localUser);
-		Timestamp now = new Timestamp( System.currentTimeMillis() );
-		localUser.setCreated(now);
-		localUser.setEdited(now);
-		userDao.insert(localUser);
-		LoggedInUserKeeper keeper = (LoggedInUserKeeper) 
-		                             context.getBean( "loggedInUserKeeper" );
-		keeper.setLoggedInUser( localUser );
-	}
+    //Package protected for testing purposes
+    Map<String, IStructuredbInstanceManager> internalManagers
+        = new HashMap<String, IStructuredbInstanceManager>();
 
-	private ApplicationContext getApplicationcontext( String databaseName, 
-			                                          boolean local ) {
-		FileSystemXmlApplicationContext context 
-			= new FileSystemXmlApplicationContext( 
-				Structuredb.class
-				           .getClassLoader()
+    //Package protected for testing purposes
+    Map<String, ApplicationContext> applicationContexts
+        = new HashMap<String, ApplicationContext>();
+
+    public void createLocalInstance(String databaseName)
+        throws IllegalArgumentException {
+
+        if( internalManagers.containsKey(databaseName) ) {
+            throw new IllegalArgumentException( "Database name already used: "
+                                                + databaseName );
+        }
+        TableCreator.INSTANCE.createTables(
+                HsqldbUtil.getInstance().getConnectionUrl(databaseName) );
+
+        Map<String, IStructuredbInstanceManager> newInstances
+            = new HashMap<String, IStructuredbInstanceManager>();
+
+        Map<String, ApplicationContext> newApplicationContexts
+            = new HashMap<String, ApplicationContext>();
+
+        for( String nameKey : internalManagers.keySet() ) {
+            //TODO: The day we not only handle local databases the row here
+            //      below will need to change
+            newApplicationContexts.put( nameKey,
+                                        getApplicationcontext(nameKey, true) );
+            newInstances.put(
+                    nameKey,
+                    (IStructuredbInstanceManager)
+                        newApplicationContexts
+                        .get( nameKey )
+                        .getBean("structuredbInstanceManager") );
+        }
+
+        internalManagers    = newInstances;
+        applicationContexts = newApplicationContexts;
+
+        applicationContexts.put( databaseName,
+                                 getApplicationcontext(databaseName, true) );
+        internalManagers.put(
+                databaseName,
+                (IStructuredbInstanceManager)
+                    applicationContexts.get( databaseName)
+                                       .getBean("structuredbInstanceManager") );
+        createLocalUser( applicationContexts.get(databaseName) );
+        logger.info( "A new local instance of Structuredb named"
+                      + databaseName + " has been created" );
+    }
+
+    private void createLocalUser(ApplicationContext context) {
+        IUserDao userDao = (IUserDao) context.getBean("userDao");
+        User localUser = new User("local", "", true );
+        localUser.setCreator(localUser);
+        Timestamp now = new Timestamp( System.currentTimeMillis() );
+        localUser.setCreated(now);
+        localUser.setEdited(now);
+        userDao.insert(localUser);
+        LoggedInUserKeeper keeper = (LoggedInUserKeeper)
+                                     context.getBean( "loggedInUserKeeper" );
+        keeper.setLoggedInUser( localUser );
+    }
+
+    private ApplicationContext getApplicationcontext( String databaseName,
+                                                      boolean local ) {
+        FileSystemXmlApplicationContext context
+            = new FileSystemXmlApplicationContext(
+                Structuredb.class
+                           .getClassLoader()
                            .getResource("applicationContext.xml")
                            .toString() );
 
-		BasicDataSource dataSource 
-			= (BasicDataSource) context.getBean("dataSource");
-		
-		if(local) {
-			dataSource.setUrl( 
-					HsqldbUtil.getInstance().getConnectionUrl(databaseName) );
-		}
-		else {
-			throw new UnsupportedOperationException( 
-					"non-local databases not " +
-					"supported in this version" );
-		}
-		return context;
-	}
+        BasicDataSource dataSource
+            = (BasicDataSource) context.getBean("dataSource");
 
-	public Folder createFolder(String databaseName, String folderName)
-			throws IllegalArgumentException {
-		
-		Folder folder = new Folder(folderName);
-		internalManagers.get(databaseName).insertFolder(folder);
-		logger.debug("Folder " + folderName + " inserted in " + databaseName);
-		return folder;
-	}
+        if(local) {
+            dataSource.setUrl(
+                    HsqldbUtil.getInstance().getConnectionUrl(databaseName) );
+        }
+        else {
+            throw new UnsupportedOperationException(
+                    "non-local databases not " +
+                    "supported in this version" );
+        }
+        return context;
+    }
 
-	public Structure createStructure( String databaseName, 
-			                          String moleculeName,
-			                          ICDKMolecule cdkMolecule) 
-	                                  throws BioclipseException {
-		
-		Structure s = new Structure( moleculeName, cdkMolecule );
-		internalManagers.get(databaseName).insertStructure(s);
-		logger.debug( "Structure " + moleculeName 
-				      + " inserted in " + databaseName );
-		return s;
-	}
+    public Folder createFolder(String databaseName, String folderName)
+            throws IllegalArgumentException {
 
-	public User createUser( String databaseName, 
-			                String username,
-			                String password, 
-			                boolean sudoer) throws IllegalArgumentException {
+        Folder folder = new Folder(folderName);
+        internalManagers.get(databaseName).insertFolder(folder);
+        logger.debug("Folder " + folderName + " inserted in " + databaseName);
+        return folder;
+    }
 
-		User user = new User(username, password, sudoer);
-		internalManagers.get(databaseName).insertUser(user);
-		return user;
-	}
+    public Structure createStructure( String databaseName,
+                                      String moleculeName,
+                                      ICDKMolecule cdkMolecule)
+                                      throws BioclipseException {
 
-	public void removeLocalInstance(String databaseName) {
-		//TODO FIXME
-		logger.info("StructuredbManager.removeLocalInstance -- FIXME");
-	}
+        Structure s = new Structure( moleculeName, cdkMolecule );
+        internalManagers.get(databaseName).insertStructure(s);
+        logger.debug( "Structure " + moleculeName
+                      + " inserted in " + databaseName );
+        return s;
+    }
 
-	public List<Folder> retrieveAllFolders(String databaseName) {
-		return internalManagers.get(databaseName).retrieveAllFolders();
-	}
+    public User createUser( String databaseName,
+                            String username,
+                            String password,
+                            boolean sudoer) throws IllegalArgumentException {
 
-	public List<Structure> retrieveAllStructures(String databaseName) {
-		return internalManagers.get(databaseName).retrieveAllStructures();
-	}
+        User user = new User(username, password, sudoer);
+        internalManagers.get(databaseName).insertUser(user);
+        return user;
+    }
 
-	public List<User> retrieveAllUsers(String databaseName) {
-		return internalManagers.get(databaseName).retrieveAllUsers();
-	}
+    public void removeLocalInstance(String databaseName) {
+        //TODO FIXME
+        logger.info("StructuredbManager.removeLocalInstance -- FIXME");
+    }
 
-	public Folder retrieveFolderByName( String databaseName, 
-			                            String folderName ) {
+    public List<Folder> retrieveAllFolders(String databaseName) {
+        return internalManagers.get(databaseName).retrieveAllFolders();
+    }
 
-		return internalManagers.get(databaseName)
-		                       .retrieveFolderByName(folderName);
-	}
+    public List<Structure> retrieveAllStructures(String databaseName) {
+        return internalManagers.get(databaseName).retrieveAllStructures();
+    }
 
-	public List<Structure> retrieveStructuresByName( String databaseName,
-			                                         String structureName ) {
-		return internalManagers.get(databaseName)
-		                       .retrieveStructureByName(structureName);
-	}
+    public List<User> retrieveAllUsers(String databaseName) {
+        return internalManagers.get(databaseName).retrieveAllUsers();
+    }
 
-	public User retrieveUserByName(String databaseName, String username) {
-		return internalManagers.get(databaseName)
-		                       .retrieveUserByUsername(username);
-	}
+    public Folder retrieveFolderByName( String databaseName,
+                                        String folderName ) {
 
-	public String getNamespace() {
-		return "structuredb";
-	}
+        return internalManagers.get(databaseName)
+                               .retrieveFolderByName(folderName);
+    }
 
-	public void addStructuresFromSDF( String databaseName, 
-			                          String filePath ) 
-	                                  throws BioclipseException {
-		Iterator<ICDKMolecule> iterator;
-		try {
-			iterator 
-				= cdk.creatMoleculeIterator( new FileInputStream(filePath) );
-		} catch (FileNotFoundException e) {
-			throw new IllegalArgumentException( 
-					"Could not open file:" + filePath );
-		}
-		File file = new File(filePath);
-		Folder f = 	createFolder( databaseName, 
-				                  file.getName().replaceAll("\\..*?$", "") );
-		
-		while ( iterator.hasNext() ) {
-			ICDKMolecule molecule = iterator.next();
-			
-			Object title = molecule.getAtomContainer()
-			                       .getProperty(CDKConstants.TITLE);
-			
-			Structure s 
-				= new Structure( title == null ? ""
-						                       : title.toString(),
-						         molecule);
-			
-			internalManagers.get(databaseName).insertStructure(s);
-			f.addStructure(s);
-			internalManagers.get(databaseName).update(f);
-		}
-	}
+    public List<Structure> retrieveStructuresByName( String databaseName,
+                                                     String structureName ) {
+        return internalManagers.get(databaseName)
+                               .retrieveStructureByName(structureName);
+    }
+
+    public User retrieveUserByName(String databaseName, String username) {
+        return internalManagers.get(databaseName)
+                               .retrieveUserByUsername(username);
+    }
+
+    public String getNamespace() {
+        return "structuredb";
+    }
+
+    public void addStructuresFromSDF( String databaseName,
+                                      String filePath )
+                                      throws BioclipseException {
+        Iterator<ICDKMolecule> iterator;
+        try {
+            iterator
+                = cdk.creatMoleculeIterator( new FileInputStream(filePath) );
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException(
+                    "Could not open file:" + filePath );
+        }
+        File file = new File(filePath);
+        Folder f = createFolder( databaseName,
+                                 file.getName().replaceAll("\\..*?$", "") );
+
+        while ( iterator.hasNext() ) {
+            ICDKMolecule molecule = iterator.next();
+
+            Object title = molecule.getAtomContainer()
+                                   .getProperty(CDKConstants.TITLE);
+
+            Structure s
+                = new Structure( title == null ? ""
+                                               : title.toString(),
+                                 molecule);
+
+            internalManagers.get(databaseName).insertStructure(s);
+            f.addStructure(s);
+            internalManagers.get(databaseName).update(f);
+        }
+    }
 }

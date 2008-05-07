@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     
+ *
  *******************************************************************************/
 package net.bioclipse.structuredb;
 
@@ -35,70 +35,70 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * This class is responsible for the different structuredb datasources in the
- * system. Their actual info are stored in the UserManager 
- * 
+ * system. Their actual info are stored in the UserManager
+ *
  * @author jonalv
  *
  */
-public class Structuredb extends AbstractServiceContainer 
+public class Structuredb extends AbstractServiceContainer
                          implements IUserManagerListener, IDatabaseType {
 
-	private final Logger logger = Logger.getLogger( this.getClass() );
-	
-	private final String name = "Structure Database";
+    private final Logger logger = Logger.getLogger( this.getClass() );
 
-	private IAction createDatabaseAction;
-	
-	public Structuredb() {
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String toString() {
-		return name;
-	}
+    private final String name = "Structure Database";
 
-	public void fillContextMenu(IMenuManager manager) {
-		manager.add( createDatabaseAction );
-	}
+    private IAction createDatabaseAction;
 
-	public void receiveUserManagerEvent(UserManagerEvent event) {
-		
-		switch (event) {
+    public Structuredb() {
+    }
 
-		case LOGIN:
-			IUserManager um = Activator.getDefault().getUserManager();
-			for ( String id : um.getAccountIdsByAccountTypeName(
-			                  "net.bioclipse.structuredb.AccountType" ) ) {
-				
-			}
-			break;
-			
-		case LOGOUT:
-			setChildren( new ArrayList<IServiceObject>() );
-			break;
-			
-		default:
-			break;
-		}		
-	}
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public void createChildren() {
-//		BasicDataSource basicDataSource = (BasicDataSource) context.getBean("dataSource");
-//		basicDataSource.setUrl( url );
-//		basicDataSource.setUsername( username );
-//		basicDataSource.setPassword( password );
-		
-//		StructuredbInstance dataSource = new StructuredbInstance(context);
-//		instances.add(dataSource);
-		setChildren(new ArrayList<IServiceObject>());
-	}
+    public String toString() {
+        return name;
+    }
 
-	public Object getAdapter(Class adapter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void fillContextMenu(IMenuManager manager) {
+        manager.add( createDatabaseAction );
+    }
+
+    public void receiveUserManagerEvent(UserManagerEvent event) {
+
+        switch (event) {
+
+        case LOGIN:
+            IUserManager um = Activator.getDefault().getUserManager();
+            for ( String id : um.getAccountIdsByAccountTypeName(
+                              "net.bioclipse.structuredb.AccountType" ) ) {
+
+            }
+            break;
+
+        case LOGOUT:
+            setChildren( new ArrayList<IServiceObject>() );
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    @Override
+    public void createChildren() {
+//        BasicDataSource basicDataSource = (BasicDataSource) context.getBean("dataSource");
+//        basicDataSource.setUrl( url );
+//        basicDataSource.setUsername( username );
+//        basicDataSource.setPassword( password );
+
+//        StructuredbInstance dataSource = new StructuredbInstance(context);
+//        instances.add(dataSource);
+        setChildren(new ArrayList<IServiceObject>());
+    }
+
+    public Object getAdapter(Class adapter) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

@@ -23,24 +23,24 @@ import net.bioclipse.structuredb.domain.Structure;
  */
 public class FolderDao extends GenericDao<Folder> implements IFolderDao {
 
-	public FolderDao() {
-		super(Folder.class);
-	}
+    public FolderDao() {
+        super(Folder.class);
+    }
 
-	@Override
-	public void insert(Folder folder) {
-		getSqlMapClientTemplate().update( "BaseObject.insert", folder );
-		getSqlMapClientTemplate().update( "Folder.insert",    folder );
-	}
-	
-	@Override
-	public void update(Folder folder) {
-		getSqlMapClientTemplate().update( "BaseObject.update", folder );
-		getSqlMapClientTemplate().update( "Folder.update",     folder );
-	}
+    @Override
+    public void insert(Folder folder) {
+        getSqlMapClientTemplate().update( "BaseObject.insert", folder );
+        getSqlMapClientTemplate().update( "Folder.insert",    folder );
+    }
+    
+    @Override
+    public void update(Folder folder) {
+        getSqlMapClientTemplate().update( "BaseObject.update", folder );
+        getSqlMapClientTemplate().update( "Folder.update",     folder );
+    }
 
-	public Folder getByName(String name) {
-		return (Folder)getSqlMapClientTemplate()
-		       .queryForObject( "Folder.getByName", name);
-	}
+    public Folder getByName(String name) {
+        return (Folder)getSqlMapClientTemplate()
+               .queryForObject( "Folder.getByName", name);
+    }
 }

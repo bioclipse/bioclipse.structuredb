@@ -17,42 +17,42 @@ import net.bioclipse.usermanager.business.IUserManager;
 
 public class LoggedInUserKeeper implements ILoggedInUserKeeper {
 
-	private IUserManager userManager;
-	private User         loggedInUser;
-	
-	public User getLoggedInUser() {
-		return loggedInUser;
-	}
+    private IUserManager userManager;
+    private User         loggedInUser;
+    
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
 
-	public void receiveUserManagerEvent(UserManagerEvent event) {
-		//TODO: implement receiveUserManagerEvent (need to do the strucutredb 
-		//      usermanager account type first) 
-		throw new NotImplementedException();
-//		switch (event) {
-//		case LOGIN:
-//			
-//			break;
-//		case LOGOUT:
-//			
-//			break;
-//		case UPDATE:
-//			break;
-//		default:
-//			break;
-//		}
-	}
-	
-	/**
-	 * method used for testing purposes
-	 * 
-	 * @param loggedInUser
-	 */
-	public void setLoggedInUser( User loggedInUser ) {
-		this.loggedInUser = loggedInUser;
-	}
-	
-	public void setUserManager( IUserManager userManager ) {
-		this.userManager = userManager;
-		userManager.addListener(this);
-	}
+    public void receiveUserManagerEvent(UserManagerEvent event) {
+        //TODO: implement receiveUserManagerEvent (need to do the strucutredb 
+        //      usermanager account type first) 
+        throw new NotImplementedException();
+//        switch (event) {
+//        case LOGIN:
+//            
+//            break;
+//        case LOGOUT:
+//            
+//            break;
+//        case UPDATE:
+//            break;
+//        default:
+//            break;
+//        }
+    }
+    
+    /**
+     * method used for testing purposes
+     * 
+     * @param loggedInUser
+     */
+    public void setLoggedInUser( User loggedInUser ) {
+        this.loggedInUser = loggedInUser;
+    }
+    
+    public void setUserManager( IUserManager userManager ) {
+        this.userManager = userManager;
+        userManager.addListener(this);
+    }
 }

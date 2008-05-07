@@ -18,14 +18,14 @@ import net.bioclipse.structuredb.domain.User;
  */
 public class UserDaoTest extends GenericDaoTest<User> {
 
-	public UserDaoTest() {
-		super(User.class);
-	}
-	
-	public void testGetByUsername() {
-		User user = new User("me", "me", true);
-		dao.insert(user);
-		assertEquals( user, 
-				      ( (IUserDao)dao ).getByUserName(user.getUserName()) );
-	}
+    public UserDaoTest() {
+        super(User.class);
+    }
+    
+    public void testGetByUsername() {
+        User user = new User("me", "me", true);
+        dao.insert(user);
+        assertEquals( user, 
+                      ( (IUserDao)dao ).getByUserName(user.getUserName()) );
+    }
 }

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     
+ *
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
 
@@ -18,21 +18,21 @@ import net.bioclipse.usermanager.business.IUserManager;
 
 public class AuditCreationAdvice implements IAuditAdvice {
 
-	private ILoggedInUserKeeper loggedInUserKeeper;
-	
-	public void before(Method method, Object[] args, Object target)
-			throws Throwable {
-		
-		BaseObject baseObject = (BaseObject)args[0];
-		long now = System.currentTimeMillis();
-		baseObject.setCreated( new Timestamp(now) );
-		baseObject.setEdited(  new Timestamp(now) );
-		
-		baseObject.setCreator(    loggedInUserKeeper.getLoggedInUser() );
-		baseObject.setLastEditor( loggedInUserKeeper.getLoggedInUser() );
-	}
+    private ILoggedInUserKeeper loggedInUserKeeper;
 
-	public void setLoggedInUserKeeper( ILoggedInUserKeeper keeper) {
-		this.loggedInUserKeeper	= keeper;
-	}
+    public void before(Method method, Object[] args, Object target)
+            throws Throwable {
+
+        BaseObject baseObject = (BaseObject)args[0];
+        long now = System.currentTimeMillis();
+        baseObject.setCreated( new Timestamp(now) );
+        baseObject.setEdited(  new Timestamp(now) );
+
+        baseObject.setCreator(    loggedInUserKeeper.getLoggedInUser() );
+        baseObject.setLastEditor( loggedInUserKeeper.getLoggedInUser() );
+    }
+
+    public void setLoggedInUserKeeper( ILoggedInUserKeeper keeper) {
+        this.loggedInUserKeeper = keeper;
+    }
 }

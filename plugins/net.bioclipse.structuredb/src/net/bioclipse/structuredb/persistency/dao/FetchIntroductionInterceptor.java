@@ -26,11 +26,11 @@ public class FetchIntroductionInterceptor implements IntroductionInterceptor {
         String methodName = methodInvocation.getMethod().getName();
         if ( methodName.startsWith("fetchObject") ) {
             return genericDao.executeObjectFetch( methodInvocation.getMethod(), 
-            		                              methodInvocation.getArguments() );
+                                                  methodInvocation.getArguments() );
         }
         else if ( methodName.startsWith("fetchList") ) {
             return genericDao.executeListFetch( methodInvocation.getMethod(), 
-            		                            methodInvocation.getArguments() );
+                                                methodInvocation.getArguments() );
         }
         else {
             return methodInvocation.proceed();

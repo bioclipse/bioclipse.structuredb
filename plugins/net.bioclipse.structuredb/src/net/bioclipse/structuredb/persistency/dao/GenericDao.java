@@ -25,66 +25,66 @@ import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
  */
 public class GenericDao<T> extends SqlMapClientDaoSupport implements IGenericDao<T>, FetchExecutor<T> {
 
-	protected Class<T> type;
+    protected Class<T> type;
 
-	/**
-	 * @param type the class the dao work with
-	 */
-	public GenericDao(Class<T> type){
-		this.type = type;
-	}
-	
-	/* (non-Javadoc)
-	 * @see net.bioclipse.pcm.dao.IGenericDao#delete(java.lang.String)
-	 */
-	public void delete(String id) {
-		getSqlMapClientTemplate().delete("BaseObject.delete", id);
-		//The rest should be deleted by cascades in the database
-	}
+    /**
+     * @param type the class the dao work with
+     */
+    public GenericDao(Class<T> type){
+        this.type = type;
+    }
+    
+    /* (non-Javadoc)
+     * @see net.bioclipse.pcm.dao.IGenericDao#delete(java.lang.String)
+     */
+    public void delete(String id) {
+        getSqlMapClientTemplate().delete("BaseObject.delete", id);
+        //The rest should be deleted by cascades in the database
+    }
 
-	/* (non-Javadoc)
-	 * @see net.bioclipse.pcm.dao.IGenericDao#getAll()
-	 */
-	public List<T> getAll() {
-		return getSqlMapClientTemplate().queryForList( type.getSimpleName() + ".getAll" );
-	}
+    /* (non-Javadoc)
+     * @see net.bioclipse.pcm.dao.IGenericDao#getAll()
+     */
+    public List<T> getAll() {
+        return getSqlMapClientTemplate().queryForList( type.getSimpleName() + ".getAll" );
+    }
 
-	/* (non-Javadoc)
-	 * @see net.bioclipse.pcm.dao.IGenericDao#getById(java.lang.String)
-	 */
-	public T getById(String id) {
-		return (T)getSqlMapClientTemplate().queryForObject( type.getSimpleName() + ".getById", id);
-	}
+    /* (non-Javadoc)
+     * @see net.bioclipse.pcm.dao.IGenericDao#getById(java.lang.String)
+     */
+    public T getById(String id) {
+        return (T)getSqlMapClientTemplate().queryForObject( type.getSimpleName() + ".getById", id);
+    }
 
-	/* (non-Javadoc)
-	 * @see net.bioclipse.pcm.dao.IGenericDao#save(java.lang.Object)
-	 */
-	public void insert(T instance) {
-		getSqlMapClientTemplate().update(type.getSimpleName() + ".insert", instance );
-	}
+    /* (non-Javadoc)
+     * @see net.bioclipse.pcm.dao.IGenericDao#save(java.lang.Object)
+     */
+    public void insert(T instance) {
+        getSqlMapClientTemplate().update(type.getSimpleName() + ".insert", instance );
+    }
 
-	/* (non-Javadoc)
-	 * @see net.bioclipse.pcm.dao.IGenericDao#update(java.lang.Object)
-	 */
-	public void update(T instance) {
-		getSqlMapClientTemplate().update( type.getSimpleName() + ".update", instance );
-	}
+    /* (non-Javadoc)
+     * @see net.bioclipse.pcm.dao.IGenericDao#update(java.lang.Object)
+     */
+    public void update(T instance) {
+        getSqlMapClientTemplate().update( type.getSimpleName() + ".update", instance );
+    }
 
-	/* (non-Javadoc)
-	 * @see net.bioclipse.pcm.dao.FetchExecutor#executeListFetch(java.lang.reflect.Method, java.lang.Object[])
-	 */
-	@SuppressWarnings("unchecked")
-	public List<T> executeListFetch(Method method, Object[] queryArgs) {
-		String queryName = type.getSimpleName() + "." + method.getName();
-		return getSqlMapClientTemplate().queryForList(queryName, queryArgs[0]);
-	}
+    /* (non-Javadoc)
+     * @see net.bioclipse.pcm.dao.FetchExecutor#executeListFetch(java.lang.reflect.Method, java.lang.Object[])
+     */
+    @SuppressWarnings("unchecked")
+    public List<T> executeListFetch(Method method, Object[] queryArgs) {
+        String queryName = type.getSimpleName() + "." + method.getName();
+        return getSqlMapClientTemplate().queryForList(queryName, queryArgs[0]);
+    }
 
-	/* (non-Javadoc)
-	 * @see net.bioclipse.pcm.dao.FetchExecutor#executeObjectFetch(java.lang.reflect.Method, java.lang.Object[])
-	 */
-	@SuppressWarnings("unchecked")
-	public T executeObjectFetch(Method method, Object[] queryArgs) {
-		String queryName = type.getSimpleName() + "." + method.getName();
-		return (T)getSqlMapClientTemplate().queryForObject(queryName, queryArgs[0]);
-	}
+    /* (non-Javadoc)
+     * @see net.bioclipse.pcm.dao.FetchExecutor#executeObjectFetch(java.lang.reflect.Method, java.lang.Object[])
+     */
+    @SuppressWarnings("unchecked")
+    public T executeObjectFetch(Method method, Object[] queryArgs) {
+        String queryName = type.getSimpleName() + "." + method.getName();
+        return (T)getSqlMapClientTemplate().queryForObject(queryName, queryArgs[0]);
+    }
 }

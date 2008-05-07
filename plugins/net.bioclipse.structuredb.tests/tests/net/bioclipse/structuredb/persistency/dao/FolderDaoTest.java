@@ -19,34 +19,34 @@ import net.bioclipse.structuredb.domain.Structure;
  */
 public class FolderDaoTest extends GenericDaoTest<Folder> {
 
-	public FolderDaoTest() {
-		super(Folder.class);
-	}
-	
-	@Override
-	public void testDelete() {
-		
-		IStructureDao structureDao 
-		= (IStructureDao) applicationContext.getBean("structureDao");
-		
-		Structure structure = new Structure();
-		structure.setCreator(testUser);
-		structure.setLastEditor(testUser);
-		structureDao.insert(structure);
-		object1.addStructure(structure);
-		dao.update(object1);
-		assertNotNull(structure.getFolder());
-		super.testDelete();
-		
-		structure = structureDao.getById( structure.getId() );
-		assertNull( structure.getFolder() );
-	}
-	
-	public void testGetByName() {
-		Folder folder = new Folder("folder");
-		addCreatorAndEditor(folder);
-		dao.insert(folder);
-		assertEquals( folder, 
-				      ( (IFolderDao)dao ).getByName(folder.getName()) );
-	}
+    public FolderDaoTest() {
+        super(Folder.class);
+    }
+    
+    @Override
+    public void testDelete() {
+        
+        IStructureDao structureDao 
+        = (IStructureDao) applicationContext.getBean("structureDao");
+        
+        Structure structure = new Structure();
+        structure.setCreator(testUser);
+        structure.setLastEditor(testUser);
+        structureDao.insert(structure);
+        object1.addStructure(structure);
+        dao.update(object1);
+        assertNotNull(structure.getFolder());
+        super.testDelete();
+        
+        structure = structureDao.getById( structure.getId() );
+        assertNull( structure.getFolder() );
+    }
+    
+    public void testGetByName() {
+        Folder folder = new Folder("folder");
+        addCreatorAndEditor(folder);
+        dao.insert(folder);
+        assertEquals( folder, 
+                      ( (IFolderDao)dao ).getByName(folder.getName()) );
+    }
 }

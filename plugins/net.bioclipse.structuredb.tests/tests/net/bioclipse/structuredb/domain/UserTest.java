@@ -17,26 +17,26 @@ import org.junit.Test;
 
 public class UserTest {
 
-	@Test
-	public void testHasValuesEqualTo() {
-		
-		User user1 = new User( "username", "password", true);
-		User user2 = new User(user1);
-		User user3 = new User( "another username", "password", false);
-		
-		assertTrue(  user1.hasValuesEqualTo(user2) );
-		assertFalse( user1.hasValuesEqualTo(user3) );
-	}
-	
-	@Test
-	public void testDoubleReferences() {
-		Structure structure = new Structure();
-		
-		User user = new User();
-		
-		user.addCreatedBaseObject( structure );
-	
-		assertTrue( user.getCreatedBaseObjects().contains(structure) );
-		assertTrue( structure.getCreator() == user );
-	}
+    @Test
+    public void testHasValuesEqualTo() {
+        
+        User user1 = new User( "username", "password", true);
+        User user2 = new User(user1);
+        User user3 = new User( "another username", "password", false);
+        
+        assertTrue(  user1.hasValuesEqualTo(user2) );
+        assertFalse( user1.hasValuesEqualTo(user3) );
+    }
+    
+    @Test
+    public void testDoubleReferences() {
+        Structure structure = new Structure();
+        
+        User user = new User();
+        
+        user.addCreatedBaseObject( structure );
+    
+        assertTrue( user.getCreatedBaseObjects().contains(structure) );
+        assertTrue( structure.getCreator() == user );
+    }
 }
