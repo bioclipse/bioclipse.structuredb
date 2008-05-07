@@ -32,6 +32,7 @@ import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
+import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
 import net.bioclipse.structuredb.persistency.dao.IUserDao;
 import net.bioclipse.structuredb.persistency.tables.TableCreator;
 
@@ -104,19 +105,22 @@ public class StructuredbManager implements IStructuredbManager {
 				(IStructuredbInstanceManager) 
 					applicationContexts.get( databaseName)
 				                       .getBean("structuredbInstanceManager") );
-		createAdmin( applicationContexts.get(databaseName) );
+		createLocalUser( applicationContexts.get(databaseName) );
 		logger.info( "A new local instance of Structuredb named" 
 				      + databaseName + " has been created" );
 	}
 	
-	private void createAdmin(ApplicationContext context) {
+	private void createLocalUser(ApplicationContext context) {
 		IUserDao userDao = (IUserDao) context.getBean("userDao");
-		User admin = new User("admin", "", true );
-		admin.setCreator(admin);
+		User localUser = new User("local", "", true );
+		localUser.setCreator(localUser);
 		Timestamp now = new Timestamp( System.currentTimeMillis() );
-		admin.setCreated(now);
-		admin.setEdited(now);
-		userDao.insert(admin);
+		localUser.setCreated(now);
+		localUser.setEdited(now);
+		userDao.insert(localUser);
+		LoggedInUserKeeper keeper = (LoggedInUserKeeper) 
+		                             context.getBean( "loggedInUserKeeper" );
+		keeper.setLoggedInUser( localUser );
 	}
 
 	private ApplicationContext getApplicationcontext( String databaseName, 
