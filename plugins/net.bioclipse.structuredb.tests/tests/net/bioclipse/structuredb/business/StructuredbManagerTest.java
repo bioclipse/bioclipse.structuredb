@@ -204,4 +204,31 @@ public class StructuredbManagerTest
         assertTrue( users.contains(user1) );
         assertTrue( users.contains(user2) );
     }
+    
+    public void testDatabasesFilesAreLoaded() {
+        StructuredbManager anotherManager = new StructuredbManager();
+        assertTrue( anotherManager.listDatabaseNames().contains(database1) );
+        assertTrue( anotherManager.listDatabaseNames().contains(database1) );
+        assertEquals( "2", anotherManager.listDatabaseNames().size() );
+    }
+    
+    public void testRemovingDatabaseInstance() {
+        assertTrue( manager.listDatabaseNames().contains(database1) );
+        manager.removeLocalInstance( database1 );
+        assertFalse( manager.listDatabaseNames().contains(database1) );
+        manager.createFolder( database1, "testFolder" );
+        
+        StructuredbManager anotherManager = new StructuredbManager();
+        assertFalse( anotherManager.listDatabaseNames().contains(database1) );
+    }
+    
+    public void testUsingUnknownDatabase() {
+        try {
+            manager.createFolder( "unknown database", "some folder name" );
+            fail("should throw exception");
+        }
+        catch (IllegalArgumentException e) {
+            //this is what we want
+        }
+    }
 }

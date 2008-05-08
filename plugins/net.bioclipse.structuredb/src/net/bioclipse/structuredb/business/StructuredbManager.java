@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -151,6 +152,10 @@ public class StructuredbManager implements IStructuredbManager {
             throws IllegalArgumentException {
 
         Folder folder = new Folder(folderName);
+        if( !internalManagers.containsKey(databaseName) ) {
+            throw new IllegalArgumentException( "There is no database named: " 
+                                                + databaseName );
+        }
         internalManagers.get(databaseName).insertFolder(folder);
         logger.debug("Folder " + folderName + " inserted in " + databaseName);
         return folder;
@@ -247,5 +252,9 @@ public class StructuredbManager implements IStructuredbManager {
             f.addStructure(s);
             internalManagers.get(databaseName).update(f);
         }
+    }
+
+    public List<String> listDatabaseNames() {
+        return new ArrayList<String>( internalManagers.keySet() );
     }
 }

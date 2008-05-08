@@ -199,5 +199,13 @@ public interface IStructuredbManager extends IBioclipseManager {
                                        "name. The strucutres are stored in " +
                                        "library named after the name of the " +
                                        "sdf file")
-    public void addStructuresFromSDF(String databaseName, String filePath) throws BioclipseException;
+    public void addStructuresFromSDF(String databaseName, String filePath) 
+                throws BioclipseException;
+    
+    /**
+     * @return a list of names of the names of all databases
+     */
+    @PublishedMethod ( methodSummary = "Returns a list with the names of all " +
+    		                               "structuredb database instances." )
+    public List<String> listDatabaseNames();
 }
