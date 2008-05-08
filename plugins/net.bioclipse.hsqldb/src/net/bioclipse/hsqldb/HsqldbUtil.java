@@ -37,7 +37,7 @@ import org.hsqldb.ServerConstants;
 public class HsqldbUtil {
 
     private static final Logger logger = Logger.getLogger(HsqldbUtil.class);
-    private String fileFolder;
+    private File fileFolder;
     private Set<String> urls = new HashSet<String>();
     private static final HsqldbUtil INSTANCE = new HsqldbUtil();
     
@@ -67,7 +67,7 @@ public class HsqldbUtil {
         path += ".hsqldbDatabases";
         File f = new File(path);
         logger.debug("created directory: " + path + " for storing databasefile");
-        fileFolder = path;
+        fileFolder = f;
     }
     
     public static HsqldbUtil getInstance() {
@@ -117,5 +117,9 @@ public class HsqldbUtil {
                         "Could not perform shutdown statement", e);
             }
         }
+    }
+
+    public File getDatabaseFilesDirectory() {
+        return fileFolder;
     }
 }

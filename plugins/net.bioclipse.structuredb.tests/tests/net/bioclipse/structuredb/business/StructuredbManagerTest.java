@@ -19,6 +19,7 @@ import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IMolecule;
+import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
@@ -61,6 +62,24 @@ public class StructuredbManagerTest
 
             setALoggedInUser(context);
         }
+    }
+    
+    @Override
+    protected void onTearDown() throws Exception {
+        deepDelete( HsqldbUtil.getInstance().getDatabaseFilesDirectory() );
+    }
+
+    private void deepDelete( File file ) {
+        
+        File[] files = file.listFiles();
+        
+        if(files != null) {
+          for( File f : files ) {
+              deepDelete( f );
+          }
+        }
+ 
+        file.delete();
     }
 
     @Override
