@@ -145,7 +145,7 @@ public class StructuredbManagerTest
             = (IStructuredbInstanceManager)
         context.getBean("structuredbInstanceManager");
         keeper.setLoggedInUser( internalManager
-                                .retrieveUserByUsername("admin") );
+                                .retrieveUserByUsername("local") );
     }
 
     public void testImportingSDFFile() throws BioclipseException {

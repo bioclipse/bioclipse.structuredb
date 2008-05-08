@@ -74,7 +74,7 @@ public class StructuredbManager implements IStructuredbManager {
                                                 + databaseName );
         }
         TableCreator.INSTANCE.createTables(
-                HsqldbUtil.getInstance().getConnectionUrl(databaseName) );
+            HsqldbUtil.getInstance().getConnectionUrl(databaseName) );
 
         Map<String, IStructuredbInstanceManager> newInstances
             = new HashMap<String, IStructuredbInstanceManager>();
