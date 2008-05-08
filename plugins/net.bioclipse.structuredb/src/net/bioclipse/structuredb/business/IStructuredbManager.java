@@ -49,8 +49,8 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Removes a local database with the " +
-                       		           "given name if such exists, otherwise " +
-                       		           "does nothing" )
+                                       "given name if such exists, otherwise " +
+                                       "does nothing" )
     public void removeLocalInstance( String databaseName );
 
     /**
@@ -63,7 +63,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     @PublishedMethod ( params = "String databaseName, String name",
                        methodSummary = "Fetches all structures by a given " +
-                       		           "name from a database with a given name")
+                                       "name from a database with a given name")
     public List<Structure> retrieveStructuresByName( String databaseName,
                                                      String structureName );
 
@@ -76,7 +76,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     @PublishedMethod ( params = "String databaseName, String folderName",
                        methodSummary = "Fetches a folder by a given name" +
-                       		           "from a database with a given name" )
+                                       "from a database with a given name" )
     public Folder retrieveFolderByName( String databaseName,
                                         String folderName );
 
@@ -106,9 +106,9 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName, String moleculeName, " +
                                 "ICDKMolecule cdkMolecule",
                        methodSummary = "Creates a structure with the given " +
-                       		           "name from the given cdkmolecule and " +
-                       		           "saves it in the database with the " +
-                       		           "given name" )
+                                       "name from the given cdkmolecule and " +
+                                       "saves it in the database with the " +
+                                       "given name" )
     public Structure createStructure( String databaseName,
                                       String moleculeName,
                                       ICDKMolecule cdkMolecule )
@@ -125,8 +125,8 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     @PublishedMethod ( params = "String databaseName, String folderName",
                        methodSummary = "Creates a folder with the given name " +
-                       		           "and saves it in the database with " +
-                       		           "the given name" )
+                                       "and saves it in the database with " +
+                                       "the given name" )
     public Folder createFolder( String databaseName,
                                 String folderName )
                                 throws IllegalArgumentException;
@@ -145,9 +145,9 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName, String username, " +
                                 "String password, boolean administrator",
                        methodSummary = "Creates a user with the given " +
-                       		           "username and password and with " +
-                       		           "administrator rights if that " +
-                       		           "variable is true")
+                                       "username and password and with " +
+                                       "administrator rights if that " +
+                                       "variable is true")
     public User createUser( String databaseName,
                             String username,
                             String password,
@@ -161,7 +161,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all structures from a " +
-                       		           "database with a given name")
+                                       "database with a given name")
     public List<Structure> retrieveAllStructures( String databaseName );
 
     /**
@@ -172,7 +172,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all folders from a database " +
-                       		           "with a given name")
+                                       "with a given name")
     public List<Folder> retrieveAllFolders( String databaseName );
 
     /**
@@ -183,7 +183,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all users from a database " +
-                       		           "with a given name")
+                                       "with a given name")
     public List<User> retrieveAllUsers( String databaseName );
 
     /**
@@ -195,9 +195,9 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     @PublishedMethod ( params = "String databaseName, String filePath",
                        methodSummary = "Saves all structures in a given sdf " +
-                       		           "file in the database with the given " +
-                       		           "name. The strucutres are stored in " +
-                       		           "library named after the name of the " +
-                       		           "sdf file")
+                                       "file in the database with the given " +
+                                       "name. The strucutres are stored in " +
+                                       "library named after the name of the " +
+                                       "sdf file")
     public void addStructuresFromSDF(String databaseName, String filePath) throws BioclipseException;
 }
