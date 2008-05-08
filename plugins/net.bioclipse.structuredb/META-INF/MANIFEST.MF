@@ -78,5 +78,9 @@ Export-Package: com.ibatis.common.beans,
  net.bioclipse.structuredb.persistency.tables,
  net.bioclipse.structuredb.views,
  org.apache.commons.dbcp
-Import-Package: org.apache.commons.logging;version="1.0.4",
+Import-Package: net.sf.cglib.beans,
+ net.sf.cglib.core,
+ net.sf.cglib.proxy,
+ net.sf.cglib.reflect,
+ org.apache.commons.logging;version="1.0.4",
  org.apache.log4j
