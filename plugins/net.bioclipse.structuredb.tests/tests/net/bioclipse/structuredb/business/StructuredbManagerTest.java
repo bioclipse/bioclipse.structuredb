@@ -111,9 +111,9 @@ public class StructuredbManagerTest
         assertNotNull(f1);
 
         assertEquals( f2,
-                      manager.retrieveFolderByName( database2, f2.getName() ) );
+                      manager.folderByName( database2, f2.getName() ) );
         assertEquals( f1,
-                      manager.retrieveFolderByName( database1, f1.getName() ) );
+                      manager.folderByName( database1, f1.getName() ) );
     }
 
     public void testCreatingAndRetrievingStructures() throws BioclipseException,
@@ -147,15 +147,15 @@ public class StructuredbManagerTest
         assertNotNull(structure2);
 
         assertTrue( manager
-                    .retrieveStructuresByName( database1,
+                    .allStructuresByName( database1,
                                               structure1.getName() )
                     .contains(structure1) );
         assertTrue( manager
-                    .retrieveStructuresByName( database1,
+                    .allStructuresByName( database1,
                                                 structure2.getName() )
                     .contains(structure2) );
 
-        List<Structure> structures = manager.retrieveAllStructures(database1);
+        List<Structure> structures = manager.allStructures(database1);
 
         assertTrue( structures.contains(structure1) );
         assertTrue( structures.contains(structure2) );
@@ -178,7 +178,7 @@ public class StructuredbManagerTest
         manager.addStructuresFromSDF( database1,
                                       TestData.getTestSDFFilePath() );
         Folder folder
-            = manager.retrieveFolderByName( database1,
+            = manager.folderByName( database1,
                                             "test" );
         assertNotNull(folder);
         assertEquals( 2, folder.getStructures().size() );
@@ -191,8 +191,8 @@ public class StructuredbManagerTest
         assertNotNull(folder2);
         assertEquals( folder1,
                       manager
-                      .retrieveFolderByName( database1, folder1.getName() ) );
-        List<Folder> folders = manager.retrieveAllFolders(database1);
+                      .folderByName( database1, folder1.getName() ) );
+        List<Folder> folders = manager.allFolders(database1);
         assertTrue( folders.contains(folder1) );
         assertTrue( folders.contains(folder2) );
     }
@@ -203,8 +203,8 @@ public class StructuredbManagerTest
         assertNotNull(user1);
         assertNotNull(user2);
         assertEquals( user1,
-                      manager.retrieveUserByName(database1, user1.getName()) );
-        List<User> users = manager.retrieveAllUsers(database1);
+                      manager.userByName(database1, user1.getName()) );
+        List<User> users = manager.allUsers(database1);
         assertTrue( users.contains(user1) );
         assertTrue( users.contains(user2) );
     }
@@ -235,4 +235,6 @@ public class StructuredbManagerTest
             //this is what we want
         }
     }
+    
+//    public void testSubstructureSearch
 }

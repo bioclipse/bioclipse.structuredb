@@ -225,32 +225,32 @@ public class StructuredbManager implements IStructuredbManager {
         HsqldbUtil.getInstance().remove( databaseName + ".sdb" );
     }
 
-    public List<Folder> retrieveAllFolders(String databaseName) {
+    public List<Folder> allFolders(String databaseName) {
         return internalManagers.get(databaseName).retrieveAllFolders();
     }
 
-    public List<Structure> retrieveAllStructures(String databaseName) {
+    public List<Structure> allStructures(String databaseName) {
         return internalManagers.get(databaseName).retrieveAllStructures();
     }
 
-    public List<User> retrieveAllUsers(String databaseName) {
+    public List<User> allUsers(String databaseName) {
         return internalManagers.get(databaseName).retrieveAllUsers();
     }
 
-    public Folder retrieveFolderByName( String databaseName,
+    public Folder folderByName( String databaseName,
                                         String folderName ) {
 
         return internalManagers.get(databaseName)
                                .retrieveFolderByName(folderName);
     }
 
-    public List<Structure> retrieveStructuresByName( String databaseName,
+    public List<Structure> allStructuresByName( String databaseName,
                                                      String structureName ) {
         return internalManagers.get(databaseName)
                                .retrieveStructureByName(structureName);
     }
 
-    public User retrieveUserByName(String databaseName, String username) {
+    public User userByName(String databaseName, String username) {
         return internalManagers.get(databaseName)
                                .retrieveUserByUsername(username);
     }

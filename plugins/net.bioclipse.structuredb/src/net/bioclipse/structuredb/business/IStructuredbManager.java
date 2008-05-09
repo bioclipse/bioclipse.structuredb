@@ -64,8 +64,8 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName, String name",
                        methodSummary = "Fetches all structures by a given " +
                                        "name from a database with a given name")
-    public List<Structure> retrieveStructuresByName( String databaseName,
-                                                     String structureName );
+    public List<Structure> allStructuresByName( String databaseName,
+                                                String structureName );
 
     /**
      * Retrieves a folder with a given name from a database with a given name
@@ -77,8 +77,8 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName, String folderName",
                        methodSummary = "Fetches a folder by a given name" +
                                        "from a database with a given name" )
-    public Folder retrieveFolderByName( String databaseName,
-                                        String folderName );
+    public Folder folderByName( String databaseName,
+                                String folderName );
 
     /**
      * Retrieves a user with a given username from a database with a given name
@@ -90,8 +90,8 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName, String username",
                        methodSummary = "Fetches a user with a given username " +
                                        "from a database with a given name")
-    public User retrieveUserByName( String databaseName,
-                                    String username );
+    public User userByName( String databaseName,
+                            String username );
 
     /**
      * Creates a structure with the given name from the given cdkmolecule and
@@ -162,7 +162,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all structures from a " +
                                        "database with a given name")
-    public List<Structure> retrieveAllStructures( String databaseName );
+    public List<Structure> allStructures( String databaseName );
 
     /**
      * Retrieves all folders from a database with a given name
@@ -173,7 +173,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all folders from a database " +
                                        "with a given name")
-    public List<Folder> retrieveAllFolders( String databaseName );
+    public List<Folder> allFolders( String databaseName );
 
     /**
      * Retrieves all users from a database with a given name
@@ -184,7 +184,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all users from a database " +
                                        "with a given name")
-    public List<User> retrieveAllUsers( String databaseName );
+    public List<User> allUsers( String databaseName );
 
     /**
      * Persists all structures in a sdf file in the specified database in
