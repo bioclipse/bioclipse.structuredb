@@ -66,7 +66,8 @@ public class HsqldbUtil {
         }
         path += ".hsqldbDatabases";
         File f = new File(path);
-        logger.debug("created directory: " + path + " for storing databasefile");
+        logger.debug( "created directory: " + path 
+                      + " for storing databasefile");
         fileFolder = f;
     }
     
@@ -78,12 +79,14 @@ public class HsqldbUtil {
      * Returns the url to connect to the database identified with the given 
      * name with
      * 
-     * @param name
+     * @param name - use a unique name preferably with some form of extra info 
+     *               saying which sort of database for example a structure 
+     *               database might be structures.sdb
      * @return url to database
      */
     public String getConnectionUrl(String name) {
         String url = "jdbc:hsqldb:file:" 
-                     + fileFolder + File.separator + name + ".data";
+                     + fileFolder + File.separator + name;
         urls.add(url);
         logger.debug("Connection URL: " + url + " returned");
         return url;
@@ -117,9 +120,25 @@ public class HsqldbUtil {
                         "Could not perform shutdown statement", e);
             }
         }
+        urls.clear();
     }
 
     public File getDatabaseFilesDirectory() {
         return fileFolder;
+    }
+
+    public void remove( String databaseName ) {
+        
+        File[] files = fileFolder.listFiles(); 
+        if( files == null ) {
+           logger.error( fileFolder + " doesn't seem to be a directory" );
+           return;
+        }
+        
+        for( File f : files ) {
+            if( f.getName().contains( databaseName ) ) {
+                f.delete();
+            }
+        }
     }
 }

@@ -263,4 +263,8 @@ public class BaseObject implements IBioObject {
         // TODO Auto-generated method stub
         return null;
     }
+    
+    public String toString() {
+        return "{" + this.getClass().getSimpleName() + ": " + name + "}"; 
+    }
 }

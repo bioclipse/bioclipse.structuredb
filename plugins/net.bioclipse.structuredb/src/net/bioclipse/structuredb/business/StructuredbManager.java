@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
@@ -50,6 +52,9 @@ public class StructuredbManager implements IStructuredbManager {
 
     private Logger logger = Logger.getLogger(StructuredbManager.class);
 
+    private static final Pattern databaseNamePattern 
+        = Pattern.compile( "(.*?)\\.sdb.*" );
+    
     /*
      * This isn't super if cdk starts using AOP for fancy stuff in the future
      * but we don't want the recorded variant and this is a solution that is
@@ -67,6 +72,36 @@ public class StructuredbManager implements IStructuredbManager {
     Map<String, ApplicationContext> applicationContexts
         = new HashMap<String, ApplicationContext>();
 
+    public StructuredbManager() {
+        File[] files = HsqldbUtil.getInstance()
+                                 .getDatabaseFilesDirectory()
+                                 .listFiles();
+        if( files != null) {
+            for( File file : files ) {
+                if( file.getName().contains( ".sdb" ) ) {
+                    loadDatabase(file);
+                }
+            }
+        }
+    }
+    
+    private void loadDatabase( File file ) {
+        
+        Matcher m = databaseNamePattern.matcher( file.getName() );
+        if( m.matches() ) {
+            String name = m.group( 1 );
+            if( internalManagers.containsKey( name ) ) {
+                return;
+            }
+            ApplicationContext context = createApplicationcontext( name, true );
+            
+            applicationContexts.put( name, context );
+            internalManagers.put( name, 
+                                  (IStructuredbInstanceManager) context
+                                      .getBean("structuredbInstanceManager") );
+        }
+    }
+
     public void createLocalInstance(String databaseName)
         throws IllegalArgumentException {
 
@@ -75,7 +110,7 @@ public class StructuredbManager implements IStructuredbManager {
                                                 + databaseName );
         }
         TableCreator.INSTANCE.createTables(
-            HsqldbUtil.getInstance().getConnectionUrl(databaseName) );
+            HsqldbUtil.getInstance().getConnectionUrl(databaseName + ".sdb") );
 
         Map<String, IStructuredbInstanceManager> newInstances
             = new HashMap<String, IStructuredbInstanceManager>();
@@ -87,7 +122,7 @@ public class StructuredbManager implements IStructuredbManager {
             //TODO: The day we not only handle local databases the row here
             //      below will need to change
             newApplicationContexts.put( nameKey,
-                                        getApplicationcontext(nameKey, true) );
+                                        createApplicationcontext(nameKey, true) );
             newInstances.put(
                     nameKey,
                     (IStructuredbInstanceManager)
@@ -100,7 +135,7 @@ public class StructuredbManager implements IStructuredbManager {
         applicationContexts = newApplicationContexts;
 
         applicationContexts.put( databaseName,
-                                 getApplicationcontext(databaseName, true) );
+                                 createApplicationcontext(databaseName, true) );
         internalManagers.put(
                 databaseName,
                 (IStructuredbInstanceManager)
@@ -124,8 +159,8 @@ public class StructuredbManager implements IStructuredbManager {
         keeper.setLoggedInUser( localUser );
     }
 
-    private ApplicationContext getApplicationcontext( String databaseName,
-                                                      boolean local ) {
+    private ApplicationContext createApplicationcontext( String databaseName,
+                                                         boolean local ) {
         FileSystemXmlApplicationContext context
             = new FileSystemXmlApplicationContext(
                 Structuredb.class
@@ -138,7 +173,8 @@ public class StructuredbManager implements IStructuredbManager {
 
         if(local) {
             dataSource.setUrl(
-                    HsqldbUtil.getInstance().getConnectionUrl(databaseName) );
+                    HsqldbUtil.getInstance()
+                              .getConnectionUrl(databaseName + ".sdb") );
         }
         else {
             throw new UnsupportedOperationException(
@@ -184,8 +220,9 @@ public class StructuredbManager implements IStructuredbManager {
     }
 
     public void removeLocalInstance(String databaseName) {
-        //TODO FIXME
-        logger.info("StructuredbManager.removeLocalInstance -- FIXME");
+        internalManagers.remove( databaseName );
+        applicationContexts.remove( databaseName );
+        HsqldbUtil.getInstance().remove( databaseName + ".sdb" );
     }
 
     public List<Folder> retrieveAllFolders(String databaseName) {
@@ -248,6 +285,10 @@ public class StructuredbManager implements IStructuredbManager {
                                                : title.toString(),
                                  molecule);
 
+            if ( "".equals( s.getName() ) ) {
+                s.setName( "\"" + s.getSmiles() + "\"" );
+            }
+            
             internalManagers.get(databaseName).insertStructure(s);
             f.addStructure(s);
             internalManagers.get(databaseName).update(f);

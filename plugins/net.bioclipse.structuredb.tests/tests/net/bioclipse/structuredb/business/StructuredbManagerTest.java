@@ -41,6 +41,10 @@ public class StructuredbManagerTest
 
     private static boolean setUpWasRun = false;
 
+    static {
+        deepDelete( HsqldbUtil.getInstance().getDatabaseFilesDirectory() );
+    }
+    
     @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
@@ -66,10 +70,10 @@ public class StructuredbManagerTest
     
     @Override
     protected void onTearDown() throws Exception {
-        deepDelete( HsqldbUtil.getInstance().getDatabaseFilesDirectory() );
+        
     }
 
-    private void deepDelete( File file ) {
+    private static void deepDelete( File file ) {
         
         File[] files = file.listFiles();
         
@@ -206,17 +210,17 @@ public class StructuredbManagerTest
     }
     
     public void testDatabasesFilesAreLoaded() {
+        HsqldbUtil.getInstance().stopAllDatabaseInstances();
         StructuredbManager anotherManager = new StructuredbManager();
         assertTrue( anotherManager.listDatabaseNames().contains(database1) );
         assertTrue( anotherManager.listDatabaseNames().contains(database1) );
-        assertEquals( "2", anotherManager.listDatabaseNames().size() );
+        assertEquals( 2, anotherManager.listDatabaseNames().size() );
     }
     
     public void testRemovingDatabaseInstance() {
         assertTrue( manager.listDatabaseNames().contains(database1) );
         manager.removeLocalInstance( database1 );
         assertFalse( manager.listDatabaseNames().contains(database1) );
-        manager.createFolder( database1, "testFolder" );
         
         StructuredbManager anotherManager = new StructuredbManager();
         assertFalse( anotherManager.listDatabaseNames().contains(database1) );
