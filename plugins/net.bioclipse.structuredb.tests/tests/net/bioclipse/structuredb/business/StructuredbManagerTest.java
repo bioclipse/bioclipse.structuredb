@@ -10,6 +10,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +29,8 @@ import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
 
+import org.openscience.cdk.smiles.SmilesGenerator;
+import org.openscience.cdk.templates.MoleculeFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
@@ -236,5 +240,24 @@ public class StructuredbManagerTest
         }
     }
     
-//    public void testSubstructureSearch
+    public void testSubstructureSearch() throws BioclipseException, 
+                                                IOException {
+        testCreatingAndRetrievingStructures();
+        
+        ICDKManager cdk = new CDKManager();
+        
+        SmilesGenerator generator = new SmilesGenerator();
+        String indoleSmiles  = generator
+                               .createSMILES( MoleculeFactory.makeIndole() );
+        String pyrroleSmiles = generator
+                               .createSMILES( MoleculeFactory.makePyrrole() );
+        ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
+        ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
+        
+        Structure indoleStructure = manager.createStructure( database1, 
+                                                             "indole", 
+                                                             indole );
+        assertTrue( manager.allStructuresContaining( database1, pyrrole )
+                           .contains( indoleStructure ) );
+    }
 }

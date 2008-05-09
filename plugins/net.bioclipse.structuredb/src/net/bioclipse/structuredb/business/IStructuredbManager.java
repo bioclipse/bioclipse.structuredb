@@ -208,4 +208,20 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( methodSummary = "Returns a list with the names of all " +
     		                               "structuredb database instances." )
     public List<String> listDatabaseNames();
+
+    /**
+     * Return a list of all structures in the database identified by the given 
+     * database name that might be a substructure of the given molecule. 
+     * 
+     * @param databaseName
+     * @param molecule
+     * @return
+     */
+    @PublishedMethod (params = "String databaseName, ICDKMolecule molecule",
+                      methodSummary = "Lists all structures in the database " +
+                      		            "identified by the given database name " +
+                      		            "that might be a substructure of the " +
+                      		            "given molecule")
+    public List<Structure> allStructuresContaining( String databaseName,
+                                                    ICDKMolecule molecule );
 }

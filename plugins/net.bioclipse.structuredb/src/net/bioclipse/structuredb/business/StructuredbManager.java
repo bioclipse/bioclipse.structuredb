@@ -298,4 +298,12 @@ public class StructuredbManager implements IStructuredbManager {
     public List<String> listDatabaseNames() {
         return new ArrayList<String>( internalManagers.keySet() );
     }
+
+    public List<Structure> allStructuresContaining( String databaseName,
+                                                    ICDKMolecule molecule ) {
+
+        // TODO FIXME 
+        logger.info( "FIXME: structuredb.allStructuresContaining" );
+        return null;
+    }
 }
