@@ -10,7 +10,11 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
 
 import net.bioclipse.structuredb.domain.Structure;
 
@@ -60,4 +64,59 @@ public class StructureDao extends GenericDao<Structure>
         return getSqlMapClientTemplate()
                .queryForList( "Structure.getByName", name );
     }
+
+    public Iterator<Structure> allStructuresIterator() {
+        
+        return new StructureIterator( getSqlMapClient() );
+    }
+    
+    private class StructureIterator implements Iterator<Structure> {
+        
+        private SqlMapClient sqlMapClient;
+        private Structure nextStructure = null;
+        private int skip = 0;
+        
+        public StructureIterator( SqlMapClient sqlMapClient ) {
+            this.sqlMapClient = sqlMapClient;
+        }
+        
+        @SuppressWarnings("unchecked")
+        public boolean hasNext() {
+
+            try {
+                List<Structure> result = (List<Structure>)sqlMapClient
+                                         .queryForList( "Structure.getAll", 
+                                                        null, 
+                                                        skip, 
+                                                        1 );
+                if(result.size() != 1) {
+                    nextStructure = null;
+                    return false;
+                }
+                else {
+                    nextStructure = result.get( 0 );
+                    return true;
+                }
+            } 
+            catch ( SQLException e ) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public Structure next() {
+            if( nextStructure != null ) {
+                skip++;
+                return nextStructure;
+            }
+            if( hasNext() ) {
+                skip++;
+                return nextStructure;
+            }
+            throw new IllegalStateException("There is no next structure");
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();            
+        }
+    };
 }

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
 
+import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.core.domain.BioList;
@@ -108,5 +109,10 @@ public class StructuredbInstanceManager
 
     public void setLoggedInUser(User user) {
         this.loggedInUser = user;
+    }
+
+    public Iterator<Structure> allStructuresIterator() {
+
+        return structureDao.allStructuresIterator();
     }
 }

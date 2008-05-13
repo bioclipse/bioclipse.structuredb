@@ -11,6 +11,7 @@
 package net.bioclipse.structuredb.persistency.dao;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.openscience.cdk.exception.CDKException;
@@ -90,5 +91,22 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         assertTrue(  saved.containsAll(structures) );
         assertFalse( saved.contains(object1)       );
         assertFalse( saved.contains(object2)       );
+    }
+    
+    public void testAllStructureIterator() {
+        List<Structure> structures = new ArrayList<Structure>() {
+            {
+                add( object1 );
+                add( object2 );
+            }
+        };
+        Iterator<Structure> iterator = ( (IStructureDao)dao ).allStructuresIterator();
+        assertTrue( iterator.hasNext() );
+        int numberof = 0;
+        while( iterator.hasNext() ) {
+            assertTrue( structures.contains( iterator.next() ) );
+            numberof++;
+        }
+        assertEquals( 2, numberof );
     }
 }

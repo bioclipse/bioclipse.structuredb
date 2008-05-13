@@ -11,6 +11,7 @@
 package net.bioclipse.structuredb.internalbusiness;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.structuredb.Structuredb;
@@ -208,6 +209,16 @@ public class StructuredbInstanceManagerTest
         structure.setName("edited");
         manager.update(structure);
         assertEquals( structure, structureDao.getById(structure.getId()) );
+    }
+    
+    public void testAllStructureIterator() throws CDKException {
+        testRetrieveAllStructures();
+        List<Structure> structures = manager.retrieveAllStructures();
+        Iterator<Structure> structureIterator = manager.allStructuresIterator();
+        assertTrue( structureIterator.hasNext() );
+        while ( structureIterator.hasNext() ) {
+            assertTrue( structures.contains( structureIterator.next() ) );
+        }
     }
     
     protected String[] getConfigLocations() {

@@ -264,5 +264,11 @@ public class Structure extends BaseObject
     public Object getAdapter(Class adapter) {
         return null;
     }
+
+    
+    public IAtomContainer getAtomContainer() {
+    
+        return atomContainer;
+    }
     
 }

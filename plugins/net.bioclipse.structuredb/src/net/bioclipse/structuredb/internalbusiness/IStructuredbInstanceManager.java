@@ -10,6 +10,7 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.openscience.cdk.AtomContainer;
@@ -138,4 +139,9 @@ public interface IStructuredbInstanceManager {
      * @param user to set as logged in
      */
     public void setLoggedInUser(User user);
+
+    /**
+     * @return iterator for all structures in the database
+     */
+    public Iterator<Structure> allStructuresIterator();
 }

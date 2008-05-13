@@ -221,6 +221,28 @@ public class StructuredbManagerTest
         assertEquals( 2, anotherManager.listDatabaseNames().size() );
     }
     
+    public void testSubstructureSearch() throws BioclipseException, 
+                IOException {
+        
+        testCreatingAndRetrievingStructures();
+
+        ICDKManager cdk = new CDKManager();
+
+        SmilesGenerator generator = new SmilesGenerator();
+        String indoleSmiles  = generator
+                               .createSMILES( MoleculeFactory.makeIndole() );
+        String pyrroleSmiles = generator
+                               .createSMILES( MoleculeFactory.makePyrrole() );
+        ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
+        ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
+
+        Structure indoleStructure = manager.createStructure( database1, 
+                                                             "indole", 
+                                                             indole );
+        assertTrue( manager.allStructureFingerprintSearch( database1, pyrrole )
+                           .contains( indoleStructure ) );
+    }
+    
     public void testRemovingDatabaseInstance() {
         assertTrue( manager.listDatabaseNames().contains(database1) );
         manager.removeLocalInstance( database1 );
@@ -238,26 +260,5 @@ public class StructuredbManagerTest
         catch (IllegalArgumentException e) {
             //this is what we want
         }
-    }
-    
-    public void testSubstructureSearch() throws BioclipseException, 
-                                                IOException {
-        testCreatingAndRetrievingStructures();
-        
-        ICDKManager cdk = new CDKManager();
-        
-        SmilesGenerator generator = new SmilesGenerator();
-        String indoleSmiles  = generator
-                               .createSMILES( MoleculeFactory.makeIndole() );
-        String pyrroleSmiles = generator
-                               .createSMILES( MoleculeFactory.makePyrrole() );
-        ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
-        ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
-        
-        Structure indoleStructure = manager.createStructure( database1, 
-                                                             "indole", 
-                                                             indole );
-        assertTrue( manager.allStructuresContaining( database1, pyrrole )
-                           .contains( indoleStructure ) );
     }
 }

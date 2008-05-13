@@ -26,6 +26,7 @@ import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 public class GenericDao<T> extends SqlMapClientDaoSupport implements IGenericDao<T>, FetchExecutor<T> {
 
     protected Class<T> type;
+    
 
     /**
      * @param type the class the dao work with

@@ -10,12 +10,18 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.structuredb.domain.Structure;
 
+/**
+ * @author jonalv
+ */
 public interface IStructureDao extends IGenericDao<Structure> {
 
     public List<Structure> getByName(String name);
     
+    /** returns an iterator for all structures in the database */
+    public Iterator<Structure> allStructuresIterator();
 }

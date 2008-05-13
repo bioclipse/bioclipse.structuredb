@@ -1,6 +1,9 @@
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.util.Iterator;
 import java.util.List;
+
+import net.bioclipse.structuredb.domain.Structure;
 
 /**
  * Definition of the methods shared by all daos

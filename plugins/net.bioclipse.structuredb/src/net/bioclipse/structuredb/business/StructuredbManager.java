@@ -28,6 +28,7 @@ import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.CDKMolecule;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.domain.BioList;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
@@ -299,11 +300,21 @@ public class StructuredbManager implements IStructuredbManager {
         return new ArrayList<String>( internalManagers.keySet() );
     }
 
-    public List<Structure> allStructuresContaining( String databaseName,
-                                                    ICDKMolecule molecule ) {
-
-        // TODO FIXME 
-        logger.info( "FIXME: structuredb.allStructuresContaining" );
-        return null;
+    public List<Structure> allStructureFingerprintSearch( String databaseName,
+                                                    ICDKMolecule molecule ) 
+                           throws BioclipseException {
+        
+        List<Structure> structures = new BioList<Structure>();
+        Iterator<Structure> iterator 
+            = internalManagers.get( databaseName ).allStructuresIterator();
+        while( iterator.hasNext() ) {
+            Structure current = iterator.next();
+            if( cdk.fingerPrintMatches( new CDKMolecule( current
+                                                         .getAtomContainer() ), 
+                                        molecule ) ) {
+                structures.add( current );
+            }
+        }
+        return structures;
     }
 }

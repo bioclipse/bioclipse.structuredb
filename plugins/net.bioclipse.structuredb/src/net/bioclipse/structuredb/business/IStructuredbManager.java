@@ -216,12 +216,14 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param databaseName
      * @param molecule
      * @return
+     * @throws BioclipseException 
      */
     @PublishedMethod (params = "String databaseName, ICDKMolecule molecule",
                       methodSummary = "Lists all structures in the database " +
                       		            "identified by the given database name " +
                       		            "that might be a substructure of the " +
                       		            "given molecule")
-    public List<Structure> allStructuresContaining( String databaseName,
-                                                    ICDKMolecule molecule );
+    public List<Structure> allStructureFingerprintSearch(String databaseName,
+                                                         ICDKMolecule molecule) 
+                           throws BioclipseException;
 }
