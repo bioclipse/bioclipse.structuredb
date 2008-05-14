@@ -45,6 +45,7 @@ import net.bioclipse.structuredb.persistency.tables.TableCreator;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.openscience.cdk.CDKConstants;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -103,6 +104,10 @@ public class StructuredbManager implements IStructuredbManager {
             internalManagers.put( name, 
                                   (IStructuredbInstanceManager) context
                                       .getBean("structuredbInstanceManager") );
+            LoggedInUserKeeper keeper 
+                = (LoggedInUserKeeper)context.getBean( "loggedInUserKeeper" );
+            IUserDao userDao = (IUserDao) context.getBean( "userDao" );
+            keeper.setLoggedInUser( userDao.getByUserName( "local" ) );
         }
     }
 
@@ -264,46 +269,54 @@ public class StructuredbManager implements IStructuredbManager {
     }
 
     public void addStructuresFromSDF( String databaseName,
-                                      String filePath )
+                                      String filePath,
+                                      IProgressMonitor monitor)
                                       throws BioclipseException {
-    	// first, count the number of items to read. It's a bit of overhead,
-    	// but adds to the user experience
-    	int moleculesToRead = Integer.MAX_VALUE;
-    	try {
-    		FileInputStream counterStream = new FileInputStream(filePath);
-    		int c = counterStream.read();
-    		while (c != -1) {
-    			if (c == '$') {
-    				c = counterStream.read();
-        			if (c == '$') {
-        				c = counterStream.read();
-            			if (c == '$') {
-            				c = counterStream.read();
-                			if (c == '$') {
-                				moleculesToRead++;
-                			}
-            			}
-        			}
-    			}
-    		}
-    		counterStream.close();
-    	} catch (Exception exception) {
-    		// ok, I give up...
-    		logger.debug("Could not determine the number of molecules to read, because: " +
-    			exception.getMessage(), exception
-    		);
-    	}
-    	
-    	// now really read the structures
+        // first, count the number of items to read. It's a bit of overhead,
+        // but adds to the user experience
+        int moleculesToRead = 0;
+        try {
+            FileInputStream counterStream = new FileInputStream(filePath);
+            int c = 0;
+            while (c != -1) {
+                c = counterStream.read();
+//                logger.debug( ((char)c) + "" );
+                if (c == '$') {
+                    c = counterStream.read();
+                    if (c == '$') {
+                        c = counterStream.read();
+                        if (c == '$') {
+                            c = counterStream.read();
+                            if (c == '$') {
+                                moleculesToRead++;
+                                logger.debug( "found molecule in file" );
+                                counterStream.read();
+                            }
+                        }
+                    }
+                }
+            }
+            counterStream.close();
+        } catch (Exception exception) {
+            // ok, I give up...
+            logger.debug("Could not determine the number of molecules to read, because: " +
+                         exception.getMessage(), exception
+            );
+        }
+
+        // now really read the structures
+        if(monitor != null) {
+            monitor.beginTask( "Reading molecules from sdf file", 
+                               moleculesToRead );
+        }
         Iterator<ICDKMolecule> iterator;
         int moleculesRead = 0;
         try {
-            iterator = cdk.creatMoleculeIterator(
-            	new FileInputStream(filePath)
-            );
+            iterator = cdk.creatMoleculeIterator( 
+                new FileInputStream(filePath) );
         } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException(
-                    "Could not open file:" + filePath );
+            throw new IllegalArgumentException( "Could not open file:" + 
+                                                filePath );
         }
         File file = new File(filePath);
         Folder f = createFolder( databaseName,
@@ -315,21 +328,25 @@ public class StructuredbManager implements IStructuredbManager {
             // FIXME: jonalv, update progress bar here
 
             Object title = molecule.getAtomContainer()
-                                   .getProperty(CDKConstants.TITLE);
+            .getProperty(CDKConstants.TITLE);
 
             Structure s
-                = new Structure( title == null ? ""
-                                               : title.toString(),
-                                 molecule);
+            = new Structure( title == null ? ""
+                    : title.toString(),
+                    molecule);
 
             if ( "".equals( s.getName() ) ) {
                 s.setName( "\"" + s.getSmiles() + "\"" );
             }
-            
+
             internalManagers.get(databaseName).insertStructure(s);
             f.addStructure(s);
             internalManagers.get(databaseName).update(f);
+            if(monitor != null) {
+                monitor.worked( 1 );
+            }
         }
+        monitor.done();
     }
 
     public List<String> listDatabaseNames() {
@@ -352,5 +369,11 @@ public class StructuredbManager implements IStructuredbManager {
             }
         }
         return structures;
+    }
+
+    public void addStructuresFromSDF( String databaseName, String filePath )
+                throws BioclipseException {
+
+        addStructuresFromSDF( databaseName, filePath, null );
     }
 }

@@ -12,6 +12,8 @@ package net.bioclipse.structuredb.business;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
@@ -200,6 +202,20 @@ public interface IStructuredbManager extends IBioclipseManager {
                                        "library named after the name of the " +
                                        "sdf file")
     public void addStructuresFromSDF(String databaseName, String filePath) 
+                throws BioclipseException;
+    
+    /**
+     * Persists all structures in a sdf file in the specified database in
+     * a folder named after the file with a progressmonitor
+     * 
+     * @param databaseName
+     * @param filePath
+     * @param monitor
+     * @throws BioclipseException
+     */
+    public void addStructuresFromSDF( String databaseName, 
+                                      String filePath, 
+                                      IProgressMonitor monitor ) 
                 throws BioclipseException;
     
     /**

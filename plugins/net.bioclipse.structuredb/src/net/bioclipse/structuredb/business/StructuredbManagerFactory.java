@@ -13,6 +13,7 @@
 package net.bioclipse.structuredb.business;
 
 import net.bioclipse.structuredb.Activator;
+import net.bioclipse.ui.views.JsConsoleView;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
@@ -35,7 +36,9 @@ public class StructuredbManagerFactory implements IExecutableExtension,
                                        Object data ) throws CoreException {
     
         logger.debug("StructuredbManagerFactory.setInitializationData");
-        structuredbManager = Activator.getDefault().getStructuredbManager();
+        
+        structuredbManager = new ForConsoleDecoratedStructuredbManager(
+                             Activator.getDefault().getStructuredbManager() );
     }
 
     public Object create() throws CoreException {

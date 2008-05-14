@@ -85,7 +85,7 @@ public class Activator extends AbstractUIPlugin {
         return imageDescriptorFromPlugin(PLUGIN_ID, path);
     }
 
-    public Object getStructuredbManager() {
+    public IStructuredbManager getStructuredbManager() {
         IStructuredbManager manager = null;
         try {
             manager = (IStructuredbManager) finderTracker.waitForService(1000*10);
