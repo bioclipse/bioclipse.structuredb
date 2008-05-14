@@ -10,9 +10,12 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -263,10 +266,41 @@ public class StructuredbManager implements IStructuredbManager {
     public void addStructuresFromSDF( String databaseName,
                                       String filePath )
                                       throws BioclipseException {
+    	// first, count the number of items to read. It's a bit of overhead,
+    	// but adds to the user experience
+    	int moleculesToRead = Integer.MAX_VALUE;
+    	try {
+    		FileInputStream counterStream = new FileInputStream(filePath);
+    		int c = counterStream.read();
+    		while (c != -1) {
+    			if (c == '$') {
+    				c = counterStream.read();
+        			if (c == '$') {
+        				c = counterStream.read();
+            			if (c == '$') {
+            				c = counterStream.read();
+                			if (c == '$') {
+                				moleculesToRead++;
+                			}
+            			}
+        			}
+    			}
+    		}
+    		counterStream.close();
+    	} catch (Exception exception) {
+    		// ok, I give up...
+    		logger.debug("Could not determine the number of molecules to read, because: " +
+    			exception.getMessage(), exception
+    		);
+    	}
+    	
+    	// now really read the structures
         Iterator<ICDKMolecule> iterator;
+        int moleculesRead = 0;
         try {
-            iterator
-                = cdk.creatMoleculeIterator( new FileInputStream(filePath) );
+            iterator = cdk.creatMoleculeIterator(
+            	new FileInputStream(filePath)
+            );
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException(
                     "Could not open file:" + filePath );
@@ -277,6 +311,8 @@ public class StructuredbManager implements IStructuredbManager {
 
         while ( iterator.hasNext() ) {
             ICDKMolecule molecule = iterator.next();
+            moleculesRead++;
+            // FIXME: jonalv, update progress bar here
 
             Object title = molecule.getAtomContainer()
                                    .getProperty(CDKConstants.TITLE);
