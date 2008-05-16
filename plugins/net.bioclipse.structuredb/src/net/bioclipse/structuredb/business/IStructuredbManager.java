@@ -30,7 +30,7 @@ import net.bioclipse.structuredb.domain.User;
 public interface IStructuredbManager extends IBioclipseManager {
 
     /**
-     * Creates a local database instance
+     * Creates a local database instance.
      *
      * @param databaseName the name of the created database
      * @throws IllegalArgumentException if a database with the given
@@ -45,7 +45,7 @@ public interface IStructuredbManager extends IBioclipseManager {
 
     /**
      * Removes a local database instance with a given name if such a database
-     * exists, otherwise does nothing
+     * exists, otherwise does nothing.
      *
      * @param databaseName name of the database instance to be deleted
      */
@@ -70,7 +70,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                                                 String structureName );
 
     /**
-     * Retrieves a folder with a given name from a database with a given name
+     * Retrieves a folder with a given name from a database with a given name.
      *
      * @param databaseName
      * @param folderName
@@ -83,7 +83,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                                 String folderName );
 
     /**
-     * Retrieves a user with a given username from a database with a given name
+     * Retrieves a user with a given username from a database with a given name.
      *
      * @param databaseName
      * @param username
@@ -117,8 +117,8 @@ public interface IStructuredbManager extends IBioclipseManager {
                                       throws BioclipseException;
 
     /**
-     * Creates a folder with the given name and
-     * persists it in the database with the given name
+     * Creates a folder with the given name and persists it in the database
+     * with the given name.
      *
      * @param databaseName
      * @param folderName
@@ -135,7 +135,7 @@ public interface IStructuredbManager extends IBioclipseManager {
 
     /**
      * Creates a user with the given username, password and sudoer flag and
-     * persists it in the database with the given name
+     * persists it in the database with the given name.
      *
      * @param databaseName
      * @param username
@@ -156,7 +156,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                             boolean sudoer ) throws IllegalArgumentException;
 
     /**
-     * Retrieves all structures from a database with a given name
+     * Retrieves all structures from a database with a given name.
      *
      * @param databaseName
      * @return
@@ -167,7 +167,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     public List<Structure> allStructures( String databaseName );
 
     /**
-     * Retrieves all folders from a database with a given name
+     * Retrieves all folders from a database with a given name.
      *
      * @param databaseName
      * @return
@@ -178,7 +178,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     public List<Folder> allFolders( String databaseName );
 
     /**
-     * Retrieves all users from a database with a given name
+     * Retrieves all users from a database with a given name.
      *
      * @param databaseName
      * @return
@@ -190,7 +190,7 @@ public interface IStructuredbManager extends IBioclipseManager {
 
     /**
      * Persists all structures in a sdf file in the specified database in
-     * a folder named after the file
+     * a folder named after the file.
      *
      * @param path
      * @throws BioclipseException
