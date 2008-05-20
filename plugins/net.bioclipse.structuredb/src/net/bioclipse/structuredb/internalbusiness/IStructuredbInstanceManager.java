@@ -144,4 +144,12 @@ public interface IStructuredbInstanceManager {
      * @return iterator for all structures in the database
      */
     public Iterator<Structure> allStructuresIterator();
+
+    /**
+     * Inserts structure in the folder with the given id
+     * 
+     * @param s
+     * @param folderId
+     */
+    public void insertStructureInFolder( Structure s, String folderId );
 }

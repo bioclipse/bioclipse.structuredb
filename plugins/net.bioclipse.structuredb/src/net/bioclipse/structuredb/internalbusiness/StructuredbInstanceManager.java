@@ -115,4 +115,9 @@ public class StructuredbInstanceManager
 
         return structureDao.allStructuresIterator();
     }
+
+    public void insertStructureInFolder( Structure s, String folderId ) {
+
+        structureDao.insertInFolder( s, folderId );
+    }
 }

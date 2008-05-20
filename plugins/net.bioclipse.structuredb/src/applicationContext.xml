@@ -170,7 +170,7 @@
     <bean id="auditCreationAdvisor"
           class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
         <property name="advice"  ref="auditCreationAdvice" />
-        <property name="pattern" value=".*insert" />
+        <property name="pattern" value=".*insert.*" />
     </bean>
 	
 	<bean id="auditCreationAdvice"

@@ -24,4 +24,12 @@ public interface IStructureDao extends IGenericDao<Structure> {
     
     /** returns an iterator for all structures in the database */
     public Iterator<Structure> allStructuresIterator();
+
+    /**
+     * Inserts the structure into the database and the folder with the given id
+     * 
+     * @param s
+     * @param folderId
+     */
+    public void insertInFolder( Structure s, String folderId );
 }

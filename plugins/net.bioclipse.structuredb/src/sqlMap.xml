@@ -225,7 +225,6 @@
 		DELETE FROM BaseObject
 		WHERE id='$value$';
 	</delete>
-	
 <!--+
     | UPDATE STATEMENTS
     +-->
@@ -286,4 +285,13 @@
 			id = '$id$'
     </update>
     
+    <update id="Structure.setFolder" parameterClass="java.util.Map">
+        UPDATE
+            Structure
+        SET
+            folder = '$folderId$'
+        WHERE
+            id = '$structureId$'
+    </update>
+  
 </sqlMap>

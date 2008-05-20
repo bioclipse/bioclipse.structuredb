@@ -26,7 +26,7 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         super(Structure.class);
     }
     
-    public void testPersistStructureWithLibrary() {
+    public void testPersistStructureWithFolder() {
         
         Folder folder = new Folder();
         IFolderDao folderDao = (IFolderDao) applicationContext.getBean("folderDao");
@@ -43,6 +43,25 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         assertNotSame(structure, loaded);
         assertTrue( structure.hasValuesEqualTo(loaded) );
         assertTrue( structure.getFolder().hasValuesEqualTo(loaded.getFolder()) );
+    }
+
+    public void testPersistStructureWithFolderId() {
+        
+        Folder folder = new Folder();
+        IFolderDao folderDao = (IFolderDao) applicationContext.getBean("folderDao");
+        addCreatorAndEditor(folder);
+        folderDao.insert(folder);
+        
+        Structure structure = new Structure();
+
+        addCreatorAndEditor(structure);
+        ((IStructureDao)dao).insertInFolder( structure, folder.getId() );
+        
+        Structure loaded = dao.getById( structure.getId() );
+        assertNotNull("The lodaded object should not be null", loaded);
+        assertNotSame(structure, loaded);
+        assertTrue( structure.hasValuesEqualTo(loaded) );
+        assertTrue( loaded.getFolder().getId().equals( folder.getId() ) );
     }
     
     @Override

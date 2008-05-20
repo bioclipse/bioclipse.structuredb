@@ -81,7 +81,13 @@ public class Structure extends BaseObject
         SmilesGenerator sg = new SmilesGenerator();
         //If atomContainer often isn't an instance of IMolecule
         //maybe something else is needed
-        smiles = sg.createSMILES( (IMolecule) molecule );
+        if(molecule.getAtomCount() > 100) {
+            smiles = "";
+            logger.debug( "Not generating SMILES. Structure " + name + " has too many atoms." );
+        }
+        else {
+            smiles = sg.createSMILES( (IMolecule) molecule );
+        }
     }
 
     public Structure( String name, ICDKMolecule cdkMolecule )

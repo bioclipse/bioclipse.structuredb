@@ -280,7 +280,6 @@ public class StructuredbManager implements IStructuredbManager {
             int c = 0;
             while (c != -1) {
                 c = counterStream.read();
-//                logger.debug( ((char)c) + "" );
                 if (c == '$') {
                     c = counterStream.read();
                     if (c == '$') {
@@ -289,7 +288,6 @@ public class StructuredbManager implements IStructuredbManager {
                             c = counterStream.read();
                             if (c == '$') {
                                 moleculesToRead++;
-                                logger.debug( "found molecule in file" );
                                 counterStream.read();
                             }
                         }
@@ -319,8 +317,9 @@ public class StructuredbManager implements IStructuredbManager {
                                                 filePath );
         }
         File file = new File(filePath);
-        Folder f = createFolder( databaseName,
-                                 file.getName().replaceAll("\\..*?$", "") );
+        String folderId = createFolder( databaseName,
+                                        file.getName().replaceAll("\\..*?$", "") )
+                                            .getId();
 
         while ( iterator.hasNext() ) {
             ICDKMolecule molecule = iterator.next();
@@ -338,8 +337,7 @@ public class StructuredbManager implements IStructuredbManager {
                 s.setName( "\"" + s.getSmiles() + "\"" );
             }
 
-            f.addStructure(s);
-            internalManagers.get(databaseName).insertStructure(s);
+            internalManagers.get(databaseName).insertStructureInFolder(s, folderId);
             if(monitor != null) {
                 monitor.worked( 1 );
             }

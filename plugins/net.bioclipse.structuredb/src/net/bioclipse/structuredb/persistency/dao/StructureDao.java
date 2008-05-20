@@ -11,8 +11,10 @@
 package net.bioclipse.structuredb.persistency.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
@@ -118,5 +120,17 @@ public class StructureDao extends GenericDao<Structure>
         public void remove() {
             throw new UnsupportedOperationException();            
         }
+    }
+
+    public void insertInFolder( Structure structure, String folderId ) {
+
+        getSqlMapClientTemplate().update( "BaseObject.insert", 
+                                          structure );
+        getSqlMapClientTemplate().update( "Structure.insertWithoutFolder", 
+                                          structure );
+        Map<String, String> params = new HashMap<String, String>();
+        params.put( "structureId", structure.getId() );
+        params.put( "folderId", folderId );
+        getSqlMapClientTemplate().update( "Structure.setFolder", params );
     };
 }
