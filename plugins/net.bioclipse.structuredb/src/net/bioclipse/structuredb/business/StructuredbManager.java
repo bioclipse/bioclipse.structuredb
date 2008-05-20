@@ -325,7 +325,6 @@ public class StructuredbManager implements IStructuredbManager {
         while ( iterator.hasNext() ) {
             ICDKMolecule molecule = iterator.next();
             moleculesRead++;
-            // FIXME: jonalv, update progress bar here
 
             Object title = molecule.getAtomContainer()
             .getProperty(CDKConstants.TITLE);
@@ -339,14 +338,15 @@ public class StructuredbManager implements IStructuredbManager {
                 s.setName( "\"" + s.getSmiles() + "\"" );
             }
 
-            internalManagers.get(databaseName).insertStructure(s);
             f.addStructure(s);
-            internalManagers.get(databaseName).update(f);
+            internalManagers.get(databaseName).insertStructure(s);
             if(monitor != null) {
                 monitor.worked( 1 );
             }
         }
-        monitor.done();
+        if(monitor != null) {
+            monitor.done();
+        }
     }
 
     public List<String> listDatabaseNames() {

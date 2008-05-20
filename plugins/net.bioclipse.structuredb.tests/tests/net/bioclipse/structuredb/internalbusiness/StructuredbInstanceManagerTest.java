@@ -88,9 +88,14 @@ public class StructuredbInstanceManagerTest
     private Structure createStructure( String name, 
                                        AtomContainer atomContainer) 
             throws CDKException {
-    
+
+        long before = System.currentTimeMillis();
         Structure structure = new Structure( name, atomContainer );
+        long inBetween = System.currentTimeMillis();
         manager.insertStructure(structure);
+        long after = System.currentTimeMillis();
+        System.out.println("Creating structure took: " + (inBetween - before) + "ms");
+        System.out.println("Persisting structure took: " + (after - inBetween) + "ms");
         return structure;
     }
     
