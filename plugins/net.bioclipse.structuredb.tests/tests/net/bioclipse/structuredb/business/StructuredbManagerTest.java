@@ -14,6 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.cdk.business.CDKManager;
@@ -175,8 +176,17 @@ public class StructuredbManagerTest
         Structure indoleStructure = manager.createStructure( database1, 
                                                              "indole", 
                                                              indole );
-        assertTrue( manager.allStructureFingerprintSearch( database1, pyrrole )
-                           .contains( indoleStructure ) );
+        
+        Iterator<Structure> iterator = manager
+                                       .subStructureSearchIterator( database1, 
+                                                                    pyrrole );
+        boolean foundIndole = false;
+        while(iterator.hasNext()) {
+            if( iterator.next().equals( indoleStructure ) ) {
+                foundIndole = true;
+            }
+        }
+        assertTrue(foundIndole);
     }
     
     public void testCreatingAndRetrievingStructures() throws BioclipseException,

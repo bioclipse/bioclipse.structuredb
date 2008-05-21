@@ -33,6 +33,7 @@ import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.BioList;
 import net.bioclipse.core.domain.IMolecule;
+import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Folder;
@@ -373,5 +374,78 @@ public class StructuredbManager implements IStructuredbManager {
                 throws BioclipseException {
 
         addStructuresFromSDF( databaseName, filePath, null );
+    }
+
+    public Iterator<Structure> subStructureSearchIterator(String databaseName,
+                                                          IMolecule molecule)
+                               throws BioclipseException {
+
+        //TODO: Should be able to reuse info from Structure and not recreate from SMILES
+        ICDKMolecule cdkMolecule = cdk.fromSmiles( molecule.getSmiles() );
+        return new SubStructureIterator( internalManagers
+                                         .get( databaseName )
+                                         .allStructuresIterator(),
+                                         cdk,
+                                         cdkMolecule ); 
+    }
+    
+    public class SubStructureIterator 
+           implements Iterator<Structure> {
+
+        private Structure next = null;
+        private Iterator<Structure> parent;
+        private ICDKManager cdk;
+        private ICDKMolecule subStructure;
+        
+        public SubStructureIterator( Iterator<Structure> iterator, 
+                                     ICDKManager cdk,
+                                     ICDKMolecule subStructure ) {
+            parent   = iterator;
+            this.cdk = cdk;
+            this.subStructure = subStructure;
+        }
+
+        public boolean hasNext() {
+
+            if( next != null ) {
+                return true;
+            }
+            try {
+                next = findNext();
+            } catch ( BioclipseException e ) {
+                throw new RuntimeException(e);
+            }
+            return next != null;
+        }
+
+        private Structure findNext() throws BioclipseException {
+
+            while( parent.hasNext() ) {
+                Structure next = parent.next();
+                //TODO: Should be able to reuse info from Structure and not recreate from SMILES
+                ICDKMolecule molecule;
+                molecule = cdk.fromSmiles( next.getSmiles() );
+                if( cdk.fingerPrintMatches( molecule, subStructure ) &&
+                    cdk.subStructureMatches( molecule, subStructure ) ) {
+                    return next;
+                }
+            }
+            return null;
+        }
+
+        public Structure next() {
+
+            if( !hasNext() ) {
+                throw new IllegalStateException( "there are no more " +
+                                                 "such structures" );
+            }
+            Structure next = this.next;
+            this.next = null;
+            return next;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
     }
 }

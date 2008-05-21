@@ -10,10 +10,12 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
+import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
@@ -60,12 +62,6 @@ public class ForConsoleDecoratedStructuredbManager implements
 
     public List<Folder> allFolders( String databaseName ) {
         return manager.allFolders( databaseName );
-    }
-
-    public List<Structure> allStructureFingerprintSearch(String databaseName,
-                                                         ICDKMolecule molecule)
-                           throws BioclipseException {
-        return manager.allStructureFingerprintSearch( databaseName, molecule );
     }
 
     public List<Structure> allStructures( String databaseName ) {
@@ -124,5 +120,11 @@ public class ForConsoleDecoratedStructuredbManager implements
 
     public String getNamespace() {
         return manager.getNamespace();
+    }
+
+    public Iterator<Structure> subStructureSearchIterator( String databaseName,
+                                                           IMolecule molecule )
+                                                                               throws BioclipseException {
+        return manager.subStructureSearchIterator( databaseName, molecule );
     }
 }

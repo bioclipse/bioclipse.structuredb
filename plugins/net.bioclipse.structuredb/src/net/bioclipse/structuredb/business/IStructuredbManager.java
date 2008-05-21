@@ -10,6 +10,7 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -19,6 +20,7 @@ import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.business.IBioclipseManager;
+import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
@@ -226,20 +228,19 @@ public interface IStructuredbManager extends IBioclipseManager {
     public List<String> listDatabaseNames();
 
     /**
-     * Return a list of all structures in the database identified by the given 
-     * database name that might be a substructure of the given molecule. 
+     * Returns an iterator to all structures in the given database that contains
+     * the given molecule
      * 
      * @param databaseName
      * @param molecule
      * @return
-     * @throws BioclipseException 
+     * @throws BioclipseException
      */
-    @PublishedMethod (params = "String databaseName, ICDKMolecule molecule",
-                      methodSummary = "Lists all structures in the database " +
-                      		            "identified by the given database name " +
-                      		            "that might be a substructure of the " +
-                      		            "given molecule")
-    public List<Structure> allStructureFingerprintSearch(String databaseName,
-                                                         ICDKMolecule molecule) 
-                           throws BioclipseException;
+    @PublishedMethod (params = "String databaseName, IMolecule molecule",
+                      methodSummary = "Returns an iterator to all structures " +
+                      		          "in the given database that contains " +
+                      		          "the given molecule")
+    public Iterator<Structure> subStructureSearchIterator(String databaseName,
+                                                          IMolecule molecule)
+                               throws BioclipseException;
 }
