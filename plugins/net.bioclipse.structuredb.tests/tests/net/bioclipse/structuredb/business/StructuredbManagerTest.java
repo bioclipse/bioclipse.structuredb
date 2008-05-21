@@ -120,6 +120,65 @@ public class StructuredbManagerTest
                       manager.folderByName( database1, f1.getName() ) );
     }
 
+    public void testSubstructureSearch() throws BioclipseException, 
+                                                IOException {
+
+        ICDKManager cdk = new CDKManager();
+
+        ICDKMolecule mol1 = cdk.loadMolecule( TestData
+                                              .class
+                                              .getClassLoader()
+                                              .getResourceAsStream(
+                                              "testData/0037.cml") );
+        assertNotNull(mol1);
+
+        Structure structure1 = manager
+                               .createStructure( database1,
+                                                 "0037",
+                                                 mol1 );
+        assertNotNull(structure1);
+
+        Structure structure2 = manager
+                               .createStructure( 
+                                   database1,
+                                   "0106",
+                                   cdk.loadMolecule( 
+                                       TestData.class
+                                               .getClassLoader()
+                                               .getResourceAsStream(
+                                                   "testData/0106.cml")) );
+
+        assertNotNull(structure2);
+
+        assertTrue( manager
+                    .allStructuresByName( database1,
+                                          structure1.getName() )
+                                          .contains(structure1) );
+        assertTrue( manager
+                    .allStructuresByName( database1,
+                                          structure2.getName() )
+                                          .contains(structure2) );
+
+        List<Structure> structures = manager.allStructures(database1);
+
+        assertTrue( structures.contains(structure1) );
+        assertTrue( structures.contains(structure2) );
+
+        SmilesGenerator generator = new SmilesGenerator();
+        String indoleSmiles  = generator
+                               .createSMILES( MoleculeFactory.makeIndole() );
+        String pyrroleSmiles = generator
+                               .createSMILES( MoleculeFactory.makePyrrole() );
+        ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
+        ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
+
+        Structure indoleStructure = manager.createStructure( database1, 
+                                                             "indole", 
+                                                             indole );
+        assertTrue( manager.allStructureFingerprintSearch( database1, pyrrole )
+                           .contains( indoleStructure ) );
+    }
+    
     public void testCreatingAndRetrievingStructures() throws BioclipseException,
                                                              IOException {
         ICDKManager cdk = new CDKManager();
@@ -219,28 +278,6 @@ public class StructuredbManagerTest
         assertTrue( anotherManager.listDatabaseNames().contains(database1) );
         assertTrue( anotherManager.listDatabaseNames().contains(database1) );
         assertEquals( 2, anotherManager.listDatabaseNames().size() );
-    }
-    
-    public void testSubstructureSearch() throws BioclipseException, 
-                IOException {
-        
-        testCreatingAndRetrievingStructures();
-
-        ICDKManager cdk = new CDKManager();
-
-        SmilesGenerator generator = new SmilesGenerator();
-        String indoleSmiles  = generator
-                               .createSMILES( MoleculeFactory.makeIndole() );
-        String pyrroleSmiles = generator
-                               .createSMILES( MoleculeFactory.makePyrrole() );
-        ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
-        ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
-
-        Structure indoleStructure = manager.createStructure( database1, 
-                                                             "indole", 
-                                                             indole );
-        assertTrue( manager.allStructureFingerprintSearch( database1, pyrrole )
-                           .contains( indoleStructure ) );
     }
     
     public void testRemovingDatabaseInstance() {
