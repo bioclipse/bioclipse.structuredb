@@ -127,4 +127,9 @@ public class ForConsoleDecoratedStructuredbManager implements
                                                                                throws BioclipseException {
         return manager.subStructureSearchIterator( databaseName, molecule );
     }
+
+    public ICDKMolecule toCDKMolecule( Structure structure ) {
+
+        return manager.toCDKMolecule( structure );
+    }
 }

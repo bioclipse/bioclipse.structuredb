@@ -308,4 +308,26 @@ public class StructuredbManagerTest
             //this is what we want
         }
     }
+    
+    public void testCreatingCDKMoleculeFromStructure() 
+                throws IOException, BioclipseException {
+        ICDKManager cdk = new CDKManager();
+
+        ICDKMolecule mol1 = cdk.loadMolecule( TestData
+                                              .class
+                                              .getClassLoader()
+                                              .getResourceAsStream(
+                                              "testData/0037.cml") );
+        assertNotNull(mol1);
+
+        Structure structure1 = new Structure( "0037", mol1 );
+        assertNotNull(structure1);
+        
+        ICDKMolecule newMolecule = manager.toCDKMolecule(structure1);
+        assertEquals( mol1.getSmiles(), newMolecule.getSmiles() );
+        assertEquals( mol1.getFingerprint( false ), 
+                      newMolecule.getFingerprint( false ) );
+        assertEquals( mol1.getSmiles(), newMolecule.getSmiles() );
+        assertEquals( mol1.getCML(), newMolecule.getCML() );
+    }
 }

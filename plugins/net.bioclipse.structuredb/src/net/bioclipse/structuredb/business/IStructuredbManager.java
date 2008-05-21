@@ -243,4 +243,15 @@ public interface IStructuredbManager extends IBioclipseManager {
     public Iterator<Structure> subStructureSearchIterator(String databaseName,
                                                           IMolecule molecule)
                                throws BioclipseException;
+
+    /**
+     * Creates a cdk molecule from a structure
+     * 
+     * @param structure1
+     * @return
+     */
+    @PublishedMethod (params = "Structure structure",
+                      methodSummary = "Creates a cdk molecule from the given " +
+                      		          "structure" )
+    public ICDKMolecule toCDKMolecule( Structure structure );
 }

@@ -48,6 +48,7 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.openscience.cdk.CDKConstants;
+import org.openscience.cdk.interfaces.IAtomContainer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -380,13 +381,20 @@ public class StructuredbManager implements IStructuredbManager {
                                                           IMolecule molecule)
                                throws BioclipseException {
 
-        //TODO: Should be able to reuse info from Structure and not recreate from SMILES
-        ICDKMolecule cdkMolecule = cdk.fromSmiles( molecule.getSmiles() );
+        ICDKMolecule cdkMolecule;
+        if(molecule instanceof Structure) {
+            cdkMolecule = toCDKMolecule( (Structure) molecule );
+        }
+        else {
+            cdkMolecule = cdk.fromSmiles( molecule.getSmiles() );
+        }
+         
         return new SubStructureIterator( internalManagers
                                          .get( databaseName )
                                          .allStructuresIterator(),
                                          cdk,
-                                         cdkMolecule ); 
+                                         cdkMolecule, 
+                                         this ); 
     }
     
     public class SubStructureIterator 
@@ -396,13 +404,16 @@ public class StructuredbManager implements IStructuredbManager {
         private Iterator<Structure> parent;
         private ICDKManager cdk;
         private ICDKMolecule subStructure;
+        private IStructuredbManager structuredb;
         
         public SubStructureIterator( Iterator<Structure> iterator, 
                                      ICDKManager cdk,
-                                     ICDKMolecule subStructure ) {
+                                     ICDKMolecule subStructure,
+                                     IStructuredbManager structuredb ) {
             parent   = iterator;
             this.cdk = cdk;
             this.subStructure = subStructure;
+            this.structuredb = structuredb;
         }
 
         public boolean hasNext() {
@@ -422,9 +433,8 @@ public class StructuredbManager implements IStructuredbManager {
 
             while( parent.hasNext() ) {
                 Structure next = parent.next();
-                //TODO: Should be able to reuse info from Structure and not recreate from SMILES
                 ICDKMolecule molecule;
-                molecule = cdk.fromSmiles( next.getSmiles() );
+                molecule = structuredb.toCDKMolecule( next );
                 if( cdk.fingerPrintMatches( molecule, subStructure ) &&
                     cdk.subStructureMatches( molecule, subStructure ) ) {
                     return next;
@@ -446,6 +456,17 @@ public class StructuredbManager implements IStructuredbManager {
 
         public void remove() {
             throw new UnsupportedOperationException();
+        }
+    }
+
+    public ICDKMolecule toCDKMolecule( Structure structure ) {
+        try {
+           return new CDKMolecule( structure.getName(), 
+                             (IAtomContainer) structure.getAtomContainer().clone(),
+                             structure.getSmiles(),
+                             structure.getFingerPrint() );
+        } catch ( CloneNotSupportedException e ) {
+            throw new RuntimeException(e);
         }
     }
 }
