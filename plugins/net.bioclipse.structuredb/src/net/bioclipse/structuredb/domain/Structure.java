@@ -253,11 +253,6 @@ public class Structure extends BaseObject
         }
     }
 
-    public boolean has3dCoords() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
     public IResource getResource() {
         // TODO Auto-generated method stub
         return null;
@@ -273,8 +268,6 @@ public class Structure extends BaseObject
 
     
     public IAtomContainer getAtomContainer() {
-    
         return atomContainer;
     }
-    
 }
