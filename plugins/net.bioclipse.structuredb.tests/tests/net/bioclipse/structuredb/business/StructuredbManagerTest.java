@@ -121,6 +121,66 @@ public class StructuredbManagerTest
                       manager.folderByName( database1, f1.getName() ) );
     }
 
+    public void testListSubstructureSearchResults() throws IOException, BioclipseException {
+        ICDKManager cdk = new CDKManager();
+
+        ICDKMolecule mol1 = cdk.loadMolecule( TestData
+                                              .class
+                                              .getClassLoader()
+                                              .getResourceAsStream(
+                                              "testData/0037.cml") );
+        assertNotNull(mol1);
+
+        Structure structure1 = manager
+                               .createStructure( database1,
+                                                 "0037",
+                                                 mol1 );
+        assertNotNull(structure1);
+
+        Structure structure2 = manager
+                               .createStructure( 
+                                   database1,
+                                   "0106",
+                                   cdk.loadMolecule( 
+                                       TestData.class
+                                               .getClassLoader()
+                                               .getResourceAsStream(
+                                                   "testData/0106.cml")) );
+
+        assertNotNull(structure2);
+
+        assertTrue( manager
+                    .allStructuresByName( database1,
+                                          structure1.getName() )
+                                          .contains(structure1) );
+        assertTrue( manager
+                    .allStructuresByName( database1,
+                                          structure2.getName() )
+                                          .contains(structure2) );
+
+        List<Structure> structures = manager.allStructures(database1);
+
+        assertTrue( structures.contains(structure1) );
+        assertTrue( structures.contains(structure2) );
+
+        SmilesGenerator generator = new SmilesGenerator();
+        String indoleSmiles  = generator
+                               .createSMILES( MoleculeFactory.makeIndole() );
+        String pyrroleSmiles = generator
+                               .createSMILES( MoleculeFactory.makePyrrole() );
+        ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
+        ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
+
+        Structure indoleStructure = manager.createStructure( database1, 
+                                                             "indole", 
+                                                             indole );
+        
+        List<Structure> list = manager.subStructureSearch( database1, 
+                                                           pyrrole );
+        
+        assertTrue( list.contains( indoleStructure ));
+    }
+    
     public void testSubstructureSearch() throws BioclipseException, 
                                                 IOException {
 

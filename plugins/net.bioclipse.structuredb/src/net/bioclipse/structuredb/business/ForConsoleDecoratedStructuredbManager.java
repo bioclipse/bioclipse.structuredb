@@ -124,12 +124,19 @@ public class ForConsoleDecoratedStructuredbManager implements
 
     public Iterator<Structure> subStructureSearchIterator( String databaseName,
                                                            IMolecule molecule )
-                                                                               throws BioclipseException {
+                               throws BioclipseException {
         return manager.subStructureSearchIterator( databaseName, molecule );
     }
 
     public ICDKMolecule toCDKMolecule( Structure structure ) {
 
         return manager.toCDKMolecule( structure );
+    }
+
+    public List<Structure> subStructureSearch( String databaseName,
+                                               ICDKMolecule molecule )
+                           throws BioclipseException {
+        
+        return manager.subStructureSearch( databaseName, molecule );
     }
 }

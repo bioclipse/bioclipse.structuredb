@@ -245,6 +245,23 @@ public interface IStructuredbManager extends IBioclipseManager {
                                throws BioclipseException;
 
     /**
+     * Returns a list of all structures in the given database that contains
+     * the given molecule
+     * 
+     * @param databaseName
+     * @param molecule
+     * @return
+     * @throws BioclipseException
+     */
+    @PublishedMethod (params = "String databaseName, IMolecule molecule",
+                      methodSummary = "Returns a list of all structures " +
+                                      "in the given database that contains " +
+                                      "the given molecule")
+    public List<Structure> subStructureSearch( String databaseName,
+                                               ICDKMolecule molecule ) 
+                           throws BioclipseException;
+    
+    /**
      * Creates a cdk molecule from a structure
      * 
      * @param structure1

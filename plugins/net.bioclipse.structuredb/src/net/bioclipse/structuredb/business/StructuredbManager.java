@@ -469,4 +469,16 @@ public class StructuredbManager implements IStructuredbManager {
             throw new RuntimeException(e);
         }
     }
+
+    public List<Structure> subStructureSearch( String databaseName,
+                                               ICDKMolecule molecule ) 
+                           throws BioclipseException {
+        List<Structure> structures = new BioList<Structure>();
+        Iterator<Structure> iterator = subStructureSearchIterator( databaseName, 
+                                                                   molecule );
+        while( iterator.hasNext() ) {
+            structures.add( iterator.next() );
+        }
+        return structures;
+    }
 }
