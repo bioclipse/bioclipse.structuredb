@@ -152,4 +152,11 @@ public interface IStructuredbInstanceManager {
      * @param folderId
      */
     public void insertStructureInFolder( Structure s, String folderId );
+
+    /**
+     * Returns an int representing the number of structures in the database
+     * 
+     * @return
+     */
+    public int numberOfStructures();
 }

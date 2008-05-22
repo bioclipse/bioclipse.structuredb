@@ -128,4 +128,8 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         }
         assertEquals( 2, numberof );
     }
+    
+    public void testNumberOfStructures() {
+        assertEquals( 2, ((IStructureDao)dao).numberOfStructures() );
+    }
 }

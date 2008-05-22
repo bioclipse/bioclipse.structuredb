@@ -114,6 +114,14 @@
 <!--+
     | SELECT STATEMENTS
     +-->
+
+    <select id="Structure.numberOf" parameterClass="java.util.Map" resultClass="int">
+        SELECT 
+            count(*) as numberOf 
+        FROM
+            Structure
+    </select>
+    
 	<select id="Structure.getById" parameterClass="String" resultMap="Structure">
 		SELECT 
 			<include refid="BaseObject-fields" />, 
@@ -293,5 +301,4 @@
         WHERE
             id = '$structureId$'
     </update>
-  
 </sqlMap>

@@ -377,10 +377,17 @@ public class StructuredbManager implements IStructuredbManager {
         addStructuresFromSDF( databaseName, filePath, null );
     }
 
-    public Iterator<Structure> subStructureSearchIterator(String databaseName,
-                                                          IMolecule molecule)
-                               throws BioclipseException {
+    public Iterator<Structure> subStructureSearchIterator( 
+            String databaseName,
+            IMolecule molecule,
+            IProgressMonitor monitor ) throws BioclipseException {
 
+        
+        if(monitor != null) {
+            monitor.beginTask( "substructure search", 
+                               internalManagers.get( databaseName )
+                                               .numberOfStructures() );
+        }
         ICDKMolecule cdkMolecule;
         if(molecule instanceof Structure) {
             cdkMolecule = toCDKMolecule( (Structure) molecule );
@@ -394,26 +401,37 @@ public class StructuredbManager implements IStructuredbManager {
                                          .allStructuresIterator(),
                                          cdk,
                                          cdkMolecule, 
-                                         this ); 
+                                         this, 
+                                         monitor );
+   }
+    
+    public Iterator<Structure> subStructureSearchIterator(String databaseName,
+                                                          IMolecule molecule)
+                               throws BioclipseException {
+
+         return subStructureSearchIterator( databaseName, molecule, null );
     }
     
-    public class SubStructureIterator 
-           implements Iterator<Structure> {
+    public static class SubStructureIterator 
+                  implements Iterator<Structure> {
 
         private Structure next = null;
         private Iterator<Structure> parent;
         private ICDKManager cdk;
         private ICDKMolecule subStructure;
         private IStructuredbManager structuredb;
+        private IProgressMonitor monitor;
         
         public SubStructureIterator( Iterator<Structure> iterator, 
                                      ICDKManager cdk,
                                      ICDKMolecule subStructure,
-                                     IStructuredbManager structuredb ) {
+                                     IStructuredbManager structuredb, 
+                                     IProgressMonitor monitor ) {
             parent   = iterator;
             this.cdk = cdk;
             this.subStructure = subStructure;
             this.structuredb = structuredb;
+            this.monitor = monitor;
         }
 
         public boolean hasNext() {
@@ -433,12 +451,18 @@ public class StructuredbManager implements IStructuredbManager {
 
             while( parent.hasNext() ) {
                 Structure next = parent.next();
+                if(monitor != null) {
+                    monitor.worked( 1 );
+                }
                 ICDKMolecule molecule;
                 molecule = structuredb.toCDKMolecule( next );
                 if( cdk.fingerPrintMatches( molecule, subStructure ) &&
                     cdk.subStructureMatches( molecule, subStructure ) ) {
                     return next;
                 }
+            }
+            if( monitor != null ) {
+                monitor.done();
             }
             return null;
         }
@@ -471,11 +495,22 @@ public class StructuredbManager implements IStructuredbManager {
     }
 
     public List<Structure> subStructureSearch( String databaseName,
-                                               ICDKMolecule molecule ) 
+                                               IMolecule molecule ) 
                            throws BioclipseException {
+        return subStructureSearch( databaseName, molecule, null );
+    }
+
+    public List<Structure> subStructureSearch( String databaseName,
+                                               IMolecule molecule,
+                                               IProgressMonitor monitor )
+                           throws BioclipseException {
+        
         List<Structure> structures = new BioList<Structure>();
         Iterator<Structure> iterator = subStructureSearchIterator( databaseName, 
-                                                                   molecule );
+                                                                   molecule, 
+                                                                   monitor );
+        int numOfStructures = internalManagers.get( databaseName )
+                                              .numberOfStructures();
         while( iterator.hasNext() ) {
             structures.add( iterator.next() );
         }

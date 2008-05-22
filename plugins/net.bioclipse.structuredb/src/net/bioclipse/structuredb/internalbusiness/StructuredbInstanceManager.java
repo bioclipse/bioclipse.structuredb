@@ -120,4 +120,9 @@ public class StructuredbInstanceManager
 
         structureDao.insertInFolder( s, folderId );
     }
+
+    public int numberOfStructures() {
+
+        return structureDao.numberOfStructures();
+    }
 }

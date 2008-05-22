@@ -132,5 +132,11 @@ public class StructureDao extends GenericDao<Structure>
         params.put( "structureId", structure.getId() );
         params.put( "folderId", folderId );
         getSqlMapClientTemplate().update( "Structure.setFolder", params );
+    }
+
+    public int numberOfStructures() {
+        
+        return (Integer) getSqlMapClientTemplate()
+                         .queryForObject( "Structure.numberOf" );
     };
 }

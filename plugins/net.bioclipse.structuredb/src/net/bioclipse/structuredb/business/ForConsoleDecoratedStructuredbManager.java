@@ -16,6 +16,7 @@ import java.util.List;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IMolecule;
+import net.bioclipse.recording.JsScriptGenerator;
 import net.bioclipse.structuredb.domain.Folder;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
@@ -134,9 +135,20 @@ public class ForConsoleDecoratedStructuredbManager implements
     }
 
     public List<Structure> subStructureSearch( String databaseName,
-                                               ICDKMolecule molecule )
+                                               IMolecule molecule )
                            throws BioclipseException {
         
-        return manager.subStructureSearch( databaseName, molecule );
+        return manager.subStructureSearch( databaseName, 
+                                           molecule, 
+                                           new JsConsoleView
+                                               .ConsoleProgressMonitor() );
+    }
+
+    public List<Structure> subStructureSearch( String databaseName,
+                                               IMolecule molecule,
+                                               IProgressMonitor monitor )
+                           throws BioclipseException {
+
+        return manager.subStructureSearch( databaseName, molecule, monitor );
     }
 }

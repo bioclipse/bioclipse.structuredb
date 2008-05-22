@@ -258,7 +258,21 @@ public interface IStructuredbManager extends IBioclipseManager {
                                       "in the given database that contains " +
                                       "the given molecule")
     public List<Structure> subStructureSearch( String databaseName,
-                                               ICDKMolecule molecule ) 
+                                               IMolecule molecule ) 
+                           throws BioclipseException;
+    
+    /**
+     * Substructuresearch with progressmonitor
+     *
+     * @param databaseName
+     * @param molecule
+     * @param monitor
+     * @return
+     * @throws BioclipseException
+     */
+    public List<Structure> subStructureSearch( String databaseName,
+                                               IMolecule molecule, 
+                                               IProgressMonitor monitor ) 
                            throws BioclipseException;
     
     /**
