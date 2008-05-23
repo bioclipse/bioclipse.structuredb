@@ -6,7 +6,7 @@ Bundle-Version: 0.1.1
 Bundle-Activator: net.bioclipse.structuredb.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- net.bioclipse.cdk,
+ org.openscience.cdk,
  net.bioclipse.hsqldb,
  net.bioclipse.usermanager,
  net.bioclipse.core,
