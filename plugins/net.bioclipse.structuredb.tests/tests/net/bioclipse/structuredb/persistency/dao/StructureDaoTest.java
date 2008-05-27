@@ -29,7 +29,8 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
     public void testPersistStructureWithFolder() {
         
         Folder folder = new Folder();
-        IFolderDao folderDao = (IFolderDao) applicationContext.getBean("folderDao");
+        IFolderDao folderDao 
+            = (IFolderDao) applicationContext.getBean("folderDao");
         addCreatorAndEditor(folder);
         folderDao.insert(folder);
         
@@ -42,13 +43,15 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         assertNotNull("The lodaded object shuold not be null", loaded);
         assertNotSame(structure, loaded);
         assertTrue( structure.hasValuesEqualTo(loaded) );
-        assertTrue( structure.getFolder().hasValuesEqualTo(loaded.getFolder()) );
+        assertTrue( structure.getFolder()
+                             .hasValuesEqualTo(loaded.getFolder()) );
     }
 
     public void testPersistStructureWithFolderId() {
         
         Folder folder = new Folder();
-        IFolderDao folderDao = (IFolderDao) applicationContext.getBean("folderDao");
+        IFolderDao folderDao 
+            = (IFolderDao) applicationContext.getBean("folderDao");
         addCreatorAndEditor(folder);
         folderDao.insert(folder);
         
@@ -69,7 +72,8 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         super.testUpdate();
         
         Folder folder = new Folder();
-        IFolderDao folderDao = (IFolderDao) applicationContext.getBean("folderDao");
+        IFolderDao folderDao 
+            = (IFolderDao) applicationContext.getBean("folderDao");
         addCreatorAndEditor(folder);
         folderDao.insert(folder);
         
@@ -119,7 +123,8 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
                 add( object2 );
             }
         };
-        Iterator<Structure> iterator = ( (IStructureDao)dao ).allStructuresIterator();
+        Iterator<Structure> iterator 
+            = ( (IStructureDao)dao ).allStructuresIterator();
         assertTrue( iterator.hasNext() );
         int numberof = 0;
         while( iterator.hasNext() ) {
@@ -131,5 +136,19 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
     
     public void testNumberOfStructures() {
         assertEquals( 2, ((IStructureDao)dao).numberOfStructures() );
+    }
+    
+    public void testFingerPrintSearch() {
+        Iterator<Structure> iterator
+            = ( (IStructureDao)dao ).fingerPrintSubsetSearch( 
+              ((Structure)object1).getFingerPrint() );
+        boolean found = false;
+        while( iterator.hasNext() ) {
+            if( iterator.next().equals( object1 )) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found);
     }
 }

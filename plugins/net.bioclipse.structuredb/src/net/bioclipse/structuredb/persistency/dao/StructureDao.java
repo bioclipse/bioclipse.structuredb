@@ -11,6 +11,7 @@
 package net.bioclipse.structuredb.persistency.dao;
 
 import java.sql.SQLException;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -138,5 +139,11 @@ public class StructureDao extends GenericDao<Structure>
         
         return (Integer) getSqlMapClientTemplate()
                          .queryForObject( "Structure.numberOf" );
+    }
+
+    public Iterator<Structure> fingerPrintSubsetSearch( BitSet fingerPrint ) {
+
+        // TODO Auto-generated method stub
+        return null;
     };
 }

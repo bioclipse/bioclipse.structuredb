@@ -10,6 +10,7 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,4 +38,11 @@ public interface IStructureDao extends IGenericDao<Structure> {
      * @return number of structures in the database
      */
     public int numberOfStructures();
+
+    
+    /**
+     * @param fingerPrint
+     * @return iterator for all subset matching structures
+     */
+    public Iterator<Structure> fingerPrintSubsetSearch( BitSet fingerPrint );
 }
