@@ -1,11 +1,11 @@
 CREATE TABLE Structure (
-	id                VARCHAR(36) NOT NULL,
-	baseObject        VARCHAR(36) NOT NULL,
-    name              VARCHAR(50) NOT NULL,
-	folder            VARCHAR(36),
-	fingerprintString VARCHAR(2000),
-	smiles            VARCHAR(5000),
-	molecule          VARCHAR,
+	id                   VARCHAR(36) NOT NULL,
+	baseObject           VARCHAR(36) NOT NULL,
+    name                 VARCHAR(50) NOT NULL,
+	folder               VARCHAR(36),
+	persistedFingerprint BINARY,
+	smiles               VARCHAR(5000),
+	molecule             VARCHAR,
 
 	PRIMARY KEY (id)
 );

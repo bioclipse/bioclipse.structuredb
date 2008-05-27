@@ -46,7 +46,7 @@ public class Structure extends BaseObject
 
     private IAtomContainer atomContainer;
     private BitSet         fingerPrint;
-    private String         fingerPrintString;  //TODO: Do the persisting of the fingerprint in a nicer way
+    private byte[]         persistedFingerPrint;
     private String         smiles;
 
     /**
@@ -58,9 +58,9 @@ public class Structure extends BaseObject
     public Structure() {
         super();
         fingerPrint = new BitSet();
-        this.fingerPrintString = makeFingerPrintString(fingerPrint);
-        atomContainer    = new AtomContainer();
-        smiles      = "";
+        this.persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
+        atomContainer = new AtomContainer();
+        smiles = "";
     }
 
     public Structure( String name, AtomContainer molecule ) {
@@ -71,7 +71,7 @@ public class Structure extends BaseObject
         Fingerprinter fingerprinter = new Fingerprinter();
         try {
             fingerPrint = fingerprinter.getFingerprint(molecule);
-            fingerPrintString = makeFingerPrintString(fingerPrint);
+            persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         } catch (Exception e) {
             //If this happens often maybe something else is needed
             throw new IllegalArgumentException(
@@ -94,10 +94,10 @@ public class Structure extends BaseObject
            throws BioclipseException {
 
         super(name);
-        fingerPrint       = cdkMolecule.getFingerprint(false);
-        fingerPrintString = makeFingerPrintString(fingerPrint);
-        atomContainer     = cdkMolecule.getAtomContainer();
-        smiles            = cdkMolecule.getSmiles();
+        fingerPrint          = cdkMolecule.getFingerprint(false);
+        persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
+        atomContainer        = cdkMolecule.getAtomContainer();
+        smiles               = cdkMolecule.getSmiles();
     }
 
     /**
@@ -110,11 +110,11 @@ public class Structure extends BaseObject
 
         super(structure);
 
-        this.atomContainer     = structure.getMolecule();
-        this.fingerPrint       = (BitSet)structure.getFingerPrint().clone();
-        this.fingerPrintString = makeFingerPrintString(fingerPrint);
-        this.smiles            = structure.getSmiles();
-        this.folder           = structure.getFolder();
+        this.atomContainer   = structure.getMolecule();
+        this.fingerPrint     = (BitSet)structure.getFingerPrint().clone();
+        persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
+        this.smiles          = structure.getSmiles();
+        this.folder          = structure.getFolder();
     }
 
     public boolean hasValuesEqualTo( BaseObject object ) {
@@ -158,23 +158,23 @@ public class Structure extends BaseObject
      * @param fingerPrint the fingerprint to set
      */
     public void setFingerPrint(BitSet fingerPrint) {
-        this.fingerPrint = fingerPrint;
-        this.fingerPrintString = makeFingerPrintString(fingerPrint);
+        this.fingerPrint     = fingerPrint;
+        persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
     }
 
-    private String makeFingerPrintString(BitSet fingerPrint) {
-        StringBuilder s = new StringBuilder();
+    private byte[] makePersistedFingerPrint(BitSet fingerPrint) {
+        byte[] persistedFingerPrint = new byte[fingerPrint.size()];
         for( int i = 0 ; i < fingerPrint.size() ; i++) {
-            s.append( fingerPrint.get(i) ? 1 : 0 );
+            persistedFingerPrint[i] = (byte) (fingerPrint.get(i) ? 1 : 0) ;
         }
-        return s.toString();
+        return persistedFingerPrint;
     }
 
-    private BitSet makeFingerPrint(String fingerPrintString) {
-        BitSet fingerPrint = new BitSet( fingerPrintString.length() );
-        for(int i = 0 ; i < fingerPrintString.length() ; i++) {
-            fingerPrint.set( i, fingerPrintString.charAt(i) == '1' ? true
-                                                                   : false );
+    private BitSet makeFingerPrint(byte[] persistedFingerPrint) {
+        BitSet fingerPrint = new BitSet( persistedFingerPrint.length );
+        for(int i = 0 ; i < persistedFingerPrint.length ; i++) {
+            fingerPrint.set( i, persistedFingerPrint[i] == 1 ? true
+                                                             : false );
         }
         return fingerPrint;
     }
@@ -220,13 +220,13 @@ public class Structure extends BaseObject
         }
     }
 
-    public String getFingerPrintString() {
-        return fingerPrintString;
+    public byte[] getPersistedFingerprint() {
+        return persistedFingerPrint;
     }
 
-    public void setFingerPrintString(String fingerPrintString) {
-        this.fingerPrintString = fingerPrintString;
-        this.fingerPrint       = makeFingerPrint(fingerPrintString);
+    public void setPersistedFingerprint(byte[] persistedFingerPrint) {
+        this.persistedFingerPrint = persistedFingerPrint;
+        this.fingerPrint = makeFingerPrint(persistedFingerPrint);
     }
 
     public String getMoleculeCML() {
@@ -265,7 +265,6 @@ public class Structure extends BaseObject
     public Object getAdapter(Class adapter) {
         return null;
     }
-
     
     public IAtomContainer getAtomContainer() {
         return atomContainer;

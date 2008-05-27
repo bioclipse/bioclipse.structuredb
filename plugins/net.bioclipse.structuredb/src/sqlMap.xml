@@ -8,6 +8,44 @@
     | http://www.eclipse.org/legal/epl-v10.html
     +-->
 <sqlMap>
+
+<!--+
+    | RESULTMAPS
+    +-->
+    <parameterMap class="Structure" id="Structure.insert">
+        <parameter property="id"                                     />     
+        <parameter property="name"                                   />
+        <parameter property="id"                                     />    
+        <parameter property="folder.id"                              />        
+        <parameter property="smiles"                                 />   
+        <parameter property="persistedFingerprint" jdbcType="binary" />     
+        <parameter property="moleculeCML"                            /> 
+    </parameterMap>
+
+    <parameterMap class="Structure" id="Structure.insertWithoutFolder">
+        <parameter property="id"                                     />     
+        <parameter property="name"                                   />
+        <parameter property="id"                                     />    
+        <parameter property="smiles"                                 />   
+        <parameter property="persistedFingerprint" jdbcType="binary" />     
+        <parameter property="moleculeCML"                            /> 
+    </parameterMap>
+
+    <parameterMap class="Structure" id="Structure.update">
+        <parameter property="folder.id"                              />     
+        <parameter property="smiles"                                 />
+        <parameter property="persistedFingerprint" jdbcType="binary" />
+        <parameter property="moleculeCML"                            />
+        <parameter property="name"                                   />    
+    </parameterMap>
+    
+    <parameterMap class="Structure" id="Structure.updateWithoutFolder">
+        <parameter property="smiles"      />
+        <parameter property="persistedFingerprint" jdbcType="binary" />
+        <parameter property="moleculeCML" />
+        <parameter property="name"        />
+    </parameterMap>
+    
 <!--+
     | RESULTMAPS
     +-->
@@ -25,18 +63,18 @@
 	</resultMap>
 	
 	<resultMap class="Structure" id="Structure" extends="BaseObject">
-		<result property="folder"            column="folder" select="Folder.getById" />
-		<result property="fingerPrintString" column="fingerPrintString"              />
-		<result property="smiles"            column="smiles"                         />
-		<result property="moleculeCML"       column="molecule"                       />
-		<result property="name"              column="name"                           />
+		<result property="folder"               column="folder" select="Folder.getById" />
+		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
+		<result property="smiles"               column="smiles"                         />
+		<result property="moleculeCML"          column="molecule"                       />
+		<result property="name"                 column="name"                           />
 	</resultMap>
 
 	<resultMap class="Structure" id="Structure-without-folder" extends="BaseObject">
-		<result property="fingerPrintString" column="fingerPrintString"                />
-		<result property="smiles"            column="smiles"                           />
-		<result property="moleculeCML"       column="molecule"                         />
-		<result property="name"              column="name"                             />
+		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
+		<result property="smiles"               column="smiles"               />
+		<result property="moleculeCML"          column="molecule"             />
+		<result property="name"                 column="name"                 />
 	</resultMap>
 	
 	<resultMap class="User" id="User" extends="BaseObject">
@@ -62,10 +100,10 @@
 	</sql>
 	
 	<sql id="Structure-fields-without-folder">
-		s.fingerPrintString AS fingerPrintString,
-		s.smiles            AS smiles,
-		s.molecule          AS molecule,
-		s.name              AS name	
+		s.persistedFingerprint AS persistedFingerprint,
+		s.smiles               AS smiles,
+		s.molecule             AS molecule,
+		s.name                 AS name	
 	</sql>
 	
 	<sql id="User-fields">
@@ -81,7 +119,7 @@
 <!--+
     | INSERT STATEMENTS
     +-->
-	<insert id="BaseObject.insert">
+	<insert  id="BaseObject.insert">
 		INSERT INTO BaseObject (  id,     created,     edited,     creator,        lastEditor )
 			            VALUES ('$id$', '$created$', '$edited$', '$creator.id$', '$lastEditor.id$')
 	</insert>
@@ -96,14 +134,14 @@
 			      VALUES ( '$id$', '$userName$', '$passWordMd5$', '$sudoer$', '$id$'       );
 	</insert>
 	
-	<insert id="Structure.insert">
-		INSERT INTO Structure (   id,     name,     baseObject, folder,        smiles,     fingerPrintString,     molecule      )
-		               VALUES ( '$id$', '$name$', '$id$',     '$folder.id$', '$smiles$', '$fingerPrintString$', '$moleculeCML$' ); 
+	<insert id="Structure.insert" parameterMap="Structure.insert">
+		INSERT INTO Structure (  id,   name, baseObject, folder,      smiles,   persistedFingerprint,   molecule     )
+		               VALUES ( ?, ?, ?, ?, ?, ?, ? ); 
 	</insert>
 	
-	<insert id="Structure.insertWithoutFolder">
-		INSERT INTO Structure (   id,     name,     baseObject, smiles,     fingerPrintString,     molecule      )
-		               VALUES ( '$id$', '$name$', '$id$',     '$smiles$', '$fingerPrintString$', '$moleculeCML$' );
+	<insert id="Structure.insertWithoutFolder" parameterMap="Structure.insertWithoutFolder">
+		INSERT INTO Structure (  id,   name,   baseObject, smiles,   persistedFingerprint,   molecule      )
+		               VALUES ( ?, ?, ?, ?, ?, ? );
 	</insert>
 	
 	<insert id="Folder.insert">
@@ -268,27 +306,27 @@
             id = '$id$'    	
     </update>
     
-    <update id="Structure.update" parameterClass="Structure">
+    <update id="Structure.update" parameterMap="Structure.update">
     	UPDATE 
     		Structure
     	SET 
-	    	folder            = '$folder.id$',
-	    	smiles            = '$smiles$',
-	    	fingerPrintString = '$fingerPrintString$',
-	    	molecule          = '$moleculeCML$',
-	    	name              = '$name$'
+	    	folder               = ?,
+	    	smiles               = ?,
+	    	persistedFingerprint = ?,
+	    	molecule             = ?,
+	    	name                 = ?
 		WHERE
 			id = '$id$'
     </update>
     
-    <update id="Structure-without-folder.update" parameterClass="Structure">
+    <update id="Structure-without-folder.update" parameterMap="Structure.updateWithoutFolder">
     	UPDATE 
     		Structure
     	SET 
-	    	smiles            = '$smiles$',
-	    	fingerPrintString = '$fingerPrintString$',
-	    	molecule          = '$moleculeCML$',
-	    	name              = '$name$'
+	    	smiles               = ?,
+	    	persistedFingerprint = ?,
+	    	molecule             = ?,
+	    	name                 = ?
 		WHERE
 			id = '$id$'
     </update>
