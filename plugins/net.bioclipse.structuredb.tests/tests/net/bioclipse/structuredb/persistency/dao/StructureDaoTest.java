@@ -22,8 +22,33 @@ import net.bioclipse.structuredb.domain.Structure;
 
 public class StructureDaoTest extends GenericDaoTest<Structure> {
 
+    private Structure structure1;
+    private Structure structure2;
+    private List<Structure> structures;
+
     public StructureDaoTest() {
         super(Structure.class);
+    }
+    
+    @Override
+    public void onSetUpInTransaction() throws Exception {
+    
+        super.onSetUpInTransaction();
+        structure1 = new Structure( "CycloOctan",
+                                    TestData
+                                    .getCycloOctan() );
+        structure2 = new Structure( "CycloPropan", 
+                                    TestData
+                                    .getCycloPropane() );
+        addCreatorAndEditor(structure1);
+        addCreatorAndEditor(structure2);
+        dao.insert(structure1);
+        dao.insert(structure2);
+        
+        structures = new ArrayList<Structure>() {{
+            add(structure1);
+            add(structure2);
+        }};
     }
     
     public void testPersistStructureWithFolder() {
@@ -91,21 +116,7 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
     
     @SuppressWarnings("serial")
     public void testGetByName() throws CDKException {
-        final Structure structure1 = new Structure( "CycloOctan",
-                                                    TestData
-                                                    .getCycloOctan() );
-        final Structure structure2 = new Structure( "CycloPropan", 
-                                                    TestData
-                                                    .getCycloPropane() );
-        addCreatorAndEditor(structure1);
-        addCreatorAndEditor(structure2);
-        dao.insert(structure1);
-        dao.insert(structure2);
-        
-        List<Structure> structures = new ArrayList<Structure>() {{
-            add(structure1);
-            add(structure2);
-        }};
+
         
         assertTrue( dao.getAll().containsAll(structures) );
         
@@ -124,6 +135,8 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
             {
                 add( object1 );
                 add( object2 );
+                add( structure1 );
+                add( structure2 );
             }
         };
         Iterator<Structure> iterator 
@@ -134,24 +147,25 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
             assertTrue( structures.contains( iterator.next() ) );
             numberof++;
         }
-        assertEquals( 2, numberof );
+        assertEquals( 4, numberof );
     }
     
     public void testNumberOfStructures() {
-        assertEquals( 2, ((IStructureDao)dao).numberOfStructures() );
+        assertEquals( 4, ((IStructureDao)dao).numberOfStructures() );
     }
     
     public void testFingerPrintSearch() {
+        
         Iterator<Structure> iterator
             = ( (IStructureDao)dao ).fingerPrintSubsetSearch( 
-              ((Structure)object1).getPersistedFingerprint() );
+              ((Structure)structure1).getPersistedFingerprint() );
         boolean foundObject1 = false;
         boolean foundObject2 = false;
         while( iterator.hasNext() ) {
-            if( iterator.next().equals( object1 )) {
+            if( iterator.next().equals( structure1 )) {
                 foundObject1 = true;
             }
-            if( iterator.next().equals( object2 )) {
+            if( iterator.next().equals( structure2 )) {
                 foundObject2 = true;
             }
         }

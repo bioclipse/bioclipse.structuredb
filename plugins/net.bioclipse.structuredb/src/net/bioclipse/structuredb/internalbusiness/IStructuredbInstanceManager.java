@@ -159,4 +159,11 @@ public interface IStructuredbInstanceManager {
      * @return
      */
     public int numberOfStructures();
+
+    /**
+     * @param s
+     * @return an iterator to the structures with a for substructure
+     * matching fingerprint
+     */
+    public Iterator<Structure> fingerprintSubstructureSearchIterator(Structure s);
 }

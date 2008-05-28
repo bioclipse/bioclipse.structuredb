@@ -125,4 +125,11 @@ public class StructuredbInstanceManager
 
         return structureDao.numberOfStructures();
     }
+
+    public Iterator<Structure> 
+           fingerprintSubstructureSearchIterator(Structure s) {
+
+        return structureDao
+               .fingerPrintSubsetSearch( s.getPersistedFingerprint() );
+    }
 }

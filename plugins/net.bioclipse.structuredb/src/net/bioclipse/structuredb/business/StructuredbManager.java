@@ -379,7 +379,7 @@ public class StructuredbManager implements IStructuredbManager {
 
     public Iterator<Structure> subStructureSearchIterator( 
             String databaseName,
-            IMolecule molecule,
+            IMolecule queryMolecule,
             IProgressMonitor monitor ) throws BioclipseException {
 
         
@@ -388,19 +388,21 @@ public class StructuredbManager implements IStructuredbManager {
                                internalManagers.get( databaseName )
                                                .numberOfStructures() );
         }
-        ICDKMolecule cdkMolecule;
-        if(molecule instanceof Structure) {
-            cdkMolecule = toCDKMolecule( (Structure) molecule );
+        ICDKMolecule cdkQueryMolecule;
+        if(queryMolecule instanceof Structure) {
+            cdkQueryMolecule = toCDKMolecule( (Structure) queryMolecule );
         }
         else {
-            cdkMolecule = cdk.fromSmiles( molecule.getSmiles() );
+            cdkQueryMolecule = cdk.fromSmiles( queryMolecule.getSmiles() );
         }
+        Structure queryStructure = new Structure("", cdkQueryMolecule);
          
         return new SubStructureIterator( internalManagers
                                          .get( databaseName )
-                                         .allStructuresIterator(),
+                                         .fingerprintSubstructureSearchIterator(
+                                             queryStructure),
                                          cdk,
-                                         cdkMolecule, 
+                                         cdkQueryMolecule, 
                                          this, 
                                          monitor );
    }
@@ -456,8 +458,7 @@ public class StructuredbManager implements IStructuredbManager {
                 }
                 ICDKMolecule molecule;
                 molecule = structuredb.toCDKMolecule( next );
-                if( cdk.fingerPrintMatches( molecule, subStructure ) &&
-                    cdk.subStructureMatches( molecule, subStructure ) ) {
+                if( cdk.subStructureMatches( molecule, subStructure ) ) {
                     return next;
                 }
             }

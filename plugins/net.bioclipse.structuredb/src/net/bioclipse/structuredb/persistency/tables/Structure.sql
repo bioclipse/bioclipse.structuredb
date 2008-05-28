@@ -10,7 +10,7 @@ CREATE TABLE Structure (
 	PRIMARY KEY (id)
 );
 
-CREATE ALIAS BITAND FOR "org.hsqldb.Library.bitand"
+CREATE ALIAS BITAND FOR "net.bioclipse.structuredb.persistency.HsqldbHelper.bitAnd"
 ALTER TABLE Structure ADD UNIQUE (id); 
 ALTER TABLE Structure ADD FOREIGN KEY (baseObject) REFERENCES BaseObject(id) ON DELETE CASCADE;
 ALTER TABLE Structure ADD FOREIGN KEY (folder) REFERENCES Folder(id) ON DELETE SET NULL;
