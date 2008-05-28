@@ -160,5 +160,13 @@ public class StructureDao extends GenericDao<Structure>
         return new StructureIterator( getSqlMapClient(), 
                                       "Structure.fingerPrintSubsetSearch", 
                                       paramaterMap );
+    }
+
+    public int numberOfFingerprintSubstructureMatches(byte[] fingerPrint) {
+        Map<String, byte[]> paramaterMap = new HashMap<String, byte[]>();
+        paramaterMap.put( "param", fingerPrint );
+        return (Integer) getSqlMapClientTemplate().queryForObject( 
+            "Structure.numberOfFingerprintSubstructureMatches", 
+            paramaterMap );
     };
 }

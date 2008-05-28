@@ -132,4 +132,10 @@ public class StructuredbInstanceManager
         return structureDao
                .fingerPrintSubsetSearch( s.getPersistedFingerprint() );
     }
+
+    public int numberOfFingerprintMatches( Structure queryStructure ) {
+
+        return structureDao.numberOfFingerprintSubstructureMatches( 
+            queryStructure.getPersistedFingerprint() );
+    }
 }

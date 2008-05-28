@@ -276,6 +276,17 @@
         WHERE
             BITAND(s.persistedFingerprint, #param:BINARY#) = #param:BINARY# 
     </select>
+    
+    <select id="Structure.numberOfFingerprintSubstructureMatches"
+            parameterClass="java.util.Map" 
+            resultClass="int" >
+        SELECT 
+            count(*) as numberOf 
+        FROM
+            Structure s
+        WHERE 
+            BITAND(s.persistedFingerprint, #param:BINARY#) = #param:BINARY#
+    </select>
 	
 <!--+
     | DELETE STATEMENTS

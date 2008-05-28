@@ -382,12 +382,6 @@ public class StructuredbManager implements IStructuredbManager {
             IMolecule queryMolecule,
             IProgressMonitor monitor ) throws BioclipseException {
 
-        
-        if(monitor != null) {
-            monitor.beginTask( "substructure search", 
-                               internalManagers.get( databaseName )
-                                               .numberOfStructures() );
-        }
         ICDKMolecule cdkQueryMolecule;
         if(queryMolecule instanceof Structure) {
             cdkQueryMolecule = toCDKMolecule( (Structure) queryMolecule );
@@ -396,6 +390,13 @@ public class StructuredbManager implements IStructuredbManager {
             cdkQueryMolecule = cdk.fromSmiles( queryMolecule.getSmiles() );
         }
         Structure queryStructure = new Structure("", cdkQueryMolecule);
+        if(monitor != null) {
+            monitor.beginTask( "substructure search", 
+                               internalManagers.get( databaseName )
+                                               .numberOfFingerprintMatches(
+                                                   queryStructure) );
+        }
+
          
         return new SubStructureIterator( internalManagers
                                          .get( databaseName )

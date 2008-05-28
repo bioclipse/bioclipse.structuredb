@@ -166,4 +166,12 @@ public interface IStructuredbInstanceManager {
      * matching fingerprint
      */
     public Iterator<Structure> fingerprintSubstructureSearchIterator(Structure s);
+
+    
+    /**
+     * @param queryStructure
+     * @return the number of structures in the databaes matching a 
+     *         fingerprintsubstructure search
+     */
+    public int numberOfFingerprintMatches( Structure queryStructure );
 }
