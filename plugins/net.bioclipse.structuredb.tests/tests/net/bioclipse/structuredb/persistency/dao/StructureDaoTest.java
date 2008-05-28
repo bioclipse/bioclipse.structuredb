@@ -91,10 +91,10 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
     
     @SuppressWarnings("serial")
     public void testGetByName() throws CDKException {
-        final Structure structure1 = new Structure( "structure",
+        final Structure structure1 = new Structure( "CycloOctan",
                                                     TestData
                                                     .getCycloOctan() );
-        final Structure structure2 = new Structure( "structure", 
+        final Structure structure2 = new Structure( "CycloPropan", 
                                                     TestData
                                                     .getCycloPropane() );
         addCreatorAndEditor(structure1);
@@ -111,9 +111,12 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         
         List<Structure> saved = ( (IStructureDao)dao ).getByName(
                                   structure1.getName() );
-        assertTrue(  saved.containsAll(structures) );
+        assertTrue(  saved.contains(structure1) );
         assertFalse( saved.contains(object1)       );
         assertFalse( saved.contains(object2)       );
+        assertTrue( saved.size() == 1);
+        assertTrue( saved.get(0).getFingerPrint()
+                                .equals( structure1.getFingerPrint() ) );
     }
     
     public void testAllStructureIterator() {
@@ -141,14 +144,18 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
     public void testFingerPrintSearch() {
         Iterator<Structure> iterator
             = ( (IStructureDao)dao ).fingerPrintSubsetSearch( 
-              ((Structure)object1).getFingerPrint() );
-        boolean found = false;
+              ((Structure)object1).getPersistedFingerprint() );
+        boolean foundObject1 = false;
+        boolean foundObject2 = false;
         while( iterator.hasNext() ) {
             if( iterator.next().equals( object1 )) {
-                found = true;
-                break;
+                foundObject1 = true;
+            }
+            if( iterator.next().equals( object2 )) {
+                foundObject2 = true;
             }
         }
-        assertTrue(found);
+        assertTrue(  foundObject1 );
+        assertFalse( foundObject2 );
     }
 }
