@@ -41,8 +41,8 @@ public interface IStructureDao extends IGenericDao<Structure> {
 
     
     /**
-     * @param fingerPrint
+     * @param fingerprint
      * @return iterator for all subset matching structures
      */
-    public Iterator<Structure> fingerPrintSubsetSearch( BitSet fingerPrint );
+    public Iterator<Structure> fingerPrintSubsetSearch( byte[] fingerprint );
 }

@@ -79,8 +79,13 @@ public class TableCreator {
                 }
             }
             for( String createStatement : createTableStatements ) {
-                String dropStatement = createDropStatement(createStatement);
-                runStatement( con, dropStatement );
+                try {
+                    String dropStatement = createDropStatement(createStatement);
+                    runStatement( con, dropStatement );
+                }
+                catch( Exception e) {
+                    continue;
+                }
             }
             for( String createStatement : createTableStatements ) {
                 runStatement( con, createStatement );

@@ -70,7 +70,7 @@ public class StructureDao extends GenericDao<Structure>
 
     public Iterator<Structure> allStructuresIterator() {
         
-        return new StructureIterator( getSqlMapClient() );
+        return new StructureIterator( getSqlMapClient(), "Structure.getAll" );
     }
     
     private class StructureIterator implements Iterator<Structure> {
@@ -78,18 +78,30 @@ public class StructureDao extends GenericDao<Structure>
         private SqlMapClient sqlMapClient;
         private Structure nextStructure = null;
         private int skip = 0;
+        private String sqlMapId;
+        private Object queryParam = null;
         
-        public StructureIterator( SqlMapClient sqlMapClient ) {
+        public StructureIterator( SqlMapClient sqlMapClient,
+                                  String sqlMapId ) {
             this.sqlMapClient = sqlMapClient;
+            this.sqlMapId = sqlMapId;
         }
         
+        public StructureIterator( SqlMapClient sqlMapClient, 
+                                  String sqlMapId,
+                                  Object queryParam ) {
+            this.sqlMapClient = sqlMapClient;
+            this.sqlMapId = sqlMapId;
+            this.queryParam = queryParam;
+        }
+
         @SuppressWarnings("unchecked")
         public boolean hasNext() {
 
             try {
                 List<Structure> result = (List<Structure>)sqlMapClient
-                                         .queryForList( "Structure.getAll", 
-                                                        null, 
+                                         .queryForList( sqlMapId, 
+                                                        queryParam, 
                                                         skip, 
                                                         1 );
                 if(result.size() != 1) {
@@ -141,9 +153,12 @@ public class StructureDao extends GenericDao<Structure>
                          .queryForObject( "Structure.numberOf" );
     }
 
-    public Iterator<Structure> fingerPrintSubsetSearch( BitSet fingerPrint ) {
+    public Iterator<Structure> fingerPrintSubsetSearch( byte[] fingerPrint ) {
 
-        // TODO Auto-generated method stub
-        return null;
+        Map<String, byte[]> paramaterMap = new HashMap<String, byte[]>();
+        paramaterMap.put( "param", fingerPrint );
+        return new StructureIterator( getSqlMapClient(), 
+                                      "Structure.fingerPrintSubsetSearch", 
+                                      paramaterMap );
     };
 }

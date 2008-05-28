@@ -10,7 +10,7 @@
 <sqlMap>
 
 <!--+
-    | RESULTMAPS
+    | PARAMATER MAPS
     +-->
     <parameterMap class="Structure" id="Structure.insert">
         <parameter property="id"                                     />     
@@ -47,7 +47,7 @@
     </parameterMap>
     
 <!--+
-    | RESULTMAPS
+    | RESULT MAPS
     +-->
 	<resultMap class="BaseObject" id="BaseObject">
 		<result property="id"         column="id"                               />
@@ -263,6 +263,19 @@
 			User u INNER JOIN BaseObject b ON
 			u.baseObject = b.id
 	</select>
+	
+	<select id="Structure.fingerPrintSubsetSearch" 
+	        resultMap="Structure"
+	        parameterClass="java.util.Map">
+        SELECT
+            <include refid="BaseObject-fields" />, 
+            <include refid="Structure-fields"  />
+        FROM
+            Structure s INNER JOIN BaseObject b ON
+            s.baseObject = b.id
+        WHERE
+            BITAND(s.persistedFingerprint, #param:BINARY#) = #param:BINARY# 
+    </select>
 	
 <!--+
     | DELETE STATEMENTS
