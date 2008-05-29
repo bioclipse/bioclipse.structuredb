@@ -17,9 +17,9 @@ import net.bioclipse.structuredb.domain.Structure;
  * @author jonalv
  *
  */
-public class FolderDaoTest extends GenericDaoTest<Label> {
+public class LabelDaoTest extends GenericDaoTest<Label> {
 
-    public FolderDaoTest() {
+    public LabelDaoTest() {
         super(Label.class);
     }
     
@@ -27,7 +27,7 @@ public class FolderDaoTest extends GenericDaoTest<Label> {
     public void testDelete() {
         
         IStructureDao structureDao 
-        = (IStructureDao) applicationContext.getBean("structureDao");
+            = (IStructureDao) applicationContext.getBean("structureDao");
         
         Structure structure = new Structure();
         structure.setCreator(testUser);
@@ -35,11 +35,11 @@ public class FolderDaoTest extends GenericDaoTest<Label> {
         structureDao.insert(structure);
         object1.addStructure(structure);
         dao.update(object1);
-        assertNotNull(structure.getLabel());
+        assertTrue( structure.getLabels().contains( object1 ) );
         super.testDelete();
         
         structure = structureDao.getById( structure.getId() );
-        assertNull( structure.getLabel() );
+        assertFalse( structure.getLabels().contains( object1 ) );
     }
     
     public void testGetByName() {

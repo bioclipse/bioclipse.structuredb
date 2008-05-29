@@ -17,8 +17,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.dao.DataAccessException;
+
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 
 /**
@@ -35,31 +38,37 @@ public class StructureDao extends GenericDao<Structure>
     }
 
     @Override
-    public void insert(Structure structure) {
+    public void insert( final Structure structure ) {
         
         getSqlMapClientTemplate().update( "BaseObject.insert", structure );
-        
-        //TODO: Figure out a better way to do this:
-        if( structure.getLabel() != null ) {
-            getSqlMapClientTemplate()
-            .update( type.getSimpleName() + ".insert", structure );
-        }
-        else {
-            getSqlMapClientTemplate()
-            .update( type.getSimpleName() + ".insertWithoutLabel", structure );
-        }
+        getSqlMapClientTemplate().update( type.getSimpleName() + ".insert", 
+                                          structure );
+        fixStructureLibrary(structure);
     }
     
+    private void fixStructureLibrary( final Structure structure ) {
+
+        for( final Label l : structure.getLabels() ) {
+            Map<String, String> params = new HashMap<String, String>() {
+                {
+                    put( "labelId",     l.getId()         );
+                    put( "structureId", structure.getId() );
+                }
+            };
+            if ( (Integer) getSqlMapClientTemplate()
+                .queryForObject( "StructureLabel.hasConnection", 
+                                 params ) == 0 ) {
+                getSqlMapClientTemplate().update( "StructureLabel.connect", 
+                                                  params );
+            }
+        }
+    }
+
     @Override
     public void update(Structure structure) {
-        if(structure.getLabel() == null) {
-            getSqlMapClientTemplate()
-            .update( "Structure-without-label.update", structure );
-        }
-        else {
-            getSqlMapClientTemplate().update( "Structure.update",  structure );
-        }
+        getSqlMapClientTemplate().update( "Structure.update",  structure );
         getSqlMapClientTemplate().update( "BaseObject.update", structure );
+        fixStructureLibrary( structure );
     }
 
     @SuppressWarnings("unchecked")
@@ -135,16 +144,15 @@ public class StructureDao extends GenericDao<Structure>
         }
     }
 
-    public void insertInLabel( Structure structure, String labelId ) {
+    public void insertWithLabel( Structure structure, String labelId ) {
 
-        getSqlMapClientTemplate().update( "BaseObject.insert", 
-                                          structure );
-        getSqlMapClientTemplate().update( "Structure.insertWithoutLabel", 
-                                          structure );
+        getSqlMapClientTemplate().update( "BaseObject.insert", structure );
+        getSqlMapClientTemplate().update( "Structure.insert",  structure );
+
         Map<String, String> params = new HashMap<String, String>();
         params.put( "structureId", structure.getId() );
         params.put( "labelId", labelId );
-        getSqlMapClientTemplate().update( "Structure.setLabel", params );
+        getSqlMapClientTemplate().update( "StructureLabel.connect", params );
     }
 
     public int numberOfStructures() {

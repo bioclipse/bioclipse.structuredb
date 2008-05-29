@@ -118,7 +118,7 @@ public class StructuredbInstanceManager
 
     public void insertStructureInLabel( Structure s, String folderId ) {
 
-        structureDao.insertInLabel( s, folderId );
+        structureDao.insertWithLabel( s, folderId );
     }
 
     public int numberOfStructures() {

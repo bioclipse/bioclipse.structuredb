@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.junit.Test;
 import org.openscience.cdk.exception.CDKException;
 
 import testData.TestData;
@@ -60,7 +61,7 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         labelDao.insert(label);
         
         Structure structure = new Structure();
-        structure.setLabel(label);
+        structure.addLabel(label);
         addCreatorAndEditor(structure);
         dao.insert(structure);
         
@@ -68,8 +69,7 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         assertNotNull("The lodaded object shuold not be null", loaded);
         assertNotSame(structure, loaded);
         assertTrue( structure.hasValuesEqualTo(loaded) );
-        assertTrue( structure.getLabel()
-                             .hasValuesEqualTo(loaded.getLabel()) );
+        assertTrue( loaded.getLabels().contains(label) );
     }
 
     public void testPersistStructureWithLabelId() {
@@ -83,13 +83,13 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         Structure structure = new Structure();
 
         addCreatorAndEditor(structure);
-        ((IStructureDao)dao).insertInLabel( structure, label.getId() );
+        ((IStructureDao)dao).insertWithLabel( structure, label.getId() );
         
         Structure loaded = dao.getById( structure.getId() );
         assertNotNull("The lodaded object should not be null", loaded);
         assertNotSame(structure, loaded);
         assertTrue( structure.hasValuesEqualTo(loaded) );
-        assertTrue( loaded.getLabel().getId().equals( label.getId() ) );
+        assertTrue( loaded.getLabels().contains(label) );
     }
     
     @Override
@@ -103,7 +103,7 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         labelDao.insert(label);
         
         Structure structure = new Structure();
-        structure.setLabel(label);
+        structure.addLabel(label);
         addCreatorAndEditor(structure);
         dao.insert(structure);
         

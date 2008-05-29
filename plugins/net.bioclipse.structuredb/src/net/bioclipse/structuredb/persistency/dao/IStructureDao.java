@@ -32,7 +32,7 @@ public interface IStructureDao extends IGenericDao<Structure> {
      * @param s
      * @param folderId
      */
-    public void insertInLabel( Structure s, String folderId );
+    public void insertWithLabel( Structure s, String folderId );
 
     /**
      * @return number of structures in the database
@@ -50,4 +50,5 @@ public interface IStructureDao extends IGenericDao<Structure> {
      * The number of matching substructures fingerprints in the database
      */
     public int numberOfFingerprintSubstructureMatches(byte[] fingerPrint);
+    
 }

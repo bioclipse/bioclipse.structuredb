@@ -72,8 +72,8 @@ public class Label extends BaseObject {
      */
     public void addStructure(Structure structure) {
         structures.add(structure);
-        if( structure.getLabel() != this ) {
-            structure.setLabel(this);
+        if( structure != null && !structure.getLabels().contains( this ) ) {
+            structure.addLabel(this);
         }
     }
 
@@ -84,8 +84,8 @@ public class Label extends BaseObject {
      */
     public void removeStructure(Structure structure) {
         structures.remove(structure);
-        if( structure.getLabel() != null ) {
-            structure.setLabel(null);
+        if( structure != null ) {
+            structure.getLabels().remove( this );
         }
     }
 }

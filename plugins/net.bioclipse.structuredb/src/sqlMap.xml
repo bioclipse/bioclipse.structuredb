@@ -16,34 +16,16 @@
         <parameter property="id"                                     />     
         <parameter property="name"                                   />
         <parameter property="id"                                     />    
-        <parameter property="label.id"                              />        
-        <parameter property="smiles"                                 />   
-        <parameter property="persistedFingerprint" jdbcType="binary" />     
-        <parameter property="moleculeCML"                            /> 
-    </parameterMap>
-
-    <parameterMap class="Structure" id="Structure.insertWithoutLabel">
-        <parameter property="id"                                     />     
-        <parameter property="name"                                   />
-        <parameter property="id"                                     />    
         <parameter property="smiles"                                 />   
         <parameter property="persistedFingerprint" jdbcType="binary" />     
         <parameter property="moleculeCML"                            /> 
     </parameterMap>
 
     <parameterMap class="Structure" id="Structure.update">
-        <parameter property="label.id"                              />     
         <parameter property="smiles"                                 />
         <parameter property="persistedFingerprint" jdbcType="binary" />
         <parameter property="moleculeCML"                            />
         <parameter property="name"                                   />    
-    </parameterMap>
-    
-    <parameterMap class="Structure" id="Structure.updateWithoutLabel">
-        <parameter property="smiles"      />
-        <parameter property="persistedFingerprint" jdbcType="binary" />
-        <parameter property="moleculeCML" />
-        <parameter property="name"        />
     </parameterMap>
     
 <!--+
@@ -58,25 +40,18 @@
 	</resultMap>
 
 	<resultMap class="Label" id="Label" extends="BaseObject">
-		<result property="structures" column="id" select="Label.getStructures" />
+		<result property="structures" column="id" select="Label.getStructures"  />
 		<result property="name"       column="name"                             />
 	</resultMap>
 	
 	<resultMap class="Structure" id="Structure" extends="BaseObject">
-		<result property="label"               column="label" select="Label.getById" />
+		<result property="labels"               column="id" select="Structure.getLabels" />
 		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
 		<result property="smiles"               column="smiles"                         />
 		<result property="moleculeCML"          column="molecule"                       />
 		<result property="name"                 column="name"                           />
 	</resultMap>
 
-	<resultMap class="Structure" id="Structure-without-label" extends="BaseObject">
-		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
-		<result property="smiles"               column="smiles"               />
-		<result property="moleculeCML"          column="molecule"             />
-		<result property="name"                 column="name"                 />
-	</resultMap>
-	
 	<resultMap class="User" id="User" extends="BaseObject">
 		<result property="userName"      column="userName" />
 		<result property="passWordMd5"   column="passWord" />
@@ -95,11 +70,6 @@
 	</sql>
 	
 	<sql id="Structure-fields">
-		s.label           AS label,
-		<include refid="Structure-fields-without-label" />
-	</sql>
-	
-	<sql id="Structure-fields-without-label">
 		s.persistedFingerprint AS persistedFingerprint,
 		s.smiles               AS smiles,
 		s.molecule             AS molecule,
@@ -135,18 +105,13 @@
 	</insert>
 	
 	<insert id="Structure.insert" parameterMap="Structure.insert">
-		INSERT INTO Structure (  id,   name, baseObject, label,      smiles,   persistedFingerprint,   molecule     )
-		               VALUES ( ?, ?, ?, ?, ?, ?, ? ); 
-	</insert>
-	
-	<insert id="Structure.insertWithoutLabel" parameterMap="Structure.insertWithoutLabel">
-		INSERT INTO Structure (  id,   name,   baseObject, smiles,   persistedFingerprint,   molecule      )
-		               VALUES ( ?, ?, ?, ?, ?, ? );
+		INSERT INTO Structure ( id, name, baseObject, smiles, persistedFingerprint, molecule )
+		               VALUES ( ?, ?, ?, ?, ?, ? ); 
 	</insert>
 	
 	<insert id="Label.insert">
 		INSERT INTO Label (   id,     baseObject, name   )
-		             VALUES ( '$id$', '$id$',     '$name$' );
+		           VALUES ( '$id$', '$id$',     '$name$' );
 	</insert>
 	
 <!--+
@@ -196,7 +161,7 @@
 	<select id="Label.getById" resultMap="Label" parameterClass="String">
 		SELECT 
 			<include refid="BaseObject-fields" />,
-			<include refid="Label-fields"    />
+			<include refid="Label-fields"      />
 		FROM
 			Label l INNER JOIN BaseObject b ON
 			l.baseObject = b.id
@@ -207,7 +172,7 @@
 	<select id="Label.getByName" resultMap="Label" parameterClass="String">
         SELECT 
             <include refid="BaseObject-fields" />,
-            <include refid="Label-fields"    />
+            <include refid="Label-fields"      />
         FROM
             Label l INNER JOIN BaseObject b ON
             l.baseObject = b.id
@@ -215,15 +180,15 @@
             l.name = #value#
     </select>
 	
-	<select id="Label.getStructures" resultMap="Structure-without-label" parameterClass="String">
+	<select id="Label.getStructures" resultMap="Structure" parameterClass="String">
 		SELECT 
 			<include refid="BaseObject-fields" />,
-			<include refid="Structure-fields-without-label"  />
+			<include refid="Structure-fields"  />
 		FROM
-			Structure s INNER JOIN BaseObject b ON
-			s.baseObject = b.id
+			Structure s INNER JOIN BaseObject b ON s.baseObject = b.id, 
+			StructureLabel sl
 		WHERE 
-			s.label = #value#
+			sl.labelId = #value#
 	</select>
 	
 	<select id="Structure.getAll" resultMap="Structure">
@@ -246,10 +211,21 @@
             s.name = #value#
     </select>
 	
+	<select id="Structure.getLabels" resultMap="Label" parameterClass="String">
+        SELECT 
+            <include refid="BaseObject-fields" />,
+            <include refid="Label-fields"  />
+        FROM
+            Label l INNER JOIN BaseObject b ON l.baseObject = b.id, 
+            StructureLabel sl
+        WHERE 
+            sl.structureId = #value#
+    </select>
+	
 	<select id="Label.getAll" resultMap="Label">
 		SELECT
 			<include refid="BaseObject-fields" />,
-			<include refid="Label-fields"     />
+			<include refid="Label-fields"      />
 		FROM
 			Label l INNER JOIN BaseObject b ON
 			l.baseObject = b.id
@@ -287,6 +263,18 @@
         WHERE 
             BITAND(s.persistedFingerprint, #param:BINARY#) = #param:BINARY#
     </select>
+    
+    <select id="StructureLabel.hasConnection"
+            parameterClass="java.util.Map"
+            resultClass="int" >
+        SELECT
+            count(*) as numberOf
+        FROM
+            StructureLabel sl
+        WHERE
+            sl.StructureId = #structureId# 
+            AND sl.LabelId = #labelId#
+    </select>
 	
 <!--+
     | DELETE STATEMENTS
@@ -295,6 +283,7 @@
 		DELETE FROM BaseObject
 		WHERE id='$value$';
 	</delete>
+	
 <!--+
     | UPDATE STATEMENTS
     +-->
@@ -334,7 +323,6 @@
     	UPDATE 
     		Structure
     	SET 
-	    	label               = ?,
 	    	smiles               = ?,
 	    	persistedFingerprint = ?,
 	    	molecule             = ?,
@@ -343,24 +331,8 @@
 			id = '$id$'
     </update>
     
-    <update id="Structure-without-label.update" parameterMap="Structure.updateWithoutLabel">
-    	UPDATE 
-    		Structure
-    	SET 
-	    	smiles               = ?,
-	    	persistedFingerprint = ?,
-	    	molecule             = ?,
-	    	name                 = ?
-		WHERE
-			id = '$id$'
-    </update>
-    
-    <update id="Structure.setLabel" parameterClass="java.util.Map">
-        UPDATE
-            Structure
-        SET
-            label = '$labelId$'
-        WHERE
-            id = '$structureId$'
+    <update id="StructureLabel.connect" parameterClass="java.util.Map">
+        INSERT into StructureLabel (   structureId,     labelId   ) 
+                            VALUES ( '$structureId$', '$labelId$' )
     </update>
 </sqlMap>

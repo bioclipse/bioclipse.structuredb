@@ -41,20 +41,19 @@ public class StructureTest {
         
         AtomContainer testMolecule = TestData.getCycloPropane();
         
-        Label label     = new Label();
-        Label library2    = new Label();
+        Label label         = new Label("label");
+        Label label2        = new Label("label2");
         Structure structure = new Structure("Cyclopropane", testMolecule);
         
-        structure.setLabel( label );
+        structure.addLabel( label );
         
-        assertTrue( structure.getLabel() == label );
+        assertTrue( structure.getLabels().contains(label) );
         assertTrue( label.getStructures().contains(structure) );
         
-        structure.setLabel( library2 );
+        structure.addLabel( label2 );
         
-        assertTrue(  structure.getLabel() == library2           );
-        assertTrue(  library2.getStructures().contains(structure) );
-        assertFalse( label.getStructures().contains(structure)  );
+        assertTrue( structure.getLabels().contains(label2)     );
+        assertTrue( label2.getStructures().contains(structure) );
+        assertTrue( label.getStructures().contains(structure)  );
     }
-    
 }

@@ -14,7 +14,11 @@ package net.bioclipse.structuredb.domain;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
@@ -48,12 +52,7 @@ public class Structure extends BaseObject
     private BitSet         fingerPrint;
     private byte[]         persistedFingerPrint;
     private String         smiles;
-
-    /**
-     * The label this structure belongs to.
-     * Is null if the structure doesn't belong to any label
-     */
-    private Label label;
+    private List<Label>    labels;
 
     public Structure() {
         super();
@@ -61,6 +60,7 @@ public class Structure extends BaseObject
         this.persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         atomContainer = new AtomContainer();
         smiles = "";
+        labels = new ArrayList<Label>();
     }
 
     public Structure( String name, AtomContainer molecule ) {
@@ -88,6 +88,7 @@ public class Structure extends BaseObject
         else {
             smiles = sg.createSMILES( (IMolecule) molecule );
         }
+        labels = new ArrayList<Label>();
     }
 
     public Structure( String name, ICDKMolecule cdkMolecule )
@@ -98,6 +99,7 @@ public class Structure extends BaseObject
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         atomContainer        = cdkMolecule.getAtomContainer();
         smiles               = cdkMolecule.getSmiles();
+        labels               = new ArrayList<Label>();
     }
 
     /**
@@ -114,7 +116,7 @@ public class Structure extends BaseObject
         this.fingerPrint     = (BitSet)structure.getFingerPrint().clone();
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         this.smiles          = structure.getSmiles();
-        this.label          = structure.getLabel();
+        this.labels          = new ArrayList<Label>( structure.getLabels() );
     }
 
     public boolean hasValuesEqualTo( BaseObject object ) {
@@ -130,7 +132,7 @@ public class Structure extends BaseObject
 
         return fingerPrint.equals( structure.getFingerPrint() )
                &&   smiles.equals( structure.getSmiles()      );
-//               && atomContainer.equals( structure.getMolecule()    ); //TODO: can give false positives without?
+//             && atomContainer.equals( structure.getMolecule()    ); //TODO: can give false positives without?
     }
 
     /**
@@ -197,27 +199,24 @@ public class Structure extends BaseObject
      * @return the label containing this structure or null
      * if the structure isn't in any label
      */
-    public Label getLabel() {
-        return label;
+    public List<Label> getLabels() {
+        return labels;
     }
 
     /**
-     * Places this structure in a label
+     * Adds a label to this structure
      *
      * @param label the label to place the structure in
      */
-    public void setLabel(Label label) {
-
-        Label oldLabel = this.label;
-        this.label = label;
-
-        if( oldLabel != null && oldLabel != label ) {
-            oldLabel.removeStructure(this);
-        }
-
+    public void addLabel(Label label) {
+        labels.add( label );
         if( label != null && !label.getStructures().contains(this) ) {
             label.addStructure( this );
         }
+    }
+    
+    void setLabels(List<Label> labels) {
+        this.labels = labels;
     }
 
     public byte[] getPersistedFingerprint() {

@@ -48,11 +48,11 @@ public class LibraryTest {
         label.addStructure( structure );
     
         assertTrue( label.getStructures().contains(structure) );
-        assertTrue( structure.getLabel() == label );
+        assertTrue( structure.getLabels().contains( label ) );
         
         label.removeStructure( structure );
         
         assertFalse( label.getStructures().contains(structure) );
-        assertFalse( structure.getLabel() == label );
+        assertFalse( structure.getLabels().contains(label) );
     }
 }
