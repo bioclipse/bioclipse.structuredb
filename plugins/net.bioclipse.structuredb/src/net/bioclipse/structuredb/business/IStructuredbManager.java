@@ -21,7 +21,7 @@ import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.business.IBioclipseManager;
 import net.bioclipse.core.domain.IMolecule;
-import net.bioclipse.structuredb.domain.Folder;
+import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 
@@ -81,7 +81,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName, String folderName",
                        methodSummary = "Fetches a folder by a given name" +
                                        "from a database with a given name" )
-    public Folder folderByName( String databaseName,
+    public Label folderByName( String databaseName,
                                 String folderName );
 
     /**
@@ -131,7 +131,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Creates a folder with the given name " +
                                        "and saves it in the database with " +
                                        "the given name" )
-    public Folder createFolder( String databaseName,
+    public Label createLabel( String databaseName,
                                 String folderName )
                                 throws IllegalArgumentException;
 
@@ -177,7 +177,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all folders from a database " +
                                        "with a given name")
-    public List<Folder> allFolders( String databaseName );
+    public List<Label> allLabels( String databaseName );
 
     /**
      * Retrieves all users from a database with a given name.

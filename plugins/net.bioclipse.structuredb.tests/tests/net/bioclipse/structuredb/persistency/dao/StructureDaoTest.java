@@ -17,7 +17,7 @@ import java.util.List;
 import org.openscience.cdk.exception.CDKException;
 
 import testData.TestData;
-import net.bioclipse.structuredb.domain.Folder;
+import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 
 public class StructureDaoTest extends GenericDaoTest<Structure> {
@@ -51,16 +51,16 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         }};
     }
     
-    public void testPersistStructureWithFolder() {
+    public void testPersistStructureWithLabel() {
         
-        Folder folder = new Folder();
-        IFolderDao folderDao 
-            = (IFolderDao) applicationContext.getBean("folderDao");
-        addCreatorAndEditor(folder);
-        folderDao.insert(folder);
+        Label label = new Label();
+        ILabelDao labelDao 
+            = (ILabelDao) applicationContext.getBean("labelDao");
+        addCreatorAndEditor(label);
+        labelDao.insert(label);
         
         Structure structure = new Structure();
-        structure.setFolder(folder);
+        structure.setLabel(label);
         addCreatorAndEditor(structure);
         dao.insert(structure);
         
@@ -68,42 +68,42 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         assertNotNull("The lodaded object shuold not be null", loaded);
         assertNotSame(structure, loaded);
         assertTrue( structure.hasValuesEqualTo(loaded) );
-        assertTrue( structure.getFolder()
-                             .hasValuesEqualTo(loaded.getFolder()) );
+        assertTrue( structure.getLabel()
+                             .hasValuesEqualTo(loaded.getLabel()) );
     }
 
-    public void testPersistStructureWithFolderId() {
+    public void testPersistStructureWithLabelId() {
         
-        Folder folder = new Folder();
-        IFolderDao folderDao 
-            = (IFolderDao) applicationContext.getBean("folderDao");
-        addCreatorAndEditor(folder);
-        folderDao.insert(folder);
+        Label label = new Label();
+        ILabelDao labelDao 
+            = (ILabelDao) applicationContext.getBean("labelDao");
+        addCreatorAndEditor(label);
+        labelDao.insert(label);
         
         Structure structure = new Structure();
 
         addCreatorAndEditor(structure);
-        ((IStructureDao)dao).insertInFolder( structure, folder.getId() );
+        ((IStructureDao)dao).insertInLabel( structure, label.getId() );
         
         Structure loaded = dao.getById( structure.getId() );
         assertNotNull("The lodaded object should not be null", loaded);
         assertNotSame(structure, loaded);
         assertTrue( structure.hasValuesEqualTo(loaded) );
-        assertTrue( loaded.getFolder().getId().equals( folder.getId() ) );
+        assertTrue( loaded.getLabel().getId().equals( label.getId() ) );
     }
     
     @Override
     public void testUpdate() {
         super.testUpdate();
         
-        Folder folder = new Folder();
-        IFolderDao folderDao 
-            = (IFolderDao) applicationContext.getBean("folderDao");
-        addCreatorAndEditor(folder);
-        folderDao.insert(folder);
+        Label label = new Label();
+        ILabelDao labelDao 
+            = (ILabelDao) applicationContext.getBean("labelDao");
+        addCreatorAndEditor(label);
+        labelDao.insert(label);
         
         Structure structure = new Structure();
-        structure.setFolder(folder);
+        structure.setLabel(label);
         addCreatorAndEditor(structure);
         dao.insert(structure);
         

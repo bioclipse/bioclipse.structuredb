@@ -16,13 +16,13 @@
         <parameter property="id"                                     />     
         <parameter property="name"                                   />
         <parameter property="id"                                     />    
-        <parameter property="folder.id"                              />        
+        <parameter property="label.id"                              />        
         <parameter property="smiles"                                 />   
         <parameter property="persistedFingerprint" jdbcType="binary" />     
         <parameter property="moleculeCML"                            /> 
     </parameterMap>
 
-    <parameterMap class="Structure" id="Structure.insertWithoutFolder">
+    <parameterMap class="Structure" id="Structure.insertWithoutLabel">
         <parameter property="id"                                     />     
         <parameter property="name"                                   />
         <parameter property="id"                                     />    
@@ -32,14 +32,14 @@
     </parameterMap>
 
     <parameterMap class="Structure" id="Structure.update">
-        <parameter property="folder.id"                              />     
+        <parameter property="label.id"                              />     
         <parameter property="smiles"                                 />
         <parameter property="persistedFingerprint" jdbcType="binary" />
         <parameter property="moleculeCML"                            />
         <parameter property="name"                                   />    
     </parameterMap>
     
-    <parameterMap class="Structure" id="Structure.updateWithoutFolder">
+    <parameterMap class="Structure" id="Structure.updateWithoutLabel">
         <parameter property="smiles"      />
         <parameter property="persistedFingerprint" jdbcType="binary" />
         <parameter property="moleculeCML" />
@@ -57,20 +57,20 @@
 		<result property="lastEditor" column="lastEditor" select="User.getById" />
 	</resultMap>
 
-	<resultMap class="Folder" id="Folder" extends="BaseObject">
-		<result property="structures" column="id" select="Folder.getStructures" />
+	<resultMap class="Label" id="Label" extends="BaseObject">
+		<result property="structures" column="id" select="Label.getStructures" />
 		<result property="name"       column="name"                             />
 	</resultMap>
 	
 	<resultMap class="Structure" id="Structure" extends="BaseObject">
-		<result property="folder"               column="folder" select="Folder.getById" />
+		<result property="label"               column="label" select="Label.getById" />
 		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
 		<result property="smiles"               column="smiles"                         />
 		<result property="moleculeCML"          column="molecule"                       />
 		<result property="name"                 column="name"                           />
 	</resultMap>
 
-	<resultMap class="Structure" id="Structure-without-folder" extends="BaseObject">
+	<resultMap class="Structure" id="Structure-without-label" extends="BaseObject">
 		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
 		<result property="smiles"               column="smiles"               />
 		<result property="moleculeCML"          column="molecule"             />
@@ -95,11 +95,11 @@
 	</sql>
 	
 	<sql id="Structure-fields">
-		s.folder           AS folder,
-		<include refid="Structure-fields-without-folder" />
+		s.label           AS label,
+		<include refid="Structure-fields-without-label" />
 	</sql>
 	
-	<sql id="Structure-fields-without-folder">
+	<sql id="Structure-fields-without-label">
 		s.persistedFingerprint AS persistedFingerprint,
 		s.smiles               AS smiles,
 		s.molecule             AS molecule,
@@ -112,7 +112,7 @@
 		u.sudoer   AS sudoer
 	</sql>
 	
-	<sql id="Folder-fields">
+	<sql id="Label-fields">
 	   l.name AS name
 	</sql>
 	
@@ -135,17 +135,17 @@
 	</insert>
 	
 	<insert id="Structure.insert" parameterMap="Structure.insert">
-		INSERT INTO Structure (  id,   name, baseObject, folder,      smiles,   persistedFingerprint,   molecule     )
+		INSERT INTO Structure (  id,   name, baseObject, label,      smiles,   persistedFingerprint,   molecule     )
 		               VALUES ( ?, ?, ?, ?, ?, ?, ? ); 
 	</insert>
 	
-	<insert id="Structure.insertWithoutFolder" parameterMap="Structure.insertWithoutFolder">
+	<insert id="Structure.insertWithoutLabel" parameterMap="Structure.insertWithoutLabel">
 		INSERT INTO Structure (  id,   name,   baseObject, smiles,   persistedFingerprint,   molecule      )
 		               VALUES ( ?, ?, ?, ?, ?, ? );
 	</insert>
 	
-	<insert id="Folder.insert">
-		INSERT INTO Folder (   id,     baseObject, name   )
+	<insert id="Label.insert">
+		INSERT INTO Label (   id,     baseObject, name   )
 		             VALUES ( '$id$', '$id$',     '$name$' );
 	</insert>
 	
@@ -193,37 +193,37 @@
             u.username = #value#
     </select>
 	
-	<select id="Folder.getById" resultMap="Folder" parameterClass="String">
+	<select id="Label.getById" resultMap="Label" parameterClass="String">
 		SELECT 
 			<include refid="BaseObject-fields" />,
-			<include refid="Folder-fields"    />
+			<include refid="Label-fields"    />
 		FROM
-			Folder l INNER JOIN BaseObject b ON
+			Label l INNER JOIN BaseObject b ON
 			l.baseObject = b.id
 		WHERE 
 			l.id = #value#
 	</select>
 	
-	<select id="Folder.getByName" resultMap="Folder" parameterClass="String">
+	<select id="Label.getByName" resultMap="Label" parameterClass="String">
         SELECT 
             <include refid="BaseObject-fields" />,
-            <include refid="Folder-fields"    />
+            <include refid="Label-fields"    />
         FROM
-            Folder l INNER JOIN BaseObject b ON
+            Label l INNER JOIN BaseObject b ON
             l.baseObject = b.id
         WHERE 
             l.name = #value#
     </select>
 	
-	<select id="Folder.getStructures" resultMap="Structure-without-folder" parameterClass="String">
+	<select id="Label.getStructures" resultMap="Structure-without-label" parameterClass="String">
 		SELECT 
 			<include refid="BaseObject-fields" />,
-			<include refid="Structure-fields-without-folder"  />
+			<include refid="Structure-fields-without-label"  />
 		FROM
 			Structure s INNER JOIN BaseObject b ON
 			s.baseObject = b.id
 		WHERE 
-			s.folder = #value#
+			s.label = #value#
 	</select>
 	
 	<select id="Structure.getAll" resultMap="Structure">
@@ -246,12 +246,12 @@
             s.name = #value#
     </select>
 	
-	<select id="Folder.getAll" resultMap="Folder">
+	<select id="Label.getAll" resultMap="Label">
 		SELECT
 			<include refid="BaseObject-fields" />,
-			<include refid="Folder-fields"     />
+			<include refid="Label-fields"     />
 		FROM
-			Folder l INNER JOIN BaseObject b ON
+			Label l INNER JOIN BaseObject b ON
 			l.baseObject = b.id
 	</select>
 
@@ -321,9 +321,9 @@
 			id = '$id$'
     </update>
     
-    <update id="Folder.update" parameterClass="Folder">
+    <update id="Label.update" parameterClass="Label">
         UPDATE
-            Folder
+            Label
         SET
             name = '$name$'
         WHERE
@@ -334,7 +334,7 @@
     	UPDATE 
     		Structure
     	SET 
-	    	folder               = ?,
+	    	label               = ?,
 	    	smiles               = ?,
 	    	persistedFingerprint = ?,
 	    	molecule             = ?,
@@ -343,7 +343,7 @@
 			id = '$id$'
     </update>
     
-    <update id="Structure-without-folder.update" parameterMap="Structure.updateWithoutFolder">
+    <update id="Structure-without-label.update" parameterMap="Structure.updateWithoutLabel">
     	UPDATE 
     		Structure
     	SET 
@@ -355,11 +355,11 @@
 			id = '$id$'
     </update>
     
-    <update id="Structure.setFolder" parameterClass="java.util.Map">
+    <update id="Structure.setLabel" parameterClass="java.util.Map">
         UPDATE
             Structure
         SET
-            folder = '$folderId$'
+            label = '$labelId$'
         WHERE
             id = '$structureId$'
     </update>

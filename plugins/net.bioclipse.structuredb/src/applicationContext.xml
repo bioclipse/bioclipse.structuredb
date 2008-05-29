@@ -113,8 +113,8 @@
         </property>
 	</bean>
 	
-	<bean id="folderDaoTarget"
-          class="net.bioclipse.structuredb.persistency.dao.FolderDao" abstract="true">
+	<bean id="labelDaoTarget"
+          class="net.bioclipse.structuredb.persistency.dao.LabelDao" abstract="true">
         <property name="dataSource">
 			<ref local="dataSource" />
 		</property>
@@ -123,12 +123,12 @@
 		</property>
 	</bean>
 	
-	<bean id="folderDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
+	<bean id="labelDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
 		<property name="proxyInterfaces">
-			<value>net.bioclipse.structuredb.persistency.dao.IFolderDao</value>
+			<value>net.bioclipse.structuredb.persistency.dao.ILabelDao</value>
 		</property>
 		<property name="target">
-			<bean parent="folderDaoTarget" />
+			<bean parent="labelDaoTarget" />
 		</property>
 		<property name="interceptorNames">
             <list>
@@ -145,8 +145,8 @@
 	   <property name="structureDao">
            <ref local="structureDao"/>
        </property>
-       <property name="folderDao">
-           <ref local="folderDao"/>
+       <property name="labelDao">
+           <ref local="labelDao"/>
        </property>
 	</bean>
 	

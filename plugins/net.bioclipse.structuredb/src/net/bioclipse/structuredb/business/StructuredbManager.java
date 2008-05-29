@@ -36,7 +36,7 @@ import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
-import net.bioclipse.structuredb.domain.Folder;
+import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
@@ -195,17 +195,17 @@ public class StructuredbManager implements IStructuredbManager {
         return context;
     }
 
-    public Folder createFolder(String databaseName, String folderName)
+    public Label createLabel(String databaseName, String folderName)
             throws IllegalArgumentException {
 
-        Folder folder = new Folder(folderName);
+        Label label = new Label(folderName);
         if( !internalManagers.containsKey(databaseName) ) {
             throw new IllegalArgumentException( "There is no database named: " 
                                                 + databaseName );
         }
-        internalManagers.get(databaseName).insertFolder(folder);
-        logger.debug("Folder " + folderName + " inserted in " + databaseName);
-        return folder;
+        internalManagers.get(databaseName).insertLabel(label);
+        logger.debug("Label " + folderName + " inserted in " + databaseName);
+        return label;
     }
 
     public Structure createStructure( String databaseName,
@@ -236,8 +236,8 @@ public class StructuredbManager implements IStructuredbManager {
         HsqldbUtil.getInstance().remove( databaseName + ".sdb" );
     }
 
-    public List<Folder> allFolders(String databaseName) {
-        return internalManagers.get(databaseName).retrieveAllFolders();
+    public List<Label> allLabels(String databaseName) {
+        return internalManagers.get(databaseName).retrieveAllLabels();
     }
 
     public List<Structure> allStructures(String databaseName) {
@@ -248,11 +248,11 @@ public class StructuredbManager implements IStructuredbManager {
         return internalManagers.get(databaseName).retrieveAllUsers();
     }
 
-    public Folder folderByName( String databaseName,
+    public Label folderByName( String databaseName,
                                         String folderName ) {
 
         return internalManagers.get(databaseName)
-                               .retrieveFolderByName(folderName);
+                               .retrieveLabelByName(folderName);
     }
 
     public List<Structure> allStructuresByName( String databaseName,
@@ -319,7 +319,7 @@ public class StructuredbManager implements IStructuredbManager {
                                                 filePath );
         }
         File file = new File(filePath);
-        String folderId = createFolder( databaseName,
+        String folderId = createLabel( databaseName,
                                         file.getName().replaceAll("\\..*?$", "") )
                                             .getId();
 
@@ -339,7 +339,7 @@ public class StructuredbManager implements IStructuredbManager {
                 s.setName( "\"" + s.getSmiles() + "\"" );
             }
 
-            internalManagers.get(databaseName).insertStructureInFolder(s, folderId);
+            internalManagers.get(databaseName).insertStructureInLabel(s, folderId);
             if(monitor != null) {
                 monitor.worked( 1 );
             }

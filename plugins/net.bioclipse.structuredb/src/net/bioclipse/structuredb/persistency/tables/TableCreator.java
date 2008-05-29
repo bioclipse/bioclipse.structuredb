@@ -35,7 +35,7 @@ public class TableCreator {
 
     public static final String[] SQL_FILES_RUNORDER = { "BaseObject.sql", 
                                                         "User.sql",
-                                                        "Folder.sql",
+                                                        "Label.sql",
                                                         "Structure.sql" };
     
     public static final TableCreator INSTANCE = new TableCreator();

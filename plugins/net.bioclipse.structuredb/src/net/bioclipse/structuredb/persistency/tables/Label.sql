@@ -1,0 +1,11 @@
+CREATE TABLE Label (
+	id         VARCHAR(36) NOT NULL,
+    name       VARCHAR(50) NOT NULL,
+	baseObject VARCHAR(36) NOT NULL,
+
+	PRIMARY KEY (id)
+);
+
+ALTER TABLE Label ADD UNIQUE (id);
+ALTER TABLE Label ADD UNIQUE (name); 
+ALTER TABLE Label ADD FOREIGN KEY (baseObject) REFERENCES BaseObject(id) ON DELETE CASCADE;

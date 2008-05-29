@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
+ * Contributors: Jonathan Alvarsson
  *     
  *******************************************************************************/
 
@@ -14,21 +14,24 @@ package net.bioclipse.structuredb.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Folder extends BaseObject {
+/**
+ * @author jonalv
+ */
+public class Label extends BaseObject {
 
     private List<Structure> structures;
     
-    public Folder() {
+    public Label() {
         super();
         structures = new ArrayList<Structure>();
     }
 
-    public Folder(Folder folder) {
-        super(folder);
-        this.structures = new ArrayList<Structure>( folder.getStructures() );
+    public Label(Label label) {
+        super(label);
+        this.structures = new ArrayList<Structure>( label.getStructures() );
     }
 
-    public Folder(String name) {
+    public Label(String name) {
         super(name);
         structures = new ArrayList<Structure>();
     }
@@ -41,15 +44,15 @@ public class Folder extends BaseObject {
         if( !super.hasValuesEqualTo(obj) ) {
             return false;
         }
-        if( !(obj instanceof Folder) ) {
+        if( !(obj instanceof Label) ) {
             return false;
         }
-        Folder folder = (Folder)obj;
-        return objectsInHasSameValues(folder.getStructures(), structures);
+        Label label = (Label)obj;
+        return objectsInHasSameValues(label.getStructures(), structures);
     }
 
     /**
-     * @return the structures in the library 
+     * @return the structures having the label 
      */
     public List<Structure> getStructures() {
         return structures;
@@ -63,26 +66,26 @@ public class Folder extends BaseObject {
     }
 
     /**
-     * Adds a structure to the library
+     * Gives a structure this label
      * 
      * @param structure the structure to add
      */
     public void addStructure(Structure structure) {
         structures.add(structure);
-        if( structure.getFolder() != this ) {
-            structure.setFolder(this);
+        if( structure.getLabel() != this ) {
+            structure.setLabel(this);
         }
     }
 
     /**
-     * Removes a structure from the library
+     * Removes this label from a structure
      * 
      * @param structure the structure to remove
      */
     public void removeStructure(Structure structure) {
         structures.remove(structure);
-        if( structure.getFolder() != null ) {
-            structure.setFolder(null);
+        if( structure.getLabel() != null ) {
+            structure.setLabel(null);
         }
     }
 }

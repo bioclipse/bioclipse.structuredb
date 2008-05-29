@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.core.domain.BioList;
-import net.bioclipse.structuredb.domain.Folder;
+import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 
@@ -24,19 +24,19 @@ public class StructuredbInstanceManager
 
     private User loggedInUser;
     
-    public Folder createLibrary(String name) {
-        Folder folder = new Folder(name);
-        folderDao.insert(folder);
-        return folder;
+    public Label createLibrary(String name) {
+        Label label = new Label(name);
+        labelDao.insert(label);
+        return label;
     }
 
-    public void insertFolder(Folder folder) {
-        folderDao.insert(folder);
-        persistRelatedStructures(folder);
+    public void insertLabel(Label label) {
+        labelDao.insert(label);
+        persistRelatedStructures(label);
     }
     
-    private void persistRelatedStructures(Folder folder) {
-        for( Structure s : folder.getStructures() ) {
+    private void persistRelatedStructures(Label label) {
+        for( Structure s : label.getStructures() ) {
             if( structureDao.getById(s.getId()) == null) {
                 structureDao.insert(s);
             }
@@ -54,8 +54,8 @@ public class StructuredbInstanceManager
         userDao.insert(user);
     }
 
-    public void delete(Folder folder) {
-        folderDao.delete( folder.getId() );
+    public void delete(Label label) {
+        labelDao.delete( label.getId() );
     }
 
     public void delete(User user) {
@@ -66,8 +66,8 @@ public class StructuredbInstanceManager
         structureDao.delete( structure.getId() );
     }
 
-    public List<Folder> retrieveAllFolders() {
-        return new BioList<Folder>( folderDao.getAll() );
+    public List<Label> retrieveAllLabels() {
+        return new BioList<Label>( labelDao.getAll() );
     }
 
     public List<Structure> retrieveAllStructures() {
@@ -78,8 +78,8 @@ public class StructuredbInstanceManager
         return new BioList<User>( userDao.getAll() );
     }
 
-    public Folder retrieveFolderByName(String name) {
-        return folderDao.getByName(name);
+    public Label retrieveLabelByName(String name) {
+        return labelDao.getByName(name);
     }
 
     public List<Structure> retrieveStructureByName(String name) {
@@ -90,9 +90,9 @@ public class StructuredbInstanceManager
         return userDao.getByUserName(username);
     }
 
-    public void update(Folder folder) {
-        folderDao.update(folder);
-        persistRelatedStructures(folder);
+    public void update(Label label) {
+        labelDao.update(label);
+        persistRelatedStructures(label);
     }
 
     public void update(User user) {
@@ -116,9 +116,9 @@ public class StructuredbInstanceManager
         return structureDao.allStructuresIterator();
     }
 
-    public void insertStructureInFolder( Structure s, String folderId ) {
+    public void insertStructureInLabel( Structure s, String folderId ) {
 
-        structureDao.insertInFolder( s, folderId );
+        structureDao.insertInLabel( s, folderId );
     }
 
     public int numberOfStructures() {

@@ -24,7 +24,7 @@ import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
-import net.bioclipse.structuredb.domain.Folder;
+import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
@@ -108,11 +108,11 @@ public class StructuredbManagerTest
         return new String[] {loc};
     }
 
-    public void testCreatingTwoFoldersInTwoDatabases() {
+    public void testCreatingTwoLabelsInTwoDatabases() {
 
-        Folder f2 = manager.createFolder(database2, "testFolder2");
+        Label f2 = manager.createLabel(database2, "testLabel2");
         assertNotNull(f2);
-        Folder f1 = manager.createFolder(database1, "testFolder1");
+        Label f1 = manager.createLabel(database1, "testLabel1");
         assertNotNull(f1);
 
         assertEquals( f2,
@@ -310,24 +310,24 @@ public class StructuredbManagerTest
                                     .getBean("structuredbManagerTarget");
         manager.addStructuresFromSDF( database1,
                                       TestData.getTestSDFFilePath() );
-        Folder folder
+        Label label
             = manager.folderByName( database1,
                                             "test" );
-        assertNotNull(folder);
-        assertEquals( 2, folder.getStructures().size() );
+        assertNotNull(label);
+        assertEquals( 2, label.getStructures().size() );
     }
 
-    public void testCreatingAndRetrievingFolders() {
-        Folder folder1 = manager.createFolder(database1, "folder1");
-        Folder folder2 = manager.createFolder(database1, "folder2");
+    public void testCreatingAndRetrievingLabels() {
+        Label folder1 = manager.createLabel(database1, "folder1");
+        Label folder2 = manager.createLabel(database1, "folder2");
         assertNotNull(folder1);
         assertNotNull(folder2);
         assertEquals( folder1,
                       manager
                       .folderByName( database1, folder1.getName() ) );
-        List<Folder> folders = manager.allFolders(database1);
-        assertTrue( folders.contains(folder1) );
-        assertTrue( folders.contains(folder2) );
+        List<Label> labels = manager.allLabels(database1);
+        assertTrue( labels.contains(folder1) );
+        assertTrue( labels.contains(folder2) );
     }
 
     public void testCreatingAndRetrievingUsers() {
@@ -361,7 +361,7 @@ public class StructuredbManagerTest
     
     public void testUsingUnknownDatabase() {
         try {
-            manager.createFolder( "unknown database", "some folder name" );
+            manager.createLabel( "unknown database", "some folder name" );
             fail("should throw exception");
         }
         catch (IllegalArgumentException e) {

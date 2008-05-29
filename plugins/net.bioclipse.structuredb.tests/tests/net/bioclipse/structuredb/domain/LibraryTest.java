@@ -28,10 +28,10 @@ public class LibraryTest {
         Structure s2 = new Structure();
         s2.setName("s2");
         
-        Folder library1 = new Folder();
+        Label library1 = new Label();
         library1.addStructure(s1);
-        Folder library2 = new Folder(library1);
-        Folder library3 = new Folder();
+        Label library2 = new Label(library1);
+        Label library3 = new Label();
         library3.addStructure(s2);
         
         assertTrue(  library1.hasValuesEqualTo(library2) );
@@ -43,16 +43,16 @@ public class LibraryTest {
 
         Structure structure = new Structure();
         
-        Folder folder = new Folder();
+        Label label = new Label();
         
-        folder.addStructure( structure );
+        label.addStructure( structure );
     
-        assertTrue( folder.getStructures().contains(structure) );
-        assertTrue( structure.getFolder() == folder );
+        assertTrue( label.getStructures().contains(structure) );
+        assertTrue( structure.getLabel() == label );
         
-        folder.removeStructure( structure );
+        label.removeStructure( structure );
         
-        assertFalse( folder.getStructures().contains(structure) );
-        assertFalse( structure.getFolder() == folder );
+        assertFalse( label.getStructures().contains(structure) );
+        assertFalse( structure.getLabel() == label );
     }
 }

@@ -17,7 +17,7 @@ import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.recording.JsScriptGenerator;
-import net.bioclipse.structuredb.domain.Folder;
+import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.ui.views.JsConsoleView;
@@ -61,8 +61,8 @@ public class ForConsoleDecoratedStructuredbManager implements
         manager.addStructuresFromSDF( databaseName, filePath, monitor );
     }
 
-    public List<Folder> allFolders( String databaseName ) {
-        return manager.allFolders( databaseName );
+    public List<Label> allLabels( String databaseName ) {
+        return manager.allLabels( databaseName );
     }
 
     public List<Structure> allStructures( String databaseName ) {
@@ -78,9 +78,9 @@ public class ForConsoleDecoratedStructuredbManager implements
         return manager.allUsers( databaseName );
     }
 
-    public Folder createFolder( String databaseName, String folderName )
+    public Label createLabel( String databaseName, String folderName )
                   throws IllegalArgumentException {
-        return manager.createFolder( databaseName, folderName );
+        return manager.createLabel( databaseName, folderName );
     }
 
     public void createLocalInstance( String databaseName )
@@ -103,7 +103,7 @@ public class ForConsoleDecoratedStructuredbManager implements
         return manager.createUser( databaseName, username, password, sudoer );
     }
 
-    public Folder folderByName( String databaseName, String folderName ) {
+    public Label folderByName( String databaseName, String folderName ) {
         return manager.folderByName( databaseName, folderName );
     }
 

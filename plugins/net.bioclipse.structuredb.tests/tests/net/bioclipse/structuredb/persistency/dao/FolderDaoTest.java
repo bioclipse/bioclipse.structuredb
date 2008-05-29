@@ -10,17 +10,17 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
-import net.bioclipse.structuredb.domain.Folder;
+import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 
 /**
  * @author jonalv
  *
  */
-public class FolderDaoTest extends GenericDaoTest<Folder> {
+public class FolderDaoTest extends GenericDaoTest<Label> {
 
     public FolderDaoTest() {
-        super(Folder.class);
+        super(Label.class);
     }
     
     @Override
@@ -35,18 +35,18 @@ public class FolderDaoTest extends GenericDaoTest<Folder> {
         structureDao.insert(structure);
         object1.addStructure(structure);
         dao.update(object1);
-        assertNotNull(structure.getFolder());
+        assertNotNull(structure.getLabel());
         super.testDelete();
         
         structure = structureDao.getById( structure.getId() );
-        assertNull( structure.getFolder() );
+        assertNull( structure.getLabel() );
     }
     
     public void testGetByName() {
-        Folder folder = new Folder("folder");
-        addCreatorAndEditor(folder);
-        dao.insert(folder);
-        assertEquals( folder, 
-                      ( (IFolderDao)dao ).getByName(folder.getName()) );
+        Label label = new Label("folder");
+        addCreatorAndEditor(label);
+        dao.insert(label);
+        assertEquals( label, 
+                      ( (ILabelDao)dao ).getByName(label.getName()) );
     }
 }

@@ -50,10 +50,10 @@ public class Structure extends BaseObject
     private String         smiles;
 
     /**
-     * The folder this structure belongs to.
-     * Is null if the structure doesn't belong to any folder
+     * The label this structure belongs to.
+     * Is null if the structure doesn't belong to any label
      */
-    private Folder folder;
+    private Label label;
 
     public Structure() {
         super();
@@ -114,7 +114,7 @@ public class Structure extends BaseObject
         this.fingerPrint     = (BitSet)structure.getFingerPrint().clone();
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         this.smiles          = structure.getSmiles();
-        this.folder          = structure.getFolder();
+        this.label          = structure.getLabel();
     }
 
     public boolean hasValuesEqualTo( BaseObject object ) {
@@ -194,29 +194,29 @@ public class Structure extends BaseObject
     }
 
     /**
-     * @return the folder containing this structure or null
-     * if the structure isn't in any folder
+     * @return the label containing this structure or null
+     * if the structure isn't in any label
      */
-    public Folder getFolder() {
-        return folder;
+    public Label getLabel() {
+        return label;
     }
 
     /**
-     * Places this structure in a folder
+     * Places this structure in a label
      *
-     * @param folder the folder to place the structure in
+     * @param label the label to place the structure in
      */
-    public void setFolder(Folder folder) {
+    public void setLabel(Label label) {
 
-        Folder oldFolder = this.folder;
-        this.folder = folder;
+        Label oldLabel = this.label;
+        this.label = label;
 
-        if( oldFolder != null && oldFolder != folder ) {
-            oldFolder.removeStructure(this);
+        if( oldLabel != null && oldLabel != label ) {
+            oldLabel.removeStructure(this);
         }
 
-        if( folder != null && !folder.getStructures().contains(this) ) {
-            folder.addStructure( this );
+        if( label != null && !label.getStructures().contains(this) ) {
+            label.addStructure( this );
         }
     }
 

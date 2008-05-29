@@ -40,21 +40,21 @@ public class StructureDao extends GenericDao<Structure>
         getSqlMapClientTemplate().update( "BaseObject.insert", structure );
         
         //TODO: Figure out a better way to do this:
-        if( structure.getFolder() != null ) {
+        if( structure.getLabel() != null ) {
             getSqlMapClientTemplate()
             .update( type.getSimpleName() + ".insert", structure );
         }
         else {
             getSqlMapClientTemplate()
-            .update( type.getSimpleName() + ".insertWithoutFolder", structure );
+            .update( type.getSimpleName() + ".insertWithoutLabel", structure );
         }
     }
     
     @Override
     public void update(Structure structure) {
-        if(structure.getFolder() == null) {
+        if(structure.getLabel() == null) {
             getSqlMapClientTemplate()
-            .update( "Structure-without-folder.update", structure );
+            .update( "Structure-without-label.update", structure );
         }
         else {
             getSqlMapClientTemplate().update( "Structure.update",  structure );
@@ -135,16 +135,16 @@ public class StructureDao extends GenericDao<Structure>
         }
     }
 
-    public void insertInFolder( Structure structure, String folderId ) {
+    public void insertInLabel( Structure structure, String labelId ) {
 
         getSqlMapClientTemplate().update( "BaseObject.insert", 
                                           structure );
-        getSqlMapClientTemplate().update( "Structure.insertWithoutFolder", 
+        getSqlMapClientTemplate().update( "Structure.insertWithoutLabel", 
                                           structure );
         Map<String, String> params = new HashMap<String, String>();
         params.put( "structureId", structure.getId() );
-        params.put( "folderId", folderId );
-        getSqlMapClientTemplate().update( "Structure.setFolder", params );
+        params.put( "labelId", labelId );
+        getSqlMapClientTemplate().update( "Structure.setLabel", params );
     }
 
     public int numberOfStructures() {

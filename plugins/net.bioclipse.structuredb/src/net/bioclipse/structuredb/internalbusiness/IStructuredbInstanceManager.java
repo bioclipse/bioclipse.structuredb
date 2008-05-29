@@ -18,7 +18,7 @@ import org.openscience.cdk.AtomContainer;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.structuredb.StructuredbInstance;
-import net.bioclipse.structuredb.domain.Folder;
+import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 
@@ -31,9 +31,9 @@ public interface IStructuredbInstanceManager {
     /**
      * Persists changes in a given library retrieved from the database.
      * 
-     * @param folder
+     * @param label
      */
-    public void update(Folder folder);
+    public void update(Label label);
     
     /**
      * Persists changes in a given user retrieved from the database.
@@ -59,9 +59,9 @@ public interface IStructuredbInstanceManager {
     /**
      * Insert a folder into the database
      * 
-     * @param folder to be inserted
+     * @param label to be inserted
      */
-    public void insertFolder( Folder folder );
+    public void insertLabel( Label label );
     
     /**
      * Insert a structure into the database
@@ -73,9 +73,9 @@ public interface IStructuredbInstanceManager {
     /**
      * Removes the given library from the database.
      * 
-     * @param folder
+     * @param label
      */
-    public void delete(Folder folder);
+    public void delete(Label label);
     
     /**
      * Removes the given user from the database
@@ -99,7 +99,7 @@ public interface IStructuredbInstanceManager {
     /**
      * @return all libraries
      */
-    public List<Folder> retrieveAllFolders();
+    public List<Label> retrieveAllLabels();
     
     /**
      * @return all users
@@ -128,7 +128,7 @@ public interface IStructuredbInstanceManager {
      * @param name
      * @return a library or null if no such library exists
      */
-    public Folder retrieveFolderByName(String name);
+    public Label retrieveLabelByName(String name);
 
     /**
      * @return the logged in user
@@ -151,7 +151,7 @@ public interface IStructuredbInstanceManager {
      * @param s
      * @param folderId
      */
-    public void insertStructureInFolder( Structure s, String folderId );
+    public void insertStructureInLabel( Structure s, String folderId );
 
     /**
      * Returns an int representing the number of structures in the database

@@ -15,11 +15,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.structuredb.Structuredb;
-import net.bioclipse.structuredb.domain.Folder;
+import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.persistency.HsqldbTestServerManager;
-import net.bioclipse.structuredb.persistency.dao.IFolderDao;
+import net.bioclipse.structuredb.persistency.dao.ILabelDao;
 import net.bioclipse.structuredb.persistency.dao.IStructureDao;
 import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
@@ -34,7 +34,7 @@ public class StructuredbInstanceManagerTest
     
     protected IStructuredbInstanceManager manager;
     
-    protected IFolderDao    folderDao;
+    protected ILabelDao    labelDao;
     protected IUserDao      userDao;
     protected IStructureDao structureDao;
 
@@ -52,8 +52,8 @@ public class StructuredbInstanceManagerTest
         super.onSetUpBeforeTransaction();
         manager = (IStructuredbInstanceManager) 
                   applicationContext.getBean("structuredbInstanceManager");
-        folderDao    = (IFolderDao) applicationContext
-                                    .getBean("folderDao");
+        labelDao    = (ILabelDao) applicationContext
+                                    .getBean("labelDao");
         structureDao = (IStructureDao) applicationContext
                                        .getBean("structureDao");
         userDao      = (IUserDao) applicationContext
@@ -73,16 +73,16 @@ public class StructuredbInstanceManagerTest
                                 .setLoggedInUser(testUser);
     }
     
-    private Folder createFolder(String name) {
-        Folder folder = new Folder(name);
-        manager.insertFolder(folder);
-        return folder;
+    private Label createLabel(String name) {
+        Label label = new Label(name);
+        manager.insertLabel(label);
+        return label;
     }
     
-    public void testInsertFolder() {
-        Folder folder = createFolder("testFolder");
-        List<Folder> allFolders = folderDao.getAll(); 
-        assertTrue( allFolders.contains(folder) );
+    public void testInsertLabel() {
+        Label label = createLabel("testLabel");
+        List<Label> allLabels = labelDao.getAll(); 
+        assertTrue( allLabels.contains(label) );
     }
 
     private Structure createStructure( String name, 
@@ -121,10 +121,10 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testDeleteLibrary() {
-        Folder folder = createFolder("testFolder");
-        assertTrue( folderDao.getAll().contains(folder) );
-        manager.delete(folder);
-        assertFalse( folderDao.getAll().contains(folder) );
+        Label label = createLabel("testLabel");
+        assertTrue( labelDao.getAll().contains(label) );
+        manager.delete(label);
+        assertFalse( labelDao.getAll().contains(label) );
     }
 
     public void testDeleteUser() {
@@ -143,11 +143,11 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testRetrieveAllLibraries() {
-        Folder folder1 = createFolder("testLibrary1");
-        Folder folder2 = createFolder("testLibrary2");
+        Label folder1 = createLabel("testLibrary1");
+        Label folder2 = createLabel("testLibrary2");
         
-        assertTrue( folderDao.getAll().containsAll( 
-                Arrays.asList(new Folder[] {folder1, folder2}) ) );
+        assertTrue( labelDao.getAll().containsAll( 
+                Arrays.asList(new Label[] {folder1, folder2}) ) );
     }
 
     public void testRetrieveAllStructures() throws CDKException {
@@ -169,12 +169,12 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testRetrieveLibraryByName() {
-        Folder folder = createFolder("testLibrary1");
+        Label label = createLabel("testLibrary1");
         
-        assertNotNull(folder);
+        assertNotNull(label);
         
-        assertEquals( folder, 
-                      manager.retrieveFolderByName("testLibrary1") );
+        assertEquals( label, 
+                      manager.retrieveLabelByName("testLibrary1") );
     }
 
     public void testRetrieveStructureByName() throws CDKException {
@@ -195,10 +195,10 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testUpdateLibrary() {
-        Folder folder = createFolder("testLibrary");
-        folder.setName("edited");
-        manager.update(folder);
-        assertEquals( folder, folderDao.getById(folder.getId()) );
+        Label label = createLabel("testLibrary");
+        label.setName("edited");
+        manager.update(label);
+        assertEquals( label, labelDao.getById(label.getId()) );
     }
 
     public void testUpdateUser() {
