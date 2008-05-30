@@ -18,13 +18,13 @@
         <parameter property="id"                                     />    
         <parameter property="smiles"                                 />   
         <parameter property="persistedFingerprint" jdbcType="binary" />     
-        <parameter property="moleculeCML"                            /> 
+        <parameter property="CML"                                    /> 
     </parameterMap>
 
     <parameterMap class="Structure" id="Structure.update">
         <parameter property="smiles"                                 />
         <parameter property="persistedFingerprint" jdbcType="binary" />
-        <parameter property="moleculeCML"                            />
+        <parameter property="CML"                                    />
         <parameter property="name"                                   />    
     </parameterMap>
     
@@ -48,7 +48,7 @@
 		<result property="labels"               column="id" select="Structure.getLabels" />
 		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
 		<result property="smiles"               column="smiles"                         />
-		<result property="moleculeCML"          column="molecule"                       />
+		<result property="CML"                  column="molecule"                       />
 		<result property="name"                 column="name"                           />
 	</resultMap>
 

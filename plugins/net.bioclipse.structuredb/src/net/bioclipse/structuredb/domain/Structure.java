@@ -228,7 +228,7 @@ public class Structure extends BaseObject
         this.fingerPrint = makeFingerPrint(persistedFingerPrint);
     }
 
-    public String getMoleculeCML() {
+    public String getCML() {
         StringWriter stringWriter = new StringWriter();
         CMLWriter cmlWriter       = new CMLWriter(stringWriter);
         try {
@@ -240,14 +240,20 @@ public class Structure extends BaseObject
         return stringWriter.toString();
     }
 
-    public void setMoleculeCML(String cml) {
+    /**
+     * Sets the given cml. Does not update other fields like for example smiles
+     * 
+     * @param cml
+     */
+    public void setCML(String cml) {
         InputStream inputStream = new ByteArrayInputStream(cml.getBytes());
         CMLReader cmlReader = new CMLReader(inputStream);
         try {
             IChemFile readFile = (IChemFile)cmlReader.read( new ChemFile() );
             atomContainer = (AtomContainer)ChemFileManipulator
                                       .getAllAtomContainers(readFile).get(0);
-        } catch (CDKException e) {
+        } 
+        catch (CDKException e) {
             throw new RuntimeException("failed to read atomContainer", e);
         }
     }
