@@ -24,7 +24,7 @@ public class StructuredbInstanceManager
 
     private User loggedInUser;
     
-    public Label createLibrary(String name) {
+    public Label createLabel(String name) {
         Label label = new Label(name);
         labelDao.insert(label);
         return label;

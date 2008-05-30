@@ -81,7 +81,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName, String folderName",
                        methodSummary = "Fetches a folder by a given name" +
                                        "from a database with a given name" )
-    public Label folderByName( String databaseName,
+    public Label labelByName( String databaseName,
                                 String folderName );
 
     /**

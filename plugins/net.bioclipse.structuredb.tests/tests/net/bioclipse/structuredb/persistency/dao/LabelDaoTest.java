@@ -43,10 +43,21 @@ public class LabelDaoTest extends GenericDaoTest<Label> {
     }
     
     public void testGetByName() {
-        Label label = new Label("folder");
+
+        IStructureDao structureDao 
+            = (IStructureDao) applicationContext.getBean("structureDao");
+
+        Structure s = new Structure();
+        structureDao.insert( s );
+        Label label = new Label("label");
         addCreatorAndEditor(label);
         dao.insert(label);
         assertEquals( label, 
                       ( (ILabelDao)dao ).getByName(label.getName()) );
+        label.addStructure( s );
+        dao.update( label );
+        assertEquals( 1, 
+                      ( (ILabelDao)dao ).getByName( label.getName() )
+                                        .getStructures().size() );
     }
 }

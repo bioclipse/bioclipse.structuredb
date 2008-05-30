@@ -48,7 +48,7 @@ public abstract class TestData {
     public static String getTestSDFFilePath() {
         return TestData.class
                        .getClassLoader()
-                       .getResource("testData/test.sdf")
+                       .getResource("testData/sdfTestFile.sdf")
                        .getPath();
     }
 }

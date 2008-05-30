@@ -116,9 +116,9 @@ public class StructuredbManagerTest
         assertNotNull(f1);
 
         assertEquals( f2,
-                      manager.folderByName( database2, f2.getName() ) );
+                      manager.labelByName( database2, f2.getName() ) );
         assertEquals( f1,
-                      manager.folderByName( database1, f1.getName() ) );
+                      manager.labelByName( database1, f1.getName() ) );
     }
 
     public void testListSubstructureSearchResults() throws IOException, BioclipseException {
@@ -311,8 +311,8 @@ public class StructuredbManagerTest
         manager.addStructuresFromSDF( database1,
                                       TestData.getTestSDFFilePath() );
         Label label
-            = manager.folderByName( database1,
-                                            "test" );
+            = manager.labelByName( database1,
+                                    "sdfTestFile" );
         assertNotNull(label);
         assertEquals( 2, label.getStructures().size() );
     }
@@ -324,7 +324,7 @@ public class StructuredbManagerTest
         assertNotNull(folder2);
         assertEquals( folder1,
                       manager
-                      .folderByName( database1, folder1.getName() ) );
+                      .labelByName( database1, folder1.getName() ) );
         List<Label> labels = manager.allLabels(database1);
         assertTrue( labels.contains(folder1) );
         assertTrue( labels.contains(folder2) );

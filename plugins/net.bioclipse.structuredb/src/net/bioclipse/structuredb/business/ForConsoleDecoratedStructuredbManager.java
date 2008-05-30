@@ -103,8 +103,8 @@ public class ForConsoleDecoratedStructuredbManager implements
         return manager.createUser( databaseName, username, password, sudoer );
     }
 
-    public Label folderByName( String databaseName, String folderName ) {
-        return manager.folderByName( databaseName, folderName );
+    public Label labelByName( String databaseName, String folderName ) {
+        return manager.labelByName( databaseName, folderName );
     }
 
     public List<String> listDatabaseNames() {

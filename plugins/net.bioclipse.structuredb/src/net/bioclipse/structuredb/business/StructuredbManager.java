@@ -248,15 +248,15 @@ public class StructuredbManager implements IStructuredbManager {
         return internalManagers.get(databaseName).retrieveAllUsers();
     }
 
-    public Label folderByName( String databaseName,
-                                        String folderName ) {
+    public Label labelByName( String databaseName,
+                              String folderName ) {
 
         return internalManagers.get(databaseName)
                                .retrieveLabelByName(folderName);
     }
 
     public List<Structure> allStructuresByName( String databaseName,
-                                                     String structureName ) {
+                                                String structureName ) {
         return internalManagers.get(databaseName)
                                .retrieveStructureByName(structureName);
     }
