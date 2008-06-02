@@ -43,10 +43,10 @@ public class StructureDao extends GenericDao<Structure>
         getSqlMapClientTemplate().update( "BaseObject.insert", structure );
         getSqlMapClientTemplate().update( type.getSimpleName() + ".insert", 
                                           structure );
-        fixStructureLibrary(structure);
+        fixStructureLabel(structure);
     }
     
-    private void fixStructureLibrary( final Structure structure ) {
+    private void fixStructureLabel( final Structure structure ) {
 
         for( final Label l : structure.getLabels() ) {
             Map<String, String> params = new HashMap<String, String>() {
@@ -68,7 +68,7 @@ public class StructureDao extends GenericDao<Structure>
     public void update(Structure structure) {
         getSqlMapClientTemplate().update( "Structure.update",  structure );
         getSqlMapClientTemplate().update( "BaseObject.update", structure );
-        fixStructureLibrary( structure );
+        fixStructureLabel( structure );
     }
 
     @SuppressWarnings("unchecked")

@@ -11,6 +11,8 @@
 package net.bioclipse.structuredb.persistency.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
@@ -36,7 +38,26 @@ public class LabelDao extends GenericDao<Label> implements ILabelDao {
     @Override
     public void update(Label label) {
         getSqlMapClientTemplate().update( "BaseObject.update", label );
-        getSqlMapClientTemplate().update( "Label.update",     label );
+        getSqlMapClientTemplate().update( "Label.update",      label );
+        fixStructureLabel( label );
+    }
+    
+    private void fixStructureLabel( final Label label ) {
+
+        for( final Structure s : label.getStructures() ) {
+            Map<String, String> params = new HashMap<String, String>() {
+                {
+                    put( "labelId",     label.getId()         );
+                    put( "structureId", s.getId() );
+                }
+            };
+            if ( (Integer) getSqlMapClientTemplate()
+                .queryForObject( "StructureLabel.hasConnection", 
+                                 params ) == 0 ) {
+                getSqlMapClientTemplate().update( "StructureLabel.connect", 
+                                                  params );
+            }
+        }
     }
 
     public Label getByName(String name) {
