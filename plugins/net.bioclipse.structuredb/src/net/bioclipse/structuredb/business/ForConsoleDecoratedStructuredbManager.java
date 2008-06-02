@@ -36,7 +36,7 @@ import com.sun.corba.se.impl.ior.iiop.JavaSerializationComponent;
  *
  */
 public class ForConsoleDecoratedStructuredbManager implements
-        IStructuredbManager {
+             IStructuredbManager {
 
     private IStructuredbManager manager;
     
@@ -150,5 +150,15 @@ public class ForConsoleDecoratedStructuredbManager implements
                            throws BioclipseException {
 
         return manager.subStructureSearch( databaseName, molecule, monitor );
+    }
+
+    public void delete( String database, Label label ) {
+
+        manager.delete( database, label );
+    }
+
+    public void delete( String database, Structure structure ) {
+
+        manager.delete( database, structure );
     }
 }

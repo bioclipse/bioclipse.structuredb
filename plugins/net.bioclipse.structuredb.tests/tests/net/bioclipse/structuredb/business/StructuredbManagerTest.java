@@ -29,11 +29,14 @@ import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
+import net.bioclipse.structuredb.persistency.dao.ILabelDao;
+import net.bioclipse.structuredb.persistency.dao.IStructureDao;
 
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.templates.MoleculeFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+import org.springframework.test.annotation.DirtiesContext;
 
 import testData.TestData;
 
@@ -305,9 +308,6 @@ public class StructuredbManagerTest
     }
 
     public void testImportingSDFFile() throws BioclipseException {
-        IStructuredbManager manager
-            = (IStructuredbManager) applicationContext
-                                    .getBean("structuredbManagerTarget");
         manager.addStructuresFromSDF( database1,
                                       TestData.getTestSDFFilePath() );
         Label label
@@ -330,6 +330,22 @@ public class StructuredbManagerTest
         assertTrue( labels.contains(folder2) );
     }
 
+    public void testDeleteLabel() {
+        Label label = manager.createLabel( database1, "label" );
+        assertTrue( manager.allLabels( database1 ).contains( label ) );
+        manager.delete(database1, label);
+        assertFalse( manager.allLabels( database1 ).contains( label ) );
+    }
+    
+    public void testDeleteStructure() throws BioclipseException {
+        ICDKManager cdk = new CDKManager();
+        Structure structure = manager.createStructure( database1, 
+                                                       "test", 
+                                                       cdk.fromSmiles( "CC" ) );
+        assertTrue( manager.allStructures( database1 ).contains( structure ) );
+        manager.delete( database1, structure );
+    }
+    
     public void testCreatingAndRetrievingUsers() {
         User user1 = manager.createUser(database1, "user1", "", true);
         User user2 = manager.createUser(database1, "user2", "", true);
@@ -349,7 +365,8 @@ public class StructuredbManagerTest
         assertTrue( anotherManager.listDatabaseNames().contains(database1) );
         assertEquals( 2, anotherManager.listDatabaseNames().size() );
     }
-    
+
+    @DirtiesContext
     public void testRemovingDatabaseInstance() {
         assertTrue( manager.listDatabaseNames().contains(database1) );
         manager.removeLocalInstance( database1 );
@@ -368,7 +385,7 @@ public class StructuredbManagerTest
             //this is what we want
         }
     }
-    
+
     public void testCreatingCDKMoleculeFromStructure() 
                 throws IOException, BioclipseException {
         ICDKManager cdk = new CDKManager();

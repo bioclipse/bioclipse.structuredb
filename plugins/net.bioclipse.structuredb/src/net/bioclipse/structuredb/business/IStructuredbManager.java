@@ -123,16 +123,16 @@ public interface IStructuredbManager extends IBioclipseManager {
      * with the given name.
      *
      * @param databaseName
-     * @param folderName
+     * @param labelName
      * @return the folder
      * @throws IllegalArgumentException
      */
-    @PublishedMethod ( params = "String databaseName, String folderName",
-                       methodSummary = "Creates a folder with the given name " +
+    @PublishedMethod ( params = "String databaseName, String labelName",
+                       methodSummary = "Creates a label with the given name " +
                                        "and saves it in the database with " +
                                        "the given name" )
     public Label createLabel( String databaseName,
-                                String folderName )
+                                String labelName )
                                 throws IllegalArgumentException;
 
     /**
@@ -285,4 +285,27 @@ public interface IStructuredbManager extends IBioclipseManager {
                       methodSummary = "Creates a cdk molecule from the given " +
                       		          "structure" )
     public ICDKMolecule toCDKMolecule( Structure structure );
+
+    
+    /**
+     * Deletes the given label from the given database
+     * 
+     * @param database
+     * @param label
+     */
+    @PublishedMethod ( params = "String database, Label label", 
+                       methodSummary = "Deletes the given label from the " +
+                       		           "given database" )
+    public void delete( String database, Label label );
+
+    /**
+     * Deletes the given structure from the given database
+     * 
+     * @param database1
+     * @param structure
+     */
+    @PublishedMethod ( params = "String database, Structure structure",
+                       methodSummary = "Deletes the given structure from the " +
+                       		           "given database" )
+    public void delete( String database, Structure structure );
 }
