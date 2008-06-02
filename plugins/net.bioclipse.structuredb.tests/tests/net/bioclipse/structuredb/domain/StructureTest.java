@@ -55,5 +55,9 @@ public class StructureTest {
         assertTrue( structure.getLabels().contains(label2)     );
         assertTrue( label2.getStructures().contains(structure) );
         assertTrue( label.getStructures().contains(structure)  );
+        
+        structure.removeLabel( label );
+        assertFalse( structure.getLabels().contains(label) );
+        assertFalse( label.getStructures().contains(structure) );        
     }
 }

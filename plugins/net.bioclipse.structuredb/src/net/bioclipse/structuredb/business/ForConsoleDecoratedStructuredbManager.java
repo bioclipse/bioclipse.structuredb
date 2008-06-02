@@ -161,4 +161,14 @@ public class ForConsoleDecoratedStructuredbManager implements
 
         manager.delete( database, structure );
     }
+
+    public void save( String database, Structure structure ) {
+
+        manager.save( database, structure );
+    }
+
+    public void save( String database, Label label ) {
+
+        manager.save( database, label );
+    }
 }

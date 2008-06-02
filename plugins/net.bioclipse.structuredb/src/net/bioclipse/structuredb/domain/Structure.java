@@ -274,4 +274,9 @@ public class Structure extends BaseObject
     public IAtomContainer getAtomContainer() {
         return atomContainer;
     }
+
+    public void removeLabel( Label l ) {
+
+        
+    }
 }

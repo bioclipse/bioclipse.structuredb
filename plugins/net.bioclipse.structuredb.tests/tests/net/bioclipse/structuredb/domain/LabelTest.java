@@ -19,7 +19,7 @@ import org.junit.Test;
  * @author jonalv
  *
  */
-public class LibraryTest {
+public class LabelTest {
 
     @Test
     public void testHasValuesEqualsTo() {

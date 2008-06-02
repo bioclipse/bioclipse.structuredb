@@ -528,4 +528,14 @@ public class StructuredbManager implements IStructuredbManager {
         
         internalManagers.get( database ).delete( structure );
     }
+
+    public void save( String database, Structure structure ) {
+
+        internalManagers.get( database ).update( structure );
+    }
+
+    public void save( String database, Label label ) {
+
+        internalManagers.get( database ).update( label );
+    }
 }

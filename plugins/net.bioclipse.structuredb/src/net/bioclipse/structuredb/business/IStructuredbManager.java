@@ -75,14 +75,14 @@ public interface IStructuredbManager extends IBioclipseManager {
      * Retrieves a folder with a given name from a database with a given name.
      *
      * @param databaseName
-     * @param folderName
+     * @param labelName
      * @return a folder
      */
-    @PublishedMethod ( params = "String databaseName, String folderName",
-                       methodSummary = "Fetches a folder by a given name" +
+    @PublishedMethod ( params = "String databaseName, String labelName",
+                       methodSummary = "Fetches a label by a given name" +
                                        "from a database with a given name" )
     public Label labelByName( String databaseName,
-                                String folderName );
+                                String labelName );
 
     /**
      * Retrieves a user with a given username from a database with a given name.
@@ -308,4 +308,32 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Deletes the given structure from the " +
                        		           "given database" )
     public void delete( String database, Structure structure );
+
+    
+    /**
+     * Saves the changes on the given structure back to the database. The 
+     * structure must come from the given database.
+     * 
+     * @param database1
+     * @param s
+     */
+    @PublishedMethod ( params = "String database, Structure structure",
+                       methodSummary = "Saves changes on a structure " +
+                       		           "retrieved from the database back to " +
+                       		           "the database.")
+    public void save( String database, Structure structure );
+
+    
+    /**
+     * Saves the changes on the given label back to the database. The 
+     * label must come from the given database.
+     * 
+     * @param database
+     * @param label
+     */
+    @PublishedMethod ( params = "String database, Label label", 
+                       methodSummary = "Saves changes on a label retrieved " +
+                       		           "from the database back to the " +
+                       		           "database.")
+    public void save( String database, Label label );
 }

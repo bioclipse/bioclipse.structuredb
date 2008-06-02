@@ -49,6 +49,8 @@ public class StructuredbManagerTest
 
     private static boolean setUpWasRun = false;
 
+    private ICDKManager cdk = new CDKManager();
+    
     static {
         deepDelete( HsqldbUtil.getInstance().getDatabaseFilesDirectory() );
     }
@@ -388,7 +390,6 @@ public class StructuredbManagerTest
 
     public void testCreatingCDKMoleculeFromStructure() 
                 throws IOException, BioclipseException {
-        ICDKManager cdk = new CDKManager();
 
         ICDKMolecule mol1 = cdk.loadMolecule( TestData
                                               .class
@@ -406,5 +407,54 @@ public class StructuredbManagerTest
                       newMolecule.getFingerprint( false ) );
         assertEquals( mol1.getSmiles(), newMolecule.getSmiles() );
         assertEquals( mol1.getCML(), newMolecule.getCML() );
+    }
+    
+    public void testEditStructure() throws BioclipseException {
+        Structure s = manager.createStructure( database1, 
+                                               "test", 
+                                               cdk.fromSmiles( "CCC" ) );
+        Label l = manager.createLabel( database1, "label" );
+        s.setName( "edited" );
+        s.addLabel( l );
+        manager.save( database1, s );
+        List<Structure> loaded = manager.allStructuresByName( database1, 
+                                                              "edited" );
+        assertEquals( 1, loaded.size() );
+        
+        List<Label> labels = loaded.get( 0 ).getLabels();
+        assertEquals( 1, labels.size() );
+        
+        assertEquals( l, labels.get( 0 ) );
+        
+        s.removeLabel(l);
+        manager.save( database1, s );
+        loaded = manager.allStructuresByName( database1, 
+                                              "edited" );
+        assertEquals( 1, loaded.size() );
+
+        labels = loaded.get( 0 ).getLabels();
+        assertEquals( 0, labels.size() );
+    }
+    
+    public void testEditLabel() throws BioclipseException {
+        Structure s = manager.createStructure( database1, 
+                                               "test", 
+                                               cdk.fromSmiles( "CCC" ) );
+        Label label = manager.createLabel( database1, "label" );
+        label.setName( "edited" );
+        label.addStructure( s );
+        manager.save( database1, label );
+        Label loaded = manager.labelByName( database1, "edited" );
+        
+        List<Structure> structures = loaded.getStructures();
+        assertEquals( 1, structures.size() );
+        
+        assertEquals( s, structures.get( 0 ) );
+        
+        label.removeStructure( s );
+        manager.save( database1, label );
+        loaded = manager.labelByName( database1, "edited" );
+
+        assertEquals( 0, loaded.getStructures().size() );
     }
 }
