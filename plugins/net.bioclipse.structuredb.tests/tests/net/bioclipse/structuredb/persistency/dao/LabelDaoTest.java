@@ -60,4 +60,18 @@ public class LabelDaoTest extends GenericDaoTest<Label> {
                       ( (ILabelDao)dao ).getByName( label.getName() )
                                         .getStructures().size() );
     }
+    
+    public void testGetStructures() {
+        Structure structure       = new Structure();
+        Structure unusedStructure = new Structure();
+        IStructureDao structureDao = (IStructureDao) applicationContext.getBean("structureDao");
+        structureDao.insert( structure );
+        structureDao.insert( unusedStructure );
+        
+        object1.addStructure( structure );
+        dao.update( object1 );
+        Label loaded = dao.getById( object1.getId() );
+        assertEquals( 1, loaded.getStructures().size() );
+        assertEquals( structure, object1.getStructures().get( 0 ) );
+    }
 }

@@ -172,4 +172,18 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         assertTrue(  foundObject1 );
         assertFalse( foundObject2 );
     }
+    
+    public void testGetLabels() {
+        Label label = new Label( "my label" );
+        Label unusedLabel = new Label( "I should not turn up" );
+        ILabelDao labelDao = (ILabelDao) applicationContext.getBean("labelDao");
+        labelDao.insert( label );
+        labelDao.insert( unusedLabel );
+        
+        structure1.addLabel( label );
+        dao.update( structure1 );
+        Structure loaded = dao.getById( structure1.getId() );
+        assertEquals( 1, loaded.getLabels().size() );
+        assertEquals( label, structure1.getLabels().get( 0 ) );
+    }
 }
