@@ -376,6 +376,7 @@ public class StructuredbManagerTest
         
         StructuredbManager anotherManager = new StructuredbManager();
         assertFalse( anotherManager.listDatabaseNames().contains(database1) );
+        manager.createLocalInstance( database1 ); // restore order
     }
     
     public void testUsingUnknownDatabase() {
@@ -440,7 +441,7 @@ public class StructuredbManagerTest
         Structure s = manager.createStructure( database1, 
                                                "test", 
                                                cdk.fromSmiles( "CCC" ) );
-        Label label = manager.createLabel( database1, "label" );
+        Label label = manager.createLabel( database1, "a label" );
         label.setName( "edited" );
         label.addStructure( s );
         manager.save( database1, label );

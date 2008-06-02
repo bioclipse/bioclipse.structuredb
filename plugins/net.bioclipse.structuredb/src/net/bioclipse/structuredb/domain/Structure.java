@@ -275,8 +275,10 @@ public class Structure extends BaseObject
         return atomContainer;
     }
 
-    public void removeLabel( Label l ) {
-
-        
+    public void removeLabel( Label label ) {
+        if ( label.getStructures().contains(this) ) {
+            label.removeStructure(this);
+        }
+        labels.remove( label );
     }
 }

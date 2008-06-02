@@ -280,10 +280,25 @@
     | DELETE STATEMENTS
     +-->	
 	<delete id="BaseObject.delete" parameterClass="String">
-		DELETE FROM BaseObject
-		WHERE id='$value$';
+		DELETE FROM 
+            BaseObject
+		WHERE 
+            id='$value$';
 	</delete>
 	
+    <delete id="Structure.deleteLabelCoupling" parameterClass="Structure">
+        DELETE FROM 
+	       StructureLabel
+        WHERE 
+	       structureId = '$id$'
+	</delete>
+	
+	<delete id="Label.deleteStructureCoupling" parameterClass="Label">
+	   DELETE FROM 
+	       StructureLabel
+	   WHERE 
+	       labelId = '$id$'
+	</delete>
 <!--+
     | UPDATE STATEMENTS
     +-->

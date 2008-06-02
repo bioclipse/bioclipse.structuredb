@@ -48,6 +48,8 @@ public class StructureDao extends GenericDao<Structure>
     
     private void fixStructureLabel( final Structure structure ) {
 
+        getSqlMapClientTemplate().delete( "Structure.deleteLabelCoupling", 
+                                          structure );
         for( final Label l : structure.getLabels() ) {
             Map<String, String> params = new HashMap<String, String>() {
                 {

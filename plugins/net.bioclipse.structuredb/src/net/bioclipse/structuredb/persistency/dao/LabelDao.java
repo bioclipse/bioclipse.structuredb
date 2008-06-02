@@ -44,6 +44,8 @@ public class LabelDao extends GenericDao<Label> implements ILabelDao {
     
     private void fixStructureLabel( final Label label ) {
 
+        getSqlMapClientTemplate().delete( "Label.deleteStructureCoupling", 
+                                          label );
         for( final Structure s : label.getStructures() ) {
             Map<String, String> params = new HashMap<String, String>() {
                 {
