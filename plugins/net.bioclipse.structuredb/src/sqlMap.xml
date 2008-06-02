@@ -188,7 +188,7 @@
 			Structure s INNER JOIN BaseObject b ON s.baseObject = b.id, 
 			StructureLabel sl
 		WHERE 
-			sl.labelId = #value#
+			sl.labelId = #value# AND sl.structureId = s.id
 	</select>
 	
 	<select id="Structure.getAll" resultMap="Structure">
@@ -219,7 +219,7 @@
             Label l INNER JOIN BaseObject b ON l.baseObject = b.id, 
             StructureLabel sl
         WHERE 
-            sl.structureId = #value#
+            sl.structureId = #value# AND sl.labelId = l.id
     </select>
 	
 	<select id="Label.getAll" resultMap="Label">
