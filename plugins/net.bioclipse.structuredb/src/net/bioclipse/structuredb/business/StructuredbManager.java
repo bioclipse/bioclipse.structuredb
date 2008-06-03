@@ -414,76 +414,6 @@ public class StructuredbManager implements IStructuredbManager {
 
          return subStructureSearchIterator( databaseName, molecule, null );
     }
-    
-    public static class SubStructureIterator 
-                  implements Iterator<Structure> {
-
-        private Structure next = null;
-        private Iterator<Structure> parent;
-        private ICDKManager cdk;
-        private ICDKMolecule subStructure;
-        private IStructuredbManager structuredb;
-        private IProgressMonitor monitor;
-        
-        public SubStructureIterator( Iterator<Structure> iterator, 
-                                     ICDKManager cdk,
-                                     ICDKMolecule subStructure,
-                                     IStructuredbManager structuredb, 
-                                     IProgressMonitor monitor ) {
-            parent   = iterator;
-            this.cdk = cdk;
-            this.subStructure = subStructure;
-            this.structuredb = structuredb;
-            this.monitor = monitor;
-        }
-
-        public boolean hasNext() {
-
-            if( next != null ) {
-                return true;
-            }
-            try {
-                next = findNext();
-            } catch ( BioclipseException e ) {
-                throw new RuntimeException(e);
-            }
-            return next != null;
-        }
-
-        private Structure findNext() throws BioclipseException {
-
-            while( parent.hasNext() ) {
-                Structure next = parent.next();
-                if(monitor != null) {
-                    monitor.worked( 1 );
-                }
-                ICDKMolecule molecule;
-                molecule = structuredb.toCDKMolecule( next );
-                if( cdk.subStructureMatches( molecule, subStructure ) ) {
-                    return next;
-                }
-            }
-            if( monitor != null ) {
-                monitor.done();
-            }
-            return null;
-        }
-
-        public Structure next() {
-
-            if( !hasNext() ) {
-                throw new IllegalStateException( "there are no more " +
-                                                 "such structures" );
-            }
-            Structure next = this.next;
-            this.next = null;
-            return next;
-        }
-
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-    }
 
     public ICDKMolecule toCDKMolecule( Structure structure ) {
         try {
@@ -511,8 +441,6 @@ public class StructuredbManager implements IStructuredbManager {
         Iterator<Structure> iterator = subStructureSearchIterator( databaseName, 
                                                                    molecule, 
                                                                    monitor );
-        int numOfStructures = internalManagers.get( databaseName )
-                                              .numberOfStructures();
         while( iterator.hasNext() ) {
             structures.add( iterator.next() );
         }
@@ -541,14 +469,44 @@ public class StructuredbManager implements IStructuredbManager {
 
     public List<Structure> smartsQuery( String database, String smarts ) {
 
-        // TODO Auto-generated method stub
-        return null;
+        return smartsQuery( database, smarts, null );
     }
 
     public Iterator<Structure> smartsQueryIterator( String database,
                                                     String smarts ) {
+        return smartsQueryIterator( database, smarts, null );
+    }
+    
+    public List<Structure> smartsQuery( String database, 
+                                        String smarts,
+                                        IProgressMonitor monitor) {
+        
+        List<Structure> hits = new BioList<Structure>();
+        Iterator<Structure> iterator = smartsQueryIterator( database, 
+                                                            smarts, 
+                                                            monitor );
+        while ( iterator.hasNext() ) {
+            hits.add( iterator.next() );
+        }
+        return hits;
+    }
 
-        // TODO Auto-generated method stub
-        return null;
+    public Iterator<Structure> smartsQueryIterator( String database,
+                                                    String smarts,
+                                                    IProgressMonitor monitor) {
+
+        if(monitor != null) {
+            monitor.beginTask( "substructure search", 
+                               internalManagers.get( database )
+                                               .numberOfStructures() );
+        }
+         
+        return new SmartsQueryIterator( internalManagers
+                                        .get( database )
+                                        .allStructuresIterator(),
+                                        cdk,
+                                        smarts, 
+                                        this, 
+                                        monitor );
     }
 }
