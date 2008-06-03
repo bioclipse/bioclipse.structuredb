@@ -336,4 +336,28 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "from the database back to the " +
                        		           "database.")
     public void save( String database, Label label );
+
+    
+    /**
+     * @param database
+     * @param smarts
+     * @return an iterator to the hitting structures
+     */
+    @PublishedMethod ( params = "String database, String smarts", 
+                       methodSummary = "Performs a SMARTS query returning an " +
+                       		           "iterator to the hitting Structures " +
+                       		           "in the database")
+    public Iterator<Structure> smartsQueryIterator( String database,
+                                                    String smarts );
+
+    /**
+     * @param database
+     * @param smarts
+     * @return a List of hitting structures
+     */
+    @PublishedMethod ( params = "String database, String smarts",
+                       methodSummary = "Performs a SMARTS query returning a " +
+                       		           "list of hitting Structures in the " +
+                       		           "database")
+    public List<Structure> smartsQuery( String database, String smarts );
 }

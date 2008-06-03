@@ -458,4 +458,49 @@ public class StructuredbManagerTest
 
         assertEquals( 0, loaded.getStructures().size() );
     }
+    
+    public void testListSMARTSQueryResults() throws IOException, BioclipseException {
+
+        SmilesGenerator generator = new SmilesGenerator();
+        String indoleSmiles  = generator
+                               .createSMILES( MoleculeFactory.makeIndole() );
+        String pyrroleSmiles = generator
+                               .createSMILES( MoleculeFactory.makePyrrole() );
+        ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles  );
+
+        Structure indoleStructure = manager.createStructure( database1, 
+                                                             "indole", 
+                                                             indole );
+        
+        List<Structure> list = manager.smartsQuery( database1, 
+                                                    pyrroleSmiles );
+        
+        assertTrue( list.contains( indoleStructure ));
+    }
+    
+    public void testSmartsQueryIterator() throws BioclipseException, 
+                                                 IOException {
+
+        SmilesGenerator generator = new SmilesGenerator();
+        String indoleSmiles  = generator
+                               .createSMILES( MoleculeFactory.makeIndole() );
+        String pyrroleSmiles = generator
+                               .createSMILES( MoleculeFactory.makePyrrole() );
+        ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
+
+        Structure indoleStructure = manager.createStructure( database1, 
+                                                             "indole", 
+                                                             indole );
+        
+        Iterator<Structure> iterator = manager
+                                       .smartsQueryIterator( database1, 
+                                                             pyrroleSmiles );
+        boolean foundIndole = false;
+        while(iterator.hasNext()) {
+            if( iterator.next().equals( indoleStructure ) ) {
+                foundIndole = true;
+            }
+        }
+        assertTrue(foundIndole);
+    }
 }

@@ -538,4 +538,17 @@ public class StructuredbManager implements IStructuredbManager {
 
         internalManagers.get( database ).update( label );
     }
+
+    public List<Structure> smartsQuery( String database, String smarts ) {
+
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Iterator<Structure> smartsQueryIterator( String database,
+                                                    String smarts ) {
+
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

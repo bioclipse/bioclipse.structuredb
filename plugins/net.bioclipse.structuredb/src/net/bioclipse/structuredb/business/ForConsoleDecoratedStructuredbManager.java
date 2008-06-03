@@ -171,4 +171,15 @@ public class ForConsoleDecoratedStructuredbManager implements
 
         manager.save( database, label );
     }
+
+    public List<Structure> smartsQuery( String database, String smarts ) {
+
+        return manager.smartsQuery( database, smarts );
+    }
+
+    public Iterator<Structure> smartsQueryIterator( String database,
+                                                    String smarts ) {
+        
+        return manager.smartsQueryIterator( database, smarts );
+    }
 }
