@@ -461,46 +461,40 @@ public class StructuredbManagerTest
     
     public void testListSMARTSQueryResults() throws IOException, BioclipseException {
 
-        SmilesGenerator generator = new SmilesGenerator();
-        String indoleSmiles  = generator
-                               .createSMILES( MoleculeFactory.makeIndole() );
-        String pyrroleSmiles = generator
-                               .createSMILES( MoleculeFactory.makePyrrole() );
-        ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles  );
+        String propaneSmiles = "CCC";
+        String butaneSmiles  = "CCCC"; 
+        ICDKMolecule butane  = cdk.fromSmiles( butaneSmiles  );
 
-        Structure indoleStructure = manager.createStructure( database1, 
+        Structure butaneStructure = manager.createStructure( database1, 
                                                              "indole", 
-                                                             indole );
+                                                             butane );
         
         List<Structure> list = manager.smartsQuery( database1, 
-                                                    pyrroleSmiles );
+                                                    propaneSmiles );
         
-        assertTrue( list.contains( indoleStructure ));
+        assertTrue( list.contains(butaneStructure) );
     }
     
     public void testSmartsQueryIterator() throws BioclipseException, 
                                                  IOException {
 
-        SmilesGenerator generator = new SmilesGenerator();
-        String indoleSmiles  = generator
-                               .createSMILES( MoleculeFactory.makeIndole() );
-        String pyrroleSmiles = generator
-                               .createSMILES( MoleculeFactory.makePyrrole() );
-        ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
+        String propaneSmiles = "CCC";
+        String butaneSmiles  = "CCCC"; 
+        ICDKMolecule butane  = cdk.fromSmiles( butaneSmiles  );
 
-        Structure indoleStructure = manager.createStructure( database1, 
+        Structure butaneStructure = manager.createStructure( database1, 
                                                              "indole", 
-                                                             indole );
+                                                             butane );
         
         Iterator<Structure> iterator = manager
                                        .smartsQueryIterator( database1, 
-                                                             pyrroleSmiles );
-        boolean foundIndole = false;
-        while(iterator.hasNext()) {
-            if( iterator.next().equals( indoleStructure ) ) {
-                foundIndole = true;
+                                                             propaneSmiles );
+        boolean found = false;
+        while ( iterator.hasNext() ) {
+            if ( iterator.next().equals( butaneStructure ) ) {
+                found = true;
             }
         }
-        assertTrue(foundIndole);
+        assertTrue(found);
     }
 }

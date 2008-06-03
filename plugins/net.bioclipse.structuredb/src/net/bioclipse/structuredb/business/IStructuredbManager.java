@@ -24,6 +24,7 @@ import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
+import net.bioclipse.ui.views.JsConsoleView.ConsoleProgressMonitor;
 
 /**
  * @author jonalv
@@ -360,4 +361,24 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "list of hitting Structures in the " +
                        		           "database")
     public List<Structure> smartsQuery( String database, String smarts );
+
+    /**
+     * @param database
+     * @param smarts
+     * @param monitor
+     * @return an iterator to hitting structures
+     */
+    public Iterator<Structure> smartsQueryIterator( String database,
+                                                    String smarts,
+                                                    IProgressMonitor monitor );
+
+    /**
+     * @param database
+     * @param smarts
+     * @param monitor
+     * @return a List of hitting structures
+     */
+    public List<Structure> smartsQuery( String database,
+                                        String smarts,
+                                        IProgressMonitor monitor );
 }

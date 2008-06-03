@@ -174,12 +174,31 @@ public class ForConsoleDecoratedStructuredbManager implements
 
     public List<Structure> smartsQuery( String database, String smarts ) {
 
-        return manager.smartsQuery( database, smarts );
+        return manager.smartsQuery( database, 
+                                    smarts, 
+                                    new JsConsoleView
+                                        .ConsoleProgressMonitor() );
     }
 
     public Iterator<Structure> smartsQueryIterator( String database,
                                                     String smarts ) {
         
-        return manager.smartsQueryIterator( database, smarts );
+        return manager.smartsQueryIterator( database, 
+                                            smarts,  
+                                            new JsConsoleView
+                                                .ConsoleProgressMonitor() );
+    }
+
+    public List<Structure> smartsQuery( String database, String smarts,
+                                        IProgressMonitor monitor ) {
+
+        return manager.smartsQuery( database, smarts, monitor );
+    }
+
+    public Iterator<Structure> smartsQueryIterator( String database,
+                                                    String smarts,
+                                                    IProgressMonitor monitor ) {
+
+        return manager.smartsQueryIterator( database, smarts, monitor );
     }
 }
