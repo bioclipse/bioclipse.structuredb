@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
+
 import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
@@ -31,7 +34,6 @@ import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
 import net.bioclipse.structuredb.persistency.dao.ILabelDao;
 import net.bioclipse.structuredb.persistency.dao.IStructureDao;
-
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.templates.MoleculeFactory;
 import org.springframework.context.ApplicationContext;
@@ -52,6 +54,10 @@ public class StructuredbManagerTest
     private ICDKManager cdk = new CDKManager();
     
     static {
+        System.setProperty( "javax.xml.parsers.SAXParserFactory", 
+                            "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl" );
+        System.setProperty( "javax.xml.parsers.DocumentBuilderFactory", 
+                            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl" );
         deepDelete( HsqldbUtil.getInstance().getDatabaseFilesDirectory() );
     }
     
