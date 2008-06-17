@@ -46,8 +46,6 @@ public class CreateStructureDatabaseDialog extends org.eclipse.swt.widgets.Dialo
                 cancelButton = new Button(dialogShell, SWT.PUSH | SWT.CENTER);
                 cancelButton.setText("Cancel");
                 FormData cancelButtonLData = new FormData();
-                cancelButtonLData.width = 55;
-                cancelButtonLData.height = 29;
                 cancelButtonLData.bottom =  new FormAttachment(1000, 1000, -12);
                 cancelButtonLData.right =  new FormAttachment(1000, 1000, -63);
                 cancelButton.setLayoutData(cancelButtonLData);
@@ -62,8 +60,6 @@ public class CreateStructureDatabaseDialog extends org.eclipse.swt.widgets.Dialo
                 okButton = new Button(dialogShell, SWT.PUSH | SWT.CENTER);
                 okButton.setText("OK");
                 FormData okButtonLData = new FormData();
-                okButtonLData.width = 45;
-                okButtonLData.height = 29;
                 okButtonLData.bottom =  new FormAttachment(1000, 1000, -12);
                 okButtonLData.right =  new FormAttachment(1000, 1000, -12);
                 okButton.setLayoutData(okButtonLData);
@@ -109,5 +105,4 @@ public class CreateStructureDatabaseDialog extends org.eclipse.swt.widgets.Dialo
     public String getName() {
         return name;
     }
-    
 }
