@@ -77,7 +77,6 @@ Export-Package: com.ibatis.common.beans,
  net.bioclipse.structuredb.internalbusiness,
  net.bioclipse.structuredb.persistency.dao,
  net.bioclipse.structuredb.persistency.tables,
- net.bioclipse.structuredb.views,
  org.apache.commons.dbcp
 Import-Package: net.sf.cglib.beans,
  net.sf.cglib.core,
