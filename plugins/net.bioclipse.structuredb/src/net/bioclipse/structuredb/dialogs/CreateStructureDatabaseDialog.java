@@ -27,25 +27,6 @@ public class CreateStructureDatabaseDialog extends org.eclipse.swt.widgets.Dialo
     private Button okButton;
     private String name;
 
-    /**
-    * Auto-generated main method to display this 
-    * org.eclipse.swt.widgets.Dialog inside a new Shell.
-    */
-    public static void main(String[] args) {
-        // since we're running outside of Bioclipse environment, configure
-        // logging to print to console
-        org.apache.log4j.BasicConfigurator.configure();
-        
-        try {
-            Display display = Display.getDefault();
-            Shell shell = new Shell(display);
-            CreateStructureDatabaseDialog inst = new CreateStructureDatabaseDialog(shell, SWT.NULL);
-            inst.open();
-        } catch (Exception e) {
-            LogUtils.debugTrace(logger, e);
-        }
-    }
-
     public CreateStructureDatabaseDialog(Shell parent, int style) {
         super(parent, style);
     }
