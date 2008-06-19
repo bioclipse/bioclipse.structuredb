@@ -276,33 +276,7 @@ public class StructuredbManager implements IStructuredbManager {
                                       throws BioclipseException {
         // first, count the number of items to read. It's a bit of overhead,
         // but adds to the user experience
-        int moleculesToRead = 0;
-        try {
-            FileInputStream counterStream = new FileInputStream(filePath);
-            int c = 0;
-            while (c != -1) {
-                c = counterStream.read();
-                if (c == '$') {
-                    c = counterStream.read();
-                    if (c == '$') {
-                        c = counterStream.read();
-                        if (c == '$') {
-                            c = counterStream.read();
-                            if (c == '$') {
-                                moleculesToRead++;
-                                counterStream.read();
-                            }
-                        }
-                    }
-                }
-            }
-            counterStream.close();
-        } catch (Exception exception) {
-            // ok, I give up...
-            logger.debug("Could not determine the number of molecules to read, because: " +
-                         exception.getMessage(), exception
-            );
-        }
+        int moleculesToRead = cdk.numberOfEntriesInSDF(filePath);
 
         // now really read the structures
         if(monitor != null) {
