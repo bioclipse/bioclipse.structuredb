@@ -17,7 +17,7 @@ import org.openscience.cdk.AtomContainer;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.structuredb.StructuredbInstance;
+import net.bioclipse.structuredb.DataBase;
 import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;

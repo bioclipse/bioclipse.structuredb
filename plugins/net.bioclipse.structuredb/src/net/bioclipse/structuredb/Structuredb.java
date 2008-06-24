@@ -18,13 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 import net.bioclipse.services.views.model.AbstractServiceContainer;
+import net.bioclipse.services.views.model.IDatabase;
 import net.bioclipse.services.views.model.IDatabaseType;
 import net.bioclipse.services.views.model.IServiceObject;
 import net.bioclipse.structuredb.dialogs.CreateStructureDatabaseDialog;
-import net.bioclipse.usermanager.Activator;
-import net.bioclipse.usermanager.IUserManagerListener;
-import net.bioclipse.usermanager.UserManagerEvent;
-import net.bioclipse.usermanager.business.IUserManager;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
@@ -34,20 +31,16 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * This class is responsible for the different structuredb datasources in the
- * system. Their actual info are stored in the UserManager
- *
+ * 
  * @author jonalv
  *
  */
 public class Structuredb extends AbstractServiceContainer
-                         implements IUserManagerListener, IDatabaseType {
+                         implements IDatabaseType {
 
     private final Logger logger = Logger.getLogger( this.getClass() );
 
     private final String name = "Structure Database";
-
-    private IAction createDatabaseAction;
 
     public Structuredb() {
     }
@@ -60,41 +53,18 @@ public class Structuredb extends AbstractServiceContainer
         return name;
     }
 
-    public void fillContextMenu(IMenuManager manager) {
-        manager.add( createDatabaseAction );
-    }
-
-    public void receiveUserManagerEvent(UserManagerEvent event) {
-
-        switch (event) {
-
-        case LOGIN:
-            IUserManager um = Activator.getDefault().getUserManager();
-            for ( String id : um.getAccountIdsByAccountTypeName(
-                              "net.bioclipse.structuredb.AccountType" ) ) {
-
-            }
-            break;
-
-        case LOGOUT:
-            setChildren( new ArrayList<IServiceObject>() );
-            break;
-
-        default:
-            break;
-        }
-    }
-
     @Override
     public void createChildren() {
-//        BasicDataSource basicDataSource = (BasicDataSource) context.getBean("dataSource");
-//        basicDataSource.setUrl( url );
-//        basicDataSource.setUsername( username );
-//        basicDataSource.setPassword( password );
-
-//        StructuredbInstance dataSource = new StructuredbInstance(context);
-//        instances.add(dataSource);
-        setChildren(new ArrayList<IServiceObject>());
+        
+        List<IDatabase> children 
+            = new ArrayList<IDatabase>();
+        
+        for ( String s : Activator.getDefault()
+                                  .getStructuredbManager()
+                                  .listDatabaseNames() ) {
+            children.add( new DataBase(s) );
+        }
+        setChildren( children );
     }
 
     public Object getAdapter(Class adapter) {
