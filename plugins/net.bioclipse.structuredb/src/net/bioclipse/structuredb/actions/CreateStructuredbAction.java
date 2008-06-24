@@ -35,7 +35,7 @@ public class CreateStructuredbAction extends ActionDelegate {
         	IStructuredbManager manager = Activator
         	                              .getDefault()
         	                              .getStructuredbManager();
-        	manager.createLocalInstance( name );
+        	manager.createDatabase( name );
         }
     }
 }

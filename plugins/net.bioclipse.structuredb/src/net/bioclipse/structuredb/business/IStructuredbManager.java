@@ -43,7 +43,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Creates a local structure database " +
                                         "with the given name if no such " +
                                         "database already exists." )
-    public void createLocalInstance( String databaseName )
+    public void createDatabase( String databaseName )
         throws IllegalArgumentException;
 
     /**
@@ -56,7 +56,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Removes a local database with the " +
                                        "given name if such exists, otherwise " +
                                        "does nothing" )
-    public void removeLocalInstance( String databaseName );
+    public void removeDatabase( String databaseName );
 
     /**
      * Retrieves all Structures with a given name from a database with a
@@ -83,7 +83,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Fetches a label by a given name" +
                                        "from a database with a given name" )
     public Label labelByName( String databaseName,
-                                String labelName );
+                              String labelName );
 
     /**
      * Retrieves a user with a given username from a database with a given name.

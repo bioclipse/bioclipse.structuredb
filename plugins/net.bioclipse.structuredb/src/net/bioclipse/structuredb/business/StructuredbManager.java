@@ -113,7 +113,7 @@ public class StructuredbManager implements IStructuredbManager {
         }
     }
 
-    public void createLocalInstance(String databaseName)
+    public void createDatabase(String databaseName)
         throws IllegalArgumentException {
 
         if( internalManagers.containsKey(databaseName) ) {
@@ -230,7 +230,7 @@ public class StructuredbManager implements IStructuredbManager {
         return user;
     }
 
-    public void removeLocalInstance(String databaseName) {
+    public void removeDatabase(String databaseName) {
         internalManagers.remove( databaseName );
         applicationContexts.remove( databaseName );
         HsqldbUtil.getInstance().remove( databaseName + ".sdb" );

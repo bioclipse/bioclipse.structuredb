@@ -74,8 +74,8 @@ public class StructuredbManagerTest
         }
         setUpWasRun = true;
 
-        manager.createLocalInstance(database1);
-        manager.createLocalInstance(database2);
+        manager.createDatabase(database1);
+        manager.createDatabase(database2);
 
         for( ApplicationContext context :
              ((StructuredbManager)manager).applicationContexts.values() ) {
@@ -377,12 +377,12 @@ public class StructuredbManagerTest
     @DirtiesContext
     public void testRemovingDatabaseInstance() {
         assertTrue( manager.listDatabaseNames().contains(database1) );
-        manager.removeLocalInstance( database1 );
+        manager.removeDatabase( database1 );
         assertFalse( manager.listDatabaseNames().contains(database1) );
         
         StructuredbManager anotherManager = new StructuredbManager();
         assertFalse( anotherManager.listDatabaseNames().contains(database1) );
-        manager.createLocalInstance( database1 ); // restore order
+        manager.createDatabase( database1 ); // restore order
     }
     
     public void testUsingUnknownDatabase() {

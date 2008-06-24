@@ -83,9 +83,9 @@ public class ForConsoleDecoratedStructuredbManager implements
         return manager.createLabel( databaseName, folderName );
     }
 
-    public void createLocalInstance( String databaseName )
+    public void createDatabase( String databaseName )
                 throws IllegalArgumentException {
-        manager.createLocalInstance( databaseName );
+        manager.createDatabase( databaseName );
     }
 
     public Structure createStructure( String databaseName, 
@@ -111,8 +111,8 @@ public class ForConsoleDecoratedStructuredbManager implements
         return manager.listDatabaseNames();
     }
 
-    public void removeLocalInstance( String databaseName ) {
-        manager.removeLocalInstance( databaseName );
+    public void removeDatabase( String databaseName ) {
+        manager.removeDatabase( databaseName );
     }
 
     public User userByName( String databaseName, String username ) {
