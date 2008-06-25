@@ -11,24 +11,13 @@
 package net.bioclipse.structuredb;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.bioclipse.services.views.model.AbstractServiceContainer;
 import net.bioclipse.services.views.model.IDatabase;
 import net.bioclipse.services.views.model.IDatabaseType;
-import net.bioclipse.services.views.model.IServiceObject;
-import net.bioclipse.structuredb.dialogs.CreateStructureDatabaseDialog;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.swt.SWT;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * 
