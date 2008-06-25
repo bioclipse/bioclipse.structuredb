@@ -63,11 +63,12 @@ public class StructuredbManager implements IStructuredbManager {
         = Pattern.compile( "(.*?)\\.sdb.*" );
     
     /*
-     * This isn't super if cdk starts using AOP for fancy stuff in the future
-     * but we don't want the recorded variant and this is a solution that is
-     * reasonably easy to test. Should cdk start using fancy stuff real
-     * integration testing running the OSGI layer is needed and this instance
-     * would need to come from the OSGI service container
+     * This isn't super if cdk starts using AOP for fancy stuff in the 
+     * future but we don't want the recorded variant and this is a 
+     * solution that is reasonably easy to test. Should cdk start using 
+     * fancy stuff real integration testing running the OSGI layer is 
+     * needed and this instance would need to come from the OSGI service 
+     * container
      */
     private ICDKManager cdk = new CDKManager();
 
@@ -100,14 +101,16 @@ public class StructuredbManager implements IStructuredbManager {
             if( internalManagers.containsKey( name ) ) {
                 return;
             }
-            ApplicationContext context = createApplicationcontext( name, true );
+            ApplicationContext context 
+                = createApplicationcontext( name, true );
             
             applicationContexts.put( name, context );
-            internalManagers.put( name, 
-                                  (IStructuredbInstanceManager) context
-                                      .getBean("structuredbInstanceManager") );
+            internalManagers
+                .put( name, (IStructuredbInstanceManager) context
+                            .getBean("structuredbInstanceManager") );
             LoggedInUserKeeper keeper 
-                = (LoggedInUserKeeper)context.getBean( "loggedInUserKeeper" );
+                = (LoggedInUserKeeper)context
+                  .getBean( "loggedInUserKeeper" );
             IUserDao userDao = (IUserDao) context.getBean( "userDao" );
             keeper.setLoggedInUser( userDao.getByUserName( "local" ) );
         }
@@ -117,11 +120,13 @@ public class StructuredbManager implements IStructuredbManager {
         throws IllegalArgumentException {
 
         if( internalManagers.containsKey(databaseName) ) {
-            throw new IllegalArgumentException( "Database name already used: "
+            throw new IllegalArgumentException( "Database name " +
+                                                "already used: "
                                                 + databaseName );
         }
         TableCreator.INSTANCE.createTables(
-            HsqldbUtil.getInstance().getConnectionUrl(databaseName + ".sdb") );
+            HsqldbUtil.getInstance()
+                      .getConnectionUrl(databaseName + ".sdb") );
 
         Map<String, IStructuredbInstanceManager> newInstances
             = new HashMap<String, IStructuredbInstanceManager>();
@@ -133,7 +138,8 @@ public class StructuredbManager implements IStructuredbManager {
             //TODO: The day we not only handle local databases the row here
             //      below will need to change
             newApplicationContexts.put( nameKey,
-                                        createApplicationcontext(nameKey, true) );
+                                        createApplicationcontext(
+                                            nameKey, true) );
             newInstances.put(
                     nameKey,
                     (IStructuredbInstanceManager)
@@ -146,12 +152,14 @@ public class StructuredbManager implements IStructuredbManager {
         applicationContexts = newApplicationContexts;
 
         applicationContexts.put( databaseName,
-                                 createApplicationcontext(databaseName, true) );
+                                 createApplicationcontext( databaseName, 
+                                                           true) );
         internalManagers.put(
                 databaseName,
                 (IStructuredbInstanceManager)
                     applicationContexts.get( databaseName)
-                                       .getBean("structuredbInstanceManager") );
+                                       .getBean(
+                                         "structuredbInstanceManager") );
         createLocalUser( applicationContexts.get(databaseName) );
         logger.info( "A new local instance of Structuredb named"
                       + databaseName + " has been created" );
@@ -166,12 +174,14 @@ public class StructuredbManager implements IStructuredbManager {
         localUser.setEdited(now);
         userDao.insert(localUser);
         LoggedInUserKeeper keeper = (LoggedInUserKeeper)
-                                     context.getBean( "loggedInUserKeeper" );
+                                     context
+                                     .getBean( "loggedInUserKeeper" );
         keeper.setLoggedInUser( localUser );
     }
 
-    private ApplicationContext createApplicationcontext( String databaseName,
-                                                         boolean local ) {
+    private ApplicationContext createApplicationcontext( 
+        String databaseName, boolean local ) {
+        
         FileSystemXmlApplicationContext context
             = new FileSystemXmlApplicationContext(
                 Structuredb.class
@@ -200,7 +210,8 @@ public class StructuredbManager implements IStructuredbManager {
 
         Label label = new Label(folderName);
         if( !internalManagers.containsKey(databaseName) ) {
-            throw new IllegalArgumentException( "There is no database named: " 
+            throw new IllegalArgumentException( "There is no database " +
+                                                "named: " 
                                                 + databaseName );
         }
         internalManagers.get(databaseName).insertLabel(label);
@@ -223,7 +234,8 @@ public class StructuredbManager implements IStructuredbManager {
     public User createUser( String databaseName,
                             String username,
                             String password,
-                            boolean sudoer) throws IllegalArgumentException {
+                            boolean sudoer) 
+                throws IllegalArgumentException {
 
         User user = new User(username, password, sudoer);
         internalManagers.get(databaseName).insertUser(user);
@@ -241,7 +253,8 @@ public class StructuredbManager implements IStructuredbManager {
     }
 
     public List<Structure> allStructures(String databaseName) {
-        return internalManagers.get(databaseName).retrieveAllStructures();
+        return internalManagers.get(databaseName)
+                               .retrieveAllStructures();
     }
 
     public List<User> allUsers(String databaseName) {
@@ -274,8 +287,8 @@ public class StructuredbManager implements IStructuredbManager {
                                       String filePath,
                                       IProgressMonitor monitor)
                                       throws BioclipseException {
-        // first, count the number of items to read. It's a bit of overhead,
-        // but adds to the user experience
+        // first, count the number of items to read. 
+        // It's a bit of overhead, but adds to the user experience
         int moleculesToRead = cdk.numberOfEntriesInSDF(filePath);
 
         // now really read the structures
@@ -294,7 +307,8 @@ public class StructuredbManager implements IStructuredbManager {
         }
         File file = new File(filePath);
         String folderId = createLabel( databaseName,
-                                        file.getName().replaceAll("\\..*?$", "") )
+                                        file.getName()
+                                            .replaceAll("\\..*?$", "") )
                                             .getId();
 
         while ( iterator.hasNext() ) {
@@ -313,7 +327,8 @@ public class StructuredbManager implements IStructuredbManager {
                 s.setName( "\"" + s.getSmiles() + "\"" );
             }
 
-            internalManagers.get(databaseName).insertStructureInLabel(s, folderId);
+            internalManagers.get(databaseName)
+                            .insertStructureInLabel(s, folderId);
             if(monitor != null) {
                 monitor.worked( 1 );
             }
@@ -327,17 +342,18 @@ public class StructuredbManager implements IStructuredbManager {
         return new ArrayList<String>( internalManagers.keySet() );
     }
 
-    public List<Structure> allStructureFingerprintSearch( String databaseName,
-                                                    ICDKMolecule molecule ) 
+    public List<Structure> allStructureFingerprintSearch( 
+        String databaseName, ICDKMolecule molecule ) 
                            throws BioclipseException {
         
         List<Structure> structures = new BioList<Structure>();
         Iterator<Structure> iterator 
-            = internalManagers.get( databaseName ).allStructuresIterator();
+            = internalManagers.get( databaseName )
+                              .allStructuresIterator();
         while( iterator.hasNext() ) {
             Structure current = iterator.next();
-            if( cdk.fingerPrintMatches( new CDKMolecule( current
-                                                         .getAtomContainer() ), 
+            if( cdk.fingerPrintMatches( new CDKMolecule( 
+                                            current.getAtomContainer() ), 
                                         molecule ) ) {
                 structures.add( current );
             }
@@ -345,7 +361,8 @@ public class StructuredbManager implements IStructuredbManager {
         return structures;
     }
 
-    public void addStructuresFromSDF( String databaseName, String filePath )
+    public void addStructuresFromSDF( String databaseName, 
+                                      String filePath )
                 throws BioclipseException {
 
         addStructuresFromSDF( databaseName, filePath, null );
@@ -358,44 +375,52 @@ public class StructuredbManager implements IStructuredbManager {
 
         ICDKMolecule cdkQueryMolecule;
         if(queryMolecule instanceof Structure) {
-            cdkQueryMolecule = toCDKMolecule( (Structure) queryMolecule );
+            cdkQueryMolecule 
+                = toCDKMolecule( (Structure) queryMolecule );
         }
         else {
-            cdkQueryMolecule = cdk.fromSmiles( queryMolecule.getSmiles() );
+            cdkQueryMolecule 
+                = cdk.fromSmiles( queryMolecule.getSmiles() );
         }
         Structure queryStructure = new Structure("", cdkQueryMolecule);
         if(monitor != null) {
-            monitor.beginTask( "substructure search", 
-                               internalManagers.get( databaseName )
-                                               .numberOfFingerprintMatches(
-                                                   queryStructure) );
+            monitor
+            .beginTask( "substructure search", 
+                        internalManagers.get( databaseName )
+                                        .numberOfFingerprintMatches(
+                                            queryStructure) );
         }
 
          
-        return new SubStructureIterator( internalManagers
-                                         .get( databaseName )
-                                         .fingerprintSubstructureSearchIterator(
-                                             queryStructure),
-                                         cdk,
-                                         cdkQueryMolecule, 
-                                         this, 
-                                         monitor );
+        return new SubStructureIterator( 
+            internalManagers.get( databaseName )
+                            .fingerprintSubstructureSearchIterator(
+                                queryStructure),
+            cdk,
+            cdkQueryMolecule, 
+            this, 
+            monitor );
    }
     
-    public Iterator<Structure> subStructureSearchIterator(String databaseName,
-                                                          IMolecule molecule)
+    public Iterator<Structure> subStructureSearchIterator(
+        String databaseName, IMolecule molecule )
                                throws BioclipseException {
 
-         return subStructureSearchIterator( databaseName, molecule, null );
+         return subStructureSearchIterator( databaseName, 
+                                            molecule, 
+                                            null );
     }
 
     public ICDKMolecule toCDKMolecule( Structure structure ) {
         try {
            return new CDKMolecule( structure.getName(), 
-                             (IAtomContainer) structure.getAtomContainer().clone(),
-                             structure.getSmiles(),
-                             structure.getFingerPrint() );
-        } catch ( CloneNotSupportedException e ) {
+                                   (IAtomContainer) structure
+                                                    .getAtomContainer()
+                                                    .clone(),
+                                   structure.getSmiles(),
+                                   structure.getFingerPrint() );
+        } 
+        catch ( CloneNotSupportedException e ) {
             throw new RuntimeException(e);
         }
     }
@@ -412,9 +437,10 @@ public class StructuredbManager implements IStructuredbManager {
                            throws BioclipseException {
         
         List<Structure> structures = new BioList<Structure>();
-        Iterator<Structure> iterator = subStructureSearchIterator( databaseName, 
-                                                                   molecule, 
-                                                                   monitor );
+        Iterator<Structure> iterator 
+            = subStructureSearchIterator( databaseName, 
+                                          molecule, 
+                                          monitor );
         while( iterator.hasNext() ) {
             structures.add( iterator.next() );
         }
@@ -441,7 +467,8 @@ public class StructuredbManager implements IStructuredbManager {
         internalManagers.get( database ).update( label );
     }
 
-    public List<Structure> smartsQuery( String database, String smarts ) {
+    public List<Structure> smartsQuery( String database, 
+                                        String smarts ) {
 
         return smartsQuery( database, smarts, null );
     }
@@ -465,9 +492,8 @@ public class StructuredbManager implements IStructuredbManager {
         return hits;
     }
 
-    public Iterator<Structure> smartsQueryIterator( String database,
-                                                    String smarts,
-                                                    IProgressMonitor monitor) {
+    public Iterator<Structure> smartsQueryIterator( 
+        String database, String smarts, IProgressMonitor monitor) {
 
         if(monitor != null) {
             monitor.beginTask( "substructure search", 
