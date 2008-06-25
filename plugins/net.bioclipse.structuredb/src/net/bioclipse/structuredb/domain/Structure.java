@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IResource;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.domain.BioList;
 import net.bioclipse.core.util.LogUtils;
 
 import org.openscience.cdk.AtomContainer;
@@ -280,5 +281,12 @@ public class Structure extends BaseObject
             label.removeStructure(this);
         }
         labels.remove( label );
+    }
+
+    public List<net.bioclipse.core.domain.IMolecule> getConformers() {
+        List<net.bioclipse.core.domain.IMolecule> result 
+            = new BioList<net.bioclipse.core.domain.IMolecule>();
+        result.add( this );
+        return result;
     }
 }
