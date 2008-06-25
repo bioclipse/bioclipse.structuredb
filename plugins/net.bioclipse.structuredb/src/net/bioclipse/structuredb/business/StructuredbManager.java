@@ -19,10 +19,13 @@ import java.io.FileReader;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +39,7 @@ import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
+import net.bioclipse.structuredb.business.IDatabaseListener.DatabaseUpdateType;
 import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
@@ -79,6 +83,9 @@ public class StructuredbManager implements IStructuredbManager {
     //Package protected for testing purposes
     Map<String, ApplicationContext> applicationContexts
         = new HashMap<String, ApplicationContext>();
+
+    private Collection<IDatabaseListener> listeners 
+        = new HashSet<IDatabaseListener>();;
 
     public StructuredbManager() {
         File[] files = HsqldbUtil.getInstance()
@@ -163,6 +170,7 @@ public class StructuredbManager implements IStructuredbManager {
         createLocalUser( applicationContexts.get(databaseName) );
         logger.info( "A new local instance of Structuredb named"
                       + databaseName + " has been created" );
+        fireDatabasesChanged();
     }
 
     private void createLocalUser(ApplicationContext context) {
@@ -216,6 +224,7 @@ public class StructuredbManager implements IStructuredbManager {
         }
         internalManagers.get(databaseName).insertLabel(label);
         logger.debug("Label " + folderName + " inserted in " + databaseName);
+        fireLabelsChanged();
         return label;
     }
 
@@ -246,6 +255,7 @@ public class StructuredbManager implements IStructuredbManager {
         internalManagers.remove( databaseName );
         applicationContexts.remove( databaseName );
         HsqldbUtil.getInstance().remove( databaseName + ".sdb" );
+        fireDatabasesChanged();
     }
 
     public List<Label> allLabels(String databaseName) {
@@ -336,6 +346,7 @@ public class StructuredbManager implements IStructuredbManager {
         if(monitor != null) {
             monitor.done();
         }
+        fireLabelsChanged();
     }
 
     public List<String> listDatabaseNames() {
@@ -450,6 +461,7 @@ public class StructuredbManager implements IStructuredbManager {
     public void delete( String database, Label label ) {
 
         internalManagers.get( database ).delete( label );
+        fireLabelsChanged();
     }
 
     public void delete( String database, Structure structure ) {
@@ -508,5 +520,27 @@ public class StructuredbManager implements IStructuredbManager {
                                         smarts, 
                                         this, 
                                         monitor );
+    }
+
+    public void addListener( IDatabaseListener listener ) {
+
+        listeners.add( listener );
+    }
+
+    public void removeListener( IDatabaseListener listener ) {
+
+        listeners.remove( listener );
+    }
+    
+    public void fireDatabasesChanged() {
+        for ( IDatabaseListener l : listeners ) {
+            l.onDataBaseUpdate( DatabaseUpdateType.DATABASES_CHANGED );
+        }
+    }
+    
+    public void fireLabelsChanged() {
+        for ( IDatabaseListener l : listeners ) {
+            l.onDataBaseUpdate( DatabaseUpdateType.LABELS_CHANGED );
+        }
     }
 }

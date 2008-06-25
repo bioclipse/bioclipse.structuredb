@@ -201,4 +201,12 @@ public class ForConsoleDecoratedStructuredbManager implements
 
         return manager.smartsQueryIterator( database, smarts, monitor );
     }
+
+    public void addListener( IDatabaseListener listener ) {
+        manager.addListener( listener );
+    }
+
+    public void removeListener( IDatabaseListener listener ) {
+        manager.removeListener( listener );
+    }
 }

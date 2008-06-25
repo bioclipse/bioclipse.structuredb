@@ -21,6 +21,7 @@ import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.business.IBioclipseManager;
 import net.bioclipse.core.domain.IMolecule;
+import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
@@ -381,4 +382,14 @@ public interface IStructuredbManager extends IBioclipseManager {
     public List<Structure> smartsQuery( String database,
                                         String smarts,
                                         IProgressMonitor monitor );
+
+    /**
+     * @param listener
+     */
+    public void addListener( IDatabaseListener listener );
+    
+    /**
+     * @param listener
+     */
+    public void removeListener( IDatabaseListener listener );
 }
