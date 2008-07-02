@@ -15,14 +15,14 @@ Require-Bundle: org.eclipse.ui,
  org.springframework.bundle.spring.orm,
  org.springframework.bundle.spring.aspects,
  org.springframework.bundle.spring.core,
- org.aopalliance,
  org.springframework.bundle.spring.aop,
  org.springframework.bundle.spring.beans,
  org.springframework.bundle.spring.context,
  org.springframework.bundle.spring.tx,
  org.springframework.bundle.spring.jdbc,
  net.bioclipse.cdk.business,
- net.bioclipse.ui
+ net.bioclipse.ui,
+ org.springframework.osgi.aopalliance.osgi;bundle-version="1.0.0"
 Eclipse-LazyStart: true
 Bundle-ClassPath: libs/ibatis-2.3.0.677.jar,
  libs/commons-dbcp-1.2.1.jar,
