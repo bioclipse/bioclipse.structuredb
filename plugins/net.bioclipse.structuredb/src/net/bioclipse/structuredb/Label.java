@@ -24,9 +24,8 @@ public class Label extends AbstractServiceObject
         setName( name );
     }
 
-    public void drop( Object data ) {
+    public boolean drop( Object data ) {
 
-        // TODO Auto-generated method stub
-        
+        return false;
     }
 }

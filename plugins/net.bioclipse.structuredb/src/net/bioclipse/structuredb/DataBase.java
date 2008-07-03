@@ -13,18 +13,16 @@ package net.bioclipse.structuredb;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ITreeSelection;
+
+import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.services.views.model.AbstractServiceContainer;
-import net.bioclipse.services.views.model.AbstractServiceObject;
 import net.bioclipse.services.views.model.IDatabase;
-import net.bioclipse.services.views.model.IServiceContainer;
 import net.bioclipse.services.views.model.IServiceObject;
 import net.bioclipse.structuredb.business.IDatabaseListener;
-import net.bioclipse.structuredb.business.IStructuredbManager;
-import net.bioclipse.structuredb.business.IDatabaseListener.DatabaseUpdateType;
-
-import org.eclipse.core.resources.IResource;
-import org.eclipse.jface.action.IMenuManager;
-import org.springframework.context.ApplicationContext;
 
 /**
  * @author jonalv
@@ -38,9 +36,27 @@ public class DataBase extends AbstractServiceContainer
         Activator.getDefault().getStructuredbManager().addListener(this);
     }
     
-    public void drop( Object data ) {
-
+    public boolean drop( Object data ) {
         
+        if ( data instanceof ITreeSelection ) {
+            ITreeSelection selections = (ITreeSelection)data;
+            for ( Object selection : selections.toArray() ) {
+                if (selection instanceof IFile) {
+                    IFile file = (IFile)selection;
+                    try {
+                        
+                        Activator.getDefault()
+                                 .getStructuredbManager()
+                                 .addStructuresFromSDF( getName(), 
+                                                        file.getLocationURI().toString() );
+                    } catch ( BioclipseException e ) {
+                        return false;
+                    }
+                }
+                selection.toString();
+            }
+        }
+        return false;
     }
 
     @Override

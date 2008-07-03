@@ -17,6 +17,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,11 +52,15 @@ import net.bioclipse.structuredb.persistency.tables.TableCreator;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+import com.sun.jndi.toolkit.url.Uri;
 
 /**
  * @author jonalv
@@ -297,33 +303,28 @@ public class StructuredbManager implements IStructuredbManager {
                                       String filePath,
                                       IProgressMonitor monitor)
                                       throws BioclipseException {
-        // first, count the number of items to read. 
-        // It's a bit of overhead, but adds to the user experience
-        int moleculesToRead = cdk.numberOfEntriesInSDF(filePath);
-
-        // now really read the structures
-        if(monitor != null) {
-            monitor.beginTask( "Reading molecules from sdf file", 
-                               moleculesToRead );
-        }
         Iterator<ICDKMolecule> iterator;
-        int moleculesRead = 0;
+        URI uri;
         try {
+            uri = new File(filePath).toURI();
             iterator = cdk.creatMoleculeIterator( 
-                new FileInputStream(filePath) );
-        } catch (FileNotFoundException e) {
+                EFS.getStore( uri )
+                   .openInputStream( EFS.NONE, monitor ) );
+        } 
+        catch ( CoreException e ) {
             throw new IllegalArgumentException( "Could not open file:" + 
                                                 filePath );
-        }
-        File file = new File(filePath);
-        String folderId = createLabel( databaseName,
-                                        file.getName()
-                                            .replaceAll("\\..*?$", "") )
-                                            .getId();
+        } 
+        String labelId 
+            = createLabel( databaseName,
+                           uri.getPath()
+                              //extracts a name for our new label
+                              .replaceAll("\\..*?$", "")  
+                              .replaceAll( ".*/", "" ) )
+                              .getId();
 
         while ( iterator.hasNext() ) {
             ICDKMolecule molecule = iterator.next();
-            moleculesRead++;
 
             Object title = molecule.getAtomContainer()
             .getProperty(CDKConstants.TITLE);
@@ -338,13 +339,7 @@ public class StructuredbManager implements IStructuredbManager {
             }
 
             internalManagers.get(databaseName)
-                            .insertStructureInLabel(s, folderId);
-            if(monitor != null) {
-                monitor.worked( 1 );
-            }
-        }
-        if(monitor != null) {
-            monitor.done();
+                            .insertStructureInLabel(s, labelId);
         }
         fireLabelsChanged();
     }
@@ -523,23 +518,25 @@ public class StructuredbManager implements IStructuredbManager {
     }
 
     public void addListener( IDatabaseListener listener ) {
-
         listeners.add( listener );
     }
 
     public void removeListener( IDatabaseListener listener ) {
-
         listeners.remove( listener );
     }
     
     public void fireDatabasesChanged() {
-        for ( IDatabaseListener l : listeners ) {
+        //the original listeners collection gets edited during the loop
+        for ( IDatabaseListener l 
+              : new ArrayList<IDatabaseListener>(listeners) ) {
             l.onDataBaseUpdate( DatabaseUpdateType.DATABASES_CHANGED );
         }
     }
     
     public void fireLabelsChanged() {
-        for ( IDatabaseListener l : listeners ) {
+      //the original listeners collection gets edited during the loop
+        for ( IDatabaseListener l 
+              : new ArrayList<IDatabaseListener>(listeners) ) {
             l.onDataBaseUpdate( DatabaseUpdateType.LABELS_CHANGED );
         }
     }
