@@ -45,6 +45,19 @@
                 menubarPath="additions"
                 tooltip="Open a dialog for creating a new Structure Database"/>
         </objectContribution>
+        <objectContribution
+            adaptable="false"
+            id="net.bioclipse.structuredb.removeDatabaseAction"
+            objectClass="net.bioclipse.structuredb.DataBase">
+            <action
+                class="net.bioclipse.structuredb.actions.RemoveDatabaseAction"
+                enablesFor="1+"
+                icon="icons/db_16.gif"
+                id="net.bioclipse.structuredb.actions.RemoveDatabaseAction"
+                label="Delete"
+                menubarPath="additions"
+                tooltip="Deletes the Database"/>
+        </objectContribution>
     </extension>
     
     <extension
