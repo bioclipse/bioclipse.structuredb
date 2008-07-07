@@ -303,13 +303,23 @@ public class StructuredbManager implements IStructuredbManager {
                                       String filePath,
                                       IProgressMonitor monitor)
                                       throws BioclipseException {
+        // first, count the number of items to read. 
+        // It's a bit of overhead, but adds to the user experience
+        int moleculesToRead = cdk.numberOfEntriesInSDF(filePath);
+
+        // now really read the structures
+        if(monitor != null) {
+            monitor.beginTask( "Reading molecules from sdf file", 
+                               moleculesToRead );
+        }
         Iterator<ICDKMolecule> iterator;
+        int moleculesRead = 0;
         URI uri;
         try {
             uri = new File(filePath).toURI();
             iterator = cdk.creatMoleculeIterator( 
                 EFS.getStore( uri )
-                   .openInputStream( EFS.NONE, monitor ) );
+                   .openInputStream( EFS.NONE, null ) );
         } 
         catch ( CoreException e ) {
             throw new IllegalArgumentException( "Could not open file:" + 
@@ -325,7 +335,8 @@ public class StructuredbManager implements IStructuredbManager {
 
         while ( iterator.hasNext() ) {
             ICDKMolecule molecule = iterator.next();
-
+						moleculesRead++;
+						
             Object title = molecule.getAtomContainer()
             .getProperty(CDKConstants.TITLE);
 
@@ -340,6 +351,12 @@ public class StructuredbManager implements IStructuredbManager {
 
             internalManagers.get(databaseName)
                             .insertStructureInLabel(s, labelId);
+            if(monitor != null) {
+                monitor.worked( 1 );
+            }
+        }
+        if(monitor != null) {
+            monitor.done();
         }
         fireLabelsChanged();
     }
