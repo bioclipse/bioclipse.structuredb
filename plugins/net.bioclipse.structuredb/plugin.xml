@@ -39,7 +39,6 @@
             <action
                 class="net.bioclipse.structuredb.actions.CreateStructuredbAction"
                 enablesFor="1"
-                icon="icons/db_16.gif"
                 id="net.bioclipse.structuredb.actions.CreateStructuredbAction"
                 label="Create new local Structure Database..."
                 menubarPath="additions"
@@ -48,15 +47,26 @@
         <objectContribution
             adaptable="false"
             id="net.bioclipse.structuredb.removeDatabaseAction"
-            objectClass="net.bioclipse.structuredb.DataBase">
+            objectClass="net.bioclipse.structuredb.Database">
             <action
                 class="net.bioclipse.structuredb.actions.RemoveDatabaseAction"
-                enablesFor="1+"
-                icon="icons/db_16.gif"
+                enablesFor="1"
                 id="net.bioclipse.structuredb.actions.RemoveDatabaseAction"
                 label="Delete"
                 menubarPath="additions"
-                tooltip="Deletes the Database"/>
+                tooltip="Deletes the database and everything in it"/>
+        </objectContribution>
+        <objectContribution
+            adaptable="false"
+            id="net.bioclipse.structuredb.removeLabel"
+            objectClass="net.bioclipse.structuredb.Label">
+            <action
+                class="net.bioclipse.structuredb.actions.RemoveLabelAction"
+                enablesFor="1"
+                id="net.bioclipse.structuredb.actions.RemoveLabelAction"
+                label="Delete"
+                menubarPath="additions"
+                tooltip="Deletes the Label"/>
         </objectContribution>
     </extension>
     

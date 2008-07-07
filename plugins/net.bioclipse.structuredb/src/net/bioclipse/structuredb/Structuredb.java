@@ -67,7 +67,7 @@ public class Structuredb extends AbstractServiceContainer
         for ( String s : Activator.getDefault()
                                   .getStructuredbManager()
                                   .listDatabaseNames() ) {
-            children.add( new DataBase(s) );
+            children.add( new Database(s) );
         }
         setChildren( children );
     }

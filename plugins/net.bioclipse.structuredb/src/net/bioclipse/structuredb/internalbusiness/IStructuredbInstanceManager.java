@@ -17,7 +17,7 @@ import org.openscience.cdk.AtomContainer;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.structuredb.DataBase;
+import net.bioclipse.structuredb.Database;
 import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
@@ -123,10 +123,10 @@ public interface IStructuredbInstanceManager {
     public List<Structure> retrieveStructureByName(String name);
     
     /**
-     * Loads the library with the given name from the database
+     * Loads the Label with the given name from the database
      * 
      * @param name
-     * @return a library or null if no such library exists
+     * @return a Label or null if no such Label exists
      */
     public Label retrieveLabelByName(String name);
 

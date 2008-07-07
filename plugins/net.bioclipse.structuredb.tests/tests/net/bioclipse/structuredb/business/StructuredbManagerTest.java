@@ -503,4 +503,12 @@ public class StructuredbManagerTest
         }
         assertTrue(found);
     }
+    
+    public void testRetrieveingLabelByName() {
+        
+        Label l = manager.createLabel( database1, "name" );
+        Label loaded = manager.retrieveLabelByName( database1,  
+                                                    l.getName() );
+        assertTrue( l.hasValuesEqualTo( loaded ) );
+    }
 }

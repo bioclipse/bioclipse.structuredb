@@ -209,4 +209,8 @@ public class ForConsoleDecoratedStructuredbManager implements
     public void removeListener( IDatabaseListener listener ) {
         manager.removeListener( listener );
     }
+
+    public Label retrieveLabelByName( String databaseName, String labelName ) {
+        return manager.retrieveLabelByName( databaseName, labelName );
+    }
 }

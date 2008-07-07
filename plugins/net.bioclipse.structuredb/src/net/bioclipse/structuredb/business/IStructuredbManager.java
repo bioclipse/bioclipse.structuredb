@@ -392,4 +392,16 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param listener
      */
     public void removeListener( IDatabaseListener listener );
+
+    /**
+     * @param name
+     * @param string 
+     * @return
+     */
+    @PublishedMethod ( params = "String databaseName, String labelName", 
+                       methodSummary = "Retrives the label with the " +
+                      		             "given name from the database " +
+                      		             "with the given name" )
+    public Label retrieveLabelByName( String databaseName, 
+                                      String labelName );
 }

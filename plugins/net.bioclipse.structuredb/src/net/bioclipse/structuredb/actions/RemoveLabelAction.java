@@ -14,6 +14,7 @@ import java.util.Iterator;
 
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Database;
+import net.bioclipse.structuredb.Label;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 
 import org.eclipse.jface.action.IAction;
@@ -26,7 +27,7 @@ import org.eclipse.ui.actions.ActionDelegate;
  * @author jonalv
  *
  */
-public class RemoveDatabaseAction extends ActionDelegate {
+public class RemoveLabelAction extends ActionDelegate {
 
     private ISelection selection;
 
@@ -40,12 +41,17 @@ public class RemoveDatabaseAction extends ActionDelegate {
         
         if ( selection instanceof IStructuredSelection ) {
             IStructuredSelection ss = (IStructuredSelection) selection;
-            System.out.println("Selected: " + ss.getFirstElement() );
             Iterator i = ss.iterator();
             while ( i.hasNext() ) {
                 Object o = i.next();
-                if (o instanceof Database) {
-                    manager.removeDatabase( ((Database)o).getName() );
+                if (o instanceof Label) {
+                    Label l = (Label)o;
+                    if ( l.getParent() instanceof Database ) {
+                        net.bioclipse.structuredb.domain.Label label =
+                            manager.retrieveLabelByName(
+                                l.getParent().getName(), l.getName() );
+                        manager.delete( l.getParent().getName(), label );
+                    }
                 }
             }
         }

@@ -28,10 +28,10 @@ import net.bioclipse.structuredb.business.IDatabaseListener;
  * @author jonalv
  *
  */
-public class DataBase extends AbstractServiceContainer 
+public class Database extends AbstractServiceContainer 
                       implements IDatabase, IDatabaseListener {
 
-    public DataBase( String name ) {
+    public Database( String name ) {
         setName( name );
         Activator.getDefault().getStructuredbManager().addListener(this);
     }

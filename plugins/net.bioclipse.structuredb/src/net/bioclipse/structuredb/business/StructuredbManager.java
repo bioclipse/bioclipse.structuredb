@@ -557,4 +557,10 @@ public class StructuredbManager implements IStructuredbManager {
             l.onDataBaseUpdate( DatabaseUpdateType.LABELS_CHANGED );
         }
     }
+
+    public Label retrieveLabelByName( String databaseName, String labelName ) {
+
+        return internalManagers.get( databaseName )
+                               .retrieveLabelByName( labelName );
+    }
 }
