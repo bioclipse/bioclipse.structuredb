@@ -85,13 +85,16 @@ public class HsqldbUtil {
      * @return url to database
      */
     public String getConnectionUrl(String name) {
-        String url = "jdbc:hsqldb:file:" 
-                     + fileFolder + File.separator + name;
-        urls.add(url);
+        String url = buildUrl(name);
+        urls.add( url );
         logger.debug("Connection URL: " + url + " returned");
         return url;
     }
     
+    private String buildUrl( String name ) {
+        return "jdbc:hsqldb:file:" + fileFolder + File.separator + name;
+    }
+
     /**
      * Stops the Hsqldb-server
      * 
@@ -135,7 +138,9 @@ public class HsqldbUtil {
            return;
         }
         
-        for( File f : files ) {
+        urls.remove( buildUrl( databaseName ) );
+        
+        for ( File f : files ) {
             if( f.getName().contains( databaseName ) ) {
                 f.delete();
             }
