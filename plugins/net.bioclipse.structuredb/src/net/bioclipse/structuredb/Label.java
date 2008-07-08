@@ -12,6 +12,7 @@ package net.bioclipse.structuredb;
 
 import net.bioclipse.services.views.model.AbstractServiceObject;
 import net.bioclipse.services.views.model.IDatabase;
+import net.bioclipse.services.views.model.IServiceContainer;
 
 
 /**
@@ -20,12 +21,19 @@ import net.bioclipse.services.views.model.IDatabase;
 public class Label extends AbstractServiceObject 
                    implements IDatabase {
 
-    public Label(String name) {
+    private Database parent;
+
+    public Label(String name, Database parent) {
         setName( name );
+        this.parent = parent;
     }
 
     public boolean drop( Object data ) {
 
         return false;
+    }
+    
+    public IServiceContainer getParent() {
+        return parent;
     }
 }

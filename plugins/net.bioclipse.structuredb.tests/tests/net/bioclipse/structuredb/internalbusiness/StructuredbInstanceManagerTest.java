@@ -216,6 +216,21 @@ public class StructuredbInstanceManagerTest
         assertEquals( structure, structureDao.getById(structure.getId()) );
     }
     
+    public void testDeleteLabelAndStructures() throws CDKException {
+        Structure structure = createStructure( "CycloOcan", 
+                                               TestData.getCycloOctan() );
+        Label label = createLabel( "test" );
+        structure.addLabel( label );
+        manager.update( label );
+        
+        assertTrue( labelDao.getById( label.getId() )
+                            .getStructures()
+                            .contains(structure) );
+        manager.deleteWithStructures( label );
+        assertFalse( structureDao.getAll().contains(structure) );
+        assertFalse( labelDao.getAll().contains(label) );
+    }
+    
     public void testAllStructureIterator() throws CDKException {
         testRetrieveAllStructures();
         List<Structure> structures = manager.retrieveAllStructures();

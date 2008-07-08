@@ -213,4 +213,8 @@ public class ForConsoleDecoratedStructuredbManager implements
     public Label retrieveLabelByName( String databaseName, String labelName ) {
         return manager.retrieveLabelByName( databaseName, labelName );
     }
+
+    public void deleteWithStructures( String databaseName, Label label ) {
+        manager.deleteWithStructures( databaseName, label );
+    }
 }

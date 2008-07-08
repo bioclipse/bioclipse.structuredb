@@ -138,4 +138,14 @@ public class StructuredbInstanceManager
         return structureDao.numberOfFingerprintSubstructureMatches( 
             queryStructure.getPersistedFingerprint() );
     }
+
+    public void deleteWithStructures( Label label ) {
+
+        //TODO: This could probably be speeded up by doing it all in one
+        //      one sql command
+        for ( Structure s : label.getStructures() ) {
+            structureDao.delete( s.getId() );
+        }
+        labelDao.delete( label.getId() );
+    }
 }

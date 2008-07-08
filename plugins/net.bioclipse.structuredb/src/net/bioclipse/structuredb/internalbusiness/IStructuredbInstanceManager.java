@@ -71,7 +71,8 @@ public interface IStructuredbInstanceManager {
     public void insertStructure( Structure structure ); 
     
     /**
-     * Removes the given library from the database.
+     * Removes the given library from the database. 
+     * Doesn't delete any structures.
      * 
      * @param label
      */
@@ -174,4 +175,11 @@ public interface IStructuredbInstanceManager {
      *         fingerprintsubstructure search
      */
     public int numberOfFingerprintMatches( Structure queryStructure );
+
+    
+    /**
+     * Deletes the given label from the database
+     * @param label
+     */
+    public void deleteWithStructures( Label label );
 }

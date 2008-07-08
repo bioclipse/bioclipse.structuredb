@@ -20,6 +20,9 @@ import net.bioclipse.structuredb.business.IStructuredbManager;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
 
 
@@ -42,6 +45,20 @@ public class RemoveLabelAction extends ActionDelegate {
         if ( selection instanceof IStructuredSelection ) {
             IStructuredSelection ss = (IStructuredSelection) selection;
             Iterator i = ss.iterator();
+            MessageBox messageBox 
+                = new MessageBox( PlatformUI.getWorkbench()
+                                            .getActiveWorkbenchWindow()
+                                            .getShell(), 
+                                  SWT.ICON_QUESTION | 
+                                  SWT.YES           | 
+                                  SWT.NO            |
+                                  SWT.CANCEL );
+            messageBox.setMessage( "Also remove structures " +
+            		                   "with this labels?" );
+            messageBox.setText("Deleting label");
+            int response = messageBox.open();
+            if (response == SWT.CANCEL)
+              return;
             while ( i.hasNext() ) {
                 Object o = i.next();
                 if (o instanceof Label) {
@@ -50,7 +67,14 @@ public class RemoveLabelAction extends ActionDelegate {
                         net.bioclipse.structuredb.domain.Label label =
                             manager.retrieveLabelByName(
                                 l.getParent().getName(), l.getName() );
-                        manager.delete( l.getParent().getName(), label );
+                        if (response == SWT.YES) {
+                            manager.deleteWithStructures(
+                                l.getParent().getName(), label);
+                        }
+                        else {
+                            manager.delete( l.getParent().getName(), 
+                                            label );
+                        }
                     }
                 }
             }

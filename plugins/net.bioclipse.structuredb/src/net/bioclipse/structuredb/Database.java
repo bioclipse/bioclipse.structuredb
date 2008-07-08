@@ -80,7 +80,8 @@ public class Database extends AbstractServiceContainer
                          Activator.getDefault()
                                   .getStructuredbManager()
                                   .allLabels( getName() ) ) {
-            children.add( new Label( l.getName() ) );
+            children.add( new Label( l.getName(), this ) );
+            
         }
         setChildren( children );
     }

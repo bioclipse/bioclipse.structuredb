@@ -563,4 +563,11 @@ public class StructuredbManager implements IStructuredbManager {
         return internalManagers.get( databaseName )
                                .retrieveLabelByName( labelName );
     }
+
+    public void deleteWithStructures( String databaseName, Label label ) {
+
+        internalManagers.get( databaseName )
+                        .deleteWithStructures( label );
+        fireLabelsChanged();
+    }
 }

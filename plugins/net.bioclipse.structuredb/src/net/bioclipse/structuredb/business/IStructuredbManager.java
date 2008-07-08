@@ -404,4 +404,15 @@ public interface IStructuredbManager extends IBioclipseManager {
                       		             "with the given name" )
     public Label retrieveLabelByName( String databaseName, 
                                       String labelName );
+
+    
+    /**
+     * Deletes a label and all structures having that label
+     * @param name
+     * @param label
+     */
+    @PublishedMethod ( params =  "String name, Label label", 
+                       methodSummary = "Deletes the given label from " +
+                       		             "the specified database" )
+    public void deleteWithStructures( String databaseName, Label label );
 }

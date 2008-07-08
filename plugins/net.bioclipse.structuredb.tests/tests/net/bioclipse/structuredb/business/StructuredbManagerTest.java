@@ -511,4 +511,18 @@ public class StructuredbManagerTest
                                                     l.getName() );
         assertTrue( l.hasValuesEqualTo( loaded ) );
     }
+    
+    public void testDeletingLabelWithStructures() throws BioclipseException {
+        Label l = manager.createLabel( database1, "label1" );
+        Structure s = manager.createStructure( database1, 
+                                               "test", 
+                                               cdk.fromSmiles( "CCC" ) );
+        l.addStructure( s );
+        manager.save( database1, l );
+        assertTrue( manager.allStructures( database1 ).contains( s ) );
+        assertTrue( manager.allLabels(     database1 ).contains( l ) );
+        manager.deleteWithStructures( database1, l );
+        assertFalse( manager.allStructures( database1 ).contains( s ) );
+        assertFalse( manager.allLabels(     database1 ).contains( l ) );
+    }
 }
