@@ -216,7 +216,10 @@ public class ForConsoleDecoratedStructuredbManager implements
     }
 
     public void deleteWithStructures( String databaseName, Label label ) {
-        manager.deleteWithStructures( databaseName, label );
+        manager.deleteWithStructures( databaseName, 
+                                      label, 
+                                      new JsConsoleView
+                                          .ConsoleProgressMonitor() );
     }
 
     public void addStructuresFromSDF( String databaseName, 
@@ -225,5 +228,12 @@ public class ForConsoleDecoratedStructuredbManager implements
                 throws BioclipseException {
 
         manager.addStructuresFromSDF( databaseName, file, monitor );
+    }
+
+    public void deleteWithStructures( String databaseName, 
+                                      Label label,
+                                      IProgressMonitor monitor ) {
+
+        manager.deleteWithStructures( databaseName, label, monitor );
     }
 }

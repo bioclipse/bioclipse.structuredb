@@ -13,6 +13,7 @@ package net.bioclipse.structuredb.internalbusiness;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.openscience.cdk.AtomContainer;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
@@ -180,6 +181,7 @@ public interface IStructuredbInstanceManager {
     /**
      * Deletes the given label from the database
      * @param label
+     * @param monitor 
      */
-    public void deleteWithStructures( Label label );
+    public void deleteWithStructures( Label label, IProgressMonitor monitor );
 }

@@ -427,4 +427,12 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Deletes the given label from " +
                        		             "the specified database" )
     public void deleteWithStructures( String databaseName, Label label );
+
+    /**
+     * @param name
+     * @param label
+     * @param monitor
+     */
+    public void deleteWithStructures( String name, Label label,
+                                      IProgressMonitor monitor );
 }

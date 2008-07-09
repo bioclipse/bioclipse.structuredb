@@ -226,7 +226,7 @@ public class StructuredbInstanceManagerTest
         assertTrue( labelDao.getById( label.getId() )
                             .getStructures()
                             .contains(structure) );
-        manager.deleteWithStructures( label );
+        manager.deleteWithStructures( label, null );
         assertFalse( structureDao.getAll().contains(structure) );
         assertFalse( labelDao.getAll().contains(label) );
     }

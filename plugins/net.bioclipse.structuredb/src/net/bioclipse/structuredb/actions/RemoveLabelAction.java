@@ -12,12 +12,19 @@ package net.bioclipse.structuredb.actions;
 
 import java.util.Iterator;
 
+import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Database;
 import net.bioclipse.structuredb.Label;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -68,8 +75,7 @@ public class RemoveLabelAction extends ActionDelegate {
                             manager.retrieveLabelByName(
                                 l.getParent().getName(), l.getName() );
                         if (response == SWT.YES) {
-                            manager.deleteWithStructures(
-                                l.getParent().getName(), label);
+                            deleteWithStructures(l.getParent().getName(), label);
                         }
                         else {
                             manager.delete( l.getParent().getName(), 
@@ -81,6 +87,25 @@ public class RemoveLabelAction extends ActionDelegate {
         }
     }
     
+    private void deleteWithStructures(
+        final String name, 
+        final net.bioclipse.structuredb.domain.Label label ) {
+
+        Job job = new Job("Delete Label and Structures") {
+            @Override
+            protected IStatus run( IProgressMonitor monitor ) {
+                Activator.getDefault()
+                         .getStructuredbManager()
+                         .deleteWithStructures( name, 
+                                                label, 
+                                                monitor );
+                return Status.OK_STATUS;
+            }
+        };
+        job.setUser( true );
+        job.schedule();
+    }
+        
     @Override
     public void selectionChanged( IAction action, ISelection selection ) {
         this.selection = selection;

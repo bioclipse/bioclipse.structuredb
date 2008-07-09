@@ -13,6 +13,10 @@ package net.bioclipse.structuredb.internalbusiness;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
+
 import net.bioclipse.core.domain.BioList;
 import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
@@ -139,13 +143,26 @@ public class StructuredbInstanceManager
             queryStructure.getPersistedFingerprint() );
     }
 
-    public void deleteWithStructures( Label label ) {
+    public void deleteWithStructures( Label label, 
+                                      IProgressMonitor monitor ) {
 
-        //TODO: This could probably be speeded up by doing it all in one
-        //      one sql command
-        for ( Structure s : label.getStructures() ) {
+        int ticks = 1000;
+        if(monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
+        monitor.beginTask( "Deleting Structures", ticks); 
+        IProgressMonitor sub 
+            = new SubProgressMonitor(monitor, (int) (0.1 * ticks));
+        sub.beginTask( "Preparing to delete", 1 );
+        List<Structure> structures = label.getStructures();
+        int tick = ticks / label.getStructures().size();
+        sub.worked( 1 );
+        sub.done();
+        for ( Structure s : structures ) {
             structureDao.delete( s.getId() );
+            monitor.worked( tick );
         }
         labelDao.delete( label.getId() );
+        monitor.done();
     }
 }

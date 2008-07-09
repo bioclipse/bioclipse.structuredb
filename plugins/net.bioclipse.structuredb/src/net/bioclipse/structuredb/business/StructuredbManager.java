@@ -315,7 +315,7 @@ public class StructuredbManager implements IStructuredbManager {
 
         monitor.beginTask( "Importing molecules from SDF to database", 
                            ticks );
-        monitor.subTask( "Calculates size of file to import" );
+        monitor.subTask( "Calculating size of file to import" );
         // first, count the number of items to read. 
         // It's a bit of overhead, but adds to the user experience
         int firstTaskTicks = (int) (0.05 * ticks);
@@ -579,16 +579,20 @@ public class StructuredbManager implements IStructuredbManager {
         }
     }
 
-    public Label retrieveLabelByName( String databaseName, String labelName ) {
-
+    public Label retrieveLabelByName( String databaseName, 
+                                      String labelName ) {
         return internalManagers.get( databaseName )
                                .retrieveLabelByName( labelName );
     }
 
     public void deleteWithStructures( String databaseName, Label label ) {
+        deleteWithStructures( databaseName, label, null );
+    }
 
+    public void deleteWithStructures( String databaseName, Label label,
+                                      IProgressMonitor monitor ) {
         internalManagers.get( databaseName )
-                        .deleteWithStructures( label );
+                        .deleteWithStructures( label, monitor );
         fireLabelsChanged();
     }
 
