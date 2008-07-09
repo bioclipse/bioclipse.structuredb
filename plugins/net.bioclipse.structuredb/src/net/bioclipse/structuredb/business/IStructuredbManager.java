@@ -13,6 +13,7 @@ package net.bioclipse.structuredb.business;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
@@ -134,8 +135,8 @@ public interface IStructuredbManager extends IBioclipseManager {
                                        "and saves it in the database with " +
                                        "the given name" )
     public Label createLabel( String databaseName,
-                                String labelName )
-                                throws IllegalArgumentException;
+                              String labelName )
+                 throws IllegalArgumentException;
 
     /**
      * Creates a user with the given username, password and sudoer flag and
@@ -206,6 +207,17 @@ public interface IStructuredbManager extends IBioclipseManager {
                                        "library named after the name of the " +
                                        "sdf file")
     public void addStructuresFromSDF(String databaseName, String filePath) 
+                throws BioclipseException;
+
+    /**
+     * @param databaseName
+     * @param file
+     * @param monitor
+     * @throws BioclipseException
+     */
+    public void addStructuresFromSDF( String databaseName, 
+                                      IFile file, 
+                                      IProgressMonitor monitor ) 
                 throws BioclipseException;
     
     /**

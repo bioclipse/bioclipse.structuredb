@@ -22,6 +22,7 @@ import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.ui.views.JsConsoleView;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.sun.corba.se.impl.ior.iiop.JavaSerializationComponent;
@@ -216,5 +217,13 @@ public class ForConsoleDecoratedStructuredbManager implements
 
     public void deleteWithStructures( String databaseName, Label label ) {
         manager.deleteWithStructures( databaseName, label );
+    }
+
+    public void addStructuresFromSDF( String databaseName, 
+                                      IFile file,
+                                      IProgressMonitor monitor )
+                throws BioclipseException {
+
+        manager.addStructuresFromSDF( databaseName, file, monitor );
     }
 }

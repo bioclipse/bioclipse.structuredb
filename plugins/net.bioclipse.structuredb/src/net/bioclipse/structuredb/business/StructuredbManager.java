@@ -35,6 +35,7 @@ import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.CDKMolecule;
 import net.bioclipse.cdk.domain.ICDKMolecule;
+import net.bioclipse.core.ResourcePathTransformer;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.BioList;
 import net.bioclipse.core.domain.IMolecule;
@@ -53,6 +54,7 @@ import net.bioclipse.structuredb.persistency.tables.TableCreator;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
 import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.openscience.cdk.CDKConstants;
@@ -299,13 +301,13 @@ public class StructuredbManager implements IStructuredbManager {
         return "structuredb";
     }
 
-    public void addStructuresFromSDF( String databaseName,
-                                      String filePath,
-                                      IProgressMonitor monitor)
-                                      throws BioclipseException {
+    public void addStructuresFromSDF( String databaseName, 
+                                      IFile file,
+                                      IProgressMonitor monitor )
+                throws BioclipseException {
         // first, count the number of items to read. 
         // It's a bit of overhead, but adds to the user experience
-        int moleculesToRead = cdk.numberOfEntriesInSDF(filePath);
+        int moleculesToRead = cdk.numberOfEntriesInSDF(file);
 
         // now really read the structures
         if(monitor != null) {
@@ -316,27 +318,23 @@ public class StructuredbManager implements IStructuredbManager {
         int moleculesRead = 0;
         URI uri;
         try {
-            uri = new File(filePath).toURI();
-            iterator = cdk.creatMoleculeIterator( 
-                EFS.getStore( uri )
-                   .openInputStream( EFS.NONE, null ) );
+            iterator = cdk.creatMoleculeIterator( file.getContents() ); 
         } 
         catch ( CoreException e ) {
             throw new IllegalArgumentException( "Could not open file:" + 
-                                                filePath );
+                                                file );
         } 
         String labelId 
             = createLabel( databaseName,
-                           uri.getPath()
+                           file.getName()
                               //extracts a name for our new label
-                              .replaceAll("\\..*?$", "")  
-                              .replaceAll( ".*/", "" ) )
+                              .replaceAll("\\..*?$", "") )
                               .getId();
 
         while ( iterator.hasNext() ) {
             ICDKMolecule molecule = iterator.next();
-						moleculesRead++;
-						
+            moleculesRead++;
+            
             Object title = molecule.getAtomContainer()
             .getProperty(CDKConstants.TITLE);
 
@@ -358,7 +356,18 @@ public class StructuredbManager implements IStructuredbManager {
         if(monitor != null) {
             monitor.done();
         }
-        fireLabelsChanged();
+        fireLabelsChanged();        
+    }
+    
+    public void addStructuresFromSDF( String databaseName,
+                                      String filePath,
+                                      IProgressMonitor monitor)
+                throws BioclipseException {
+        addStructuresFromSDF( databaseName, 
+                              ResourcePathTransformer
+                                  .getInstance()
+                                  .transform( filePath ), 
+                              monitor );
     }
 
     public List<String> listDatabaseNames() {
@@ -570,4 +579,5 @@ public class StructuredbManager implements IStructuredbManager {
                         .deleteWithStructures( label );
         fireLabelsChanged();
     }
+
 }

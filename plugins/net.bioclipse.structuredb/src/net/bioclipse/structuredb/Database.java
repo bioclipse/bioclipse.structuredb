@@ -48,7 +48,8 @@ public class Database extends AbstractServiceContainer
                         Activator.getDefault()
                                  .getStructuredbManager()
                                  .addStructuresFromSDF( getName(), 
-                                                        file.getLocationURI().toString() );
+                                                        file,
+                                                        null ); //TODO; add monitor here
                     } catch ( BioclipseException e ) {
                         return false;
                     }
