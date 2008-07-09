@@ -57,6 +57,8 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.springframework.context.ApplicationContext;
@@ -305,18 +307,32 @@ public class StructuredbManager implements IStructuredbManager {
                                       IFile file,
                                       IProgressMonitor monitor )
                 throws BioclipseException {
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
+        
+        int ticks = 1000000;
+
+        monitor.beginTask( "Importing molecules from SDF to database", 
+                           ticks );
+        monitor.subTask( "Calculates size of file to import" );
         // first, count the number of items to read. 
         // It's a bit of overhead, but adds to the user experience
-        int moleculesToRead = cdk.numberOfEntriesInSDF(file);
-
+        int firstTaskTicks = (int) (0.05 * ticks);
+        int maintTaskTick 
+            = (ticks - firstTaskTicks) 
+              / cdk.numberOfEntriesInSDF( file, 
+                                          new SubProgressMonitor( 
+                                              monitor, 
+                                              firstTaskTicks ) );
+         
+        monitor.worked( firstTaskTicks );
         // now really read the structures
-        if(monitor != null) {
-            monitor.beginTask( "Reading molecules from sdf file", 
-                               moleculesToRead );
-        }
+        
+        monitor.subTask( "importing molecules" );
+        
         Iterator<ICDKMolecule> iterator;
         int moleculesRead = 0;
-        URI uri;
         try {
             iterator = cdk.creatMoleculeIterator( file.getContents() ); 
         } 
@@ -349,13 +365,9 @@ public class StructuredbManager implements IStructuredbManager {
 
             internalManagers.get(databaseName)
                             .insertStructureInLabel(s, labelId);
-            if(monitor != null) {
-                monitor.worked( 1 );
-            }
+            monitor.worked( maintTaskTick );
         }
-        if(monitor != null) {
-            monitor.done();
-        }
+        monitor.done();
         fireLabelsChanged();        
     }
     
