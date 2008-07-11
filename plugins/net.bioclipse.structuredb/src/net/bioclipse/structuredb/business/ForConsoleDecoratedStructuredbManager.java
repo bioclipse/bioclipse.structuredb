@@ -46,12 +46,14 @@ public class ForConsoleDecoratedStructuredbManager implements
         this.manager = toBeDecorated;
     }
     
-    public void addStructuresFromSDF( String databaseName, String filePath )
+    public void addStructuresFromSDF( String databaseName, 
+                                      String filePath )
                 throws BioclipseException {
 
         addStructuresFromSDF( databaseName, 
                               filePath, 
-                              new JsConsoleView.ConsoleProgressMonitor() );
+                              new JsConsoleView
+                                  .ConsoleProgressMonitor() );
     }
 
     public void addStructuresFromSDF( String databaseName, 
@@ -72,7 +74,8 @@ public class ForConsoleDecoratedStructuredbManager implements
 
     public List<Structure> allStructuresByName( String databaseName,
                                                 String structureName ) {
-        return manager.allStructuresByName( databaseName, structureName );
+        return manager.allStructuresByName( databaseName, 
+                                            structureName );
     }
 
     public List<User> allUsers( String databaseName ) {
@@ -101,7 +104,10 @@ public class ForConsoleDecoratedStructuredbManager implements
     public User createUser( String databaseName, String username,
                             String password, boolean sudoer )
                 throws IllegalArgumentException {
-        return manager.createUser( databaseName, username, password, sudoer );
+        return manager.createUser( databaseName, 
+                                   username, 
+                                   password, 
+                                   sudoer );
     }
 
     public Label labelByName( String databaseName, String folderName ) {
@@ -124,10 +130,13 @@ public class ForConsoleDecoratedStructuredbManager implements
         return manager.getNamespace();
     }
 
-    public Iterator<Structure> subStructureSearchIterator( String databaseName,
-                                                           IMolecule molecule )
-                               throws BioclipseException {
-        return manager.subStructureSearchIterator( databaseName, molecule );
+    public Iterator<Structure> 
+        subStructureSearchIterator( String databaseName,
+                                    IMolecule molecule )
+            throws BioclipseException {
+        
+        return manager.subStructureSearchIterator( databaseName, 
+                                                   molecule );
     }
 
     public ICDKMolecule toCDKMolecule( Structure structure ) {
@@ -139,10 +148,11 @@ public class ForConsoleDecoratedStructuredbManager implements
                                                IMolecule molecule )
                            throws BioclipseException {
         
-        return manager.subStructureSearch( databaseName, 
-                                           molecule, 
-                                           new JsConsoleView
-                                               .ConsoleProgressMonitor() );
+        return manager
+               .subStructureSearch( databaseName, 
+                                    molecule, 
+                                    new JsConsoleView
+                                        .ConsoleProgressMonitor() );
     }
 
     public List<Structure> subStructureSearch( String databaseName,
@@ -150,7 +160,9 @@ public class ForConsoleDecoratedStructuredbManager implements
                                                IProgressMonitor monitor )
                            throws BioclipseException {
 
-        return manager.subStructureSearch( databaseName, molecule, monitor );
+        return manager.subStructureSearch( databaseName, 
+                                           molecule, 
+                                           monitor );
     }
 
     public void delete( String database, Label label ) {
@@ -173,7 +185,8 @@ public class ForConsoleDecoratedStructuredbManager implements
         manager.save( database, label );
     }
 
-    public List<Structure> smartsQuery( String database, String smarts ) {
+    public List<Structure> smartsQuery( String database, 
+                                        String smarts ) {
 
         return manager.smartsQuery( database, 
                                     smarts, 
@@ -184,10 +197,11 @@ public class ForConsoleDecoratedStructuredbManager implements
     public Iterator<Structure> smartsQueryIterator( String database,
                                                     String smarts ) {
         
-        return manager.smartsQueryIterator( database, 
-                                            smarts,  
-                                            new JsConsoleView
-                                                .ConsoleProgressMonitor() );
+        return manager
+               .smartsQueryIterator( database, 
+                                     smarts,  
+                                     new JsConsoleView
+                                         .ConsoleProgressMonitor() );
     }
 
     public List<Structure> smartsQuery( String database, String smarts,
@@ -196,9 +210,10 @@ public class ForConsoleDecoratedStructuredbManager implements
         return manager.smartsQuery( database, smarts, monitor );
     }
 
-    public Iterator<Structure> smartsQueryIterator( String database,
-                                                    String smarts,
-                                                    IProgressMonitor monitor ) {
+    public Iterator<Structure> 
+        smartsQueryIterator( String database,
+                             String smarts,
+                             IProgressMonitor monitor ) {
 
         return manager.smartsQueryIterator( database, smarts, monitor );
     }
@@ -211,11 +226,14 @@ public class ForConsoleDecoratedStructuredbManager implements
         manager.removeListener( listener );
     }
 
-    public Label retrieveLabelByName( String databaseName, String labelName ) {
+    public Label retrieveLabelByName( String databaseName, 
+                                      String labelName ) {
         return manager.retrieveLabelByName( databaseName, labelName );
     }
 
-    public void deleteWithStructures( String databaseName, Label label ) {
+    public void deleteWithStructures( String databaseName, 
+                                      Label label ) {
+        
         manager.deleteWithStructures( databaseName, 
                                       label, 
                                       new JsConsoleView
