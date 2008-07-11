@@ -34,6 +34,8 @@ import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
 import net.bioclipse.structuredb.persistency.dao.ILabelDao;
 import net.bioclipse.structuredb.persistency.dao.IStructureDao;
+
+import org.eclipse.core.runtime.CoreException;
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.templates.MoleculeFactory;
 import org.springframework.context.ApplicationContext;
@@ -132,7 +134,7 @@ public class StructuredbManagerTest
                       manager.labelByName( database1, f1.getName() ) );
     }
 
-    public void testListSubstructureSearchResults() throws IOException, BioclipseException {
+    public void testListSubstructureSearchResults() throws Exception {
         ICDKManager cdk = new CDKManager();
 
         ICDKMolecule mol1 = cdk.loadMolecule( TestData
@@ -196,8 +198,7 @@ public class StructuredbManagerTest
         assertTrue( list.contains( indoleStructure ));
     }
     
-    public void testSubstructureSearch() throws BioclipseException, 
-                                                IOException {
+    public void testSubstructureSearch() throws Exception {
 
         ICDKManager cdk = new CDKManager();
 
@@ -266,8 +267,7 @@ public class StructuredbManagerTest
         assertTrue(foundIndole);
     }
     
-    public void testCreatingAndRetrievingStructures() throws BioclipseException,
-                                                             IOException {
+    public void testCreatingAndRetrievingStructures() throws Exception {
         ICDKManager cdk = new CDKManager();
 
         ICDKMolecule mol1 = cdk.loadMolecule( TestData
@@ -409,8 +409,7 @@ public class StructuredbManagerTest
         }
     }
 
-    public void testCreatingCDKMoleculeFromStructure() 
-                throws IOException, BioclipseException {
+    public void testCreatingCDKMoleculeFromStructure() throws Exception {
 
         ICDKMolecule mol1 = cdk.loadMolecule( TestData
                                               .class
