@@ -138,8 +138,9 @@ public class StructuredbManagerTest
         ICDKMolecule mol1 = cdk.loadMolecule( TestData
                                               .class
                                               .getClassLoader()
-                                              .getResourceAsStream(
-                                              "testData/0037.cml") );
+                                              .getResource(
+                                                  "testData/0037.cml")
+                                              .getPath() );
         assertNotNull(mol1);
 
         Structure structure1 = manager
@@ -155,8 +156,9 @@ public class StructuredbManagerTest
                                    cdk.loadMolecule( 
                                        TestData.class
                                                .getClassLoader()
-                                               .getResourceAsStream(
-                                                   "testData/0106.cml")) );
+                                               .getResource(
+                                                   "testData/0106.cml")
+                                               .getPath() ) );
 
         assertNotNull(structure2);
 
@@ -176,9 +178,11 @@ public class StructuredbManagerTest
 
         SmilesGenerator generator = new SmilesGenerator();
         String indoleSmiles  = generator
-                               .createSMILES( MoleculeFactory.makeIndole() );
+                               .createSMILES( 
+                                   MoleculeFactory.makeIndole() );
         String pyrroleSmiles = generator
-                               .createSMILES( MoleculeFactory.makePyrrole() );
+                               .createSMILES( 
+                                   MoleculeFactory.makePyrrole() );
         ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
         ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
 
@@ -200,8 +204,9 @@ public class StructuredbManagerTest
         ICDKMolecule mol1 = cdk.loadMolecule( TestData
                                               .class
                                               .getClassLoader()
-                                              .getResourceAsStream(
-                                              "testData/0037.cml") );
+                                              .getResource(
+                                                  "testData/0037.cml")
+                                              .getPath() );
         assertNotNull(mol1);
 
         Structure structure1 = manager
@@ -217,8 +222,9 @@ public class StructuredbManagerTest
                                    cdk.loadMolecule( 
                                        TestData.class
                                                .getClassLoader()
-                                               .getResourceAsStream(
-                                                   "testData/0106.cml")) );
+                                               .getResource(
+                                                   "testData/0106.cml")
+                                               .getPath() ) );
 
         assertNotNull(structure2);
 
@@ -267,8 +273,9 @@ public class StructuredbManagerTest
         ICDKMolecule mol1 = cdk.loadMolecule( TestData
                                               .class
                                               .getClassLoader()
-                                              .getResourceAsStream(
-                                              "testData/0037.cml") );
+                                              .getResource(
+                                                  "testData/0037.cml")
+                                              .getPath() );
         assertNotNull(mol1);
 
         Structure structure1 = manager
@@ -285,8 +292,9 @@ public class StructuredbManagerTest
                                               TestData
                                               .class
                                               .getClassLoader()
-                                              .getResourceAsStream(
-                                              "testData/0106.cml")) );
+                                              .getResource(
+                                                  "testData/0106.cml")
+                                              .getPath() ) );
 
         assertNotNull(structure2);
 
@@ -347,10 +355,12 @@ public class StructuredbManagerTest
     
     public void testDeleteStructure() throws BioclipseException {
         ICDKManager cdk = new CDKManager();
-        Structure structure = manager.createStructure( database1, 
-                                                       "test", 
-                                                       cdk.fromSmiles( "CC" ) );
-        assertTrue( manager.allStructures( database1 ).contains( structure ) );
+        Structure structure 
+            = manager.createStructure( database1, 
+                                       "test", 
+                                       cdk.fromSmiles( "CC" ) );
+        assertTrue( manager.allStructures( database1 )
+                           .contains( structure ) );
         manager.delete( database1, structure );
     }
     
@@ -369,8 +379,10 @@ public class StructuredbManagerTest
     public void testDatabasesFilesAreLoaded() {
         HsqldbUtil.getInstance().stopAllDatabaseInstances();
         StructuredbManager anotherManager = new StructuredbManager();
-        assertTrue( anotherManager.listDatabaseNames().contains(database1) );
-        assertTrue( anotherManager.listDatabaseNames().contains(database1) );
+        assertTrue( anotherManager.listDatabaseNames()
+                                  .contains(database1) );
+        assertTrue( anotherManager.listDatabaseNames()
+                                  .contains(database1) );
         assertEquals( 2, anotherManager.listDatabaseNames().size() );
     }
 
@@ -381,13 +393,15 @@ public class StructuredbManagerTest
         assertFalse( manager.listDatabaseNames().contains(database1) );
         
         StructuredbManager anotherManager = new StructuredbManager();
-        assertFalse( anotherManager.listDatabaseNames().contains(database1) );
+        assertFalse( anotherManager.listDatabaseNames()
+                                   .contains(database1) );
         manager.createDatabase( database1 ); // restore order
     }
     
     public void testUsingUnknownDatabase() {
         try {
-            manager.createLabel( "unknown database", "some folder name" );
+            manager.createLabel( "unknown database", 
+                                 "some folder name" );
             fail("should throw exception");
         }
         catch (IllegalArgumentException e) {
@@ -401,8 +415,9 @@ public class StructuredbManagerTest
         ICDKMolecule mol1 = cdk.loadMolecule( TestData
                                               .class
                                               .getClassLoader()
-                                              .getResourceAsStream(
-                                              "testData/0037.cml") );
+                                              .getResource(
+                                                  "testData/0037.cml")
+                                              .getPath() );
         assertNotNull(mol1);
 
         Structure structure1 = new Structure( "0037", mol1 );
@@ -465,7 +480,8 @@ public class StructuredbManagerTest
         assertEquals( 0, loaded.getStructures().size() );
     }
     
-    public void testListSMARTSQueryResults() throws IOException, BioclipseException {
+    public void testListSMARTSQueryResults() 
+                throws IOException, BioclipseException {
 
         String propaneSmiles = "CCC";
         String butaneSmiles  = "CCCC"; 
@@ -492,9 +508,9 @@ public class StructuredbManagerTest
                                                              "indole", 
                                                              butane );
         
-        Iterator<Structure> iterator = manager
-                                       .smartsQueryIterator( database1, 
-                                                             propaneSmiles );
+        Iterator<Structure> iterator 
+            = manager.smartsQueryIterator( database1, 
+                                           propaneSmiles );
         boolean found = false;
         while ( iterator.hasNext() ) {
             if ( iterator.next().equals( butaneStructure ) ) {
@@ -512,7 +528,8 @@ public class StructuredbManagerTest
         assertTrue( l.hasValuesEqualTo( loaded ) );
     }
     
-    public void testDeletingLabelWithStructures() throws BioclipseException {
+    public void testDeletingLabelWithStructures() 
+                throws BioclipseException {
         Label l = manager.createLabel( database1, "label1" );
         Structure s = manager.createStructure( database1, 
                                                "test", 

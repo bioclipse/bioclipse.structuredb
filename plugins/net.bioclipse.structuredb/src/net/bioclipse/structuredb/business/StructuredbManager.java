@@ -334,7 +334,7 @@ public class StructuredbManager implements IStructuredbManager {
         Iterator<ICDKMolecule> iterator;
         int moleculesRead = 0;
         try {
-            iterator = cdk.creatMoleculeIterator( file.getContents() ); 
+            iterator = cdk.creatMoleculeIterator( file ); 
         } 
         catch ( CoreException e ) {
             throw new IllegalArgumentException( "Could not open file:" + 
