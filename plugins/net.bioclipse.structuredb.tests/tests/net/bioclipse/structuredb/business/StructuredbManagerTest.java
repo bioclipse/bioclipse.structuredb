@@ -10,21 +10,15 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
-
 import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Label;
@@ -32,10 +26,7 @@ import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
-import net.bioclipse.structuredb.persistency.dao.ILabelDao;
-import net.bioclipse.structuredb.persistency.dao.IStructureDao;
 
-import org.eclipse.core.runtime.CoreException;
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.templates.MoleculeFactory;
 import org.springframework.context.ApplicationContext;
@@ -56,10 +47,14 @@ public class StructuredbManagerTest
     private ICDKManager cdk = new CDKManager();
     
     static {
-        System.setProperty( "javax.xml.parsers.SAXParserFactory", 
-                            "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl" );
-        System.setProperty( "javax.xml.parsers.DocumentBuilderFactory", 
-                            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl" );
+        System.setProperty(
+            "javax.xml.parsers.SAXParserFactory", 
+            "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"
+        );
+        System.setProperty(
+            "javax.xml.parsers.DocumentBuilderFactory", 
+            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
+        );
         deepDelete( HsqldbUtil.getInstance().getDatabaseFilesDirectory() );
     }
     
