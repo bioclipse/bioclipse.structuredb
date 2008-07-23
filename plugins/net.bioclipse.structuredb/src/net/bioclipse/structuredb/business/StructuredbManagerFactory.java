@@ -13,7 +13,7 @@
 package net.bioclipse.structuredb.business;
 
 import net.bioclipse.structuredb.Activator;
-import net.bioclipse.ui.views.JsConsoleView;
+import net.bioclipse.scripting.ui.views.JsConsoleView;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;

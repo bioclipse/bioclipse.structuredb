@@ -20,7 +20,7 @@ import net.bioclipse.recording.JsScriptGenerator;
 import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
-import net.bioclipse.ui.views.JsConsoleView;
+import net.bioclipse.scripting.ui.views.JsConsoleView;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;

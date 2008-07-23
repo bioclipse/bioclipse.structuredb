@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.ui,
  org.springframework.bundle.spring.tx,
  org.springframework.bundle.spring.jdbc,
  net.bioclipse.cdk.business,
- net.bioclipse.ui,
+ net.bioclipse.scripting.ui,
  org.springframework.osgi.aopalliance.osgi;bundle-version="1.0.0",
  org.eclipse.core.filesystem;bundle-version="1.2.0"
 Eclipse-LazyStart: true

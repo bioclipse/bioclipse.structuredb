@@ -26,7 +26,7 @@ import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
-import net.bioclipse.ui.views.JsConsoleView.ConsoleProgressMonitor;
+import net.bioclipse.scripting.ui.views.JsConsoleView.ConsoleProgressMonitor;
 
 /**
  * @author jonalv
