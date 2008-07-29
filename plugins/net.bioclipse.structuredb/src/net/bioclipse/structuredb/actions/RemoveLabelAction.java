@@ -78,7 +78,7 @@ public class RemoveLabelAction extends ActionDelegate {
                             deleteWithStructures(l.getParent().getName(), label);
                         }
                         else {
-                            manager.delete( l.getParent().getName(), 
+                            manager.deleteLabel( l.getParent().getName(), 
                                             label );
                         }
                     }

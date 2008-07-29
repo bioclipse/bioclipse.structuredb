@@ -344,7 +344,7 @@ public class StructuredbManagerTest
     public void testDeleteLabel() {
         Label label = manager.createLabel( database1, "label" );
         assertTrue( manager.allLabels( database1 ).contains( label ) );
-        manager.delete(database1, label);
+        manager.deleteLabel(database1, label);
         assertFalse( manager.allLabels( database1 ).contains( label ) );
     }
     
@@ -356,7 +356,7 @@ public class StructuredbManagerTest
                                        cdk.fromSmiles( "CC" ) );
         assertTrue( manager.allStructures( database1 )
                            .contains( structure ) );
-        manager.delete( database1, structure );
+        manager.deleteStructure( database1, structure );
     }
     
     public void testCreatingAndRetrievingUsers() {

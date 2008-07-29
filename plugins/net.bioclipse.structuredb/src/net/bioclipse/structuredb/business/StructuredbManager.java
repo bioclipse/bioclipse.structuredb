@@ -501,14 +501,14 @@ public class StructuredbManager implements IStructuredbManager {
         return structures;
     }
 
-    public void delete( String databaseName, Label label ) {
+    public void deleteLabel( String databaseName, Label label ) {
 
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName ).delete( label );
         fireLabelsChanged();
     }
 
-    public void delete( String databaseName, Structure structure ) {
+    public void deleteStructure( String databaseName, Structure structure ) {
      
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName ).delete( structure );

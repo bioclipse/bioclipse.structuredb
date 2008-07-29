@@ -13,20 +13,18 @@ package net.bioclipse.structuredb.business;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IProgressMonitor;
-
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.business.IBioclipseManager;
 import net.bioclipse.core.domain.IMolecule;
-import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Label;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
-import net.bioclipse.scripting.ui.views.JsConsoleView.ConsoleProgressMonitor;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * @author jonalv
@@ -310,7 +308,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String database, Label label", 
                        methodSummary = "Deletes the given label from the " +
                        		           "given database" )
-    public void delete( String database, Label label );
+    public void deleteLabel( String database, Label label );
 
     /**
      * Deletes the given structure from the given database
@@ -321,7 +319,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String database, Structure structure",
                        methodSummary = "Deletes the given structure from the " +
                        		           "given database" )
-    public void delete( String database, Structure structure );
+    public void deleteStructure( String database, Structure structure );
 
     
     /**

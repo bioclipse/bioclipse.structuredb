@@ -29,9 +29,9 @@ import com.sun.corba.se.impl.ior.iiop.JavaSerializationComponent;
 
 
 /**
- * Redirects calls to methods without a progressmonitor to methods with 
- * progressmonitors where appropriate, using a JSConsole specific 
- * progressmonitor.    
+ * Redirects calls to methods without a progress monitor to methods with 
+ * progress monitors where appropriate, using a JSConsole specific 
+ * progress monitor.    
  * 
  * @author jonalv
  *
@@ -165,14 +165,14 @@ public class ForConsoleDecoratedStructuredbManager implements
                                            monitor );
     }
 
-    public void delete( String database, Label label ) {
+    public void deleteLabel( String database, Label label ) {
 
-        manager.delete( database, label );
+        manager.deleteLabel( database, label );
     }
 
-    public void delete( String database, Structure structure ) {
+    public void deleteStructure( String database, Structure structure ) {
 
-        manager.delete( database, structure );
+        manager.deleteStructure( database, structure );
     }
 
     public void save( String database, Structure structure ) {
