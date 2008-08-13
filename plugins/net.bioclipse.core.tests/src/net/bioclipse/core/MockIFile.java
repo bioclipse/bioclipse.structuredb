@@ -6,7 +6,7 @@
  *http://www.eclipse.org/legal/epl-v10.html
  *
  *******************************************************************************/
-package net.bioclipse.cdk;
+package net.bioclipse.core;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,8 +15,6 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
 import java.util.Map;
-
-import net.bioclipse.cdk.business.test.Activator;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
