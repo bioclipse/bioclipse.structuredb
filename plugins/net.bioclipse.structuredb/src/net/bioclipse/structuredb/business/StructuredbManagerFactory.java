@@ -37,8 +37,7 @@ public class StructuredbManagerFactory implements IExecutableExtension,
     
         logger.debug("StructuredbManagerFactory.setInitializationData");
         
-        structuredbManager = new ForConsoleDecoratedStructuredbManager(
-                             Activator.getDefault().getStructuredbManager() );
+        structuredbManager = Activator.getDefault().getStructuredbManager();
     }
 
     public Object create() throws CoreException {
