@@ -433,4 +433,12 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     public void deleteWithStructures( String name, Label label,
                                       IProgressMonitor monitor );
+
+    /**
+     * @param databaseName
+     * @param file
+     * @throws BioclipseException 
+     */
+    public void addStructuresFromSDF( String databaseName, IFile file ) 
+                throws BioclipseException;
 }

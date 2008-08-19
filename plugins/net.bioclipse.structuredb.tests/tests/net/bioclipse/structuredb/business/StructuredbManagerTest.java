@@ -11,6 +11,7 @@
 package net.bioclipse.structuredb.business;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
+import net.bioclipse.core.MockIFile;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
@@ -27,6 +29,7 @@ import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
 
+import org.eclipse.core.resources.IFile;
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.templates.MoleculeFactory;
 import org.springframework.context.ApplicationContext;
@@ -101,10 +104,7 @@ public class StructuredbManagerTest
 
     @Override
     protected String[] getConfigLocations() {
-        String loc = Structuredb.class
-                                .getClassLoader()
-                                .getResource(".")
-                                .toString();
+        String loc = new File(".").getAbsolutePath();
         loc = loc.substring(0, loc.lastIndexOf(".tests"));
         loc += File.separator
             + "META-INF"
@@ -113,7 +113,7 @@ public class StructuredbManagerTest
             + File.separator
             + "context.xml";
 
-        return new String[] {loc};
+        return new String[] {"file:" + loc};
     }
 
     public void testCreatingTwoLabelsInTwoDatabases() {
@@ -132,12 +132,12 @@ public class StructuredbManagerTest
     public void testListSubstructureSearchResults() throws Exception {
         ICDKManager cdk = new CDKManager();
 
-        ICDKMolecule mol1 = cdk.loadMolecule( TestData
-                                              .class
-                                              .getClassLoader()
-                                              .getResource(
-                                                  "testData/0037.cml")
-                                              .getPath() );
+        ICDKMolecule mol1 = cdk.loadMolecule( 
+            new MockIFile( TestData
+                           .class
+                           .getClassLoader()
+                           .getResource("testData/0037.cml")
+                           .getPath() ) );
         assertNotNull(mol1);
 
         Structure structure1 = manager
@@ -197,12 +197,11 @@ public class StructuredbManagerTest
 
         ICDKManager cdk = new CDKManager();
 
-        ICDKMolecule mol1 = cdk.loadMolecule( TestData
-                                              .class
-                                              .getClassLoader()
-                                              .getResource(
-                                                  "testData/0037.cml")
-                                              .getPath() );
+        ICDKMolecule mol1 = cdk.loadMolecule( 
+              new MockIFile ( TestData.class
+                                      .getClassLoader()
+                                      .getResource("testData/0037.cml")
+                                      .getPath() ) );
         assertNotNull(mol1);
 
         Structure structure1 = manager
@@ -265,12 +264,11 @@ public class StructuredbManagerTest
     public void testCreatingAndRetrievingStructures() throws Exception {
         ICDKManager cdk = new CDKManager();
 
-        ICDKMolecule mol1 = cdk.loadMolecule( TestData
-                                              .class
-                                              .getClassLoader()
-                                              .getResource(
-                                                  "testData/0037.cml")
-                                              .getPath() );
+        ICDKMolecule mol1 = cdk.loadMolecule( 
+            new MockIFile( TestData.class
+                                   .getClassLoader()
+                                   .getResource("testData/0037.cml")
+                                   .getPath() ) );
         assertNotNull(mol1);
 
         Structure structure1 = manager
@@ -318,12 +316,12 @@ public class StructuredbManagerTest
                                 .retrieveUserByUsername("local") );
     }
 
-    public void testImportingSDFFile() throws BioclipseException {
-        manager.addStructuresFromSDF( database1,
-                                      TestData.getTestSDFFilePath() );
+    public void testImportingSDFFile() throws BioclipseException, 
+                                              FileNotFoundException {
+        IFile file = new MockIFile( TestData.getTestSDFFilePath() );
+        manager.addStructuresFromSDF( database1, file );
         Label label
-            = manager.labelByName( database1,
-                                    "sdfTestFile" );
+            = manager.labelByName( database1, file.getName() );
         assertNotNull(label);
         assertEquals( 2, label.getStructures().size() );
     }
@@ -406,12 +404,11 @@ public class StructuredbManagerTest
 
     public void testCreatingCDKMoleculeFromStructure() throws Exception {
 
-        ICDKMolecule mol1 = cdk.loadMolecule( TestData
-                                              .class
-                                              .getClassLoader()
-                                              .getResource(
-                                                  "testData/0037.cml")
-                                              .getPath() );
+        ICDKMolecule mol1 = cdk.loadMolecule( 
+            new MockIFile( TestData.class
+                                   .getClassLoader()
+                                   .getResource("testData/0037.cml")
+                                   .getPath() ) );
         assertNotNull(mol1);
 
         Structure structure1 = new Structure( "0037", mol1 );

@@ -617,4 +617,13 @@ public class StructuredbManager implements IStructuredbManager {
         fireLabelsChanged();
     }
 
+    public void addStructuresFromSDF( String databaseName, IFile file ) 
+                throws BioclipseException {
+
+        addStructuresFromSDF( databaseName, 
+                              file, 
+                              new NullProgressMonitor() );
+        
+    }
+
 }
