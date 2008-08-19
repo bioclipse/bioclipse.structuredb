@@ -37,6 +37,14 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
     static {
         HsqldbTestServerManager.INSTANCE.startServer();
         HsqldbTestServerManager.INSTANCE.setupTestEnvironment();
+        System.setProperty(
+           "javax.xml.parsers.SAXParserFactory", 
+           "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"
+        );
+        System.setProperty(
+           "javax.xml.parsers.DocumentBuilderFactory", 
+           "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
+        );
     }
     
     protected IGenericDao<DomainType> dao;
