@@ -146,16 +146,17 @@ public class StructuredbManagerTest
                                                  mol1 );
         assertNotNull(structure1);
 
-        Structure structure2 = manager
-                               .createStructure( 
-                                   database1,
-                                   "0106",
-                                   cdk.loadMolecule( 
-                                       TestData.class
-                                               .getClassLoader()
-                                               .getResource(
-                                                   "testData/0106.cml")
-                                               .getPath() ) );
+        Structure structure2 
+            = manager
+              .createStructure( 
+                   database1,
+                   "0106",
+                   cdk.loadMolecule(
+                       new MockIFile( 
+                           TestData.class
+                                  .getClassLoader()
+                                  .getResource("testData/0106.cml")
+                                  .getPath() ) ) );
 
         assertNotNull(structure2);
 
@@ -210,16 +211,16 @@ public class StructuredbManagerTest
                                                  mol1 );
         assertNotNull(structure1);
 
-        Structure structure2 = manager
-                               .createStructure( 
-                                   database1,
-                                   "0106",
-                                   cdk.loadMolecule( 
-                                       TestData.class
-                                               .getClassLoader()
-                                               .getResource(
-                                                   "testData/0106.cml")
-                                               .getPath() ) );
+        Structure structure2 
+            = manager.createStructure( 
+                database1,
+                "0106",
+                cdk.loadMolecule( 
+                    new MockIFile(
+                        TestData.class
+                                .getClassLoader()
+                                .getResource("testData/0106.cml")
+                                .getPath() ) ) );
 
         assertNotNull(structure2);
 
@@ -277,17 +278,16 @@ public class StructuredbManagerTest
                                                 mol1 );
         assertNotNull(structure1);
 
-        Structure structure2 = manager
-                               .createStructure(
-                                      database1,
-                                      "0106",
-                                      cdk.loadMolecule(
-                                              TestData
-                                              .class
-                                              .getClassLoader()
-                                              .getResource(
-                                                  "testData/0106.cml")
-                                              .getPath() ) );
+        Structure structure2 
+            = manager.createStructure(
+                database1,
+                "0106",
+                cdk.loadMolecule( 
+                    new MockIFile( TestData
+                                   .class
+                                   .getClassLoader()
+                                   .getResource("testData/0106.cml")
+                                   .getPath() ) ) );
 
         assertNotNull(structure2);
 
