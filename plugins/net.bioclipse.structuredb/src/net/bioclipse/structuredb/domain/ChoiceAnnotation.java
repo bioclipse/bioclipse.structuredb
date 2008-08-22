@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *     Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
@@ -18,6 +19,7 @@ package net.bioclipse.structuredb.domain;
 public class ChoiceAnnotation extends Annotation {
 
     private String value;
+    private ChoiceProperty property;
     
     public ChoiceAnnotation() {
         super();
@@ -28,14 +30,11 @@ public class ChoiceAnnotation extends Annotation {
         this.value = value;
     }
     
-    public ChoiceAnnotation(ChoiceAnnotation choiceAnnotation1) {
-
-        // TODO Auto-generated constructor stub
+    public ChoiceAnnotation(ChoiceAnnotation choiceAnnotation) {
+        super(choiceAnnotation);
+        this.value = choiceAnnotation.getValue();
     }
 
-    /* (non-Javadoc)
-     * @see net.bioclipse.structuredb.domain.BaseObject#hasValuesEqualTo(net.bioclipse.structuredb.domain.BaseObject)
-     */
     public boolean hasValuesEqualTo( BaseObject obj ) {
         
         if( !super.hasValuesEqualTo(obj) ) {
@@ -48,19 +47,18 @@ public class ChoiceAnnotation extends Annotation {
         return value.equals( annotation.getValue() );
     }
 
-    public Object getValue() {
+    public String getValue() {
         return this.value;
     }
 
     public void setProperty( ChoiceProperty property ) {
-
-        // TODO Auto-generated method stub
-        
+        this.property = property;
+        if ( !property.getAnnotations().contains( this ) ) {
+            property.addAnnotation( this );
+        }
     }
 
     public ChoiceProperty getProperty() {
-
-        // TODO Auto-generated method stub
-        return null;
+        return property;
     }
 }

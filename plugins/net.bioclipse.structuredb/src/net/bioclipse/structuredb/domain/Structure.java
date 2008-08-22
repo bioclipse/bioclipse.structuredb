@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *     Jonathan Alvarsson
  *
  *******************************************************************************/
 
@@ -47,18 +48,20 @@ import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
 public class Structure extends BaseObject
                        implements net.bioclipse.core.domain.IMolecule {
 
-    private static final Logger logger = Logger.getLogger(Structure.class);
+    private static final Logger logger 
+        = Logger.getLogger(Structure.class);
 
-    private IAtomContainer atomContainer;
-    private BitSet         fingerPrint;
-    private byte[]         persistedFingerPrint;
-    private String         smiles;
+    private IAtomContainer      atomContainer;
+    private BitSet              fingerPrint;
+    private byte[]              persistedFingerPrint;
+    private String              smiles;
     private List<Annotation>    annotations;
 
     public Structure() {
         super();
         fingerPrint = new BitSet();
-        this.persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
+        this.persistedFingerPrint 
+            = makePersistedFingerPrint(fingerPrint);
         atomContainer = new AtomContainer();
         smiles = "";
         annotations = new ArrayList<Annotation>();
@@ -76,7 +79,8 @@ public class Structure extends BaseObject
         } catch (Exception e) {
             //If this happens often maybe something else is needed
             throw new IllegalArgumentException(
-                    "could not create fingerPrint for Atomcontainer:" + name);
+                    "could not create fingerPrint for Atomcontainer:" 
+                    + name );
         }
 
         SmilesGenerator sg = new SmilesGenerator();
@@ -84,7 +88,8 @@ public class Structure extends BaseObject
         //maybe something else is needed
         if(molecule.getAtomCount() > 100) {
             smiles = "";
-            logger.debug( "Not generating SMILES. Structure " + name + " has too many atoms." );
+            logger.debug( "Not generating SMILES. " +
+            		      "Structure " + name + " has too many atoms." );
         }
         else {
             smiles = sg.createSMILES( (IMolecule) molecule );
@@ -100,7 +105,7 @@ public class Structure extends BaseObject
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         atomContainer        = cdkMolecule.getAtomContainer();
         smiles               = cdkMolecule.getSmiles();
-        annotations               = new ArrayList<Annotation>();
+        annotations          = new ArrayList<Annotation>();
     }
 
     /**
@@ -113,11 +118,13 @@ public class Structure extends BaseObject
 
         super(structure);
 
-        this.atomContainer   = structure.getMolecule();
-        this.fingerPrint     = (BitSet)structure.getFingerPrint().clone();
+        atomContainer        = structure.getMolecule();
+        fingerPrint          = (BitSet)structure.getFingerPrint()
+                                                .clone();
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
-        this.smiles          = structure.getSmiles();
-        this.annotations          = new ArrayList<Annotation>( structure.getLabels() );
+        smiles               = structure.getSmiles();
+        annotations          = new ArrayList<Annotation>( 
+                                   structure.getLabels() );
     }
 
     public boolean hasValuesEqualTo( BaseObject object ) {
@@ -133,7 +140,8 @@ public class Structure extends BaseObject
 
         return fingerPrint.equals( structure.getFingerPrint() )
                &&   smiles.equals( structure.getSmiles()      );
-//             && atomContainer.equals( structure.getMolecule()    ); //TODO: can give false positives without?
+// TODO: can give false positives without?
+//             && atomContainer.equals( structure.getMolecule()    ); 
     }
 
     /**
@@ -168,7 +176,8 @@ public class Structure extends BaseObject
     private byte[] makePersistedFingerPrint(BitSet fingerPrint) {
         byte[] persistedFingerPrint = new byte[fingerPrint.size()];
         for( int i = 0 ; i < fingerPrint.size() ; i++) {
-            persistedFingerPrint[i] = (byte) (fingerPrint.get(i) ? 1 : 0) ;
+            persistedFingerPrint[i] = (byte) (fingerPrint.get(i) ? 1 
+                                                                 : 0) ;
         }
         return persistedFingerPrint;
     }
@@ -211,7 +220,9 @@ public class Structure extends BaseObject
      */
     public void addLabel(Annotation annotation) {
         annotations.add( annotation );
-        if( annotation != null && !annotation.getStructures().contains(this) ) {
+        if( annotation != null && 
+            !annotation.getStructures().contains(this) ) {
+            
             annotation.addStructure( this );
         }
     }
@@ -242,20 +253,24 @@ public class Structure extends BaseObject
     }
 
     /**
-     * Sets the given cml. Does not update other fields like for example smiles
+     * Sets the given cml. Does not update other fields like for example 
+     * smiles
      * 
      * @param cml
      */
     public void setCML(String cml) {
-        InputStream inputStream = new ByteArrayInputStream(cml.getBytes());
+        InputStream inputStream 
+            = new ByteArrayInputStream(cml.getBytes());
         CMLReader cmlReader = new CMLReader(inputStream);
         try {
-            IChemFile readFile = (IChemFile)cmlReader.read( new ChemFile() );
+            IChemFile readFile 
+                = (IChemFile)cmlReader.read( new ChemFile() );
             atomContainer = (AtomContainer)ChemFileManipulator
-                                      .getAllAtomContainers(readFile).get(0);
+                                .getAllAtomContainers(readFile).get(0);
         } 
         catch (CDKException e) {
-            throw new RuntimeException("failed to read atomContainer", e);
+            throw new RuntimeException( "failed to read atomContainer", 
+                                        e);
         }
     }
 

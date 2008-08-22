@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *     Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
@@ -18,6 +19,7 @@ package net.bioclipse.structuredb.domain;
 public class RealNumberAnnotation extends Annotation {
 
     private double value;
+    private RealNumberProperty property;
     
     public RealNumberAnnotation() {
         super();
@@ -31,12 +33,10 @@ public class RealNumberAnnotation extends Annotation {
     public RealNumberAnnotation( 
         RealNumberAnnotation realNumberAnnotation ) {
 
-        // TODO Auto-generated constructor stub
+        super( realNumberAnnotation );
+        this.value = realNumberAnnotation.getValue();
     }
 
-    /* (non-Javadoc)
-     * @see net.bioclipse.structuredb.domain.BaseObject#hasValuesEqualTo(net.bioclipse.structuredb.domain.BaseObject)
-     */
     public boolean hasValuesEqualTo( BaseObject obj ) {
         
         if( !super.hasValuesEqualTo(obj) ) {
@@ -49,22 +49,18 @@ public class RealNumberAnnotation extends Annotation {
         return Double.compare( getValue(), annotation.getValue() ) == 0;
     }
 
-
     public double getValue() {
-
         return value;
     }
 
     public void setProperty( RealNumberProperty property ) {
-
-        // TODO Auto-generated method stub
-        
+        this.property = property;
+        if ( !property.getAnnotations().contains( this ) ) {
+            property.addAnnotation( this );
+        }
     }
 
     public RealNumberProperty getProperty() {
-
-        // TODO Auto-generated method stub
-        return null;
+        return property;
     }
-    
 }

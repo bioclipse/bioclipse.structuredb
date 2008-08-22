@@ -6,10 +6,12 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *     Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,17 +21,20 @@ import java.util.List;
  */
 public class TextProperty extends Property {
 
+    private List<TextAnnotation> annotations;
+
     public TextProperty() {
         super();
+        annotations = new ArrayList<TextAnnotation>();
     }
 
     public TextProperty(String name) {
         super( name );
+        annotations = new ArrayList<TextAnnotation>();
     }
     
-    public TextProperty(TextProperty textProperty1) {
-
-        // TODO Auto-generated constructor stub
+    public TextProperty(TextProperty textProperty) {
+        super( textProperty );
     }
 
     public boolean hasValuesEqualTo( BaseObject obj ) {
@@ -44,13 +49,13 @@ public class TextProperty extends Property {
     }
 
     public List<TextAnnotation> getAnnotations() {
-
-        return null;
+        return annotations;
     }
 
     public void addAnnotation( TextAnnotation annotation ) {
-
-        // TODO Auto-generated method stub
-        
+        annotations.add( annotation );
+        if ( annotation.getProperty() != this ) {
+            annotation.setProperty( this );
+        }
     }
 }

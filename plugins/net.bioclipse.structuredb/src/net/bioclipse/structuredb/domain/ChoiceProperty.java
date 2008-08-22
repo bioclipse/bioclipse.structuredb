@@ -6,37 +6,45 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     
+ *     Jonathan Alvarsson
+ *          
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * @author jonalv
+ *
+ */
 public class ChoiceProperty extends Property {
+
+    private List<ChoiceAnnotation> annotations;
 
     public ChoiceProperty() {
         super();
+        annotations = new ArrayList<ChoiceAnnotation>();
     }
 
     public ChoiceProperty(String name) {
         super( name );
+        annotations = new ArrayList<ChoiceAnnotation>();
     }
 
-    public ChoiceProperty(ChoiceProperty choiceProperty1) {
-
-        // TODO Auto-generated constructor stub
+    public ChoiceProperty(ChoiceProperty choiceProperty) {
+        super( choiceProperty );
     }
 
     public List<ChoiceAnnotation> getAnnotations() {
-
-        // TODO Auto-generated method stub
-        return null;
+        return annotations;
     }
 
     public void addAnnotation( ChoiceAnnotation annotation ) {
-
-        // TODO Auto-generated method stub
-        
+        annotations.add( annotation );
+        if ( annotation.getProperty() != this ) {
+            annotation.setProperty( this );
+        }
     }
 }

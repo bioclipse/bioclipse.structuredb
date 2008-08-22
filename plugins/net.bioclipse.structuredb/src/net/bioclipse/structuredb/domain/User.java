@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *     Jonathan Alvarsson
  *     
  *******************************************************************************/
 
@@ -29,7 +30,8 @@ public class User extends BaseObject {
     private boolean sudoer;
     private Set<BaseObject> createdBaseObjects;
     
-    private BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
+    private BasicPasswordEncryptor passwordEncryptor 
+        = new BasicPasswordEncryptor();
     
     public User() {
         super();
@@ -60,9 +62,6 @@ public class User extends BaseObject {
         this.sudoer      = user.isSudoer();
     }
     
-    /* (non-Javadoc)
-     * @see net.bioclipse.structuredb.domain.BaseObject#hasValuesEqualTo(net.bioclipse.structuredb.domain.BaseObject)
-     */
     public boolean hasValuesEqualTo( BaseObject object ) {
         if( !super.hasValuesEqualTo(object) ) {
             return false;
@@ -131,7 +130,8 @@ public class User extends BaseObject {
     }
     
     /**
-     * @param password the unencrypted password to be md5 encrypted and set
+     * @param password the unencrypted password to be md5 encrypted 
+     * and set
      */
     public void setPassWord(String password) {
         passWordMd5 = passwordEncryptor.encryptPassword(password);
@@ -147,7 +147,9 @@ public class User extends BaseObject {
     /**
      * @param createdBaseObjects the objects to set
      */
-    public void setCreatedBaseObjects(Set<BaseObject> createdBaseObjects) {
+    public void setCreatedBaseObjects( 
+        Set<BaseObject> createdBaseObjects ) {
+        
         this.createdBaseObjects = createdBaseObjects;
     }
 

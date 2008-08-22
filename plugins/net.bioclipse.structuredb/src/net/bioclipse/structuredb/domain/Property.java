@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *     Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
@@ -23,6 +24,10 @@ public abstract class Property extends BaseObject {
 
     public Property(String name) {
         super( name );
+    }
+
+    public Property(Property property) {
+        super(property);
     }
 
     public boolean hasValuesEqualTo( BaseObject obj ) {
