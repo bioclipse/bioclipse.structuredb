@@ -8,11 +8,11 @@
  * Contributors:
  *     
  *******************************************************************************/
-package net.bioclipse.structuredb.persistency;
+package net.bioclipse.structuredb.persistence;
 
-import net.bioclipse.structuredb.persistency.dao.LabelDaoTest;
-import net.bioclipse.structuredb.persistency.dao.StructureDaoTest;
-import net.bioclipse.structuredb.persistency.dao.UserDaoTest;
+import net.bioclipse.structuredb.persistence.dao.LabelDaoTest;
+import net.bioclipse.structuredb.persistence.dao.StructureDaoTest;
+import net.bioclipse.structuredb.persistence.dao.UserDaoTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

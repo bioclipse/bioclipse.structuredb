@@ -18,7 +18,7 @@ import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
-import net.bioclipse.structuredb.persistency.HsqldbTestServerManager;
+import net.bioclipse.structuredb.persistence.HsqldbTestServerManager;
 import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.IStructureDao;
 import net.bioclipse.structuredb.persistency.dao.IUserDao;

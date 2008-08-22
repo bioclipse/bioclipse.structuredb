@@ -13,7 +13,7 @@ package net.bioclipse.structuredb;
 import net.bioclipse.structuredb.business.BusinessTestsSuite;
 import net.bioclipse.structuredb.domain.DomainTestsSuite;
 import net.bioclipse.structuredb.internalbusiness.InternalBusinessTestsSuite;
-import net.bioclipse.structuredb.persistency.PersistencyTestsSuite;
+import net.bioclipse.structuredb.persistence.PersistencyTestsSuite;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

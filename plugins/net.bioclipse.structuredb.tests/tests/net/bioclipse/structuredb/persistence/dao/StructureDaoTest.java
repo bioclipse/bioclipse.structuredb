@@ -8,7 +8,7 @@
  * Contributors:
  *     
  *******************************************************************************/
-package net.bioclipse.structuredb.persistency.dao;
+package net.bioclipse.structuredb.persistence.dao;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,6 +20,8 @@ import org.openscience.cdk.exception.CDKException;
 import testData.TestData;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
+import net.bioclipse.structuredb.persistency.dao.IStructureDao;
 
 public class StructureDaoTest extends GenericDaoTest<Structure> {
 

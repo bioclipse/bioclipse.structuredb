@@ -8,7 +8,7 @@
  * Contributors:
  *     
  *******************************************************************************/
-package net.bioclipse.structuredb.persistency;
+package net.bioclipse.structuredb.persistence;
 
 import java.io.PrintWriter;
 

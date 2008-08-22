@@ -6,7 +6,7 @@
  *http://www.eclipse.org/legal/epl-v10.html
  *
  *******************************************************************************/
-package net.bioclipse.structuredb.persistency.dao;
+package net.bioclipse.structuredb.persistence.dao;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -16,7 +16,9 @@ import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.BaseObject;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.ILoggedInUserKeeper;
-import net.bioclipse.structuredb.persistency.HsqldbTestServerManager;
+import net.bioclipse.structuredb.persistence.HsqldbTestServerManager;
+import net.bioclipse.structuredb.persistency.dao.IGenericDao;
+import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
 import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests;
 import org.springframework.transaction.annotation.Transactional;

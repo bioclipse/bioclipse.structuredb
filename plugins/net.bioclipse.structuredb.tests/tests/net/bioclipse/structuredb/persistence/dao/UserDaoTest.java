@@ -8,9 +8,10 @@
  * Contributors:
  *     
  *******************************************************************************/
-package net.bioclipse.structuredb.persistency.dao;
+package net.bioclipse.structuredb.persistence.dao;
 
 import net.bioclipse.structuredb.domain.User;
+import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
 /**
  * @author jonalv
