@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 
 import net.bioclipse.core.domain.BioList;
-import net.bioclipse.structuredb.domain.Label;
+import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 
@@ -28,19 +28,19 @@ public class StructuredbInstanceManager
 
     private User loggedInUser;
     
-    public Label createLabel(String name) {
-        Label label = new Label(name);
-        labelDao.insert(label);
-        return label;
+    public Annotation createLabel(String name) {
+        Annotation annotation = new Annotation(name);
+        labelDao.insert(annotation);
+        return annotation;
     }
 
-    public void insertLabel(Label label) {
-        labelDao.insert(label);
-        persistRelatedStructures(label);
+    public void insertLabel(Annotation annotation) {
+        labelDao.insert(annotation);
+        persistRelatedStructures(annotation);
     }
     
-    private void persistRelatedStructures(Label label) {
-        for( Structure s : label.getStructures() ) {
+    private void persistRelatedStructures(Annotation annotation) {
+        for( Structure s : annotation.getStructures() ) {
             if( structureDao.getById(s.getId()) == null) {
                 structureDao.insert(s);
             }
@@ -58,8 +58,8 @@ public class StructuredbInstanceManager
         userDao.insert(user);
     }
 
-    public void delete(Label label) {
-        labelDao.delete( label.getId() );
+    public void delete(Annotation annotation) {
+        labelDao.delete( annotation.getId() );
     }
 
     public void delete(User user) {
@@ -70,8 +70,8 @@ public class StructuredbInstanceManager
         structureDao.delete( structure.getId() );
     }
 
-    public List<Label> retrieveAllLabels() {
-        return new BioList<Label>( labelDao.getAll() );
+    public List<Annotation> retrieveAllLabels() {
+        return new BioList<Annotation>( labelDao.getAll() );
     }
 
     public List<Structure> retrieveAllStructures() {
@@ -82,7 +82,7 @@ public class StructuredbInstanceManager
         return new BioList<User>( userDao.getAll() );
     }
 
-    public Label retrieveLabelByName(String name) {
+    public Annotation retrieveLabelByName(String name) {
         return labelDao.getByName(name);
     }
 
@@ -94,9 +94,9 @@ public class StructuredbInstanceManager
         return userDao.getByUserName(username);
     }
 
-    public void update(Label label) {
-        labelDao.update(label);
-        persistRelatedStructures(label);
+    public void update(Annotation annotation) {
+        labelDao.update(annotation);
+        persistRelatedStructures(annotation);
     }
 
     public void update(User user) {
@@ -143,7 +143,7 @@ public class StructuredbInstanceManager
             queryStructure.getPersistedFingerprint() );
     }
 
-    public void deleteWithStructures( Label label, 
+    public void deleteWithStructures( Annotation annotation, 
                                       IProgressMonitor monitor ) {
 
         int ticks = 1000;
@@ -154,15 +154,15 @@ public class StructuredbInstanceManager
         IProgressMonitor sub 
             = new SubProgressMonitor(monitor, (int) (0.1 * ticks));
         sub.beginTask( "Preparing to delete", 1 );
-        List<Structure> structures = label.getStructures();
-        int tick = ticks / label.getStructures().size();
+        List<Structure> structures = annotation.getStructures();
+        int tick = ticks / annotation.getStructures().size();
         sub.worked( 1 );
         sub.done();
         for ( Structure s : structures ) {
             structureDao.delete( s.getId() );
             monitor.worked( tick );
         }
-        labelDao.delete( label.getId() );
+        labelDao.delete( annotation.getId() );
         monitor.done();
     }
 }

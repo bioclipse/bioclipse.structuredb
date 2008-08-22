@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.openscience.cdk.exception.CDKException;
 
 import testData.TestData;
-import net.bioclipse.structuredb.domain.Label;
+import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 
 public class StructureDaoTest extends GenericDaoTest<Structure> {
@@ -54,14 +54,14 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
     
     public void testPersistStructureWithLabel() {
         
-        Label label = new Label();
+        Annotation annotation = new Annotation();
         ILabelDao labelDao 
             = (ILabelDao) applicationContext.getBean("labelDao");
-        addCreatorAndEditor(label);
-        labelDao.insert(label);
+        addCreatorAndEditor(annotation);
+        labelDao.insert(annotation);
         
         Structure structure = new Structure();
-        structure.addLabel(label);
+        structure.addLabel(annotation);
         addCreatorAndEditor(structure);
         dao.insert(structure);
         
@@ -69,41 +69,41 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         assertNotNull("The lodaded object shuold not be null", loaded);
         assertNotSame(structure, loaded);
         assertTrue( structure.hasValuesEqualTo(loaded) );
-        assertTrue( loaded.getLabels().contains(label) );
+        assertTrue( loaded.getLabels().contains(annotation) );
     }
 
     public void testPersistStructureWithLabelId() {
         
-        Label label = new Label();
+        Annotation annotation = new Annotation();
         ILabelDao labelDao 
             = (ILabelDao) applicationContext.getBean("labelDao");
-        addCreatorAndEditor(label);
-        labelDao.insert(label);
+        addCreatorAndEditor(annotation);
+        labelDao.insert(annotation);
         
         Structure structure = new Structure();
 
         addCreatorAndEditor(structure);
-        ((IStructureDao)dao).insertWithLabel( structure, label.getId() );
+        ((IStructureDao)dao).insertWithLabel( structure, annotation.getId() );
         
         Structure loaded = dao.getById( structure.getId() );
         assertNotNull("The lodaded object should not be null", loaded);
         assertNotSame(structure, loaded);
         assertTrue( structure.hasValuesEqualTo(loaded) );
-        assertTrue( loaded.getLabels().contains(label) );
+        assertTrue( loaded.getLabels().contains(annotation) );
     }
     
     @Override
     public void testUpdate() {
         super.testUpdate();
         
-        Label label = new Label();
+        Annotation annotation = new Annotation();
         ILabelDao labelDao 
             = (ILabelDao) applicationContext.getBean("labelDao");
-        addCreatorAndEditor(label);
-        labelDao.insert(label);
+        addCreatorAndEditor(annotation);
+        labelDao.insert(annotation);
         
         Structure structure = new Structure();
-        structure.addLabel(label);
+        structure.addLabel(annotation);
         addCreatorAndEditor(structure);
         dao.insert(structure);
         
@@ -174,16 +174,16 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
     }
     
     public void testGetLabels() {
-        Label label = new Label( "my label" );
-        Label unusedLabel = new Label( "I should not turn up" );
+        Annotation annotation = new Annotation( "my label" );
+        Annotation unusedLabel = new Annotation( "I should not turn up" );
         ILabelDao labelDao = (ILabelDao) applicationContext.getBean("labelDao");
-        labelDao.insert( label );
+        labelDao.insert( annotation );
         labelDao.insert( unusedLabel );
         
-        structure1.addLabel( label );
+        structure1.addLabel( annotation );
         dao.update( structure1 );
         Structure loaded = dao.getById( structure1.getId() );
         assertEquals( 1, loaded.getLabels().size() );
-        assertEquals( label, structure1.getLabels().get( 0 ) );
+        assertEquals( annotation, structure1.getLabels().get( 0 ) );
     }
 }

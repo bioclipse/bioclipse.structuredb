@@ -33,7 +33,7 @@ import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IDatabaseListener.DatabaseUpdateType;
-import net.bioclipse.structuredb.domain.Label;
+import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
@@ -210,15 +210,15 @@ public class StructuredbManager implements IStructuredbManager {
         return context;
     }
 
-    public Label createLabel(String databaseName, String folderName)
+    public Annotation createLabel(String databaseName, String folderName)
             throws IllegalArgumentException {
 
-        Label label = new Label(folderName);
+        Annotation annotation = new Annotation(folderName);
         checkDatabaseName(databaseName);
-        internalManagers.get(databaseName).insertLabel(label);
-        logger.debug("Label " + folderName + " inserted in " + databaseName);
+        internalManagers.get(databaseName).insertLabel(annotation);
+        logger.debug("Annotation " + folderName + " inserted in " + databaseName);
         fireLabelsChanged();
-        return label;
+        return annotation;
     }
 
     private void checkDatabaseName(String databaseName) {
@@ -263,7 +263,7 @@ public class StructuredbManager implements IStructuredbManager {
         fireDatabasesChanged();
     }
 
-    public List<Label> allLabels(String databaseName) {
+    public List<Annotation> allLabels(String databaseName) {
         checkDatabaseName(databaseName);
         return internalManagers.get(databaseName).retrieveAllLabels();
     }
@@ -279,7 +279,7 @@ public class StructuredbManager implements IStructuredbManager {
         return internalManagers.get(databaseName).retrieveAllUsers();
     }
 
-    public Label labelByName( String databaseName,
+    public Annotation labelByName( String databaseName,
                               String folderName ) {
 
         checkDatabaseName(databaseName);
@@ -501,10 +501,10 @@ public class StructuredbManager implements IStructuredbManager {
         return structures;
     }
 
-    public void deleteLabel( String databaseName, Label label ) {
+    public void deleteLabel( String databaseName, Annotation annotation ) {
 
         checkDatabaseName(databaseName);
-        internalManagers.get( databaseName ).delete( label );
+        internalManagers.get( databaseName ).delete( annotation );
         fireLabelsChanged();
     }
 
@@ -520,10 +520,10 @@ public class StructuredbManager implements IStructuredbManager {
         internalManagers.get( databaseName ).update( structure );
     }
 
-    public void save( String databaseName, Label label ) {
+    public void save( String databaseName, Annotation annotation ) {
 
         checkDatabaseName(databaseName);
-        internalManagers.get( databaseName ).update( label );
+        internalManagers.get( databaseName ).update( annotation );
     }
 
     public List<Structure> smartsQuery( String databaseName, 
@@ -597,23 +597,23 @@ public class StructuredbManager implements IStructuredbManager {
         }
     }
 
-    public Label retrieveLabelByName( String databaseName, 
+    public Annotation retrieveLabelByName( String databaseName, 
                                       String labelName ) {
         checkDatabaseName(databaseName);
         return internalManagers.get( databaseName )
                                .retrieveLabelByName( labelName );
     }
 
-    public void deleteWithStructures( String databaseName, Label label ) {
+    public void deleteWithStructures( String databaseName, Annotation annotation ) {
         checkDatabaseName(databaseName);
-        deleteWithStructures( databaseName, label, null );
+        deleteWithStructures( databaseName, annotation, null );
     }
 
-    public void deleteWithStructures( String databaseName, Label label,
+    public void deleteWithStructures( String databaseName, Annotation annotation,
                                       IProgressMonitor monitor ) {
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName )
-                        .deleteWithStructures( label, monitor );
+                        .deleteWithStructures( annotation, monitor );
         fireLabelsChanged();
     }
 

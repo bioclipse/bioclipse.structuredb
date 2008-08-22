@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.structuredb.Structuredb;
-import net.bioclipse.structuredb.domain.Label;
+import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.persistency.HsqldbTestServerManager;
@@ -73,16 +73,16 @@ public class StructuredbInstanceManagerTest
                                 .setLoggedInUser(testUser);
     }
     
-    private Label createLabel(String name) {
-        Label label = new Label(name);
-        manager.insertLabel(label);
-        return label;
+    private Annotation createLabel(String name) {
+        Annotation annotation = new Annotation(name);
+        manager.insertLabel(annotation);
+        return annotation;
     }
     
     public void testInsertLabel() {
-        Label label = createLabel("testLabel");
-        List<Label> allLabels = labelDao.getAll(); 
-        assertTrue( allLabels.contains(label) );
+        Annotation annotation = createLabel("testLabel");
+        List<Annotation> allLabels = labelDao.getAll(); 
+        assertTrue( allLabels.contains(annotation) );
     }
 
     private Structure createStructure( String name, 
@@ -121,10 +121,10 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testDeleteLibrary() {
-        Label label = createLabel("testLabel");
-        assertTrue( labelDao.getAll().contains(label) );
-        manager.delete(label);
-        assertFalse( labelDao.getAll().contains(label) );
+        Annotation annotation = createLabel("testLabel");
+        assertTrue( labelDao.getAll().contains(annotation) );
+        manager.delete(annotation);
+        assertFalse( labelDao.getAll().contains(annotation) );
     }
 
     public void testDeleteUser() {
@@ -143,11 +143,11 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testRetrieveAllLibraries() {
-        Label folder1 = createLabel("testLibrary1");
-        Label folder2 = createLabel("testLibrary2");
+        Annotation folder1 = createLabel("testLibrary1");
+        Annotation folder2 = createLabel("testLibrary2");
         
         assertTrue( labelDao.getAll().containsAll( 
-                Arrays.asList(new Label[] {folder1, folder2}) ) );
+                Arrays.asList(new Annotation[] {folder1, folder2}) ) );
     }
 
     public void testRetrieveAllStructures() throws CDKException {
@@ -169,11 +169,11 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testRetrieveLibraryByName() {
-        Label label = createLabel("testLibrary1");
+        Annotation annotation = createLabel("testLibrary1");
         
-        assertNotNull(label);
+        assertNotNull(annotation);
         
-        assertEquals( label, 
+        assertEquals( annotation, 
                       manager.retrieveLabelByName("testLibrary1") );
     }
 
@@ -195,10 +195,10 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testUpdateLibrary() {
-        Label label = createLabel("testLibrary");
-        label.setName("edited");
-        manager.update(label);
-        assertEquals( label, labelDao.getById(label.getId()) );
+        Annotation annotation = createLabel("testLibrary");
+        annotation.setName("edited");
+        manager.update(annotation);
+        assertEquals( annotation, labelDao.getById(annotation.getId()) );
     }
 
     public void testUpdateUser() {
@@ -219,16 +219,16 @@ public class StructuredbInstanceManagerTest
     public void testDeleteLabelAndStructures() throws CDKException {
         Structure structure = createStructure( "CycloOcan", 
                                                TestData.getCycloOctan() );
-        Label label = createLabel( "test" );
-        structure.addLabel( label );
-        manager.update( label );
+        Annotation annotation = createLabel( "test" );
+        structure.addLabel( annotation );
+        manager.update( annotation );
         
-        assertTrue( labelDao.getById( label.getId() )
+        assertTrue( labelDao.getById( annotation.getId() )
                             .getStructures()
                             .contains(structure) );
-        manager.deleteWithStructures( label, null );
+        manager.deleteWithStructures( annotation, null );
         assertFalse( structureDao.getAll().contains(structure) );
-        assertFalse( labelDao.getAll().contains(label) );
+        assertFalse( labelDao.getAll().contains(annotation) );
     }
     
     public void testAllStructureIterator() throws CDKException {

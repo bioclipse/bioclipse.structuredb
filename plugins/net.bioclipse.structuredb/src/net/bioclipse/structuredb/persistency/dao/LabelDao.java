@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.bioclipse.structuredb.domain.Label;
+import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 
 /**
@@ -23,33 +23,33 @@ import net.bioclipse.structuredb.domain.Structure;
  * @author jonalv
  *
  */
-public class LabelDao extends GenericDao<Label> implements ILabelDao {
+public class LabelDao extends GenericDao<Annotation> implements ILabelDao {
 
     public LabelDao() {
-        super(Label.class);
+        super(Annotation.class);
     }
 
     @Override
-    public void insert(Label label) {
-        getSqlMapClientTemplate().update( "BaseObject.insert", label );
-        getSqlMapClientTemplate().update( "Label.insert",    label );
+    public void insert(Annotation annotation) {
+        getSqlMapClientTemplate().update( "BaseObject.insert", annotation );
+        getSqlMapClientTemplate().update( "Annotation.insert",    annotation );
     }
     
     @Override
-    public void update(Label label) {
-        getSqlMapClientTemplate().update( "BaseObject.update", label );
-        getSqlMapClientTemplate().update( "Label.update",      label );
-        fixStructureLabel( label );
+    public void update(Annotation annotation) {
+        getSqlMapClientTemplate().update( "BaseObject.update", annotation );
+        getSqlMapClientTemplate().update( "Annotation.update",      annotation );
+        fixStructureLabel( annotation );
     }
     
-    private void fixStructureLabel( final Label label ) {
+    private void fixStructureLabel( final Annotation annotation ) {
 
-        getSqlMapClientTemplate().delete( "Label.deleteStructureCoupling", 
-                                          label );
-        for( final Structure s : label.getStructures() ) {
+        getSqlMapClientTemplate().delete( "Annotation.deleteStructureCoupling", 
+                                          annotation );
+        for( final Structure s : annotation.getStructures() ) {
             Map<String, String> params = new HashMap<String, String>() {
                 {
-                    put( "labelId",     label.getId()         );
+                    put( "labelId",     annotation.getId()         );
                     put( "structureId", s.getId() );
                 }
             };
@@ -62,8 +62,8 @@ public class LabelDao extends GenericDao<Label> implements ILabelDao {
         }
     }
 
-    public Label getByName(String name) {
-        return (Label)getSqlMapClientTemplate()
-               .queryForObject( "Label.getByName", name);
+    public Annotation getByName(String name) {
+        return (Annotation)getSqlMapClientTemplate()
+               .queryForObject( "Annotation.getByName", name);
     }
 }

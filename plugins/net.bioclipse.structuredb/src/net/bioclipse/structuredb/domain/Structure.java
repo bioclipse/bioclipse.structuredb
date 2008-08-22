@@ -53,7 +53,7 @@ public class Structure extends BaseObject
     private BitSet         fingerPrint;
     private byte[]         persistedFingerPrint;
     private String         smiles;
-    private List<Label>    labels;
+    private List<Annotation>    annotations;
 
     public Structure() {
         super();
@@ -61,7 +61,7 @@ public class Structure extends BaseObject
         this.persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         atomContainer = new AtomContainer();
         smiles = "";
-        labels = new ArrayList<Label>();
+        annotations = new ArrayList<Annotation>();
     }
 
     public Structure( String name, AtomContainer molecule ) {
@@ -89,7 +89,7 @@ public class Structure extends BaseObject
         else {
             smiles = sg.createSMILES( (IMolecule) molecule );
         }
-        labels = new ArrayList<Label>();
+        annotations = new ArrayList<Annotation>();
     }
 
     public Structure( String name, ICDKMolecule cdkMolecule )
@@ -100,7 +100,7 @@ public class Structure extends BaseObject
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         atomContainer        = cdkMolecule.getAtomContainer();
         smiles               = cdkMolecule.getSmiles();
-        labels               = new ArrayList<Label>();
+        annotations               = new ArrayList<Annotation>();
     }
 
     /**
@@ -117,7 +117,7 @@ public class Structure extends BaseObject
         this.fingerPrint     = (BitSet)structure.getFingerPrint().clone();
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         this.smiles          = structure.getSmiles();
-        this.labels          = new ArrayList<Label>( structure.getLabels() );
+        this.annotations          = new ArrayList<Annotation>( structure.getLabels() );
     }
 
     public boolean hasValuesEqualTo( BaseObject object ) {
@@ -200,24 +200,24 @@ public class Structure extends BaseObject
      * @return the label containing this structure or null
      * if the structure isn't in any label
      */
-    public List<Label> getLabels() {
-        return labels;
+    public List<Annotation> getLabels() {
+        return annotations;
     }
 
     /**
      * Adds a label to this structure
      *
-     * @param label the label to place the structure in
+     * @param annotation the label to place the structure in
      */
-    public void addLabel(Label label) {
-        labels.add( label );
-        if( label != null && !label.getStructures().contains(this) ) {
-            label.addStructure( this );
+    public void addLabel(Annotation annotation) {
+        annotations.add( annotation );
+        if( annotation != null && !annotation.getStructures().contains(this) ) {
+            annotation.addStructure( this );
         }
     }
     
-    void setLabels(List<Label> labels) {
-        this.labels = labels;
+    void setLabels(List<Annotation> annotations) {
+        this.annotations = annotations;
     }
 
     public byte[] getPersistedFingerprint() {
@@ -276,11 +276,11 @@ public class Structure extends BaseObject
         return atomContainer;
     }
 
-    public void removeLabel( Label label ) {
-        if ( label.getStructures().contains(this) ) {
-            label.removeStructure(this);
+    public void removeLabel( Annotation annotation ) {
+        if ( annotation.getStructures().contains(this) ) {
+            annotation.removeStructure(this);
         }
-        labels.remove( label );
+        annotations.remove( annotation );
     }
 
     public List<net.bioclipse.core.domain.IMolecule> getConformers() {

@@ -17,21 +17,21 @@ import java.util.List;
 /**
  * @author jonalv
  */
-public class Label extends BaseObject {
+public class Annotation extends BaseObject {
 
     private List<Structure> structures;
     
-    public Label() {
+    public Annotation() {
         super();
         structures = new ArrayList<Structure>();
     }
 
-    public Label(Label label) {
-        super(label);
-        this.structures = new ArrayList<Structure>( label.getStructures() );
+    public Annotation(Annotation annotation) {
+        super(annotation);
+        this.structures = new ArrayList<Structure>( annotation.getStructures() );
     }
 
-    public Label(String name) {
+    public Annotation(String name) {
         super(name);
         structures = new ArrayList<Structure>();
     }
@@ -44,11 +44,11 @@ public class Label extends BaseObject {
         if( !super.hasValuesEqualTo(obj) ) {
             return false;
         }
-        if( !(obj instanceof Label) ) {
+        if( !(obj instanceof Annotation) ) {
             return false;
         }
-        Label label = (Label)obj;
-        return objectsInHasSameValues(label.getStructures(), structures);
+        Annotation annotation = (Annotation)obj;
+        return objectsInHasSameValues(annotation.getStructures(), structures);
     }
 
     /**

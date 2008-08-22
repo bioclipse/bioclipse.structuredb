@@ -19,7 +19,7 @@ import org.openscience.cdk.AtomContainer;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.structuredb.Database;
-import net.bioclipse.structuredb.domain.Label;
+import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 
@@ -32,9 +32,9 @@ public interface IStructuredbInstanceManager {
     /**
      * Persists changes in a given library retrieved from the database.
      * 
-     * @param label
+     * @param annotation
      */
-    public void update(Label label);
+    public void update(Annotation annotation);
     
     /**
      * Persists changes in a given user retrieved from the database.
@@ -60,9 +60,9 @@ public interface IStructuredbInstanceManager {
     /**
      * Insert a folder into the database
      * 
-     * @param label to be inserted
+     * @param annotation to be inserted
      */
-    public void insertLabel( Label label );
+    public void insertLabel( Annotation annotation );
     
     /**
      * Insert a structure into the database
@@ -75,9 +75,9 @@ public interface IStructuredbInstanceManager {
      * Removes the given library from the database. 
      * Doesn't delete any structures.
      * 
-     * @param label
+     * @param annotation
      */
-    public void delete(Label label);
+    public void delete(Annotation annotation);
     
     /**
      * Removes the given user from the database
@@ -101,7 +101,7 @@ public interface IStructuredbInstanceManager {
     /**
      * @return all libraries
      */
-    public List<Label> retrieveAllLabels();
+    public List<Annotation> retrieveAllLabels();
     
     /**
      * @return all users
@@ -125,12 +125,12 @@ public interface IStructuredbInstanceManager {
     public List<Structure> retrieveStructureByName(String name);
     
     /**
-     * Loads the Label with the given name from the database
+     * Loads the Annotation with the given name from the database
      * 
      * @param name
-     * @return a Label or null if no such Label exists
+     * @return a Annotation or null if no such Annotation exists
      */
-    public Label retrieveLabelByName(String name);
+    public Annotation retrieveLabelByName(String name);
 
     /**
      * @return the logged in user
@@ -180,8 +180,8 @@ public interface IStructuredbInstanceManager {
     
     /**
      * Deletes the given label from the database
-     * @param label
+     * @param annotation
      * @param monitor 
      */
-    public void deleteWithStructures( Label label, IProgressMonitor monitor );
+    public void deleteWithStructures( Annotation annotation, IProgressMonitor monitor );
 }

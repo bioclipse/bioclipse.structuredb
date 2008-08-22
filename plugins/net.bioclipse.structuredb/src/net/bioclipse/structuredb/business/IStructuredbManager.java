@@ -19,7 +19,7 @@ import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.business.IBioclipseManager;
 import net.bioclipse.core.domain.IMolecule;
-import net.bioclipse.structuredb.domain.Label;
+import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 
@@ -82,7 +82,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName, String labelName",
                        methodSummary = "Fetches a label by a given name" +
                                        "from a database with a given name" )
-    public Label labelByName( String databaseName,
+    public Annotation labelByName( String databaseName,
                               String labelName );
 
     /**
@@ -132,7 +132,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Creates a label with the given name " +
                                        "and saves it in the database with " +
                                        "the given name" )
-    public Label createLabel( String databaseName,
+    public Annotation createLabel( String databaseName,
                               String labelName )
                  throws IllegalArgumentException;
 
@@ -178,7 +178,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all folders from a database " +
                                        "with a given name")
-    public List<Label> allLabels( String databaseName );
+    public List<Annotation> allLabels( String databaseName );
 
     /**
      * Retrieves all users from a database with a given name.
@@ -303,12 +303,12 @@ public interface IStructuredbManager extends IBioclipseManager {
      * Deletes the given label from the given database
      * 
      * @param database
-     * @param label
+     * @param annotation
      */
-    @PublishedMethod ( params = "String database, Label label", 
+    @PublishedMethod ( params = "String database, Annotation label", 
                        methodSummary = "Deletes the given label from the " +
                        		           "given database" )
-    public void deleteLabel( String database, Label label );
+    public void deleteLabel( String database, Annotation annotation );
 
     /**
      * Deletes the given structure from the given database
@@ -341,13 +341,13 @@ public interface IStructuredbManager extends IBioclipseManager {
      * label must come from the given database.
      * 
      * @param database
-     * @param label
+     * @param annotation
      */
-    @PublishedMethod ( params = "String database, Label label", 
+    @PublishedMethod ( params = "String database, Annotation label", 
                        methodSummary = "Saves changes on a label retrieved " +
                        		           "from the database back to the " +
                        		           "database.")
-    public void save( String database, Label label );
+    public void save( String database, Annotation annotation );
 
     
     /**
@@ -412,26 +412,26 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Retrives the label with the " +
                       		             "given name from the database " +
                       		             "with the given name" )
-    public Label retrieveLabelByName( String databaseName, 
+    public Annotation retrieveLabelByName( String databaseName, 
                                       String labelName );
 
     
     /**
      * Deletes a label and all structures having that label
      * @param name
-     * @param label
+     * @param annotation
      */
-    @PublishedMethod ( params =  "String name, Label label", 
+    @PublishedMethod ( params =  "String name, Annotation label", 
                        methodSummary = "Deletes the given label from " +
                        		             "the specified database" )
-    public void deleteWithStructures( String databaseName, Label label );
+    public void deleteWithStructures( String databaseName, Annotation annotation );
 
     /**
      * @param name
-     * @param label
+     * @param annotation
      * @param monitor
      */
-    public void deleteWithStructures( String name, Label label,
+    public void deleteWithStructures( String name, Annotation annotation,
                                       IProgressMonitor monitor );
 
     /**

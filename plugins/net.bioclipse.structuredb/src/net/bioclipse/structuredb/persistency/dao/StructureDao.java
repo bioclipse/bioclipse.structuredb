@@ -21,7 +21,7 @@ import org.springframework.dao.DataAccessException;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
-import net.bioclipse.structuredb.domain.Label;
+import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 
 /**
@@ -50,7 +50,7 @@ public class StructureDao extends GenericDao<Structure>
 
         getSqlMapClientTemplate().delete( "Structure.deleteLabelCoupling", 
                                           structure );
-        for( final Label l : structure.getLabels() ) {
+        for( final Annotation l : structure.getLabels() ) {
             Map<String, String> params = new HashMap<String, String>() {
                 {
                     put( "labelId",     l.getId()         );

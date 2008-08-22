@@ -28,10 +28,10 @@ public class LabelTest {
         Structure s2 = new Structure();
         s2.setName("s2");
         
-        Label library1 = new Label();
+        Annotation library1 = new Annotation();
         library1.addStructure(s1);
-        Label library2 = new Label(library1);
-        Label library3 = new Label();
+        Annotation library2 = new Annotation(library1);
+        Annotation library3 = new Annotation();
         library3.addStructure(s2);
         
         assertTrue(  library1.hasValuesEqualTo(library2) );
@@ -43,16 +43,16 @@ public class LabelTest {
 
         Structure structure = new Structure();
         
-        Label label = new Label();
+        Annotation annotation = new Annotation();
         
-        label.addStructure( structure );
+        annotation.addStructure( structure );
     
-        assertTrue( label.getStructures().contains(structure) );
-        assertTrue( structure.getLabels().contains( label ) );
+        assertTrue( annotation.getStructures().contains(structure) );
+        assertTrue( structure.getLabels().contains( annotation ) );
         
-        label.removeStructure( structure );
+        annotation.removeStructure( structure );
         
-        assertFalse( label.getStructures().contains(structure) );
-        assertFalse( structure.getLabels().contains(label) );
+        assertFalse( annotation.getStructures().contains(structure) );
+        assertFalse( structure.getLabels().contains(annotation) );
     }
 }

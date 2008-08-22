@@ -10,17 +10,17 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
-import net.bioclipse.structuredb.domain.Label;
+import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 
 /**
  * @author jonalv
  *
  */
-public class LabelDaoTest extends GenericDaoTest<Label> {
+public class LabelDaoTest extends GenericDaoTest<Annotation> {
 
     public LabelDaoTest() {
-        super(Label.class);
+        super(Annotation.class);
     }
     
     @Override
@@ -49,15 +49,15 @@ public class LabelDaoTest extends GenericDaoTest<Label> {
 
         Structure s = new Structure();
         structureDao.insert( s );
-        Label label = new Label("label");
-        addCreatorAndEditor(label);
-        dao.insert(label);
-        assertEquals( label, 
-                      ( (ILabelDao)dao ).getByName(label.getName()) );
-        label.addStructure( s );
-        dao.update( label );
+        Annotation annotation = new Annotation("label");
+        addCreatorAndEditor(annotation);
+        dao.insert(annotation);
+        assertEquals( annotation, 
+                      ( (ILabelDao)dao ).getByName(annotation.getName()) );
+        annotation.addStructure( s );
+        dao.update( annotation );
         assertEquals( 1, 
-                      ( (ILabelDao)dao ).getByName( label.getName() )
+                      ( (ILabelDao)dao ).getByName( annotation.getName() )
                                         .getStructures().size() );
     }
     
@@ -70,7 +70,7 @@ public class LabelDaoTest extends GenericDaoTest<Label> {
         
         object1.addStructure( structure );
         dao.update( object1 );
-        Label loaded = dao.getById( object1.getId() );
+        Annotation loaded = dao.getById( object1.getId() );
         assertEquals( 1, loaded.getStructures().size() );
         assertEquals( structure, object1.getStructures().get( 0 ) );
     }

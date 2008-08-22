@@ -71,15 +71,15 @@ public class RemoveLabelAction extends ActionDelegate {
                 if (o instanceof Label) {
                     Label l = (Label)o;
                     if ( l.getParent() instanceof Database ) {
-                        net.bioclipse.structuredb.domain.Label label =
+                        net.bioclipse.structuredb.domain.Annotation annotation =
                             manager.retrieveLabelByName(
                                 l.getParent().getName(), l.getName() );
                         if (response == SWT.YES) {
-                            deleteWithStructures(l.getParent().getName(), label);
+                            deleteWithStructures(l.getParent().getName(), annotation);
                         }
                         else {
                             manager.deleteLabel( l.getParent().getName(), 
-                                            label );
+                                            annotation );
                         }
                     }
                 }
@@ -89,15 +89,15 @@ public class RemoveLabelAction extends ActionDelegate {
     
     private void deleteWithStructures(
         final String name, 
-        final net.bioclipse.structuredb.domain.Label label ) {
+        final net.bioclipse.structuredb.domain.Annotation annotation ) {
 
-        Job job = new Job("Delete Label and Structures") {
+        Job job = new Job("Delete Annotation and Structures") {
             @Override
             protected IStatus run( IProgressMonitor monitor ) {
                 Activator.getDefault()
                          .getStructuredbManager()
                          .deleteWithStructures( name, 
-                                                label, 
+                                                annotation, 
                                                 monitor );
                 return Status.OK_STATUS;
             }

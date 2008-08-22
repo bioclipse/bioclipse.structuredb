@@ -52,23 +52,23 @@ public class StructureTest {
         
         AtomContainer testMolecule = TestData.getCycloPropane();
         
-        Label label         = new Label("label");
-        Label label2        = new Label("label2");
+        Annotation annotation         = new Annotation("label");
+        Annotation label2        = new Annotation("label2");
         Structure structure = new Structure("Cyclopropane", testMolecule);
         
-        structure.addLabel( label );
+        structure.addLabel( annotation );
         
-        assertTrue( structure.getLabels().contains(label) );
-        assertTrue( label.getStructures().contains(structure) );
+        assertTrue( structure.getLabels().contains(annotation) );
+        assertTrue( annotation.getStructures().contains(structure) );
         
         structure.addLabel( label2 );
         
         assertTrue( structure.getLabels().contains(label2)     );
         assertTrue( label2.getStructures().contains(structure) );
-        assertTrue( label.getStructures().contains(structure)  );
+        assertTrue( annotation.getStructures().contains(structure)  );
         
-        structure.removeLabel( label );
-        assertFalse( structure.getLabels().contains(label) );
-        assertFalse( label.getStructures().contains(structure) );        
+        structure.removeLabel( annotation );
+        assertFalse( structure.getLabels().contains(annotation) );
+        assertFalse( annotation.getStructures().contains(structure) );        
     }
 }
