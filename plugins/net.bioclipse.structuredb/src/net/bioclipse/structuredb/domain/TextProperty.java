@@ -27,6 +27,11 @@ public class TextProperty extends Property {
         super( name );
     }
     
+    public TextProperty(TextProperty textProperty1) {
+
+        // TODO Auto-generated constructor stub
+    }
+
     public boolean hasValuesEqualTo( BaseObject obj ) {
         
         if( !super.hasValuesEqualTo(obj) ) {
@@ -41,5 +46,11 @@ public class TextProperty extends Property {
     public List<TextAnnotation> getAnnotations() {
 
         return null;
+    }
+
+    public void addAnnotation( TextAnnotation annotation ) {
+
+        // TODO Auto-generated method stub
+        
     }
 }

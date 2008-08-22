@@ -27,6 +27,11 @@ public class RealNumberProperty extends Property {
         super( name );
     }
 
+    public RealNumberProperty(RealNumberProperty realNumberProperty1) {
+
+        // TODO Auto-generated constructor stub
+    }
+
     public boolean hasValuesEqualTo( BaseObject obj ) {
         
         if ( !super.hasValuesEqualTo(obj) ) {
@@ -42,5 +47,11 @@ public class RealNumberProperty extends Property {
 
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public void addAnnotation( RealNumberAnnotation annotation ) {
+
+        // TODO Auto-generated method stub
+        
     }
 }

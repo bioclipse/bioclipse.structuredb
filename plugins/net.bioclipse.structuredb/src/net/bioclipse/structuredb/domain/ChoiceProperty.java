@@ -23,9 +23,20 @@ public class ChoiceProperty extends Property {
         super( name );
     }
 
+    public ChoiceProperty(ChoiceProperty choiceProperty1) {
+
+        // TODO Auto-generated constructor stub
+    }
+
     public List<ChoiceAnnotation> getAnnotations() {
 
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public void addAnnotation( ChoiceAnnotation annotation ) {
+
+        // TODO Auto-generated method stub
+        
     }
 }

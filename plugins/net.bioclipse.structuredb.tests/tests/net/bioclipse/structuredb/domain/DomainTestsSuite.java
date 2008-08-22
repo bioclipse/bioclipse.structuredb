@@ -22,7 +22,10 @@ import org.junit.runners.Suite.SuiteClasses;
                          UserTest.class,
                          ChoiceAnnotationTest.class,
                          RealNumberAnnotationTest.class,
-                         TextAnnotationTest.class } )
+                         TextAnnotationTest.class,
+                         ChoicePropertyTest.class,
+                         RealNumberPropertyTest.class,
+                         TextPropertyTest.class } )
 public class DomainTestsSuite {
 
 }
