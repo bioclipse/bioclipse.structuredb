@@ -48,11 +48,11 @@ public class LabelTest {
         annotation.addStructure( structure );
     
         assertTrue( annotation.getStructures().contains(structure) );
-        assertTrue( structure.getLabels().contains( annotation ) );
+        assertTrue( structure.getAnnotations().contains( annotation ) );
         
         annotation.removeStructure( structure );
         
         assertFalse( annotation.getStructures().contains(structure) );
-        assertFalse( structure.getLabels().contains(annotation) );
+        assertFalse( structure.getAnnotations().contains(annotation) );
     }
 }

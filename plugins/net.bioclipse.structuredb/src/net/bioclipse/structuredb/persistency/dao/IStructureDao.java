@@ -32,7 +32,7 @@ public interface IStructureDao extends IGenericDao<Structure> {
      * @param s
      * @param folderId
      */
-    public void insertWithLabel( Structure s, String folderId );
+    public void insertWithAnnotation( Structure s, String folderId );
 
     /**
      * @return number of structures in the database

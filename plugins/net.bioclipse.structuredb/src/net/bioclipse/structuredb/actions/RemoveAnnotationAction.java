@@ -37,7 +37,7 @@ import org.eclipse.ui.actions.ActionDelegate;
  * @author jonalv
  *
  */
-public class RemoveLabelAction extends ActionDelegate {
+public class RemoveAnnotationAction extends ActionDelegate {
 
     private ISelection selection;
 
@@ -72,13 +72,13 @@ public class RemoveLabelAction extends ActionDelegate {
                     Label l = (Label)o;
                     if ( l.getParent() instanceof Database ) {
                         net.bioclipse.structuredb.domain.Annotation annotation =
-                            manager.retrieveLabelByName(
+                            manager.retrieveAnnotationByName(
                                 l.getParent().getName(), l.getName() );
                         if (response == SWT.YES) {
                             deleteWithStructures(l.getParent().getName(), annotation);
                         }
                         else {
-                            manager.deleteLabel( l.getParent().getName(), 
+                            manager.deleteAnnotation( l.getParent().getName(), 
                                             annotation );
                         }
                     }

@@ -18,14 +18,15 @@ import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 
 /**
- * The labelDao persists and loads libraries
+ * The annotationDao persists and loads libraries
  * 
  * @author jonalv
  *
  */
-public class LabelDao extends GenericDao<Annotation> implements ILabelDao {
+public class AnnotationDao extends GenericDao<Annotation> 
+                           implements IAnnotationDao {
 
-    public LabelDao() {
+    public AnnotationDao() {
         super(Annotation.class);
     }
 
@@ -39,10 +40,10 @@ public class LabelDao extends GenericDao<Annotation> implements ILabelDao {
     public void update(Annotation annotation) {
         getSqlMapClientTemplate().update( "BaseObject.update", annotation );
         getSqlMapClientTemplate().update( "Annotation.update",      annotation );
-        fixStructureLabel( annotation );
+        fixStructureAnnotation( annotation );
     }
     
-    private void fixStructureLabel( final Annotation annotation ) {
+    private void fixStructureAnnotation( final Annotation annotation ) {
 
         getSqlMapClientTemplate().delete( "Annotation.deleteStructureCoupling", 
                                           annotation );
@@ -54,9 +55,9 @@ public class LabelDao extends GenericDao<Annotation> implements ILabelDao {
                 }
             };
             if ( (Integer) getSqlMapClientTemplate()
-                .queryForObject( "StructureLabel.hasConnection", 
+                .queryForObject( "StructureAnnotation.hasConnection", 
                                  params ) == 0 ) {
-                getSqlMapClientTemplate().update( "StructureLabel.connect", 
+                getSqlMapClientTemplate().update( "StructureAnnotation.connect", 
                                                   params );
             }
         }

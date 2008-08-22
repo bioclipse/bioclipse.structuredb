@@ -28,14 +28,14 @@ public class StructuredbInstanceManager
 
     private User loggedInUser;
     
-    public Annotation createLabel(String name) {
+    public Annotation createAnnotation(String name) {
         Annotation annotation = new Annotation(name);
-        labelDao.insert(annotation);
+        annotationDao.insert(annotation);
         return annotation;
     }
 
-    public void insertLabel(Annotation annotation) {
-        labelDao.insert(annotation);
+    public void insertAnnotation(Annotation annotation) {
+        annotationDao.insert(annotation);
         persistRelatedStructures(annotation);
     }
     
@@ -59,7 +59,7 @@ public class StructuredbInstanceManager
     }
 
     public void delete(Annotation annotation) {
-        labelDao.delete( annotation.getId() );
+        annotationDao.delete( annotation.getId() );
     }
 
     public void delete(User user) {
@@ -70,8 +70,8 @@ public class StructuredbInstanceManager
         structureDao.delete( structure.getId() );
     }
 
-    public List<Annotation> retrieveAllLabels() {
-        return new BioList<Annotation>( labelDao.getAll() );
+    public List<Annotation> retrieveAllAnnotations() {
+        return new BioList<Annotation>( annotationDao.getAll() );
     }
 
     public List<Structure> retrieveAllStructures() {
@@ -82,8 +82,8 @@ public class StructuredbInstanceManager
         return new BioList<User>( userDao.getAll() );
     }
 
-    public Annotation retrieveLabelByName(String name) {
-        return labelDao.getByName(name);
+    public Annotation retrieveAnnotationByName(String name) {
+        return annotationDao.getByName(name);
     }
 
     public List<Structure> retrieveStructureByName(String name) {
@@ -95,7 +95,7 @@ public class StructuredbInstanceManager
     }
 
     public void update(Annotation annotation) {
-        labelDao.update(annotation);
+        annotationDao.update(annotation);
         persistRelatedStructures(annotation);
     }
 
@@ -120,9 +120,9 @@ public class StructuredbInstanceManager
         return structureDao.allStructuresIterator();
     }
 
-    public void insertStructureInLabel( Structure s, String folderId ) {
+    public void insertStructureInAnnotation( Structure s, String folderId ) {
 
-        structureDao.insertWithLabel( s, folderId );
+        structureDao.insertWithAnnotation( s, folderId );
     }
 
     public int numberOfStructures() {
@@ -162,7 +162,7 @@ public class StructuredbInstanceManager
             structureDao.delete( s.getId() );
             monitor.worked( tick );
         }
-        labelDao.delete( annotation.getId() );
+        annotationDao.delete( annotation.getId() );
         monitor.done();
     }
 }

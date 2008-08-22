@@ -116,17 +116,17 @@ public class StructuredbManagerTest
         return new String[] {"file:" + loc};
     }
 
-    public void testCreatingTwoLabelsInTwoDatabases() {
+    public void testCreatingTwoAnnotationsInTwoDatabases() {
 
-        Annotation f2 = manager.createLabel(database2, "testLabel2");
+        Annotation f2 = manager.createAnnotation(database2, "testAnnotation2");
         assertNotNull(f2);
-        Annotation f1 = manager.createLabel(database1, "testLabel1");
+        Annotation f1 = manager.createAnnotation(database1, "testAnnotation1");
         assertNotNull(f1);
 
         assertEquals( f2,
-                      manager.labelByName( database2, f2.getName() ) );
+                      manager.annotationByName( database2, f2.getName() ) );
         assertEquals( f1,
-                      manager.labelByName( database1, f1.getName() ) );
+                      manager.annotationByName( database1, f1.getName() ) );
     }
 
     public void testListSubstructureSearchResults() throws Exception {
@@ -321,29 +321,29 @@ public class StructuredbManagerTest
         IFile file = new MockIFile( TestData.getTestSDFFilePath() );
         manager.addStructuresFromSDF( database1, file );
         Annotation annotation
-            = manager.labelByName( database1, file.getName() );
+            = manager.annotationByName( database1, file.getName() );
         assertNotNull(annotation);
         assertEquals( 2, annotation.getStructures().size() );
     }
 
-    public void testCreatingAndRetrievingLabels() {
-        Annotation folder1 = manager.createLabel(database1, "folder1");
-        Annotation folder2 = manager.createLabel(database1, "folder2");
+    public void testCreatingAndRetrievingAnnotations() {
+        Annotation folder1 = manager.createAnnotation(database1, "folder1");
+        Annotation folder2 = manager.createAnnotation(database1, "folder2");
         assertNotNull(folder1);
         assertNotNull(folder2);
         assertEquals( folder1,
                       manager
-                      .labelByName( database1, folder1.getName() ) );
-        List<Annotation> annotations = manager.allLabels(database1);
+                      .annotationByName( database1, folder1.getName() ) );
+        List<Annotation> annotations = manager.allAnnotations(database1);
         assertTrue( annotations.contains(folder1) );
         assertTrue( annotations.contains(folder2) );
     }
 
-    public void testDeleteLabel() {
-        Annotation annotation = manager.createLabel( database1, "label" );
-        assertTrue( manager.allLabels( database1 ).contains( annotation ) );
-        manager.deleteLabel(database1, annotation);
-        assertFalse( manager.allLabels( database1 ).contains( annotation ) );
+    public void testDeleteAnnotation() {
+        Annotation annotation = manager.createAnnotation( database1, "annotation" );
+        assertTrue( manager.allAnnotations( database1 ).contains( annotation ) );
+        manager.deleteAnnotation(database1, annotation);
+        assertFalse( manager.allAnnotations( database1 ).contains( annotation ) );
     }
     
     public void testDeleteStructure() throws BioclipseException {
@@ -393,7 +393,7 @@ public class StructuredbManagerTest
     
     public void testUsingUnknownDatabase() {
         try {
-            manager.createLabel( "unknown database", 
+            manager.createAnnotation( "unknown database", 
                                  "some folder name" );
             fail("should throw exception");
         }
@@ -426,38 +426,38 @@ public class StructuredbManagerTest
         Structure s = manager.createStructure( database1, 
                                                "test", 
                                                cdk.fromSmiles( "CCC" ) );
-        Annotation l = manager.createLabel( database1, "label" );
+        Annotation l = manager.createAnnotation( database1, "annotation" );
         s.setName( "edited" );
-        s.addLabel( l );
+        s.addAnnotation( l );
         manager.save( database1, s );
         List<Structure> loaded = manager.allStructuresByName( database1, 
                                                               "edited" );
         assertEquals( 1, loaded.size() );
         
-        List<Annotation> annotations = loaded.get( 0 ).getLabels();
+        List<Annotation> annotations = loaded.get( 0 ).getAnnotations();
         assertEquals( 1, annotations.size() );
         
         assertEquals( l, annotations.get( 0 ) );
         
-        s.removeLabel(l);
+        s.removeAnnotation(l);
         manager.save( database1, s );
         loaded = manager.allStructuresByName( database1, 
                                               "edited" );
         assertEquals( 1, loaded.size() );
 
-        annotations = loaded.get( 0 ).getLabels();
+        annotations = loaded.get( 0 ).getAnnotations();
         assertEquals( 0, annotations.size() );
     }
     
-    public void testEditLabel() throws BioclipseException {
+    public void testEditAnnotation() throws BioclipseException {
         Structure s = manager.createStructure( database1, 
                                                "test", 
                                                cdk.fromSmiles( "CCC" ) );
-        Annotation annotation = manager.createLabel( database1, "a label" );
+        Annotation annotation = manager.createAnnotation( database1, "a annotation" );
         annotation.setName( "edited" );
         annotation.addStructure( s );
         manager.save( database1, annotation );
-        Annotation loaded = manager.labelByName( database1, "edited" );
+        Annotation loaded = manager.annotationByName( database1, "edited" );
         
         List<Structure> structures = loaded.getStructures();
         assertEquals( 1, structures.size() );
@@ -466,7 +466,7 @@ public class StructuredbManagerTest
         
         annotation.removeStructure( s );
         manager.save( database1, annotation );
-        loaded = manager.labelByName( database1, "edited" );
+        loaded = manager.annotationByName( database1, "edited" );
 
         assertEquals( 0, loaded.getStructures().size() );
     }
@@ -511,26 +511,26 @@ public class StructuredbManagerTest
         assertTrue(found);
     }
     
-    public void testRetrieveingLabelByName() {
+    public void testRetrieveingAnnotationByName() {
         
-        Annotation l = manager.createLabel( database1, "name" );
-        Annotation loaded = manager.retrieveLabelByName( database1,  
+        Annotation l = manager.createAnnotation( database1, "name" );
+        Annotation loaded = manager.retrieveAnnotationByName( database1,  
                                                     l.getName() );
         assertTrue( l.hasValuesEqualTo( loaded ) );
     }
     
-    public void testDeletingLabelWithStructures() 
+    public void testDeletingAnnotationWithStructures() 
                 throws BioclipseException {
-        Annotation l = manager.createLabel( database1, "label1" );
+        Annotation l = manager.createAnnotation( database1, "annotation1" );
         Structure s = manager.createStructure( database1, 
                                                "test", 
                                                cdk.fromSmiles( "CCC" ) );
         l.addStructure( s );
         manager.save( database1, l );
         assertTrue( manager.allStructures( database1 ).contains( s ) );
-        assertTrue( manager.allLabels(     database1 ).contains( l ) );
+        assertTrue( manager.allAnnotations(     database1 ).contains( l ) );
         manager.deleteWithStructures( database1, l );
         assertFalse( manager.allStructures( database1 ).contains( s ) );
-        assertFalse( manager.allLabels(     database1 ).contains( l ) );
+        assertFalse( manager.allAnnotations(     database1 ).contains( l ) );
     }
 }

@@ -210,14 +210,14 @@ public class StructuredbManager implements IStructuredbManager {
         return context;
     }
 
-    public Annotation createLabel(String databaseName, String folderName)
+    public Annotation createAnnotation(String databaseName, String folderName)
             throws IllegalArgumentException {
 
         Annotation annotation = new Annotation(folderName);
         checkDatabaseName(databaseName);
-        internalManagers.get(databaseName).insertLabel(annotation);
+        internalManagers.get(databaseName).insertAnnotation(annotation);
         logger.debug("Annotation " + folderName + " inserted in " + databaseName);
-        fireLabelsChanged();
+        fireAnnotationsChanged();
         return annotation;
     }
 
@@ -263,9 +263,9 @@ public class StructuredbManager implements IStructuredbManager {
         fireDatabasesChanged();
     }
 
-    public List<Annotation> allLabels(String databaseName) {
+    public List<Annotation> allAnnotations(String databaseName) {
         checkDatabaseName(databaseName);
-        return internalManagers.get(databaseName).retrieveAllLabels();
+        return internalManagers.get(databaseName).retrieveAllAnnotations();
     }
 
     public List<Structure> allStructures(String databaseName) {
@@ -279,12 +279,12 @@ public class StructuredbManager implements IStructuredbManager {
         return internalManagers.get(databaseName).retrieveAllUsers();
     }
 
-    public Annotation labelByName( String databaseName,
+    public Annotation annotationByName( String databaseName,
                               String folderName ) {
 
         checkDatabaseName(databaseName);
         return internalManagers.get(databaseName)
-                               .retrieveLabelByName(folderName);
+                               .retrieveAnnotationByName(folderName);
     }
 
     public List<Structure> allStructuresByName( String databaseName,
@@ -343,10 +343,10 @@ public class StructuredbManager implements IStructuredbManager {
             throw new IllegalArgumentException( "Could not open file:" + 
                                                 file );
         } 
-        String labelId 
-            = createLabel( databaseName,
+        String annotationId 
+            = createAnnotation( databaseName,
                            file.getName()
-                              //extracts a name for our new label
+                              //extracts a name for our new annotation
                               .replaceAll("\\..*?$", "") )
                               .getId();
 
@@ -367,11 +367,11 @@ public class StructuredbManager implements IStructuredbManager {
             }
 
             internalManagers.get(databaseName)
-                            .insertStructureInLabel(s, labelId);
+                            .insertStructureInAnnotation(s, annotationId);
             monitor.worked( maintTaskTick );
         }
         monitor.done();
-        fireLabelsChanged();        
+        fireAnnotationsChanged();        
     }
     
     public void addStructuresFromSDF( String databaseName,
@@ -501,11 +501,11 @@ public class StructuredbManager implements IStructuredbManager {
         return structures;
     }
 
-    public void deleteLabel( String databaseName, Annotation annotation ) {
+    public void deleteAnnotation( String databaseName, Annotation annotation ) {
 
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName ).delete( annotation );
-        fireLabelsChanged();
+        fireAnnotationsChanged();
     }
 
     public void deleteStructure( String databaseName, Structure structure ) {
@@ -589,7 +589,7 @@ public class StructuredbManager implements IStructuredbManager {
         }
     }
     
-    public void fireLabelsChanged() {
+    public void fireAnnotationsChanged() {
       //the original listeners collection gets edited during the loop
         for ( IDatabaseListener l 
               : new ArrayList<IDatabaseListener>(listeners) ) {
@@ -597,11 +597,11 @@ public class StructuredbManager implements IStructuredbManager {
         }
     }
 
-    public Annotation retrieveLabelByName( String databaseName, 
-                                      String labelName ) {
+    public Annotation retrieveAnnotationByName( String databaseName, 
+                                      String annotationName ) {
         checkDatabaseName(databaseName);
         return internalManagers.get( databaseName )
-                               .retrieveLabelByName( labelName );
+                               .retrieveAnnotationByName( annotationName );
     }
 
     public void deleteWithStructures( String databaseName, Annotation annotation ) {
@@ -614,7 +614,7 @@ public class StructuredbManager implements IStructuredbManager {
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName )
                         .deleteWithStructures( annotation, monitor );
-        fireLabelsChanged();
+        fireAnnotationsChanged();
     }
 
     public void addStructuresFromSDF( String databaseName, IFile file ) 

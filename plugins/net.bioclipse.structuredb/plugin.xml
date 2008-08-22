@@ -61,7 +61,7 @@
             id="net.bioclipse.structuredb.removeLabel"
             objectClass="net.bioclipse.structuredb.Label">
             <action
-                class="net.bioclipse.structuredb.actions.RemoveLabelAction"
+                class="net.bioclipse.structuredb.actions.RemoveAnnotationAction"
                 enablesFor="1"
                 id="net.bioclipse.structuredb.actions.RemoveLabelAction"
                 label="Delete"

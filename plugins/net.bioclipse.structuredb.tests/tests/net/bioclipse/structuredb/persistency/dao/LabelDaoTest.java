@@ -35,11 +35,11 @@ public class LabelDaoTest extends GenericDaoTest<Annotation> {
         structureDao.insert(structure);
         object1.addStructure(structure);
         dao.update(object1);
-        assertTrue( structure.getLabels().contains( object1 ) );
+        assertTrue( structure.getAnnotations().contains( object1 ) );
         super.testDelete();
         
         structure = structureDao.getById( structure.getId() );
-        assertFalse( structure.getLabels().contains( object1 ) );
+        assertFalse( structure.getAnnotations().contains( object1 ) );
     }
     
     public void testGetByName() {
@@ -53,11 +53,11 @@ public class LabelDaoTest extends GenericDaoTest<Annotation> {
         addCreatorAndEditor(annotation);
         dao.insert(annotation);
         assertEquals( annotation, 
-                      ( (ILabelDao)dao ).getByName(annotation.getName()) );
+                      ( (IAnnotationDao)dao ).getByName(annotation.getName()) );
         annotation.addStructure( s );
         dao.update( annotation );
         assertEquals( 1, 
-                      ( (ILabelDao)dao ).getByName( annotation.getName() )
+                      ( (IAnnotationDao)dao ).getByName( annotation.getName() )
                                         .getStructures().size() );
     }
     

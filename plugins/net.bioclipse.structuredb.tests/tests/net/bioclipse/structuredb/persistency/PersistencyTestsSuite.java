@@ -10,7 +10,6 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency;
 
-import net.bioclipse.structuredb.persistency.dao.GenericDaoTest;
 import net.bioclipse.structuredb.persistency.dao.LabelDaoTest;
 import net.bioclipse.structuredb.persistency.dao.StructureDaoTest;
 import net.bioclipse.structuredb.persistency.dao.UserDaoTest;

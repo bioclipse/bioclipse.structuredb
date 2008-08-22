@@ -73,8 +73,8 @@ public class Annotation extends BaseObject {
      */
     public void addStructure(Structure structure) {
         structures.add(structure);
-        if( structure != null && !structure.getLabels().contains( this ) ) {
-            structure.addLabel(this);
+        if( structure != null && !structure.getAnnotations().contains( this ) ) {
+            structure.addAnnotation(this);
         }
     }
 
@@ -86,7 +86,7 @@ public class Annotation extends BaseObject {
     public void removeStructure(Structure structure) {
         structures.remove(structure);
         if( structure != null ) {
-            structure.getLabels().remove( this );
+            structure.getAnnotations().remove( this );
         }
     }
 }

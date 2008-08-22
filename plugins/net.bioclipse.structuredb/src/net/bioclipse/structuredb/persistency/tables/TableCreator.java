@@ -33,12 +33,13 @@ public class TableCreator {
     
     private static final Logger logger = Logger.getLogger(TableCreator.class);
 
-    public static final String[] SQL_FILES_RUNORDER = { "BaseObject.sql", 
-                                                        "User.sql",
-                                                        "Annotation.sql",
-                                                        "Structure.sql",
-                                                        "StructureLabel.sql", };
-    
+    public static final String[] SQL_FILES_RUNORDER 
+        = { "BaseObject.sql", 
+            "User.sql",
+            "Annotation.sql",
+            "Structure.sql",
+            "StructureAnnotation.sql", };
+
     public static final TableCreator INSTANCE = new TableCreator();
     
     private List<String> createTableStatements = new ArrayList<String>();
@@ -132,6 +133,7 @@ public class TableCreator {
             stmt.executeUpdate(statement);
             stmt.close();
         } catch (SQLException e) {
+            LogUtils.debugTrace( logger, e );
             throw new RuntimeException("error running statement", e);
         }
     }

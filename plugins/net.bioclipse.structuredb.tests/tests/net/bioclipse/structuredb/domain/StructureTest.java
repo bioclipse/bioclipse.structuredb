@@ -56,19 +56,19 @@ public class StructureTest {
         Annotation label2        = new Annotation("label2");
         Structure structure = new Structure("Cyclopropane", testMolecule);
         
-        structure.addLabel( annotation );
+        structure.addAnnotation( annotation );
         
-        assertTrue( structure.getLabels().contains(annotation) );
+        assertTrue( structure.getAnnotations().contains(annotation) );
         assertTrue( annotation.getStructures().contains(structure) );
         
-        structure.addLabel( label2 );
+        structure.addAnnotation( label2 );
         
-        assertTrue( structure.getLabels().contains(label2)     );
+        assertTrue( structure.getAnnotations().contains(label2)     );
         assertTrue( label2.getStructures().contains(structure) );
         assertTrue( annotation.getStructures().contains(structure)  );
         
-        structure.removeLabel( annotation );
-        assertFalse( structure.getLabels().contains(annotation) );
+        structure.removeAnnotation( annotation );
+        assertFalse( structure.getAnnotations().contains(annotation) );
         assertFalse( annotation.getStructures().contains(structure) );        
     }
 }

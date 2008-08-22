@@ -62,7 +62,7 @@ public interface IStructuredbInstanceManager {
      * 
      * @param annotation to be inserted
      */
-    public void insertLabel( Annotation annotation );
+    public void insertAnnotation( Annotation annotation );
     
     /**
      * Insert a structure into the database
@@ -101,7 +101,7 @@ public interface IStructuredbInstanceManager {
     /**
      * @return all libraries
      */
-    public List<Annotation> retrieveAllLabels();
+    public List<Annotation> retrieveAllAnnotations();
     
     /**
      * @return all users
@@ -130,7 +130,7 @@ public interface IStructuredbInstanceManager {
      * @param name
      * @return a Annotation or null if no such Annotation exists
      */
-    public Annotation retrieveLabelByName(String name);
+    public Annotation retrieveAnnotationByName(String name);
 
     /**
      * @return the logged in user
@@ -153,7 +153,7 @@ public interface IStructuredbInstanceManager {
      * @param s
      * @param folderId
      */
-    public void insertStructureInLabel( Structure s, String folderId );
+    public void insertStructureInAnnotation( Structure s, String folderId );
 
     /**
      * Returns an int representing the number of structures in the database

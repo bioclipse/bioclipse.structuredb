@@ -43,14 +43,14 @@ public class StructureDao extends GenericDao<Structure>
         getSqlMapClientTemplate().update( "BaseObject.insert", structure );
         getSqlMapClientTemplate().update( type.getSimpleName() + ".insert", 
                                           structure );
-        fixStructureLabel(structure);
+        fixStructureAnnotation(structure);
     }
     
-    private void fixStructureLabel( final Structure structure ) {
+    private void fixStructureAnnotation( final Structure structure ) {
 
-        getSqlMapClientTemplate().delete( "Structure.deleteLabelCoupling", 
+        getSqlMapClientTemplate().delete( "Structure.deleteAnnotationCoupling", 
                                           structure );
-        for( final Annotation l : structure.getLabels() ) {
+        for( final Annotation l : structure.getAnnotations() ) {
             Map<String, String> params = new HashMap<String, String>() {
                 {
                     put( "labelId",     l.getId()         );
@@ -58,9 +58,9 @@ public class StructureDao extends GenericDao<Structure>
                 }
             };
             if ( (Integer) getSqlMapClientTemplate()
-                .queryForObject( "StructureLabel.hasConnection", 
+                .queryForObject( "StructureAnnotation.hasConnection", 
                                  params ) == 0 ) {
-                getSqlMapClientTemplate().update( "StructureLabel.connect", 
+                getSqlMapClientTemplate().update( "StructureAnnotation.connect", 
                                                   params );
             }
         }
@@ -70,7 +70,7 @@ public class StructureDao extends GenericDao<Structure>
     public void update(Structure structure) {
         getSqlMapClientTemplate().update( "Structure.update",  structure );
         getSqlMapClientTemplate().update( "BaseObject.update", structure );
-        fixStructureLabel( structure );
+        fixStructureAnnotation( structure );
     }
 
     @SuppressWarnings("unchecked")
@@ -146,7 +146,7 @@ public class StructureDao extends GenericDao<Structure>
         }
     }
 
-    public void insertWithLabel( Structure structure, String labelId ) {
+    public void insertWithAnnotation( Structure structure, String labelId ) {
 
         getSqlMapClientTemplate().update( "BaseObject.insert", structure );
         getSqlMapClientTemplate().update( "Structure.insert",  structure );
@@ -154,7 +154,7 @@ public class StructureDao extends GenericDao<Structure>
         Map<String, String> params = new HashMap<String, String>();
         params.put( "structureId", structure.getId() );
         params.put( "labelId", labelId );
-        getSqlMapClientTemplate().update( "StructureLabel.connect", params );
+        getSqlMapClientTemplate().update( "StructureAnnotation.connect", params );
     }
 
     public int numberOfStructures() {

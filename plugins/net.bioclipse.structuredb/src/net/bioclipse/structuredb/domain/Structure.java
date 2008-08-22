@@ -124,7 +124,7 @@ public class Structure extends BaseObject
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         smiles               = structure.getSmiles();
         annotations          = new ArrayList<Annotation>( 
-                                   structure.getLabels() );
+                                   structure.getAnnotations() );
     }
 
     public boolean hasValuesEqualTo( BaseObject object ) {
@@ -206,19 +206,19 @@ public class Structure extends BaseObject
     }
 
     /**
-     * @return the label containing this structure or null
-     * if the structure isn't in any label
+     * @return the annotation containing this structure or null
+     * if the structure isn't in any annotation
      */
-    public List<Annotation> getLabels() {
+    public List<Annotation> getAnnotations() {
         return annotations;
     }
 
     /**
-     * Adds a label to this structure
+     * Adds an Annotation to this structure
      *
-     * @param annotation the label to place the structure in
+     * @param annotation the annotation to place the structure in
      */
-    public void addLabel(Annotation annotation) {
+    public void addAnnotation(Annotation annotation) {
         annotations.add( annotation );
         if( annotation != null && 
             !annotation.getStructures().contains(this) ) {
@@ -227,7 +227,10 @@ public class Structure extends BaseObject
         }
     }
     
-    void setLabels(List<Annotation> annotations) {
+    /*
+     * used by Spring to inject the annotations
+     */
+    void setAnnotations(List<Annotation> annotations) {
         this.annotations = annotations;
     }
 
@@ -291,7 +294,7 @@ public class Structure extends BaseObject
         return atomContainer;
     }
 
-    public void removeLabel( Annotation annotation ) {
+    public void removeAnnotation( Annotation annotation ) {
         if ( annotation.getStructures().contains(this) ) {
             annotation.removeStructure(this);
         }

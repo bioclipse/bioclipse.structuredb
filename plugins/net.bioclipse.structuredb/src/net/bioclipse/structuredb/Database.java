@@ -104,7 +104,7 @@ public class Database extends AbstractServiceContainer
         for ( net.bioclipse.structuredb.domain.Annotation l : 
                          Activator.getDefault()
                                   .getStructuredbManager()
-                                  .allLabels( getName() ) ) {
+                                  .allAnnotations( getName() ) ) {
             children.add( new Label( l.getName(), this ) );
             
         }

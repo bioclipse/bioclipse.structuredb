@@ -76,14 +76,14 @@ public interface IStructuredbManager extends IBioclipseManager {
      * Retrieves a folder with a given name from a database with a given name.
      *
      * @param databaseName
-     * @param labelName
+     * @param annotationName
      * @return a folder
      */
-    @PublishedMethod ( params = "String databaseName, String labelName",
-                       methodSummary = "Fetches a label by a given name" +
+    @PublishedMethod ( params = "String databaseName, String annotationName",
+                       methodSummary = "Fetches a annotation by a given name" +
                                        "from a database with a given name" )
-    public Annotation labelByName( String databaseName,
-                              String labelName );
+    public Annotation annotationByName( String databaseName,
+                              String annotationName );
 
     /**
      * Retrieves a user with a given username from a database with a given name.
@@ -124,16 +124,16 @@ public interface IStructuredbManager extends IBioclipseManager {
      * with the given name.
      *
      * @param databaseName
-     * @param labelName
+     * @param annotationName
      * @return the folder
      * @throws IllegalArgumentException
      */
-    @PublishedMethod ( params = "String databaseName, String labelName",
-                       methodSummary = "Creates a label with the given name " +
+    @PublishedMethod ( params = "String databaseName, String annotationName",
+                       methodSummary = "Creates a annotation with the given name " +
                                        "and saves it in the database with " +
                                        "the given name" )
-    public Annotation createLabel( String databaseName,
-                              String labelName )
+    public Annotation createAnnotation( String databaseName,
+                              String annotationName )
                  throws IllegalArgumentException;
 
     /**
@@ -178,7 +178,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all folders from a database " +
                                        "with a given name")
-    public List<Annotation> allLabels( String databaseName );
+    public List<Annotation> allAnnotations( String databaseName );
 
     /**
      * Retrieves all users from a database with a given name.
@@ -300,15 +300,15 @@ public interface IStructuredbManager extends IBioclipseManager {
 
     
     /**
-     * Deletes the given label from the given database
+     * Deletes the given annotation from the given database
      * 
      * @param database
      * @param annotation
      */
-    @PublishedMethod ( params = "String database, Annotation label", 
-                       methodSummary = "Deletes the given label from the " +
+    @PublishedMethod ( params = "String database, Annotation annotation", 
+                       methodSummary = "Deletes the given annotation from the " +
                        		           "given database" )
-    public void deleteLabel( String database, Annotation annotation );
+    public void deleteAnnotation( String database, Annotation annotation );
 
     /**
      * Deletes the given structure from the given database
@@ -337,14 +337,14 @@ public interface IStructuredbManager extends IBioclipseManager {
 
     
     /**
-     * Saves the changes on the given label back to the database. The 
-     * label must come from the given database.
+     * Saves the changes on the given annotation back to the database. The 
+     * annotation must come from the given database.
      * 
      * @param database
      * @param annotation
      */
-    @PublishedMethod ( params = "String database, Annotation label", 
-                       methodSummary = "Saves changes on a label retrieved " +
+    @PublishedMethod ( params = "String database, Annotation annotation", 
+                       methodSummary = "Saves changes on a annotation retrieved " +
                        		           "from the database back to the " +
                        		           "database.")
     public void save( String database, Annotation annotation );
@@ -408,21 +408,21 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param string 
      * @return
      */
-    @PublishedMethod ( params = "String databaseName, String labelName", 
-                       methodSummary = "Retrives the label with the " +
+    @PublishedMethod ( params = "String databaseName, String annotationName", 
+                       methodSummary = "Retrives the annotation with the " +
                       		             "given name from the database " +
                       		             "with the given name" )
-    public Annotation retrieveLabelByName( String databaseName, 
-                                      String labelName );
+    public Annotation retrieveAnnotationByName( String databaseName, 
+                                      String annotationName );
 
     
     /**
-     * Deletes a label and all structures having that label
+     * Deletes a annotation and all structures having that annotation
      * @param name
      * @param annotation
      */
-    @PublishedMethod ( params =  "String name, Annotation label", 
-                       methodSummary = "Deletes the given label from " +
+    @PublishedMethod ( params =  "String name, Annotation annotation", 
+                       methodSummary = "Deletes the given annotation from " +
                        		             "the specified database" )
     public void deleteWithStructures( String databaseName, Annotation annotation );
 

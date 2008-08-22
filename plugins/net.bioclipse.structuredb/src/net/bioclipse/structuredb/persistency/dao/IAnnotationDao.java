@@ -12,7 +12,7 @@ package net.bioclipse.structuredb.persistency.dao;
 
 import net.bioclipse.structuredb.domain.Annotation;
 
-public interface ILabelDao extends IGenericDao<Annotation> {
+public interface IAnnotationDao extends IGenericDao<Annotation> {
 
     public Annotation getByName(String name);
 

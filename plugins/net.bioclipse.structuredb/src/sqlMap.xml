@@ -39,13 +39,13 @@
 		<result property="lastEditor" column="lastEditor" select="User.getById" />
 	</resultMap>
 
-	<resultMap class="Label" id="Label" extends="BaseObject">
-		<result property="structures" column="id" select="Label.getStructures"  />
+	<resultMap class="Annotation" id="Annotation" extends="BaseObject">
+		<result property="structures" column="id" select="Annotation.getStructures"  />
 		<result property="name"       column="name"                             />
 	</resultMap>
 	
 	<resultMap class="Structure" id="Structure" extends="BaseObject">
-		<result property="labels"               column="id" select="Structure.getLabels" />
+		<result property="annotations"          column="id" select="Structure.getAnnotations" />
 		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
 		<result property="smiles"               column="smiles"                         />
 		<result property="CML"                  column="molecule"                       />
@@ -82,7 +82,7 @@
 		u.sudoer   AS sudoer
 	</sql>
 	
-	<sql id="Label-fields">
+	<sql id="Annotation-fields">
 	   l.name AS name
 	</sql>
 	
@@ -109,8 +109,8 @@
 		               VALUES ( ?, ?, ?, ?, ?, ? ); 
 	</insert>
 	
-	<insert id="Label.insert">
-		INSERT INTO Label (   id,     baseObject, name   )
+	<insert id="Annotation.insert">
+		INSERT INTO Annotation (   id,     baseObject, name   )
 		           VALUES ( '$id$', '$id$',     '$name$' );
 	</insert>
 	
@@ -158,37 +158,37 @@
             u.username = #value#
     </select>
 	
-	<select id="Label.getById" resultMap="Label" parameterClass="String">
+	<select id="Annotation.getById" resultMap="Annotation" parameterClass="String">
 		SELECT 
 			<include refid="BaseObject-fields" />,
-			<include refid="Label-fields"      />
+			<include refid="Annotation-fields"      />
 		FROM
-			Label l INNER JOIN BaseObject b ON
+			Annotation l INNER JOIN BaseObject b ON
 			l.baseObject = b.id
 		WHERE 
 			l.id = #value#
 	</select>
 	
-	<select id="Label.getByName" resultMap="Label" parameterClass="String">
+	<select id="Annotation.getByName" resultMap="Annotation" parameterClass="String">
         SELECT 
             <include refid="BaseObject-fields" />,
-            <include refid="Label-fields"      />
+            <include refid="Annotation-fields"      />
         FROM
-            Label l INNER JOIN BaseObject b ON
+            Annotation l INNER JOIN BaseObject b ON
             l.baseObject = b.id
         WHERE 
             l.name = #value#
     </select>
 	
-	<select id="Label.getStructures" resultMap="Structure" parameterClass="String">
+	<select id="Annotation.getStructures" resultMap="Structure" parameterClass="String">
 		SELECT 
 			<include refid="BaseObject-fields" />,
 			<include refid="Structure-fields"  />
 		FROM
 			Structure s INNER JOIN BaseObject b ON s.baseObject = b.id, 
-			StructureLabel sl
+			StructureAnnotation sl
 		WHERE 
-			sl.labelId = #value# AND sl.structureId = s.id
+			sl.annotationId = #value# AND sl.structureId = s.id
 	</select>
 	
 	<select id="Structure.getAll" resultMap="Structure">
@@ -211,23 +211,23 @@
             s.name = #value#
     </select>
 	
-	<select id="Structure.getLabels" resultMap="Label" parameterClass="String">
+	<select id="Structure.getAnnotations" resultMap="Annotation" parameterClass="String">
         SELECT 
             <include refid="BaseObject-fields" />,
-            <include refid="Label-fields"  />
+            <include refid="Annotation-fields"  />
         FROM
-            Label l INNER JOIN BaseObject b ON l.baseObject = b.id, 
-            StructureLabel sl
+            Annotation l INNER JOIN BaseObject b ON l.baseObject = b.id, 
+            StructureAnnotation sl
         WHERE 
-            sl.structureId = #value# AND sl.labelId = l.id
+            sl.structureId = #value# AND sl.annotationId = l.id
     </select>
 	
-	<select id="Label.getAll" resultMap="Label">
+	<select id="Annotation.getAll" resultMap="Annotation">
 		SELECT
 			<include refid="BaseObject-fields" />,
-			<include refid="Label-fields"      />
+			<include refid="Annotation-fields"      />
 		FROM
-			Label l INNER JOIN BaseObject b ON
+			Annotation l INNER JOIN BaseObject b ON
 			l.baseObject = b.id
 	</select>
 
@@ -264,16 +264,16 @@
             BITAND(s.persistedFingerprint, #param:BINARY#) = #param:BINARY#
     </select>
     
-    <select id="StructureLabel.hasConnection"
+    <select id="StructureAnnotation.hasConnection"
             parameterClass="java.util.Map"
             resultClass="int" >
         SELECT
             count(*) as numberOf
         FROM
-            StructureLabel sl
+            StructureAnnotation sl
         WHERE
             sl.StructureId = #structureId# 
-            AND sl.LabelId = #labelId#
+            AND sl.AnnotationId = #annotationId#
     </select>
 	
 <!--+
@@ -286,18 +286,18 @@
             id='$value$';
 	</delete>
 	
-    <delete id="Structure.deleteLabelCoupling" parameterClass="Structure">
+    <delete id="Structure.deleteAnnotationCoupling" parameterClass="Structure">
         DELETE FROM 
-	       StructureLabel
+	       StructureAnnotation
         WHERE 
 	       structureId = '$id$'
 	</delete>
 	
-	<delete id="Label.deleteStructureCoupling" parameterClass="Label">
+	<delete id="Annotation.deleteStructureCoupling" parameterClass="Annotation">
 	   DELETE FROM 
-	       StructureLabel
+	       StructureAnnotation
 	   WHERE 
-	       labelId = '$id$'
+	       annotationId = '$id$'
 	</delete>
 <!--+
     | UPDATE STATEMENTS
@@ -325,9 +325,9 @@
 			id = '$id$'
     </update>
     
-    <update id="Label.update" parameterClass="Label">
+    <update id="Annotation.update" parameterClass="Annotation">
         UPDATE
-            Label
+            Annotation
         SET
             name = '$name$'
         WHERE
@@ -346,8 +346,8 @@
 			id = '$id$'
     </update>
     
-    <update id="StructureLabel.connect" parameterClass="java.util.Map">
-        INSERT into StructureLabel (   structureId,     labelId   ) 
-                            VALUES ( '$structureId$', '$labelId$' )
+    <update id="StructureAnnotation.connect" parameterClass="java.util.Map">
+        INSERT into StructureAnnotation (   structureId,     annotationId   ) 
+                            VALUES ( '$structureId$', '$annotationId$' )
     </update>
 </sqlMap>

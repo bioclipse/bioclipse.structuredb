@@ -55,13 +55,13 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
     public void testPersistStructureWithLabel() {
         
         Annotation annotation = new Annotation();
-        ILabelDao labelDao 
-            = (ILabelDao) applicationContext.getBean("labelDao");
+        IAnnotationDao annotationDao 
+            = (IAnnotationDao) applicationContext.getBean("annotationDao");
         addCreatorAndEditor(annotation);
-        labelDao.insert(annotation);
+        annotationDao.insert(annotation);
         
         Structure structure = new Structure();
-        structure.addLabel(annotation);
+        structure.addAnnotation(annotation);
         addCreatorAndEditor(structure);
         dao.insert(structure);
         
@@ -69,27 +69,27 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         assertNotNull("The lodaded object shuold not be null", loaded);
         assertNotSame(structure, loaded);
         assertTrue( structure.hasValuesEqualTo(loaded) );
-        assertTrue( loaded.getLabels().contains(annotation) );
+        assertTrue( loaded.getAnnotations().contains(annotation) );
     }
 
     public void testPersistStructureWithLabelId() {
         
         Annotation annotation = new Annotation();
-        ILabelDao labelDao 
-            = (ILabelDao) applicationContext.getBean("labelDao");
+        IAnnotationDao annotationDao 
+            = (IAnnotationDao) applicationContext.getBean("annotationDao");
         addCreatorAndEditor(annotation);
-        labelDao.insert(annotation);
+        annotationDao.insert(annotation);
         
         Structure structure = new Structure();
 
         addCreatorAndEditor(structure);
-        ((IStructureDao)dao).insertWithLabel( structure, annotation.getId() );
+        ((IStructureDao)dao).insertWithAnnotation( structure, annotation.getId() );
         
         Structure loaded = dao.getById( structure.getId() );
         assertNotNull("The lodaded object should not be null", loaded);
         assertNotSame(structure, loaded);
         assertTrue( structure.hasValuesEqualTo(loaded) );
-        assertTrue( loaded.getLabels().contains(annotation) );
+        assertTrue( loaded.getAnnotations().contains(annotation) );
     }
     
     @Override
@@ -97,13 +97,13 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         super.testUpdate();
         
         Annotation annotation = new Annotation();
-        ILabelDao labelDao 
-            = (ILabelDao) applicationContext.getBean("labelDao");
+        IAnnotationDao annotationDao 
+            = (IAnnotationDao) applicationContext.getBean("annotationDao");
         addCreatorAndEditor(annotation);
-        labelDao.insert(annotation);
+        annotationDao.insert(annotation);
         
         Structure structure = new Structure();
-        structure.addLabel(annotation);
+        structure.addAnnotation(annotation);
         addCreatorAndEditor(structure);
         dao.insert(structure);
         
@@ -176,14 +176,14 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
     public void testGetLabels() {
         Annotation annotation = new Annotation( "my label" );
         Annotation unusedLabel = new Annotation( "I should not turn up" );
-        ILabelDao labelDao = (ILabelDao) applicationContext.getBean("labelDao");
-        labelDao.insert( annotation );
-        labelDao.insert( unusedLabel );
+        IAnnotationDao annotationDao = (IAnnotationDao) applicationContext.getBean("annotationDao");
+        annotationDao.insert( annotation );
+        annotationDao.insert( unusedLabel );
         
-        structure1.addLabel( annotation );
+        structure1.addAnnotation( annotation );
         dao.update( structure1 );
         Structure loaded = dao.getById( structure1.getId() );
-        assertEquals( 1, loaded.getLabels().size() );
-        assertEquals( annotation, structure1.getLabels().get( 0 ) );
+        assertEquals( 1, loaded.getAnnotations().size() );
+        assertEquals( annotation, structure1.getAnnotations().get( 0 ) );
     }
 }
