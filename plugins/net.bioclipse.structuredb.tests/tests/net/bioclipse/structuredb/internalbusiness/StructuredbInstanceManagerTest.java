@@ -34,9 +34,9 @@ public class StructuredbInstanceManagerTest
     
     protected IStructuredbInstanceManager manager;
     
-    protected IAnnotationDao    annotationDao;
-    protected IUserDao      userDao;
-    protected IStructureDao structureDao;
+    protected IAnnotationDao annotationDao;
+    protected IUserDao       userDao;
+    protected IStructureDao  structureDao;
 
     public StructuredbInstanceManagerTest() {
         super();

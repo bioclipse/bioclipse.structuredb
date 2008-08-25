@@ -14,9 +14,9 @@ import net.bioclipse.structuredb.persistency.dao.IUserDao;
 public abstract class AbstractStructuredbInstanceManager 
                       implements IStructuredbInstanceManager {
 
-    protected IAnnotationDao     annotationDao;
-    protected IStructureDao structureDao;
-    protected IUserDao      userDao;
+    protected IAnnotationDao annotationDao;
+    protected IStructureDao  structureDao;
+    protected IUserDao       userDao;
     
     public AbstractStructuredbInstanceManager() {
         
@@ -26,7 +26,7 @@ public abstract class AbstractStructuredbInstanceManager
         return annotationDao;
     }
 
-    public void setLabelDao(IAnnotationDao annotationDao) {
+    public void setAnnotationDao(IAnnotationDao annotationDao) {
         this.annotationDao = annotationDao;
     }
 
