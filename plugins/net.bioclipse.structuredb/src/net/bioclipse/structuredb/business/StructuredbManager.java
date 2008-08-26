@@ -345,10 +345,10 @@ public class StructuredbManager implements IStructuredbManager {
         } 
         String annotationId 
             = createAnnotation( databaseName,
-                           file.getName()
-                              //extracts a name for our new annotation
-                              .replaceAll("\\..*?$", "") )
-                              .getId();
+                                file.getName()
+                                     //extracts a name for our new annotation
+                                    .replaceAll("\\..*?$", "") )
+                                .getId();
 
         while ( iterator.hasNext() ) {
             ICDKMolecule molecule = iterator.next();

@@ -321,7 +321,9 @@ public class StructuredbManagerTest
         IFile file = new MockIFile( TestData.getTestSDFFilePath() );
         manager.addStructuresFromSDF( database1, file );
         Annotation annotation
-            = manager.annotationByName( database1, file.getName() );
+            = manager.annotationByName( database1, 
+                                        file.getName()
+                                            .replaceAll("\\..*?$", "") );
         assertNotNull(annotation);
         assertEquals( 2, annotation.getStructures().size() );
     }

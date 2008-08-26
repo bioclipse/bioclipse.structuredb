@@ -53,8 +53,8 @@ public class StructureDao extends GenericDao<Structure>
         for( final Annotation l : structure.getAnnotations() ) {
             Map<String, String> params = new HashMap<String, String>() {
                 {
-                    put( "labelId",     l.getId()         );
-                    put( "structureId", structure.getId() );
+                    put( "annotationId", l.getId()         );
+                    put( "structureId",  structure.getId() );
                 }
             };
             if ( (Integer) getSqlMapClientTemplate()
@@ -146,14 +146,14 @@ public class StructureDao extends GenericDao<Structure>
         }
     }
 
-    public void insertWithAnnotation( Structure structure, String labelId ) {
+    public void insertWithAnnotation( Structure structure, String annotationId ) {
 
         getSqlMapClientTemplate().update( "BaseObject.insert", structure );
         getSqlMapClientTemplate().update( "Structure.insert",  structure );
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put( "structureId", structure.getId() );
-        params.put( "labelId", labelId );
+        params.put( "structureId",  structure.getId() );
+        params.put( "annotationId", annotationId );
         getSqlMapClientTemplate().update( "StructureAnnotation.connect", params );
     }
 

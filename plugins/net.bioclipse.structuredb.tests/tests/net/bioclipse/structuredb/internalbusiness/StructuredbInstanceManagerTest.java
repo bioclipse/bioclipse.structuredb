@@ -73,14 +73,14 @@ public class StructuredbInstanceManagerTest
                                 .setLoggedInUser(testUser);
     }
     
-    private Annotation createLabel(String name) {
+    private Annotation createAnnotation(String name) {
         Annotation annotation = new Annotation(name);
         manager.insertAnnotation(annotation);
         return annotation;
     }
     
     public void testInsertLabel() {
-        Annotation annotation = createLabel("testLabel");
+        Annotation annotation = createAnnotation("testLabel");
         List<Annotation> allLabels = annotationDao.getAll(); 
         assertTrue( allLabels.contains(annotation) );
     }
@@ -121,7 +121,7 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testDeleteLibrary() {
-        Annotation annotation = createLabel("testLabel");
+        Annotation annotation = createAnnotation("testLabel");
         assertTrue( annotationDao.getAll().contains(annotation) );
         manager.delete(annotation);
         assertFalse( annotationDao.getAll().contains(annotation) );
@@ -143,8 +143,8 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testRetrieveAllLibraries() {
-        Annotation folder1 = createLabel("testLibrary1");
-        Annotation folder2 = createLabel("testLibrary2");
+        Annotation folder1 = createAnnotation("testLibrary1");
+        Annotation folder2 = createAnnotation("testLibrary2");
         
         assertTrue( annotationDao.getAll().containsAll( 
                 Arrays.asList(new Annotation[] {folder1, folder2}) ) );
@@ -169,7 +169,7 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testRetrieveLibraryByName() {
-        Annotation annotation = createLabel("testLibrary1");
+        Annotation annotation = createAnnotation("testLibrary1");
         
         assertNotNull(annotation);
         
@@ -195,7 +195,7 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testUpdateLibrary() {
-        Annotation annotation = createLabel("testLibrary");
+        Annotation annotation = createAnnotation("testLibrary");
         annotation.setName("edited");
         manager.update(annotation);
         assertEquals( annotation, annotationDao.getById(annotation.getId()) );
@@ -219,7 +219,7 @@ public class StructuredbInstanceManagerTest
     public void testDeleteLabelAndStructures() throws CDKException {
         Structure structure = createStructure( "CycloOcan", 
                                                TestData.getCycloOctan() );
-        Annotation annotation = createLabel( "test" );
+        Annotation annotation = createAnnotation( "test" );
         structure.addAnnotation( annotation );
         manager.update( annotation );
         

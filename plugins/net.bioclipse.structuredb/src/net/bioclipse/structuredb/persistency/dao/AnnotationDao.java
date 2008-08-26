@@ -39,7 +39,7 @@ public class AnnotationDao extends GenericDao<Annotation>
     @Override
     public void update(Annotation annotation) {
         getSqlMapClientTemplate().update( "BaseObject.update", annotation );
-        getSqlMapClientTemplate().update( "Annotation.update",      annotation );
+        getSqlMapClientTemplate().update( "Annotation.update", annotation );
         fixStructureAnnotation( annotation );
     }
     
@@ -50,8 +50,8 @@ public class AnnotationDao extends GenericDao<Annotation>
         for( final Structure s : annotation.getStructures() ) {
             Map<String, String> params = new HashMap<String, String>() {
                 {
-                    put( "labelId",     annotation.getId()         );
-                    put( "structureId", s.getId() );
+                    put( "annotationId", annotation.getId() );
+                    put( "structureId",  s.getId()          );
                 }
             };
             if ( (Integer) getSqlMapClientTemplate()

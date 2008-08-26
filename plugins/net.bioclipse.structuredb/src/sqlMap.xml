@@ -348,6 +348,6 @@
     
     <update id="StructureAnnotation.connect" parameterClass="java.util.Map">
         INSERT into StructureAnnotation (   structureId,     annotationId   ) 
-                            VALUES ( '$structureId$', '$annotationId$' )
+                                 VALUES ( '$structureId$', '$annotationId$' )
     </update>
 </sqlMap>
