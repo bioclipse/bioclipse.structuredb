@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
@@ -139,8 +140,8 @@ public class StructuredbManager implements IStructuredbManager {
             = new HashMap<String, ApplicationContext>();
 
         for( String nameKey : internalManagers.keySet() ) {
-            //TODO: The day we not only handle local databases the row here
-            //      below will need to change
+            //TODO: The day we not only handle local databases the row 
+            //      here below will need to change
             newApplicationContexts.put( nameKey,
                                         createApplicationcontext(
                                             nameKey, true) );
@@ -210,13 +211,15 @@ public class StructuredbManager implements IStructuredbManager {
         return context;
     }
 
-    public Annotation createAnnotation(String databaseName, String folderName)
+    public Annotation createAnnotation( String databaseName, 
+                                        String folderName )
             throws IllegalArgumentException {
 
         Annotation annotation = new Annotation(folderName);
         checkDatabaseName(databaseName);
         internalManagers.get(databaseName).insertAnnotation(annotation);
-        logger.debug("Annotation " + folderName + " inserted in " + databaseName);
+        logger.debug("Annotation " + folderName 
+                     + " inserted in " + databaseName);
         fireAnnotationsChanged();
         return annotation;
     }
@@ -265,7 +268,8 @@ public class StructuredbManager implements IStructuredbManager {
 
     public List<Annotation> allAnnotations(String databaseName) {
         checkDatabaseName(databaseName);
-        return internalManagers.get(databaseName).retrieveAllAnnotations();
+        return internalManagers.get(databaseName)
+                               .retrieveAllAnnotations();
     }
 
     public List<Structure> allStructures(String databaseName) {
@@ -346,7 +350,8 @@ public class StructuredbManager implements IStructuredbManager {
         String annotationId 
             = createAnnotation( databaseName,
                                 file.getName()
-                                     //extracts a name for our new annotation
+                                     //extracts a name for our 
+                                     //new annotation
                                     .replaceAll("\\..*?$", "") )
                                 .getId();
 
@@ -367,7 +372,8 @@ public class StructuredbManager implements IStructuredbManager {
             }
 
             internalManagers.get(databaseName)
-                            .insertStructureInAnnotation(s, annotationId);
+                            .insertStructureInAnnotation( s, 
+                                                          annotationId );
             monitor.worked( maintTaskTick );
         }
         monitor.done();
@@ -501,14 +507,16 @@ public class StructuredbManager implements IStructuredbManager {
         return structures;
     }
 
-    public void deleteAnnotation( String databaseName, Annotation annotation ) {
+    public void deleteAnnotation( String databaseName, 
+                                  Annotation annotation ) {
 
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName ).delete( annotation );
         fireAnnotationsChanged();
     }
 
-    public void deleteStructure( String databaseName, Structure structure ) {
+    public void deleteStructure( String databaseName, 
+                                 Structure structure ) {
      
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName ).delete( structure );
@@ -601,15 +609,18 @@ public class StructuredbManager implements IStructuredbManager {
                                       String annotationName ) {
         checkDatabaseName(databaseName);
         return internalManagers.get( databaseName )
-                               .retrieveAnnotationByName( annotationName );
+                               .retrieveAnnotationByName( 
+                                   annotationName );
     }
 
-    public void deleteWithStructures( String databaseName, Annotation annotation ) {
+    public void deleteWithStructures( String databaseName, 
+                                      Annotation annotation ) {
         checkDatabaseName(databaseName);
         deleteWithStructures( databaseName, annotation, null );
     }
 
-    public void deleteWithStructures( String databaseName, Annotation annotation,
+    public void deleteWithStructures( String databaseName, 
+                                      Annotation annotation,
                                       IProgressMonitor monitor ) {
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName )
@@ -623,7 +634,5 @@ public class StructuredbManager implements IStructuredbManager {
         addStructuresFromSDF( databaseName, 
                               file, 
                               new NullProgressMonitor() );
-        
     }
-
 }

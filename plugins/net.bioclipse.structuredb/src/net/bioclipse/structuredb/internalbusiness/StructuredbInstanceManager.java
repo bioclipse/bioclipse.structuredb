@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
@@ -22,6 +23,10 @@ import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
 
+/**
+ * @author jonalv
+ *
+ */
 public class StructuredbInstanceManager 
        extends AbstractStructuredbInstanceManager 
        implements IStructuredbInstanceManager {
@@ -120,7 +125,8 @@ public class StructuredbInstanceManager
         return structureDao.allStructuresIterator();
     }
 
-    public void insertStructureInAnnotation( Structure s, String folderId ) {
+    public void insertStructureInAnnotation( Structure s, 
+                                             String folderId ) {
 
         structureDao.insertWithAnnotation( s, folderId );
     }

@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
@@ -16,7 +17,8 @@ import org.springframework.aop.support.DefaultIntroductionAdvisor;
  * @author jonalv
  *
  */
-public class FetchIntroductionAdvisor extends DefaultIntroductionAdvisor {
+public class FetchIntroductionAdvisor 
+             extends DefaultIntroductionAdvisor {
 
     private static final long serialVersionUID = -6956114827617421806L;
 

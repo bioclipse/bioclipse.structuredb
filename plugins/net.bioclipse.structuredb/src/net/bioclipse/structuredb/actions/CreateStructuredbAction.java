@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     
+ *     Jonathan Alvarsson
  *******************************************************************************/
 package net.bioclipse.structuredb.actions;
 
@@ -19,6 +19,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
 
+/**
+ * @author jonalv
+ *
+ */
 public class CreateStructuredbAction extends ActionDelegate {
 
     @Override

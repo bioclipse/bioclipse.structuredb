@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 
@@ -19,25 +20,31 @@ import org.springframework.aop.IntroductionInterceptor;
  */
 public class FetchIntroductionInterceptor implements IntroductionInterceptor {
 
-    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+    public Object invoke(MethodInvocation invocation) 
+                  throws Throwable {
 
-        FetchExecutor genericDao = (FetchExecutor) methodInvocation.getThis();
+        FetchExecutor<?> genericDao 
+            = (FetchExecutor<?>) invocation.getThis();
 
-        String methodName = methodInvocation.getMethod().getName();
+        String methodName = invocation.getMethod().getName();
         if ( methodName.startsWith("fetchObject") ) {
-            return genericDao.executeObjectFetch( methodInvocation.getMethod(), 
-                                                  methodInvocation.getArguments() );
+            return genericDao
+                   .executeObjectFetch( invocation.getMethod(), 
+                                        invocation.getArguments() );
         }
         else if ( methodName.startsWith("fetchList") ) {
-            return genericDao.executeListFetch( methodInvocation.getMethod(), 
-                                                methodInvocation.getArguments() );
+            return genericDao
+                   .executeListFetch( invocation.getMethod(), 
+                                      invocation.getArguments() );
         }
         else {
-            return methodInvocation.proceed();
+            return invocation.proceed();
         }
     }
 
+    @SuppressWarnings("unchecked")
     public boolean implementsInterface(Class intf) {
-        return intf.isInterface() && FetchExecutor.class.isAssignableFrom(intf);
+        return intf.isInterface() 
+               && FetchExecutor.class.isAssignableFrom(intf);
     }
 }

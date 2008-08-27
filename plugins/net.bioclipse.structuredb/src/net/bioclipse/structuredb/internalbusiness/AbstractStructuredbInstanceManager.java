@@ -4,6 +4,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: 
+ *     Jonathan Alvarsson
+ *     
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
 
@@ -11,6 +15,10 @@ import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.IStructureDao;
 import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
+/**
+ * @author jonalv
+ *
+ */
 public abstract class AbstractStructuredbInstanceManager 
                       implements IStructuredbInstanceManager {
 

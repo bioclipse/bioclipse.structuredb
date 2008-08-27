@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
@@ -16,6 +17,10 @@ import java.sql.Timestamp;
 import net.bioclipse.structuredb.domain.BaseObject;
 import net.bioclipse.usermanager.business.IUserManager;
 
+/**
+ * @author jonalv
+ *
+ */
 public class AuditCreationAdvice implements IAuditAdvice {
 
     private ILoggedInUserKeeper loggedInUserKeeper;

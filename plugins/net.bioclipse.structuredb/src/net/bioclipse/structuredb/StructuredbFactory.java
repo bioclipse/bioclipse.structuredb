@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb;
@@ -15,6 +16,10 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 
+/**
+ * @author jonalv
+ *
+ */
 public class StructuredbFactory implements IExecutableExtension,
         IExecutableExtensionFactory {
 
@@ -22,7 +27,8 @@ public class StructuredbFactory implements IExecutableExtension,
     
     public void setInitializationData( IConfigurationElement config,
                                        String propertyName, 
-                                       Object data ) throws CoreException {
+                                       Object data ) 
+                throws CoreException {
         structuredb = new Structuredb();
     }
 

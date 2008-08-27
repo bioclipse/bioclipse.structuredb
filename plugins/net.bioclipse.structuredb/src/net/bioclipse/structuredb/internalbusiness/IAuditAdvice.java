@@ -6,12 +6,17 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
 
 import org.springframework.aop.MethodBeforeAdvice;
 
+/**
+ * @author jonalv
+ *
+ */
 public interface IAuditAdvice extends MethodBeforeAdvice {
 
 }

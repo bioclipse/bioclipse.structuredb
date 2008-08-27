@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors: Jonathan Alvarsson
+ * Contributors: 
  *     Jonathan Alvarsson
  *     
  *******************************************************************************/
@@ -29,7 +29,8 @@ public class Annotation extends BaseObject {
 
     public Annotation(Annotation annotation) {
         super(annotation);
-        this.structures = new ArrayList<Structure>( annotation.getStructures() );
+        this.structures 
+            = new ArrayList<Structure>( annotation.getStructures() );
     }
 
     public Annotation(String name) {
@@ -37,9 +38,6 @@ public class Annotation extends BaseObject {
         structures = new ArrayList<Structure>();
     }
     
-    /* (non-Javadoc)
-     * @see net.bioclipse.structuredb.domain.BaseObject#hasValuesEqualTo(net.bioclipse.structuredb.domain.BaseObject)
-     */
     public boolean hasValuesEqualTo( BaseObject obj ) {
         
         if( !super.hasValuesEqualTo(obj) ) {
@@ -49,7 +47,8 @@ public class Annotation extends BaseObject {
             return false;
         }
         Annotation annotation = (Annotation)obj;
-        return objectsInHasSameValues(annotation.getStructures(), structures);
+        return objectsInHasSameValues( annotation.getStructures(), 
+                                       structures );
     }
 
     /**
@@ -73,13 +72,15 @@ public class Annotation extends BaseObject {
      */
     public void addStructure(Structure structure) {
         structures.add(structure);
-        if( structure != null && !structure.getAnnotations().contains( this ) ) {
+        if ( structure != null && 
+             !structure.getAnnotations().contains( this ) ) {
+            
             structure.addAnnotation(this);
         }
     }
 
     /**
-     * Removes this label from a structure
+     * Removes this annotation from a structure
      * 
      * @param structure the structure to remove
      */

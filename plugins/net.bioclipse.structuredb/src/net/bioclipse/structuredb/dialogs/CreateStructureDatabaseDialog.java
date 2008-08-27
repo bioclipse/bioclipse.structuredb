@@ -1,9 +1,12 @@
 /*******************************************************************************
- *Copyright (c) 2008 The Bioclipse Team and others.
- *All rights reserved. This program and the accompanying materials
- *are made available under the terms of the Eclipse Public License v1.0
- *which accompanies this distribution, and is available at
- *http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2008 The Bioclipse Team and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors
+ *      Jonathan Alvarsson
  *
  *******************************************************************************/
 package net.bioclipse.structuredb.dialogs;
@@ -23,7 +26,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-public class CreateStructureDatabaseDialog extends org.eclipse.swt.widgets.Dialog {
+/**
+ * @author jonalv
+ *
+ */
+public class CreateStructureDatabaseDialog 
+             extends org.eclipse.swt.widgets.Dialog {
 
     private static final Logger logger = 
         Logger.getLogger(CreateStructureDatabaseDialog.class);
@@ -42,34 +50,47 @@ public class CreateStructureDatabaseDialog extends org.eclipse.swt.widgets.Dialo
     public void open() {
         try {
             Shell parent = getParent();
-            dialogShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+            dialogShell = new Shell(parent, SWT.DIALOG_TRIM | 
+                                            SWT.APPLICATION_MODAL);
 
-            FormLayout dialogShellLayout = new FormLayout();
+            new FormLayout();
             dialogShell.setLayout(new FormLayout());
             dialogShell.layout();
             dialogShell.pack();            
             dialogShell.setSize(254, 134);
             dialogShell.setText("Create new Structure Database");
             {
-                cancelButton = new Button(dialogShell, SWT.PUSH | SWT.CENTER);
+                cancelButton = new Button(dialogShell, SWT.PUSH | 
+                                                       SWT.CENTER);
                 cancelButton.setText("Cancel");
                 FormData cancelButtonLData = new FormData();
-                cancelButtonLData.bottom =  new FormAttachment(1000, 1000, -12);
-                cancelButtonLData.right =  new FormAttachment(1000, 1000, -63);
+                cancelButtonLData.bottom =  new FormAttachment( 1000, 
+                                                                1000, 
+                                                                -12 );
+                cancelButtonLData.right =  new FormAttachment( 1000, 
+                                                               1000, 
+                                                               -63 );
                 cancelButton.setLayoutData(cancelButtonLData);
-                cancelButton.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        dialogShell.close();
+                cancelButton.addSelectionListener(
+                    new SelectionAdapter() {
+                        @Override
+                        public void widgetSelected(SelectionEvent e) {
+                            dialogShell.close();
+                        }
                     }
-                });
+                );
             }
             {
-                okButton = new Button(dialogShell, SWT.PUSH | SWT.CENTER);
+                okButton = new Button(dialogShell, SWT.PUSH | 
+                                                   SWT.CENTER);
                 okButton.setText("OK");
                 FormData okButtonLData = new FormData();
-                okButtonLData.bottom =  new FormAttachment(1000, 1000, -12);
-                okButtonLData.right =  new FormAttachment(1000, 1000, -12);
+                okButtonLData.bottom =  new FormAttachment( 1000, 
+                                                            1000, 
+                                                            -12);
+                okButtonLData.right =  new FormAttachment( 1000, 
+                                                           1000, 
+                                                           -12);
                 okButton.setLayoutData(okButtonLData);
                 okButton.addSelectionListener(new SelectionAdapter() {
                     @Override

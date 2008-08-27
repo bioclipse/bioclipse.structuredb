@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
@@ -20,6 +21,10 @@ import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.structuredb.domain.Structure;
 
 
+/**
+ * @author jonalv
+ *
+ */
 public class SmartsQueryIterator implements Iterator<Structure> {
 
     private Structure next = null;
@@ -29,7 +34,8 @@ public class SmartsQueryIterator implements Iterator<Structure> {
     private IStructuredbManager structuredb;
     private IProgressMonitor monitor;
     
-    public SmartsQueryIterator( Iterator<Structure> allStructuresIterator,
+    public SmartsQueryIterator( Iterator<Structure> 
+                                    allStructuresIterator,
                                 ICDKManager cdk, 
                                 String smarts,
                                 StructuredbManager structuredbManager, 

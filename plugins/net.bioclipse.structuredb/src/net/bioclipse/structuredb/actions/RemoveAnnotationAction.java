@@ -6,14 +6,13 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *     Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.actions;
 
 import java.util.Iterator;
 
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Database;
 import net.bioclipse.structuredb.Label;
@@ -24,7 +23,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -71,15 +69,18 @@ public class RemoveAnnotationAction extends ActionDelegate {
                 if (o instanceof Label) {
                     Label l = (Label)o;
                     if ( l.getParent() instanceof Database ) {
-                        net.bioclipse.structuredb.domain.Annotation annotation =
-                            manager.retrieveAnnotationByName(
+                        net.bioclipse.structuredb.domain.Annotation 
+                            annotation = manager
+                                         .retrieveAnnotationByName(
                                 l.getParent().getName(), l.getName() );
                         if (response == SWT.YES) {
-                            deleteWithStructures(l.getParent().getName(), annotation);
+                            deleteWithStructures(l.getParent().getName(), 
+                                                 annotation);
                         }
                         else {
-                            manager.deleteAnnotation( l.getParent().getName(), 
-                                            annotation );
+                            manager.deleteAnnotation( 
+                                l.getParent().getName(), 
+                                annotation );
                         }
                     }
                 }
@@ -107,7 +108,8 @@ public class RemoveAnnotationAction extends ActionDelegate {
     }
         
     @Override
-    public void selectionChanged( IAction action, ISelection selection ) {
+    public void selectionChanged( IAction action, 
+                                  ISelection selection ) {
         this.selection = selection;
         super.selectionChanged( action, selection );
     }

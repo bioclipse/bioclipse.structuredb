@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
@@ -40,18 +41,22 @@ public class StructureDao extends GenericDao<Structure>
     @Override
     public void insert( final Structure structure ) {
         
-        getSqlMapClientTemplate().update( "BaseObject.insert", structure );
-        getSqlMapClientTemplate().update( type.getSimpleName() + ".insert", 
+        getSqlMapClientTemplate().update( "BaseObject.insert", 
                                           structure );
+        getSqlMapClientTemplate()
+        .update( type.getSimpleName() + ".insert", structure );
         fixStructureAnnotation(structure);
     }
     
     private void fixStructureAnnotation( final Structure structure ) {
 
-        getSqlMapClientTemplate().delete( "Structure.deleteAnnotationCoupling", 
-                                          structure );
+        getSqlMapClientTemplate()
+        .delete( "Structure.deleteAnnotationCoupling", 
+                 structure );
         for( final Annotation l : structure.getAnnotations() ) {
             Map<String, String> params = new HashMap<String, String>() {
+                private static final long serialVersionUID = 1L;
+
                 {
                     put( "annotationId", l.getId()         );
                     put( "structureId",  structure.getId() );
@@ -60,16 +65,19 @@ public class StructureDao extends GenericDao<Structure>
             if ( (Integer) getSqlMapClientTemplate()
                 .queryForObject( "StructureAnnotation.hasConnection", 
                                  params ) == 0 ) {
-                getSqlMapClientTemplate().update( "StructureAnnotation.connect", 
-                                                  params );
+                getSqlMapClientTemplate()
+                .update( "StructureAnnotation.connect", 
+                         params );
             }
         }
     }
 
     @Override
     public void update(Structure structure) {
-        getSqlMapClientTemplate().update( "Structure.update",  structure );
-        getSqlMapClientTemplate().update( "BaseObject.update", structure );
+        getSqlMapClientTemplate().update( "Structure.update",  
+                                          structure );
+        getSqlMapClientTemplate().update( "BaseObject.update", 
+                                          structure );
         fixStructureAnnotation( structure );
     }
 
@@ -81,7 +89,8 @@ public class StructureDao extends GenericDao<Structure>
 
     public Iterator<Structure> allStructuresIterator() {
         
-        return new StructureIterator( getSqlMapClient(), "Structure.getAll" );
+        return new StructureIterator( getSqlMapClient(), 
+                                      "Structure.getAll" );
     }
     
     private class StructureIterator implements Iterator<Structure> {
@@ -138,7 +147,8 @@ public class StructureDao extends GenericDao<Structure>
                 skip++;
                 return nextStructure;
             }
-            throw new IllegalStateException("There is no next structure");
+            throw new IllegalStateException( 
+                "There is no next structure" );
         }
 
         public void remove() {
@@ -146,15 +156,19 @@ public class StructureDao extends GenericDao<Structure>
         }
     }
 
-    public void insertWithAnnotation( Structure structure, String annotationId ) {
+    public void insertWithAnnotation( Structure structure, 
+                                      String annotationId ) {
 
-        getSqlMapClientTemplate().update( "BaseObject.insert", structure );
-        getSqlMapClientTemplate().update( "Structure.insert",  structure );
+        getSqlMapClientTemplate().update( "BaseObject.insert", 
+                                          structure );
+        getSqlMapClientTemplate().update( "Structure.insert",  
+                                          structure );
 
         Map<String, String> params = new HashMap<String, String>();
         params.put( "structureId",  structure.getId() );
         params.put( "annotationId", annotationId );
-        getSqlMapClientTemplate().update( "StructureAnnotation.connect", params );
+        getSqlMapClientTemplate().update( "StructureAnnotation.connect", 
+                                          params );
     }
 
     public int numberOfStructures() {
@@ -163,16 +177,20 @@ public class StructureDao extends GenericDao<Structure>
                          .queryForObject( "Structure.numberOf" );
     }
 
-    public Iterator<Structure> fingerPrintSubsetSearch( byte[] fingerPrint ) {
+    public Iterator<Structure> fingerPrintSubsetSearch( 
+                                   byte[] fingerPrint ) {
 
         Map<String, byte[]> paramaterMap = new HashMap<String, byte[]>();
         paramaterMap.put( "param", fingerPrint );
-        return new StructureIterator( getSqlMapClient(), 
-                                      "Structure.fingerPrintSubsetSearch", 
-                                      paramaterMap );
+        return 
+            new StructureIterator( getSqlMapClient(), 
+                                   "Structure.fingerPrintSubsetSearch", 
+                                   paramaterMap );
     }
 
-    public int numberOfFingerprintSubstructureMatches(byte[] fingerPrint) {
+    public int numberOfFingerprintSubstructureMatches( 
+                   byte[] fingerPrint ) {
+        
         Map<String, byte[]> paramaterMap = new HashMap<String, byte[]>();
         paramaterMap.put( "param", fingerPrint );
         return (Integer) getSqlMapClientTemplate().queryForObject( 

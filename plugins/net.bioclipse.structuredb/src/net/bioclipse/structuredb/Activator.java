@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson 
  *     
  *******************************************************************************/
 
@@ -19,7 +20,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
-import org.springframework.context.ApplicationContext;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -42,24 +42,17 @@ public class Activator extends AbstractUIPlugin {
     public Activator() {
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-     */
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
 
         finderTracker = new ServiceTracker( context, 
-                                            IStructuredbManager.class.getName(), 
+                                            IStructuredbManager.class
+                                                .getName(), 
                                             null );
         finderTracker.open();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-     */
     public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
@@ -89,11 +82,13 @@ public class Activator extends AbstractUIPlugin {
         IStructuredbManager manager = null;
         try {
             manager = (IStructuredbManager) finderTracker.waitForService(1000*10);
-        } catch (InterruptedException e) {
-            logger.warn("Exception occurred while attempting to get the StructuredbManager" + e);
+        } 
+        catch (InterruptedException e) {
+            logger.warn("Exception occurred while attempting " +
+            		    "to get the StructuredbManager" + e);
             LogUtils.debugTrace(logger, e);
         }
-        if(manager == null) {
+        if (manager == null) {
             throw new IllegalStateException("Could not get the structuredb manager");
         }
         return manager;

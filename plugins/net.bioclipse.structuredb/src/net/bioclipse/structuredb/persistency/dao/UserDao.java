@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *     Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
@@ -26,12 +27,14 @@ public class UserDao extends GenericDao<User> implements IUserDao {
 
     @Override
     public void insert(User user) {
-        if(user.getCreator() != null)
-            getSqlMapClientTemplate().insert( "BaseObject.insert", user );
+        if ( user.getCreator() != null )
+            getSqlMapClientTemplate().insert( "BaseObject.insert", 
+                                              user );
         else 
             getSqlMapClientTemplate().insert( 
                     "BaseObject.insertWithoutAuditInfo", user );
-        getSqlMapClientTemplate().insert( "User.insert",       user );
+        
+        getSqlMapClientTemplate().insert( "User.insert", user );
     }
     
     @Override

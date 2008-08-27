@@ -35,12 +35,14 @@ public class FixClassLoaderAdvice implements MethodInterceptor {
             "createStructure",
             } );
     
-    public Object invoke( MethodInvocation invocation ) throws Throwable {
+    public Object invoke( MethodInvocation invocation ) 
+                  throws Throwable {
 
         if ( interestingMethods.contains( 
                  invocation.getMethod().getName() ) ) {
             
-            ClassLoader old = Thread.currentThread().getContextClassLoader(); 
+            ClassLoader old = Thread.currentThread()
+                                    .getContextClassLoader(); 
             
             Thread.currentThread().setContextClassLoader(
                    Bond.class.getClassLoader() );
@@ -50,5 +52,4 @@ public class FixClassLoaderAdvice implements MethodInterceptor {
         }
         return invocation.proceed();
     }
-
 }

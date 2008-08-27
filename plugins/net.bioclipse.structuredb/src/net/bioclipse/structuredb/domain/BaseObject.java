@@ -113,14 +113,16 @@ public class BaseObject implements IBioObject {
 
     /**
      * Checks whether two objects correspond to the same database row.
-     * Final since we only want equals to check the id for the domain objects.
-     * This implementation provides an equals method that doesn't break the 
-     * equals / hashcode contract and works with database mapped objects.
-     * In order to check whether they correspond to two identical versions of 
-     * said row use: <code>hasValuesEqualTo</code>
+     * Final since we only want equals to check the id for the domain 
+     * objects. This implementation provides an equals method that 
+     * doesn't break the equals / hashcode contract and works with 
+     * database mapped objects. In order to check whether they 
+     * correspond to two identical versions of said row use: 
+     * <code>hasValuesEqualTo</code>
      * 
      * @param anObject - the object to compare this String  against.
-     * @return true if the domain object refer to the same database row; false otherwise.
+     * @return true if the domain object refer to the same database row; 
+     *         false otherwise.
      */
     @Override
     public final boolean equals(Object obj) {
@@ -132,20 +134,21 @@ public class BaseObject implements IBioObject {
 
     /**
      * @param obj a BaseObject to be compared
-     * @return whether all fields (including id) of the given object equals this objects 
-     * fields
+     * @return whether all fields (including id) of the given object 
+     * equals this objects fields
      */
     public boolean hasValuesEqualTo( BaseObject obj ) {
-        if( obj == null ) {
+        if ( obj == null ) {
             return false;
         }
-        if( this.creator != null) {
-            if( !this.creator.hasValuesEqualTo(obj.getCreator()) ) {
+        if ( this.creator != null) {
+            if ( !this.creator.hasValuesEqualTo(obj.getCreator()) ) {
                 return false;
             }
         }
-        if( this.lastEditor != null ) {
-            if( !this.lastEditor.hasValuesEqualTo(obj.getLastEditor()) ) {
+        if ( this.lastEditor != null ) {
+            if ( !this.lastEditor.hasValuesEqualTo(
+                    obj.getLastEditor()) ) {
                 return false;
             }
         }
@@ -155,8 +158,8 @@ public class BaseObject implements IBioObject {
     }
     
     /**
-     * Checks that the objects in both sets are alike and that no object exists in one set 
-     * but not in the other.
+     * Checks that the objects in both sets are alike and that no 
+     * object exists in one set but not in the other.
      * 
      * @param set1
      * @param set2
@@ -165,19 +168,22 @@ public class BaseObject implements IBioObject {
     /*
      * This can not be done with equals since it is used for checking id
      */
-    protected boolean objectsInHasSameValues( Set<? extends BaseObject> set1, 
-                                              Set<? extends BaseObject> set2 ) {
+    protected boolean objectsInHasSameValues( 
+        Set<? extends BaseObject> set1, 
+        Set<? extends BaseObject> set2 ) {
 
-        if( set1.size() != set2.size() ) {
+        if ( set1.size() != set2.size() ) {
             return false;    
         }
-        HashMap<String, BaseObject> hash2 = new HashMap<String, BaseObject>();
-        for( BaseObject obj : set2) {
+        HashMap<String, BaseObject> hash2 
+            = new HashMap<String, BaseObject>();
+        for ( BaseObject obj : set2) {
             hash2.put(obj.getId(), obj);
         }
         
-        for( BaseObject obj : set1) {
-            if( hash2.get(obj.getId()) == null || !hash2.get( obj.getId() ).hasValuesEqualTo(obj) ) {
+        for ( BaseObject obj : set1) {
+            if ( hash2.get(obj.getId()) == null 
+                 || !hash2.get( obj.getId() ).hasValuesEqualTo(obj) ) {
                 return false;
             }
         }
@@ -185,7 +191,8 @@ public class BaseObject implements IBioObject {
     }
     
     /**
-     * Checks that the objects in both lists are alike and in the same order.
+     * Checks that the objects in both lists are alike and in the 
+     * same order.
      * 
      * @param list1
      * @param list2
@@ -194,15 +201,16 @@ public class BaseObject implements IBioObject {
     /*
      * This can not be done with equals since it is used for checking id
      */
-    protected boolean objectsInHasSameValues( List<? extends BaseObject> list1, 
-                                              List<? extends BaseObject> list2 ) {
+    protected boolean objectsInHasSameValues( 
+        List<? extends BaseObject> list1, 
+        List<? extends BaseObject> list2 ) {
 
-        if( list1.size() != list2.size() ) {
+        if ( list1.size() != list2.size() ) {
             return false;    
         }
     
         for (int i = 0; i < list1.size(); i++) {
-            if( !list2.get( i ).hasValuesEqualTo( list1.get(i) ) ) {
+            if ( !list2.get( i ).hasValuesEqualTo( list1.get(i) ) ) {
                 return false;
             }
         }
@@ -213,18 +221,18 @@ public class BaseObject implements IBioObject {
         User oldCreator = this.creator;
         this.creator = creator;
         
-        if( oldCreator != null && oldCreator != creator ) {
+        if ( oldCreator != null && oldCreator != creator ) {
             oldCreator.removeCreatedBaseObject(this);
         }
         
-        if( creator != null && !creator.getCreatedBaseObjects().contains(this) ) {
+        if ( creator != null 
+             && !creator.getCreatedBaseObjects().contains(this) ) {
             creator.addCreatedBaseObject( this );
         }
     }
 
     public void setLastEditor(User editor) {
         this.lastEditor = editor;
-        
     }
 
     public User getCreator() {
@@ -260,6 +268,7 @@ public class BaseObject implements IBioObject {
         return getId();
     }
 
+    @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter) {
         // TODO Auto-generated method stub
         return null;

@@ -6,12 +6,12 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.tables;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -22,8 +22,9 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
 import net.bioclipse.core.util.LogUtils;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author jonalv
@@ -31,7 +32,8 @@ import net.bioclipse.core.util.LogUtils;
  */
 public class TableCreator {
     
-    private static final Logger logger = Logger.getLogger(TableCreator.class);
+    private static final Logger logger 
+        = Logger.getLogger(TableCreator.class);
 
     public static final String[] SQL_FILES_RUNORDER 
         = { "BaseObject.sql", 
@@ -58,15 +60,14 @@ public class TableCreator {
             
             Connection con = getConnection(url);
             
-            for( String sqlFile : SQL_FILES_RUNORDER ) {
-                Scanner scanner = new Scanner( 
-                    this.getClass()
-                        .getResourceAsStream(
-                                "/net/bioclipse/structuredb/persistency/tables"
-                                + File.separator + sqlFile ) );
-                while( scanner.hasNextLine() ) {
+            for ( String sqlFile : SQL_FILES_RUNORDER ) {
+                Scanner scanner 
+                    = new Scanner( this.getClass().getResourceAsStream(
+                        "/net/bioclipse/structuredb/persistency/tables"
+                        + File.separator + sqlFile ) );
+                while ( scanner.hasNextLine() ) {
                     String sql = readStatement(scanner);
-                    if( sql.matches("^CREATE.*$") ) {
+                    if ( sql.matches("^CREATE.*$") ) {
                         createTableStatements.add(sql);
                     }
                     else if( sql.matches("^ALTER.*$") ) {
@@ -76,13 +77,16 @@ public class TableCreator {
                         //ignore commented lines
                     }
                     else {
-                        throw new RuntimeException("Unknown sql commando neither create nor alter:" + sql);
+                        throw new RuntimeException(
+                            "Unknown sql commando neither create " +
+                            "nor alter:" + sql);
                     }
                 }
             }
             for( String createStatement : createTableStatements ) {
                 try {
-                    String dropStatement = createDropStatement(createStatement);
+                    String dropStatement 
+                        = createDropStatement(createStatement);
                     runStatement( con, dropStatement );
                 }
                 catch( Exception e) {
@@ -97,7 +101,8 @@ public class TableCreator {
             }
         }
         catch (ClassNotFoundException e) {
-            throw new IllegalStateException("Could not find the jdbcDriver class", e);
+            throw new IllegalStateException(
+                "Could not find the jdbcDriver class", e);
         }
     }
 
@@ -106,7 +111,8 @@ public class TableCreator {
         Pattern regexp = Pattern.compile("^CREATE\\s+TABLE\\s+(\\w+)");
         Matcher m = regexp.matcher(createStatement);
         if( !m.find() ) {
-            throw new IllegalArgumentException("Did not find a create table statement");
+            throw new IllegalArgumentException(
+                "Did not find a create table statement");
         }
         result = result + " " + m.group(1) + " IF EXISTS CASCADE;";
         return result;
@@ -160,7 +166,9 @@ public class TableCreator {
             }
         }
         if( !gotConnection ) {
-            throw new RuntimeException("Could not get connection to database", exception);
+            throw new RuntimeException( 
+                "Could not get connection to database", 
+                exception );
         }
         return conn;
     }

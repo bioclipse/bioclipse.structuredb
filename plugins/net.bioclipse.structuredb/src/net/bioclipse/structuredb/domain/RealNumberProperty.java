@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
@@ -16,7 +17,6 @@ import java.util.List;
 
 /**
  * @author jonalv
- *     Jonathan Alvarsson
  *
  */
 public class RealNumberProperty extends Property {

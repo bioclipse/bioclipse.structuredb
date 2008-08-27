@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
@@ -13,15 +14,11 @@ package net.bioclipse.structuredb.internalbusiness;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.openscience.cdk.AtomContainer;
-
-import net.bioclipse.cdk.domain.ICDKMolecule;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.structuredb.Database;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.domain.User;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * @author jonalv
@@ -153,10 +150,12 @@ public interface IStructuredbInstanceManager {
      * @param s
      * @param folderId
      */
-    public void insertStructureInAnnotation( Structure s, String folderId );
+    public void insertStructureInAnnotation( Structure s, 
+                                             String folderId );
 
     /**
-     * Returns an int representing the number of structures in the database
+     * Returns an int representing the number of structures 
+     * in the database
      * 
      * @return
      */
@@ -167,8 +166,8 @@ public interface IStructuredbInstanceManager {
      * @return an iterator to the structures with a for substructure
      * matching fingerprint
      */
-    public Iterator<Structure> fingerprintSubstructureSearchIterator(Structure s);
-
+    public Iterator<Structure> fingerprintSubstructureSearchIterator(
+        Structure s );
     
     /**
      * @param queryStructure
@@ -183,5 +182,6 @@ public interface IStructuredbInstanceManager {
      * @param annotation
      * @param monitor 
      */
-    public void deleteWithStructures( Annotation annotation, IProgressMonitor monitor );
+    public void deleteWithStructures( Annotation annotation, 
+                                      IProgressMonitor monitor );
 }

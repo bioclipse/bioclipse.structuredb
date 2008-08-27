@@ -5,7 +5,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors: Jonathan Alvarsson
+ * Contributors: 
+ *      Jonathan Alvarsson
  *
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
@@ -16,26 +17,26 @@ import net.bioclipse.structuredb.Structuredb;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.orm.ibatis.SqlMapClientFactoryBean;
 
 /**
- * This bean changes the config location for the sqlMapClient bean. This is
- * needed since the sqlMapClient bean seems to look at the wrong location
- * by default.
+ * This bean changes the config location for the sqlMapClient bean. 
+ * This is needed since the sqlMapClient bean seems to look at the wrong 
+ * location by default.
  *
  * @author jonalv
  */
 public class SQLMapPathBeanPostProcessor implements BeanPostProcessor {
 
-    public Object postProcessAfterInitialization(Object bean, String beanName)
+    public Object postProcessAfterInitialization( Object bean, 
+                                                  String beanName )
             throws BeansException {
         return bean;
     }
 
-    public Object postProcessBeforeInitialization(Object bean, String beanName)
+    public Object postProcessBeforeInitialization( Object bean, 
+                                                   String beanName )
             throws BeansException {
 
         if( beanName.equals("sqlMapClient") &&

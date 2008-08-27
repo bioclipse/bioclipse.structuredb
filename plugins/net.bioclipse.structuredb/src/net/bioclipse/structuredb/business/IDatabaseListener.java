@@ -6,11 +6,15 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     
+ *      Jonathan Alvarsson
+ *          
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
 
+/**
+ * @author jonalv
+ */
 public interface IDatabaseListener {
 
     public void onDataBaseUpdate(DatabaseUpdateType updateType);
@@ -20,4 +24,3 @@ public interface IDatabaseListener {
         LABELS_CHANGED
     }
 }
-

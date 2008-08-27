@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
@@ -40,22 +41,23 @@ public interface IStructuredbManager extends IBioclipseManager {
      *                                  name already exists
      */
     @PublishedMethod ( params = "String databaseName",
-                       methodSummary = "Creates a local structure database " +
-                                        "with the given name if no such " +
-                                        "database already exists." )
+                       methodSummary = "Creates a local structure " +
+                       		           "database with the given name " +
+                       		           "if no such database already " +
+                       		           "exists." )
     public void createDatabase( String databaseName )
         throws IllegalArgumentException;
 
     /**
-     * Removes a local database instance with a given name if such a database
-     * exists, otherwise does nothing.
+     * Removes a local database instance with a given name if such 
+     * a database exists, otherwise does nothing.
      *
      * @param databaseName name of the database instance to be deleted
      */
     @PublishedMethod ( params = "String databaseName",
-                       methodSummary = "Removes a local database with the " +
-                                       "given name if such exists, otherwise " +
-                                       "does nothing" )
+                       methodSummary = "Removes a local database " +
+                       		           "with the given name if such " +
+                       		           "exists, otherwise does nothing" )
     public void removeDatabase( String databaseName );
 
     /**
@@ -67,40 +69,46 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return
      */
     @PublishedMethod ( params = "String databaseName, String name",
-                       methodSummary = "Fetches all structures by a given " +
-                                       "name from a database with a given name")
+                       methodSummary = "Fetches all structures by a " +
+                       		           "given name from a database " +
+                       		           "with a given name")
     public List<Structure> allStructuresByName( String databaseName,
                                                 String structureName );
 
     /**
-     * Retrieves a folder with a given name from a database with a given name.
+     * Retrieves a folder with a given name from a database with 
+     * a given name.
      *
      * @param databaseName
      * @param annotationName
      * @return a folder
      */
-    @PublishedMethod ( params = "String databaseName, String annotationName",
-                       methodSummary = "Fetches a annotation by a given name" +
-                                       "from a database with a given name" )
+    @PublishedMethod ( params = "String databaseName, " +
+    		                    "String annotationName",
+                       methodSummary = "Fetches a annotation by a " +
+                       		           "given name from a database " +
+                       		           "with a given name" )
     public Annotation annotationByName( String databaseName,
-                              String annotationName );
+                                        String annotationName );
 
     /**
-     * Retrieves a user with a given username from a database with a given name.
+     * Retrieves a user with a given username from a database 
+     * with a given name.
      *
      * @param databaseName
      * @param username
      * @return
      */
     @PublishedMethod ( params = "String databaseName, String username",
-                       methodSummary = "Fetches a user with a given username " +
-                                       "from a database with a given name")
+                       methodSummary = "Fetches a user with a given " +
+                       		           "username from a database " +
+                       		           "with a given name")
     public User userByName( String databaseName,
                             String username );
 
     /**
-     * Creates a structure with the given name from the given cdkmolecule and
-     * persists it in the database with the given name
+     * Creates a structure with the given name from the given 
+     * cdkmolecule and persists it in the database with the given name
      *
      * @param databaseName
      * @param moleculeName
@@ -108,37 +116,41 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return the structure
      * @throws BioclipseException
      */
-    @PublishedMethod ( params = "String databaseName, String moleculeName, " +
+    @PublishedMethod ( params = "String databaseName, " +
+    		                    "String moleculeName, " +
                                 "ICDKMolecule cdkMolecule",
-                       methodSummary = "Creates a structure with the given " +
-                                       "name from the given cdkmolecule and " +
-                                       "saves it in the database with the " +
-                                       "given name" )
+                       methodSummary = "Creates a structure with the " +
+                       		           "given name from the given " +
+                       		           "cdkmolecule and saves it in " +
+                       		           "the database with the given " +
+                       		           "name" )
     public Structure createStructure( String databaseName,
                                       String moleculeName,
                                       ICDKMolecule cdkMolecule )
                                       throws BioclipseException;
 
     /**
-     * Creates a folder with the given name and persists it in the database
-     * with the given name.
+     * Creates a folder with the given name and persists it in the 
+     * database with the given name.
      *
      * @param databaseName
      * @param annotationName
      * @return the folder
      * @throws IllegalArgumentException
      */
-    @PublishedMethod ( params = "String databaseName, String annotationName",
-                       methodSummary = "Creates a annotation with the given name " +
-                                       "and saves it in the database with " +
-                                       "the given name" )
+    @PublishedMethod ( params = "String databaseName, " +
+    		                    "String annotationName",
+                       methodSummary = "Creates a annotation with " +
+                       		           "the given name and saves it " +
+                       		           "in the database with the " +
+                       		           "given name" )
     public Annotation createAnnotation( String databaseName,
                               String annotationName )
                  throws IllegalArgumentException;
 
     /**
-     * Creates a user with the given username, password and sudoer flag and
-     * persists it in the database with the given name.
+     * Creates a user with the given username, password and sudoer flag 
+     * and persists it in the database with the given name.
      *
      * @param databaseName
      * @param username
@@ -147,16 +159,20 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return the user
      * @throws IllegalArgumentException
      */
-    @PublishedMethod ( params = "String databaseName, String username, " +
-                                "String password, boolean administrator",
-                       methodSummary = "Creates a user with the given " +
-                                       "username and password and with " +
-                                       "administrator rights if that " +
-                                       "variable is true")
+    @PublishedMethod ( params = "String databaseName, " +
+    		                    "String username, " +
+                                "String password, " +
+                                "boolean administrator",
+                       methodSummary = "Creates a user with the " +
+                       		           "given username and password " +
+                       		           "and with administrator " +
+                       		           "rights if that variable is " +
+                       		           "true" )
     public User createUser( String databaseName,
                             String username,
                             String password,
-                            boolean sudoer ) throws IllegalArgumentException;
+                            boolean sudoer ) 
+                throws IllegalArgumentException;
 
     /**
      * Retrieves all structures from a database with a given name.
@@ -176,8 +192,8 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return
      */
     @PublishedMethod ( params = "String databaseName",
-                       methodSummary = "Fetches all folders from a database " +
-                                       "with a given name")
+                       methodSummary = "Fetches all folders from a " +
+                       		           "database with a given name" )
     public List<Annotation> allAnnotations( String databaseName );
 
     /**
@@ -187,8 +203,8 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return
      */
     @PublishedMethod ( params = "String databaseName",
-                       methodSummary = "Fetches all users from a database " +
-                                       "with a given name")
+                       methodSummary = "Fetches all users from a " +
+                       		           "database with a given name" )
     public List<User> allUsers( String databaseName );
 
     /**
@@ -199,12 +215,15 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @throws BioclipseException
      */
     @PublishedMethod ( params = "String databaseName, String filePath",
-                       methodSummary = "Saves all structures in a given sdf " +
-                                       "file in the database with the given " +
-                                       "name. The strucutres are stored in " +
-                                       "library named after the name of the " +
+                       methodSummary = "Saves all structures in a " +
+                       		           "given sdf file in the " +
+                       		           "database with the given " +
+                                       "name. The strucutres are " +
+                                       "stored in library named " +
+                                       "after the name of the " +
                                        "sdf file")
-    public void addStructuresFromSDF(String databaseName, String filePath) 
+    public void addStructuresFromSDF( String databaseName, 
+                                      String filePath ) 
                 throws BioclipseException;
 
     /**
@@ -235,13 +254,14 @@ public interface IStructuredbManager extends IBioclipseManager {
     /**
      * @return a list of names of the names of all databases
      */
-    @PublishedMethod ( methodSummary = "Returns a list with the names of all " +
-    		                               "structuredb database instances." )
+    @PublishedMethod ( methodSummary = "Returns a list with the " +
+    		                           "names of all structuredb " +
+    		                           "database instances." )
     public List<String> listDatabaseNames();
 
     /**
-     * Returns an iterator to all structures in the given database that contains
-     * the given molecule
+     * Returns an iterator to all structures in the given database that 
+     * contains the given molecule
      * 
      * @param databaseName
      * @param molecule
@@ -249,16 +269,17 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @throws BioclipseException
      */
     @PublishedMethod (params = "String databaseName, IMolecule molecule",
-                      methodSummary = "Returns an iterator to all structures " +
-                      		          "in the given database that contains " +
-                      		          "the given molecule")
-    public Iterator<Structure> subStructureSearchIterator(String databaseName,
-                                                          IMolecule molecule)
-                               throws BioclipseException;
+                      methodSummary = "Returns an iterator to all " +
+                      		          "structures in the given " +
+                      		          "database that contains the " +
+                      		          "given molecule")
+    public Iterator<Structure> subStructureSearchIterator(
+        String databaseName, IMolecule molecule )
+        throws BioclipseException;
 
     /**
-     * Returns a list of all structures in the given database that contains
-     * the given molecule
+     * Returns a list of all structures in the given database that 
+     * contains the given molecule
      * 
      * @param databaseName
      * @param molecule
@@ -266,8 +287,9 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @throws BioclipseException
      */
     @PublishedMethod (params = "String databaseName, IMolecule molecule",
-                      methodSummary = "Returns a list of all structures " +
-                                      "in the given database that contains " +
+                      methodSummary = "Returns a list of all " +
+                      		          "structures in the given " +
+                      		          "database that contains " +
                                       "the given molecule")
     public List<Structure> subStructureSearch( String databaseName,
                                                IMolecule molecule ) 
@@ -294,8 +316,8 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return
      */
     @PublishedMethod (params = "Structure structure",
-                      methodSummary = "Creates a cdk molecule from the given " +
-                      		          "structure" )
+                      methodSummary = "Creates a cdk molecule from " +
+                      		          "the given structure" )
     public ICDKMolecule toCDKMolecule( Structure structure );
 
     
@@ -306,8 +328,8 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param annotation
      */
     @PublishedMethod ( params = "String database, Annotation annotation", 
-                       methodSummary = "Deletes the given annotation from the " +
-                       		           "given database" )
+                       methodSummary = "Deletes the given annotation " +
+                       		           "from the given database" )
     public void deleteAnnotation( String database, Annotation annotation );
 
     /**
@@ -317,8 +339,8 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param structure
      */
     @PublishedMethod ( params = "String database, Structure structure",
-                       methodSummary = "Deletes the given structure from the " +
-                       		           "given database" )
+                       methodSummary = "Deletes the given structure " +
+                       		           "from the given database" )
     public void deleteStructure( String database, Structure structure );
 
     
@@ -331,34 +353,35 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     @PublishedMethod ( params = "String database, Structure structure",
                        methodSummary = "Saves changes on a structure " +
-                       		           "retrieved from the database back to " +
-                       		           "the database.")
+                       		           "retrieved from the database " +
+                       		           "back to the database." )
     public void save( String database, Structure structure );
 
     
     /**
-     * Saves the changes on the given annotation back to the database. The 
-     * annotation must come from the given database.
+     * Saves the changes on the given annotation back to the database. 
+     * The annotation must come from the given database.
      * 
      * @param database
      * @param annotation
      */
     @PublishedMethod ( params = "String database, Annotation annotation", 
-                       methodSummary = "Saves changes on a annotation retrieved " +
-                       		           "from the database back to the " +
+                       methodSummary = "Saves changes on a " +
+                       		           "annotation retrieved from " +
+                       		           "the database back to the " +
                        		           "database.")
     public void save( String database, Annotation annotation );
 
-    
     /**
      * @param database
      * @param smarts
      * @return an iterator to the hitting structures
      */
     @PublishedMethod ( params = "String database, String smarts", 
-                       methodSummary = "Performs a SMARTS query returning an " +
-                       		           "iterator to the hitting Structures " +
-                       		           "in the database")
+                       methodSummary = "Performs a SMARTS query " +
+                       		           "returning an iterator to the " +
+                       		           "hitting Structures in the " +
+                       		           "database" )
     public Iterator<Structure> smartsQueryIterator( String database,
                                                     String smarts );
 
@@ -368,9 +391,9 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return a List of hitting structures
      */
     @PublishedMethod ( params = "String database, String smarts",
-                       methodSummary = "Performs a SMARTS query returning a " +
-                       		           "list of hitting Structures in the " +
-                       		           "database")
+                       methodSummary = "Performs a SMARTS query " +
+                       		           "returning a list of hitting " +
+                       		           "Structures in the database" )
     public List<Structure> smartsQuery( String database, String smarts );
 
     /**
@@ -379,9 +402,8 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param monitor
      * @return an iterator to hitting structures
      */
-    public Iterator<Structure> smartsQueryIterator( String database,
-                                                    String smarts,
-                                                    IProgressMonitor monitor );
+    public Iterator<Structure> smartsQueryIterator( 
+        String database, String smarts, IProgressMonitor monitor );
 
     /**
      * @param database
@@ -408,10 +430,11 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param string 
      * @return
      */
-    @PublishedMethod ( params = "String databaseName, String annotationName", 
-                       methodSummary = "Retrives the annotation with the " +
-                      		             "given name from the database " +
-                      		             "with the given name" )
+    @PublishedMethod ( params = "String databaseName, " +
+    		                    "String annotationName", 
+                       methodSummary = "Retrives the annotation with " +
+                       		           "the given name from the " +
+                       		           "database with the given name" )
     public Annotation retrieveAnnotationByName( String databaseName, 
                                       String annotationName );
 
@@ -422,9 +445,10 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param annotation
      */
     @PublishedMethod ( params =  "String name, Annotation annotation", 
-                       methodSummary = "Deletes the given annotation from " +
-                       		             "the specified database" )
-    public void deleteWithStructures( String databaseName, Annotation annotation );
+                       methodSummary = "Deletes the given annotation " +
+                       		           "from the specified database" )
+    public void deleteWithStructures( String databaseName, 
+                                      Annotation annotation );
 
     /**
      * @param name

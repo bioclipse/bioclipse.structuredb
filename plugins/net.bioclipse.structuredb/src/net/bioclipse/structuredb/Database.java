@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb;
@@ -13,24 +14,22 @@ package net.bioclipse.structuredb;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ITreeSelection;
-import org.eclipse.ui.PlatformUI;
-
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.services.views.model.AbstractServiceContainer;
 import net.bioclipse.services.views.model.IDatabase;
 import net.bioclipse.services.views.model.IServiceObject;
 import net.bioclipse.structuredb.business.IDatabaseListener;
+
+import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * @author jonalv

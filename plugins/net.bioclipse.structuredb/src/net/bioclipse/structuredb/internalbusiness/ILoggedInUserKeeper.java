@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
@@ -13,6 +14,10 @@ package net.bioclipse.structuredb.internalbusiness;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.usermanager.IUserManagerListener;
 
+/**
+ * @author jonalv
+ *
+ */
 public interface ILoggedInUserKeeper extends IUserManagerListener {
 
     public User getLoggedInUser();

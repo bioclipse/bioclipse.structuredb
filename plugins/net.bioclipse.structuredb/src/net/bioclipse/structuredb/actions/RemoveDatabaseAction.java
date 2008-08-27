@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.actions;
@@ -52,7 +53,8 @@ public class RemoveDatabaseAction extends ActionDelegate {
     }
     
     @Override
-    public void selectionChanged( IAction action, ISelection selection ) {
+    public void selectionChanged( IAction action, 
+                                  ISelection selection ) {
         this.selection = selection;
         super.selectionChanged( action, selection );
     }

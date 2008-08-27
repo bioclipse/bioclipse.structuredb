@@ -13,7 +13,6 @@
 package net.bioclipse.structuredb.business;
 
 import net.bioclipse.structuredb.Activator;
-import net.bioclipse.scripting.ui.views.JsConsoleView;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
@@ -25,19 +24,23 @@ import org.eclipse.core.runtime.IExecutableExtensionFactory;
  * 
  * @author jonalv
  */
-public class StructuredbManagerFactory implements IExecutableExtension, 
-                                                  IExecutableExtensionFactory {
+public class StructuredbManagerFactory 
+             implements IExecutableExtension, 
+                        IExecutableExtensionFactory {
 
-    private Logger logger = Logger.getLogger(StructuredbManagerFactory.class);
+    private Logger logger = Logger.getLogger(
+                                StructuredbManagerFactory.class );
     private Object structuredbManager;
     
     public void setInitializationData( IConfigurationElement config,
                                        String propertyName, 
-                                       Object data ) throws CoreException {
+                                       Object data ) 
+                throws CoreException {
     
         logger.debug("StructuredbManagerFactory.setInitializationData");
         
-        structuredbManager = Activator.getDefault().getStructuredbManager();
+        structuredbManager = Activator.getDefault()
+                                      .getStructuredbManager();
     }
 
     public Object create() throws CoreException {

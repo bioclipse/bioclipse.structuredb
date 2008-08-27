@@ -10,24 +10,28 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.usermanager.UserManagerEvent;
 import net.bioclipse.usermanager.business.IUserManager;
 
+/**
+ * @author jonalv
+ *
+ */
 public class LoggedInUserKeeper implements ILoggedInUserKeeper {
 
-    private IUserManager userManager;
     private User         loggedInUser;
+    private IUserManager userManager;
     
     public User getLoggedInUser() {
         return loggedInUser;
     }
 
     public void receiveUserManagerEvent(UserManagerEvent event) {
-        //TODO: implement receiveUserManagerEvent (need to do the strucutredb 
+        //TODO: implement receiveUserManagerEvent (need to do 
+        //      the strucutredb 
         //      usermanager account type first) 
-        throw new NotImplementedException();
+        throw new RuntimeException("Not implemented yet");
 //        switch (event) {
 //        case LOGIN:
 //            

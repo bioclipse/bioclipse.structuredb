@@ -6,11 +6,11 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
-import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,7 +27,8 @@ public interface IStructureDao extends IGenericDao<Structure> {
     public Iterator<Structure> allStructuresIterator();
 
     /**
-     * Inserts the structure into the database and the folder with the given id
+     * Inserts the structure into the database and the folder 
+     * with the given id
      * 
      * @param s
      * @param folderId
@@ -44,11 +45,12 @@ public interface IStructureDao extends IGenericDao<Structure> {
      * @param fingerprint
      * @return iterator for all subset matching structures
      */
-    public Iterator<Structure> fingerPrintSubsetSearch( byte[] fingerprint );
+    public Iterator<Structure> fingerPrintSubsetSearch( 
+        byte[] fingerprint );
 
     /**
      * The number of matching substructures fingerprints in the database
      */
-    public int numberOfFingerprintSubstructureMatches(byte[] fingerPrint);
-    
+    public int numberOfFingerprintSubstructureMatches(
+        byte[] fingerPrint );
 }

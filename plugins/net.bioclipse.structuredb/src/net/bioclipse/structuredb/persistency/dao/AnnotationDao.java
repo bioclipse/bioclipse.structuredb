@@ -6,11 +6,11 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,33 +32,41 @@ public class AnnotationDao extends GenericDao<Annotation>
 
     @Override
     public void insert(Annotation annotation) {
-        getSqlMapClientTemplate().update( "BaseObject.insert", annotation );
-        getSqlMapClientTemplate().update( "Annotation.insert",    annotation );
+        getSqlMapClientTemplate().update( "BaseObject.insert", 
+                                          annotation );
+        getSqlMapClientTemplate().update( "Annotation.insert",
+                                          annotation );
     }
     
     @Override
     public void update(Annotation annotation) {
-        getSqlMapClientTemplate().update( "BaseObject.update", annotation );
-        getSqlMapClientTemplate().update( "Annotation.update", annotation );
+        getSqlMapClientTemplate().update( "BaseObject.update", 
+                                          annotation );
+        getSqlMapClientTemplate().update( "Annotation.update", 
+                                          annotation );
         fixStructureAnnotation( annotation );
     }
     
     private void fixStructureAnnotation( final Annotation annotation ) {
 
-        getSqlMapClientTemplate().delete( "Annotation.deleteStructureCoupling", 
-                                          annotation );
-        for( final Structure s : annotation.getStructures() ) {
+        getSqlMapClientTemplate()
+        .delete( "Annotation.deleteStructureCoupling", annotation );
+        
+        for ( final Structure s : annotation.getStructures() ) {
             Map<String, String> params = new HashMap<String, String>() {
+
+                private static final long serialVersionUID = 1L;
+
                 {
                     put( "annotationId", annotation.getId() );
                     put( "structureId",  s.getId()          );
                 }
             };
             if ( (Integer) getSqlMapClientTemplate()
-                .queryForObject( "StructureAnnotation.hasConnection", 
+                 .queryForObject( "StructureAnnotation.hasConnection", 
                                  params ) == 0 ) {
-                getSqlMapClientTemplate().update( "StructureAnnotation.connect", 
-                                                  params );
+                getSqlMapClientTemplate()
+                .update( "StructureAnnotation.connect", params );
             }
         }
     }

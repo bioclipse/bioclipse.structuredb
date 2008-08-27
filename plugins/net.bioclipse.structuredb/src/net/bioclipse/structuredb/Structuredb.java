@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *
  *******************************************************************************/
 package net.bioclipse.structuredb;
@@ -20,8 +21,6 @@ import net.bioclipse.services.views.model.IServiceObject;
 import net.bioclipse.structuredb.business.IDatabaseListener;
 
 import org.apache.log4j.Logger;
-
-import com.sun.org.apache.xml.internal.dtm.ref.DTMDefaultBaseIterators.ChildrenIterator;
 
 /**
  * 
@@ -74,6 +73,7 @@ public class Structuredb extends AbstractServiceContainer
         setChildren( children );
     }
 
+    @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter) {
         // TODO Auto-generated method stub
         return null;

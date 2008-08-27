@@ -6,6 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
@@ -15,5 +16,4 @@ import net.bioclipse.structuredb.domain.Annotation;
 public interface IAnnotationDao extends IGenericDao<Annotation> {
 
     public Annotation getByName(String name);
-
 }
