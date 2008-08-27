@@ -50,6 +50,10 @@ public class StructuredbManagerTest
     private ICDKManager cdk = new CDKManager();
     
     static {
+        // workaround for bug in java 1.5 on OS X
+        if(Thread.currentThread().getContextClassLoader()==null)
+            Thread.currentThread().setContextClassLoader(
+                StructuredbManagerTest.class.getClassLoader());
         System.setProperty(
             "javax.xml.parsers.SAXParserFactory", 
             "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"
