@@ -14,14 +14,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Test;
-import org.openscience.cdk.exception.CDKException;
-
-import testData.TestData;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.Structure;
 import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.IStructureDao;
+
+import org.openscience.cdk.exception.CDKException;
+
+import testData.TestData;
 
 public class StructureDaoTest extends GenericDaoTest<Structure> {
 
@@ -116,7 +116,6 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         assertTrue( structure.hasValuesEqualTo(updated) );
     }
     
-    @SuppressWarnings("serial")
     public void testGetByName() throws CDKException {
 
         

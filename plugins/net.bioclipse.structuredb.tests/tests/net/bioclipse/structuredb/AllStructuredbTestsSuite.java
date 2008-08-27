@@ -14,6 +14,12 @@ import net.bioclipse.structuredb.business.BusinessTestsSuite;
 import net.bioclipse.structuredb.domain.DomainTestsSuite;
 import net.bioclipse.structuredb.internalbusiness.InternalBusinessTestsSuite;
 import net.bioclipse.structuredb.persistence.PersistencyTestsSuite;
+import net.bioclipse.structuredb.persistence.dao.ChoiceAnnotationDaoTest;
+import net.bioclipse.structuredb.persistence.dao.ChoicePropertyDaoTest;
+import net.bioclipse.structuredb.persistence.dao.RealNumberAnnotationDaoTest;
+import net.bioclipse.structuredb.persistence.dao.RealNumberPropertyDaoTest;
+import net.bioclipse.structuredb.persistence.dao.TextAnnotationDaoTest;
+import net.bioclipse.structuredb.persistence.dao.TextPropertyDaoTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -24,7 +30,13 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses( value = { BusinessTestsSuite.class,
                          DomainTestsSuite.class,
                          InternalBusinessTestsSuite.class, 
-                         PersistencyTestsSuite.class } )
+                         PersistencyTestsSuite.class,
+                         ChoiceAnnotationDaoTest.class,
+                         ChoicePropertyDaoTest.class,
+                         RealNumberAnnotationDaoTest.class,
+                         RealNumberPropertyDaoTest.class,
+                         TextAnnotationDaoTest.class,
+                         TextPropertyDaoTest.class } )
 public class AllStructuredbTestsSuite {
 
 }
