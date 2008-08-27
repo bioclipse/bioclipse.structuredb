@@ -21,6 +21,10 @@
         <property name="pattern" value=".*" /> <!-- See also class implementation -->
   </bean>
   
+  <bean id="fixClassLoaderAdvice"
+        class="net.bioclipse.structuredb.business.FixClassLoaderAdvice">
+  </bean>
+  
   <bean id="structuredbManager"
         class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="target" 
@@ -31,6 +35,7 @@
         <list>
             <value>recordingAdvisor</value>
             <value>wrapInProxyAdvice</value>
+            <value>fixClassLoaderAdvice</value>
         </list>
     </property>
   </bean>
