@@ -1,4 +1,4 @@
-CREATE TABLE Structure (
+CREATE TABLE DBMolecule (
     id                   VARCHAR(36) NOT NULL,
     baseObject           VARCHAR(36) NOT NULL,
     name                 VARCHAR(50) NOT NULL,
@@ -10,5 +10,5 @@ CREATE TABLE Structure (
 );
 
 CREATE ALIAS BITAND FOR "net.bioclipse.hsqldb.HsqldbHelper.bitAnd"
-ALTER TABLE Structure ADD UNIQUE (id); 
-ALTER TABLE Structure ADD FOREIGN KEY (baseObject) REFERENCES BaseObject(id) ON DELETE CASCADE;
+ALTER TABLE DBMolecule ADD UNIQUE (id); 
+ALTER TABLE DBMolecule ADD FOREIGN KEY (baseObject) REFERENCES BaseObject(id) ON DELETE CASCADE;

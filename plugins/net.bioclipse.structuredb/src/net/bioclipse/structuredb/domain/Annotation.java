@@ -20,22 +20,22 @@ import java.util.List;
  */
 public class Annotation extends BaseObject {
 
-    private List<Structure> structures;
+    private List<DBMolecule> dBMolecules;
     
     public Annotation() {
         super();
-        structures = new ArrayList<Structure>();
+        dBMolecules = new ArrayList<DBMolecule>();
     }
 
     public Annotation(Annotation annotation) {
         super(annotation);
-        this.structures 
-            = new ArrayList<Structure>( annotation.getStructures() );
+        this.dBMolecules 
+            = new ArrayList<DBMolecule>( annotation.getDBMolecules() );
     }
 
     public Annotation(String name) {
         super(name);
-        structures = new ArrayList<Structure>();
+        dBMolecules = new ArrayList<DBMolecule>();
     }
     
     public boolean hasValuesEqualTo( BaseObject obj ) {
@@ -47,47 +47,45 @@ public class Annotation extends BaseObject {
             return false;
         }
         Annotation annotation = (Annotation)obj;
-        return objectsInHasSameValues( annotation.getStructures(), 
-                                       structures );
+        return objectsInHasSameValues( annotation.getDBMolecules(), 
+                                       dBMolecules );
     }
 
     /**
-     * @return the structures having the label 
+     * @return
      */
-    public List<Structure> getStructures() {
-        return structures;
+    public List<DBMolecule> getDBMolecules() {
+        return dBMolecules;
     }
 
     /**
-     * @param structures the structures to set
+     * @param dBMolecules the dBMolecules to set
      */
-    public void setStructures(List<Structure> structures) {
-        this.structures = structures;
+    public void setDBMolecules(List<DBMolecule> dBMolecules) {
+        this.dBMolecules = dBMolecules;
     }
 
     /**
-     * Gives a structure this label
-     * 
-     * @param structure the structure to add
+     * @param dBMolecule
      */
-    public void addStructure(Structure structure) {
-        structures.add(structure);
-        if ( structure != null && 
-             !structure.getAnnotations().contains( this ) ) {
+    public void addDBMolecule(DBMolecule dBMolecule) {
+        dBMolecules.add(dBMolecule);
+        if ( dBMolecule != null && 
+             !dBMolecule.getAnnotations().contains( this ) ) {
             
-            structure.addAnnotation(this);
+            dBMolecule.addAnnotation(this);
         }
     }
 
     /**
-     * Removes this annotation from a structure
+     * Removes this annotation from a molecule
      * 
-     * @param structure the structure to remove
+     * @param dBMolecule the molecule to remove
      */
-    public void removeStructure(Structure structure) {
-        structures.remove(structure);
-        if( structure != null ) {
-            structure.getAnnotations().remove( this );
+    public void removeDBMolecule(DBMolecule dBMolecule) {
+        dBMolecules.remove(dBMolecule);
+        if( dBMolecule != null ) {
+            dBMolecule.getAnnotations().remove( this );
         }
     }
 }

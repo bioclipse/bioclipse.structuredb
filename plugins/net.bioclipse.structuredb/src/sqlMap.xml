@@ -12,7 +12,7 @@
 <!--+
     | PARAMATER MAPS
     +-->
-    <parameterMap class="Structure" id="Structure.insert">
+    <parameterMap class="DBMolecule" id="DBMolecule.insert">
         <parameter property="id"                                     />     
         <parameter property="name"                                   />
         <parameter property="id"                                     />    
@@ -21,7 +21,7 @@
         <parameter property="CML"                                    /> 
     </parameterMap>
 
-    <parameterMap class="Structure" id="Structure.update">
+    <parameterMap class="DBMolecule" id="DBMolecule.update">
         <parameter property="smiles"                                 />
         <parameter property="persistedFingerprint" jdbcType="binary" />
         <parameter property="CML"                                    />
@@ -40,12 +40,12 @@
 	</resultMap>
 
 	<resultMap class="Annotation" id="Annotation" extends="BaseObject">
-		<result property="structures" column="id" select="Annotation.getStructures"  />
+		<result property="DBMolecules" column="id" select="Annotation.getDBMolecules"  />
 		<result property="name"       column="name"                             />
 	</resultMap>
 	
-	<resultMap class="Structure" id="Structure" extends="BaseObject">
-		<result property="annotations"          column="id" select="Structure.getAnnotations" />
+	<resultMap class="DBMolecule" id="DBMolecule" extends="BaseObject">
+		<result property="annotations"          column="id" select="DBMolecule.getAnnotations" />
 		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
 		<result property="smiles"               column="smiles"                         />
 		<result property="CML"                  column="molecule"                       />
@@ -69,7 +69,7 @@
 		b.lastEditor AS lastEditor	
 	</sql>
 	
-	<sql id="Structure-fields">
+	<sql id="DBMolecule-fields">
 		s.persistedFingerprint AS persistedFingerprint,
 		s.smiles               AS smiles,
 		s.molecule             AS molecule,
@@ -104,8 +104,8 @@
 			      VALUES ( '$id$', '$userName$', '$passWordMd5$', '$sudoer$', '$id$'       );
 	</insert>
 	
-	<insert id="Structure.insert" parameterMap="Structure.insert">
-		INSERT INTO Structure ( id, name, baseObject, smiles, persistedFingerprint, molecule )
+	<insert id="DBMolecule.insert" parameterMap="DBMolecule.insert">
+		INSERT INTO DBMolecule ( id, name, baseObject, smiles, persistedFingerprint, molecule )
 		               VALUES ( ?, ?, ?, ?, ?, ? ); 
 	</insert>
 	
@@ -118,19 +118,19 @@
     | SELECT STATEMENTS
     +-->
 
-    <select id="Structure.numberOf" parameterClass="java.util.Map" resultClass="int">
+    <select id="DBMolecule.numberOf" parameterClass="java.util.Map" resultClass="int">
         SELECT 
             count(*) as numberOf 
         FROM
-            Structure
+            DBMolecule
     </select>
     
-	<select id="Structure.getById" parameterClass="String" resultMap="Structure">
+	<select id="DBMolecule.getById" parameterClass="String" resultMap="DBMolecule">
 		SELECT 
 			<include refid="BaseObject-fields" />, 
-			<include refid="Structure-fields"  />
+			<include refid="DBMolecule-fields"  />
 		FROM
-			Structure s INNER JOIN BaseObject b ON
+			DBMolecule s INNER JOIN BaseObject b ON
 			s.baseObject = b.id
 		WHERE 
 			s.id = #value#
@@ -180,46 +180,46 @@
             l.name = #value#
     </select>
 	
-	<select id="Annotation.getStructures" resultMap="Structure" parameterClass="String">
+	<select id="Annotation.getDBMolecules" resultMap="DBMolecule" parameterClass="String">
 		SELECT 
 			<include refid="BaseObject-fields" />,
-			<include refid="Structure-fields"  />
+			<include refid="DBMolecule-fields"  />
 		FROM
-			Structure s INNER JOIN BaseObject b ON s.baseObject = b.id, 
-			StructureAnnotation sl
+			DBMolecule s INNER JOIN BaseObject b ON s.baseObject = b.id, 
+			DBMoleculeAnnotation sl
 		WHERE 
-			sl.annotationId = #value# AND sl.structureId = s.id
+			sl.annotationId = #value# AND sl.dBMoleculeId = s.id
 	</select>
 	
-	<select id="Structure.getAll" resultMap="Structure">
+	<select id="DBMolecule.getAll" resultMap="DBMolecule">
 		SELECT
 			<include refid="BaseObject-fields" />, 
-			<include refid="Structure-fields"  />
+			<include refid="DBMolecule-fields"  />
 		FROM
-			Structure s INNER JOIN BaseObject b ON
+			DBMolecule s INNER JOIN BaseObject b ON
 			s.baseObject = b.id
 	</select>
 	
-	<select id="Structure.getByName" resultMap="Structure" parameterClass="String">
+	<select id="DBMolecule.getByName" resultMap="DBMolecule" parameterClass="String">
         SELECT
             <include refid="BaseObject-fields" />, 
-            <include refid="Structure-fields"  />
+            <include refid="DBMolecule-fields"  />
         FROM
-            Structure s INNER JOIN BaseObject b ON
+            DBMolecule s INNER JOIN BaseObject b ON
             s.baseObject = b.id
         WHERE
             s.name = #value#
     </select>
 	
-	<select id="Structure.getAnnotations" resultMap="Annotation" parameterClass="String">
+	<select id="DBMolecule.getAnnotations" resultMap="Annotation" parameterClass="String">
         SELECT 
             <include refid="BaseObject-fields" />,
             <include refid="Annotation-fields"  />
         FROM
             Annotation l INNER JOIN BaseObject b ON l.baseObject = b.id, 
-            StructureAnnotation sl
+            DBMoleculeAnnotation sl
         WHERE 
-            sl.structureId = #value# AND sl.annotationId = l.id
+            sl.dBMoleculeId = #value# AND sl.annotationId = l.id
     </select>
 	
 	<select id="Annotation.getAll" resultMap="Annotation">
@@ -240,39 +240,39 @@
 			u.baseObject = b.id
 	</select>
 	
-	<select id="Structure.fingerPrintSubsetSearch" 
-	        resultMap="Structure"
+	<select id="DBMolecule.fingerPrintSubsetSearch" 
+	        resultMap="DBMolecule"
 	        parameterClass="java.util.Map">
         SELECT
             <include refid="BaseObject-fields" />, 
-            <include refid="Structure-fields"  />
+            <include refid="DBMolecule-fields"  />
         FROM
-            Structure s INNER JOIN BaseObject b ON
+            DBMolecule s INNER JOIN BaseObject b ON
             s.baseObject = b.id
         WHERE
             BITAND(s.persistedFingerprint, #param:BINARY#) = #param:BINARY# 
     </select>
     
-    <select id="Structure.numberOfFingerprintSubstructureMatches"
+    <select id="DBMolecule.numberOfFingerprintSubstructureMatches"
             parameterClass="java.util.Map" 
             resultClass="int" >
         SELECT 
             count(*) as numberOf 
         FROM
-            Structure s
+            DBMolecule s
         WHERE 
             BITAND(s.persistedFingerprint, #param:BINARY#) = #param:BINARY#
     </select>
     
-    <select id="StructureAnnotation.hasConnection"
+    <select id="DBMoleculeAnnotation.hasConnection"
             parameterClass="java.util.Map"
             resultClass="int" >
         SELECT
             count(*) as numberOf
         FROM
-            StructureAnnotation sl
+            DBMoleculeAnnotation sl
         WHERE
-            sl.StructureId = #structureId# 
+            sl.DBMoleculeId = #dBMoleculeId# 
             AND sl.AnnotationId = #annotationId#
     </select>
 	
@@ -286,16 +286,16 @@
             id='$value$';
 	</delete>
 	
-    <delete id="Structure.deleteAnnotationCoupling" parameterClass="Structure">
+    <delete id="DBMolecule.deleteAnnotationCoupling" parameterClass="DBMolecule">
         DELETE FROM 
-	       StructureAnnotation
+	       DBMoleculeAnnotation
         WHERE 
-	       structureId = '$id$'
+	       dBMoleculeId = '$id$'
 	</delete>
 	
-	<delete id="Annotation.deleteStructureCoupling" parameterClass="Annotation">
+	<delete id="Annotation.deleteDBMoleculeCoupling" parameterClass="Annotation">
 	   DELETE FROM 
-	       StructureAnnotation
+	       DBMoleculeAnnotation
 	   WHERE 
 	       annotationId = '$id$'
 	</delete>
@@ -334,9 +334,9 @@
             id = '$id$'    	
     </update>
     
-    <update id="Structure.update" parameterMap="Structure.update">
+    <update id="DBMolecule.update" parameterMap="DBMolecule.update">
     	UPDATE 
-    		Structure
+    		DBMolecule
     	SET 
 	    	smiles               = ?,
 	    	persistedFingerprint = ?,
@@ -346,8 +346,8 @@
 			id = '$id$'
     </update>
     
-    <update id="StructureAnnotation.connect" parameterClass="java.util.Map">
-        INSERT into StructureAnnotation (   structureId,     annotationId   ) 
-                                 VALUES ( '$structureId$', '$annotationId$' )
+    <update id="DBMoleculeAnnotation.connect" parameterClass="java.util.Map">
+        INSERT into DBMoleculeAnnotation (   dBMoleculeId,     annotationId   ) 
+                                 VALUES ( '$dBMoleculeId$', '$annotationId$' )
     </update>
 </sqlMap>

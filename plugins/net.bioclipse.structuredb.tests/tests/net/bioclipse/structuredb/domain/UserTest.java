@@ -30,13 +30,13 @@ public class UserTest {
     
     @Test
     public void testDoubleReferences() {
-        Structure structure = new Structure();
+        DBMolecule dBMolecule = new DBMolecule();
         
         User user = new User();
         
-        user.addCreatedBaseObject( structure );
+        user.addCreatedBaseObject( dBMolecule );
     
-        assertTrue( user.getCreatedBaseObjects().contains(structure) );
-        assertTrue( structure.getCreator() == user );
+        assertTrue( user.getCreatedBaseObjects().contains(dBMolecule) );
+        assertTrue( dBMolecule.getCreator() == user );
     }
 }

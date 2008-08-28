@@ -16,11 +16,11 @@ import java.util.List;
 
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.persistence.HsqldbTestServerManager;
 import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
-import net.bioclipse.structuredb.persistency.dao.IStructureDao;
+import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
 import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
 import org.openscience.cdk.AtomContainer;
@@ -36,13 +36,23 @@ public class StructuredbInstanceManagerTest
     
     protected IAnnotationDao annotationDao;
     protected IUserDao       userDao;
-    protected IStructureDao  structureDao;
+    protected IDBMoleculeDao  dBMoleculeDao;
 
     public StructuredbInstanceManagerTest() {
         super();
     }
     
     static {
+        
+        System.setProperty(
+           "javax.xml.parsers.SAXParserFactory", 
+           "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"
+        );
+        System.setProperty(
+           "javax.xml.parsers.DocumentBuilderFactory", 
+           "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
+        );        
+        
         HsqldbTestServerManager.INSTANCE.startServer();
         HsqldbTestServerManager.INSTANCE.setupTestEnvironment();
     }
@@ -54,8 +64,8 @@ public class StructuredbInstanceManagerTest
                   applicationContext.getBean("structuredbInstanceManager");
         annotationDao    = (IAnnotationDao) applicationContext
                                     .getBean("annotationDao");
-        structureDao = (IStructureDao) applicationContext
-                                       .getBean("structureDao");
+        dBMoleculeDao = (IDBMoleculeDao) applicationContext
+                                       .getBean("dBMoleculeDao");
         userDao      = (IUserDao) applicationContext
                                   .getBean("userDao");
     }
@@ -85,26 +95,26 @@ public class StructuredbInstanceManagerTest
         assertTrue( allLabels.contains(annotation) );
     }
 
-    private Structure createStructure( String name, 
+    private DBMolecule createStructure( String name, 
                                        AtomContainer atomContainer) 
             throws CDKException {
 
         long before = System.currentTimeMillis();
-        Structure structure = new Structure( name, atomContainer );
+        DBMolecule dBMolecule = new DBMolecule( name, atomContainer );
         long inBetween = System.currentTimeMillis();
-        manager.insertStructure(structure);
+        manager.insertStructure(dBMolecule);
         long after = System.currentTimeMillis();
         System.out.println("Creating structure took: " + (inBetween - before) + "ms");
         System.out.println("Persisting structure took: " + (after - inBetween) + "ms");
-        return structure;
+        return dBMolecule;
     }
     
     public void testInsertStructure() throws CDKException {
         
-        Structure structure = createStructure( "CycloOctan", 
+        DBMolecule dBMolecule = createStructure( "CycloOctan", 
                                                TestData.getCycloOctan() );
-        List<Structure> allStructures = structureDao.getAll(); 
-        assertTrue( allStructures.contains(structure) );
+        List<DBMolecule> allStructures = dBMoleculeDao.getAll(); 
+        assertTrue( allStructures.contains(dBMolecule) );
     }
 
     private User createUser(String username, String password, boolean sudoer) {
@@ -135,11 +145,11 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testDeleteStructure() throws CDKException {
-        Structure structure = createStructure( "CycloOcan", 
+        DBMolecule dBMolecule = createStructure( "CycloOcan", 
                                                TestData.getCycloOctan() );
-        assertTrue( structureDao.getAll().contains(structure) );
-        manager.delete(structure);
-        assertFalse( structureDao.getAll().contains(structure) );
+        assertTrue( dBMoleculeDao.getAll().contains(dBMolecule) );
+        manager.delete(dBMolecule);
+        assertFalse( dBMoleculeDao.getAll().contains(dBMolecule) );
     }
 
     public void testRetrieveAllLibraries() {
@@ -151,13 +161,13 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testRetrieveAllStructures() throws CDKException {
-        Structure structure1 = createStructure( "CycloOctan", 
+        DBMolecule structure1 = createStructure( "CycloOctan", 
                                                  TestData.getCycloOctan() );
-        Structure structure2 = createStructure( "CycloPropane", 
+        DBMolecule structure2 = createStructure( "CycloPropane", 
                                                  TestData.getCycloPropane() );
         
-        assertTrue( structureDao.getAll().containsAll(
-                Arrays.asList(new Structure[] {structure1, structure2}) ) );
+        assertTrue( dBMoleculeDao.getAll().containsAll(
+                Arrays.asList(new DBMolecule[] {structure1, structure2}) ) );
     }
 
     public void testRetrieveAllUsers() {
@@ -178,11 +188,11 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testRetrieveStructureByName() throws CDKException {
-        Structure structure = createStructure( "CycloOctan", 
+        DBMolecule dBMolecule = createStructure( "CycloOctan", 
                                                 TestData.getCycloOctan() );
         assertTrue( manager
                     .retrieveStructureByName("CycloOctan")
-                    .contains(structure) );
+                    .contains(dBMolecule) );
     }
 
     public void testRetrieveUserByName() {
@@ -209,35 +219,35 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testUpdateStructure() throws CDKException {
-        Structure structure = createStructure( "CycloOctan", 
+        DBMolecule dBMolecule = createStructure( "CycloOctan", 
                                                TestData.getCycloOctan() );
-        structure.setName("edited");
-        manager.update(structure);
-        assertEquals( structure, structureDao.getById(structure.getId()) );
+        dBMolecule.setName("edited");
+        manager.update(dBMolecule);
+        assertEquals( dBMolecule, dBMoleculeDao.getById(dBMolecule.getId()) );
     }
     
     public void testDeleteLabelAndStructures() throws CDKException {
-        Structure structure = createStructure( "CycloOcan", 
+        DBMolecule dBMolecule = createStructure( "CycloOcan", 
                                                TestData.getCycloOctan() );
         Annotation annotation = createAnnotation( "test" );
-        structure.addAnnotation( annotation );
+        dBMolecule.addAnnotation( annotation );
         manager.update( annotation );
         
         assertTrue( annotationDao.getById( annotation.getId() )
-                            .getStructures()
-                            .contains(structure) );
+                            .getDBMolecules()
+                            .contains(dBMolecule) );
         manager.deleteWithStructures( annotation, null );
-        assertFalse( structureDao.getAll().contains(structure) );
+        assertFalse( dBMoleculeDao.getAll().contains(dBMolecule) );
         assertFalse( annotationDao.getAll().contains(annotation) );
     }
     
     public void testAllStructureIterator() throws CDKException {
         testRetrieveAllStructures();
-        List<Structure> structures = manager.retrieveAllStructures();
-        Iterator<Structure> structureIterator = manager.allStructuresIterator();
+        List<DBMolecule> dBMolecules = manager.retrieveAllStructures();
+        Iterator<DBMolecule> structureIterator = manager.allStructuresIterator();
         assertTrue( structureIterator.hasNext() );
         while ( structureIterator.hasNext() ) {
-            assertTrue( structures.contains( structureIterator.next() ) );
+            assertTrue( dBMolecules.contains( structureIterator.next() ) );
         }
     }
     

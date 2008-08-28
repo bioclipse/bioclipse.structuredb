@@ -42,19 +42,19 @@ import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
  * @author jonalv
  *
  */
-public class Structure extends BaseObject
-                       implements net.bioclipse.core.domain.IMolecule {
+public class DBMolecule extends BaseObject
+                        implements net.bioclipse.core.domain.IMolecule {
 
     private static final Logger logger 
-        = Logger.getLogger(Structure.class);
+        = Logger.getLogger(DBMolecule.class);
 
-    private IAtomContainer      atomContainer;
-    private BitSet              fingerPrint;
-    private byte[]              persistedFingerPrint;
-    private String              smiles;
-    private List<Annotation>    annotations;
+    private IAtomContainer   atomContainer;
+    private BitSet           fingerPrint;
+    private byte[]           persistedFingerPrint;
+    private String           smiles;
+    private List<Annotation> annotations;
 
-    public Structure() {
+    public DBMolecule() {
         super();
         fingerPrint = new BitSet();
         this.persistedFingerPrint 
@@ -64,7 +64,7 @@ public class Structure extends BaseObject
         annotations = new ArrayList<Annotation>();
     }
 
-    public Structure( String name, AtomContainer molecule ) {
+    public DBMolecule( String name, AtomContainer molecule ) {
 
         super(name);
         this.atomContainer = molecule;
@@ -86,7 +86,7 @@ public class Structure extends BaseObject
         if(molecule.getAtomCount() > 100) {
             smiles = "";
             logger.debug( "Not generating SMILES. " +
-            		      "Structure " + name + " has too many atoms." );
+            		      "DBMolecule " + name + " has too many atoms." );
         }
         else {
             smiles = sg.createSMILES( (IMolecule) molecule );
@@ -94,7 +94,7 @@ public class Structure extends BaseObject
         annotations = new ArrayList<Annotation>();
     }
 
-    public Structure( String name, ICDKMolecule cdkMolecule )
+    public DBMolecule( String name, ICDKMolecule cdkMolecule )
            throws BioclipseException {
 
         super(name);
@@ -106,22 +106,22 @@ public class Structure extends BaseObject
     }
 
     /**
-     * Creates a new Structure that is an exact copy of the
+     * Creates a new DBMolecule that is an exact copy of the
      * given instance including the same id.
      *
-     * @param structure
+     * @param dBMolecule
      */
-    public Structure(Structure structure) {
+    public DBMolecule(DBMolecule dBMolecule) {
 
-        super(structure);
+        super(dBMolecule);
 
-        atomContainer        = structure.getMolecule();
-        fingerPrint          = (BitSet)structure.getFingerPrint()
+        atomContainer        = dBMolecule.getMolecule();
+        fingerPrint          = (BitSet)dBMolecule.getFingerPrint()
                                                 .clone();
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
-        smiles               = structure.getSmiles();
+        smiles               = dBMolecule.getSmiles();
         annotations          = new ArrayList<Annotation>( 
-                                   structure.getAnnotations() );
+                                   dBMolecule.getAnnotations() );
     }
 
     public boolean hasValuesEqualTo( BaseObject object ) {
@@ -129,14 +129,14 @@ public class Structure extends BaseObject
         if( !super.hasValuesEqualTo(object) ) {
             return false;
         }
-        if( !(object instanceof Structure) ) {
+        if( !(object instanceof DBMolecule) ) {
             return false;
         }
 
-        Structure structure = (Structure)object;
+        DBMolecule dBMolecule = (DBMolecule)object;
 
-        return fingerPrint.equals( structure.getFingerPrint() )
-               &&   smiles.equals( structure.getSmiles()      );
+        return fingerPrint.equals( dBMolecule.getFingerPrint() )
+               &&   smiles.equals( dBMolecule.getSmiles()      );
 // TODO: can give false positives without?
 //             && atomContainer.equals( structure.getMolecule()    ); 
     }
@@ -218,9 +218,9 @@ public class Structure extends BaseObject
     public void addAnnotation(Annotation annotation) {
         annotations.add( annotation );
         if( annotation != null && 
-            !annotation.getStructures().contains(this) ) {
+            !annotation.getDBMolecules().contains(this) ) {
             
-            annotation.addStructure( this );
+            annotation.addDBMolecule( this );
         }
     }
     
@@ -293,8 +293,8 @@ public class Structure extends BaseObject
     }
 
     public void removeAnnotation( Annotation annotation ) {
-        if ( annotation.getStructures().contains(this) ) {
-            annotation.removeStructure(this);
+        if ( annotation.getDBMolecules().contains(this) ) {
+            annotation.removeDBMolecule(this);
         }
         annotations.remove( annotation );
     }

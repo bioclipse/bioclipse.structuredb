@@ -64,8 +64,8 @@
 	
 <!-- THE DAOS -->
 
-	<bean id="structureDaoTarget"
-          class="net.bioclipse.structuredb.persistency.dao.StructureDao" abstract="true">
+	<bean id="dBMoleculeDaoTarget"
+          class="net.bioclipse.structuredb.persistency.dao.DBMoleculeDao" abstract="true">
         <property name="dataSource">
 			<ref local="dataSource" />
 		</property>
@@ -74,12 +74,12 @@
 		</property>
 	</bean>
 	
-	<bean id="structureDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
+	<bean id="dBMoleculeDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
 		<property name="proxyInterfaces">
-			<value>net.bioclipse.structuredb.persistency.dao.IStructureDao</value>
+			<value>net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao</value>
 		</property>
 		<property name="target">
-			<bean parent="structureDaoTarget">
+			<bean parent="dBMoleculeDaoTarget">
         	</bean>
 		</property>
 		<property name="interceptorNames">
@@ -142,8 +142,8 @@
 	   <property name="userDao">
 	       <ref local="userDao"/>
 	   </property>
-	   <property name="structureDao">
-           <ref local="structureDao"/>
+	   <property name="DBMoleculeDao">
+           <ref local="dBMoleculeDao"/>
        </property>
        <property name="annotationDao">
            <ref local="annotationDao"/>

@@ -10,8 +10,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence;
 
-import net.bioclipse.structuredb.persistence.dao.LabelDaoTest;
-import net.bioclipse.structuredb.persistence.dao.StructureDaoTest;
+import net.bioclipse.structuredb.persistence.dao.AnnotationDaoTest;
+import net.bioclipse.structuredb.persistence.dao.DBMoleculeDaoTest;
 import net.bioclipse.structuredb.persistence.dao.UserDaoTest;
 
 import org.junit.runner.RunWith;
@@ -20,8 +20,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 
 @RunWith(value=Suite.class)
-@SuiteClasses( value = { LabelDaoTest.class,
-                         StructureDaoTest.class,
+@SuiteClasses( value = { AnnotationDaoTest.class,
+                         DBMoleculeDaoTest.class,
                          UserDaoTest.class, } )
 public class PersistencyTestsSuite {
 

@@ -58,7 +58,7 @@ public class CreateStructureDatabaseDialog
             dialogShell.layout();
             dialogShell.pack();            
             dialogShell.setSize(254, 134);
-            dialogShell.setText("Create new Structure Database");
+            dialogShell.setText("Create new DBMolecule Database");
             {
                 cancelButton = new Button(dialogShell, SWT.PUSH | 
                                                        SWT.CENTER);

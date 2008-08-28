@@ -14,17 +14,17 @@ package net.bioclipse.structuredb.persistency.dao;
 import java.util.Iterator;
 import java.util.List;
 
-import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.DBMolecule;
 
 /**
  * @author jonalv
  */
-public interface IStructureDao extends IGenericDao<Structure> {
+public interface IDBMoleculeDao extends IGenericDao<DBMolecule> {
 
-    public List<Structure> getByName(String name);
+    public List<DBMolecule> getByName(String name);
     
     /** returns an iterator for all structures in the database */
-    public Iterator<Structure> allStructuresIterator();
+    public Iterator<DBMolecule> allStructuresIterator();
 
     /**
      * Inserts the structure into the database and the folder 
@@ -33,7 +33,7 @@ public interface IStructureDao extends IGenericDao<Structure> {
      * @param s
      * @param folderId
      */
-    public void insertWithAnnotation( Structure s, String folderId );
+    public void insertWithAnnotation( DBMolecule s, String folderId );
 
     /**
      * @return number of structures in the database
@@ -45,7 +45,7 @@ public interface IStructureDao extends IGenericDao<Structure> {
      * @param fingerprint
      * @return iterator for all subset matching structures
      */
-    public Iterator<Structure> fingerPrintSubsetSearch( 
+    public Iterator<DBMolecule> fingerPrintSubsetSearch( 
         byte[] fingerprint );
 
     /**

@@ -15,42 +15,46 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
-import net.bioclipse.structuredb.persistency.dao.IStructureDao;
+import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
 
 import org.openscience.cdk.exception.CDKException;
 
 import testData.TestData;
 
-public class StructureDaoTest extends GenericDaoTest<Structure> {
+/**
+ * @author jonalv
+ *
+ */
+public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
 
-    private Structure structure1;
-    private Structure structure2;
-    private List<Structure> structures;
+    private DBMolecule molecule1;
+    private DBMolecule molecule2;
+    private List<DBMolecule> dBMolecules;
 
-    public StructureDaoTest() {
-        super(Structure.class);
+    public DBMoleculeDaoTest() {
+        super(DBMolecule.class);
     }
     
     @Override
     public void onSetUpInTransaction() throws Exception {
     
         super.onSetUpInTransaction();
-        structure1 = new Structure( "CycloOctan",
+        molecule1 = new DBMolecule( "CycloOctan",
                                     TestData
                                     .getCycloOctan() );
-        structure2 = new Structure( "CycloPropan", 
+        molecule2 = new DBMolecule( "CycloPropan", 
                                     TestData
                                     .getCycloPropane() );
-        addCreatorAndEditor(structure1);
-        addCreatorAndEditor(structure2);
-        dao.insert(structure1);
-        dao.insert(structure2);
+        addCreatorAndEditor(molecule1);
+        addCreatorAndEditor(molecule2);
+        dao.insert(molecule1);
+        dao.insert(molecule2);
         
-        structures = new ArrayList<Structure>() {{
-            add(structure1);
-            add(structure2);
+        dBMolecules = new ArrayList<DBMolecule>() {{
+            add(molecule1);
+            add(molecule2);
         }};
     }
     
@@ -62,15 +66,15 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         addCreatorAndEditor(annotation);
         annotationDao.insert(annotation);
         
-        Structure structure = new Structure();
-        structure.addAnnotation(annotation);
-        addCreatorAndEditor(structure);
-        dao.insert(structure);
+        DBMolecule dBMolecule = new DBMolecule();
+        dBMolecule.addAnnotation(annotation);
+        addCreatorAndEditor(dBMolecule);
+        dao.insert(dBMolecule);
         
-        Structure loaded = dao.getById( structure.getId() );
+        DBMolecule loaded = dao.getById( dBMolecule.getId() );
         assertNotNull("The lodaded object shuold not be null", loaded);
-        assertNotSame(structure, loaded);
-        assertTrue( structure.hasValuesEqualTo(loaded) );
+        assertNotSame(dBMolecule, loaded);
+        assertTrue( dBMolecule.hasValuesEqualTo(loaded) );
         assertTrue( loaded.getAnnotations().contains(annotation) );
     }
 
@@ -82,15 +86,15 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         addCreatorAndEditor(annotation);
         annotationDao.insert(annotation);
         
-        Structure structure = new Structure();
+        DBMolecule dBMolecule = new DBMolecule();
 
-        addCreatorAndEditor(structure);
-        ((IStructureDao)dao).insertWithAnnotation( structure, annotation.getId() );
+        addCreatorAndEditor(dBMolecule);
+        ((IDBMoleculeDao)dao).insertWithAnnotation( dBMolecule, annotation.getId() );
         
-        Structure loaded = dao.getById( structure.getId() );
+        DBMolecule loaded = dao.getById( dBMolecule.getId() );
         assertNotNull("The lodaded object should not be null", loaded);
-        assertNotSame(structure, loaded);
-        assertTrue( structure.hasValuesEqualTo(loaded) );
+        assertNotSame(dBMolecule, loaded);
+        assertTrue( dBMolecule.hasValuesEqualTo(loaded) );
         assertTrue( loaded.getAnnotations().contains(annotation) );
     }
     
@@ -104,69 +108,69 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         addCreatorAndEditor(annotation);
         annotationDao.insert(annotation);
         
-        Structure structure = new Structure();
-        structure.addAnnotation(annotation);
-        addCreatorAndEditor(structure);
-        dao.insert(structure);
+        DBMolecule dBMolecule = new DBMolecule();
+        dBMolecule.addAnnotation(annotation);
+        addCreatorAndEditor(dBMolecule);
+        dao.insert(dBMolecule);
         
-        Structure loaded = dao.getById( structure.getId() );
-        structure.setName("edited");
-        dao.update(structure);
-        Structure updated = dao.getById( structure.getId() );
-        assertTrue( structure.hasValuesEqualTo(updated) );
+        DBMolecule loaded = dao.getById( dBMolecule.getId() );
+        dBMolecule.setName("edited");
+        dao.update(dBMolecule);
+        DBMolecule updated = dao.getById( dBMolecule.getId() );
+        assertTrue( dBMolecule.hasValuesEqualTo(updated) );
     }
     
     public void testGetByName() throws CDKException {
 
         
-        assertTrue( dao.getAll().containsAll(structures) );
+        assertTrue( dao.getAll().containsAll(dBMolecules) );
         
-        List<Structure> saved = ( (IStructureDao)dao ).getByName(
-                                  structure1.getName() );
-        assertTrue(  saved.contains(structure1) );
+        List<DBMolecule> saved = ( (IDBMoleculeDao)dao ).getByName(
+                                  molecule1.getName() );
+        assertTrue(  saved.contains(molecule1) );
         assertFalse( saved.contains(object1)       );
         assertFalse( saved.contains(object2)       );
         assertTrue( saved.size() == 1);
         assertTrue( saved.get(0).getFingerPrint()
-                                .equals( structure1.getFingerPrint() ) );
+                                .equals( molecule1.getFingerPrint() ) );
     }
     
     public void testAllStructureIterator() {
-        List<Structure> structures = new ArrayList<Structure>() {
+        List<DBMolecule> dBMolecules = new ArrayList<DBMolecule>() {
             {
                 add( object1 );
                 add( object2 );
-                add( structure1 );
-                add( structure2 );
+                add( molecule1 );
+                add( molecule2 );
             }
         };
-        Iterator<Structure> iterator 
-            = ( (IStructureDao)dao ).allStructuresIterator();
+        Iterator<DBMolecule> iterator 
+            = ( (IDBMoleculeDao)dao ).allStructuresIterator();
         assertTrue( iterator.hasNext() );
         int numberof = 0;
         while( iterator.hasNext() ) {
-            assertTrue( structures.contains( iterator.next() ) );
+            assertTrue( dBMolecules.contains( iterator.next() ) );
             numberof++;
         }
         assertEquals( 4, numberof );
     }
     
     public void testNumberOfStructures() {
-        assertEquals( 4, ((IStructureDao)dao).numberOfStructures() );
+        assertEquals( 4, ((IDBMoleculeDao)dao).numberOfStructures() );
     }
     
     public void testFingerPrintSearch() {
         
-        Iterator<Structure> iterator
-            = ( (IStructureDao)dao ).fingerPrintSubsetSearch( 
-              ((Structure)structure1).getPersistedFingerprint() );
+        Iterator<DBMolecule> iterator
+            = ( (IDBMoleculeDao)dao ).fingerPrintSubsetSearch( 
+              ((DBMolecule)molecule1).getPersistedFingerprint() );
         boolean foundObject1 = false;
         boolean foundObject2 = false;
         while( iterator.hasNext() ) {
-            if( iterator.next().equals( structure1 )) {
+            if( iterator.next().equals( molecule1 )) {
                 foundObject1 = true;
             }
-            if( iterator.next().equals( structure2 )) {
+            if( iterator.next().equals( molecule2 )) {
                 foundObject2 = true;
             }
         }
@@ -174,17 +178,17 @@ public class StructureDaoTest extends GenericDaoTest<Structure> {
         assertFalse( foundObject2 );
     }
     
-    public void testGetLabels() {
-        Annotation annotation = new Annotation( "my label" );
+    public void testGetAnnotations() {
+        Annotation annotation = new Annotation( "my annotation" );
         Annotation unusedLabel = new Annotation( "I should not turn up" );
         IAnnotationDao annotationDao = (IAnnotationDao) applicationContext.getBean("annotationDao");
         annotationDao.insert( annotation );
         annotationDao.insert( unusedLabel );
         
-        structure1.addAnnotation( annotation );
-        dao.update( structure1 );
-        Structure loaded = dao.getById( structure1.getId() );
+        molecule1.addAnnotation( annotation );
+        dao.update( molecule1 );
+        DBMolecule loaded = dao.getById( molecule1.getId() );
         assertEquals( 1, loaded.getAnnotations().size() );
-        assertEquals( annotation, structure1.getAnnotations().get( 0 ) );
+        assertEquals( annotation, molecule1.getAnnotations().get( 0 ) );
     }
 }

@@ -23,80 +23,80 @@ import org.springframework.dao.DataAccessException;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.DBMolecule;
 
 /**
- * The StructureDao persists and loads structures
+ * The DBMoleculeDao persists and loads structures
  * 
  * @author jonalv
  *
  */
-public class StructureDao extends GenericDao<Structure> 
-                          implements IStructureDao {
+public class DBMoleculeDao extends GenericDao<DBMolecule> 
+                           implements IDBMoleculeDao {
 
-    public StructureDao() {
-        super(Structure.class);
+    public DBMoleculeDao() {
+        super(DBMolecule.class);
     }
 
     @Override
-    public void insert( final Structure structure ) {
+    public void insert( final DBMolecule dBMolecule ) {
         
         getSqlMapClientTemplate().update( "BaseObject.insert", 
-                                          structure );
+                                          dBMolecule );
         getSqlMapClientTemplate()
-        .update( type.getSimpleName() + ".insert", structure );
-        fixStructureAnnotation(structure);
+        .update( type.getSimpleName() + ".insert", dBMolecule );
+        fixStructureAnnotation(dBMolecule);
     }
     
-    private void fixStructureAnnotation( final Structure structure ) {
+    private void fixStructureAnnotation( final DBMolecule dBMolecule ) {
 
         getSqlMapClientTemplate()
-        .delete( "Structure.deleteAnnotationCoupling", 
-                 structure );
-        for( final Annotation l : structure.getAnnotations() ) {
+        .delete( "DBMolecule.deleteAnnotationCoupling", 
+                 dBMolecule );
+        for( final Annotation l : dBMolecule.getAnnotations() ) {
             Map<String, String> params = new HashMap<String, String>() {
                 private static final long serialVersionUID = 1L;
 
                 {
                     put( "annotationId", l.getId()         );
-                    put( "structureId",  structure.getId() );
+                    put( "dBMoleculeId",  dBMolecule.getId() );
                 }
             };
             if ( (Integer) getSqlMapClientTemplate()
-                .queryForObject( "StructureAnnotation.hasConnection", 
+                .queryForObject( "DBMoleculeAnnotation.hasConnection", 
                                  params ) == 0 ) {
                 getSqlMapClientTemplate()
-                .update( "StructureAnnotation.connect", 
+                .update( "DBMoleculeAnnotation.connect", 
                          params );
             }
         }
     }
 
     @Override
-    public void update(Structure structure) {
-        getSqlMapClientTemplate().update( "Structure.update",  
-                                          structure );
+    public void update(DBMolecule dBMolecule) {
+        getSqlMapClientTemplate().update( "DBMolecule.update",  
+                                          dBMolecule );
         getSqlMapClientTemplate().update( "BaseObject.update", 
-                                          structure );
-        fixStructureAnnotation( structure );
+                                          dBMolecule );
+        fixStructureAnnotation( dBMolecule );
     }
 
     @SuppressWarnings("unchecked")
-    public List<Structure> getByName(String name) {
+    public List<DBMolecule> getByName(String name) {
         return getSqlMapClientTemplate()
-               .queryForList( "Structure.getByName", name );
+               .queryForList( "DBMolecule.getByName", name );
     }
 
-    public Iterator<Structure> allStructuresIterator() {
+    public Iterator<DBMolecule> allStructuresIterator() {
         
         return new StructureIterator( getSqlMapClient(), 
-                                      "Structure.getAll" );
+                                      "DBMolecule.getAll" );
     }
     
-    private class StructureIterator implements Iterator<Structure> {
+    private class StructureIterator implements Iterator<DBMolecule> {
         
         private SqlMapClient sqlMapClient;
-        private Structure nextStructure = null;
+        private DBMolecule nextStructure = null;
         private int skip = 0;
         private String sqlMapId;
         private Object queryParam = null;
@@ -119,7 +119,7 @@ public class StructureDao extends GenericDao<Structure>
         public boolean hasNext() {
 
             try {
-                List<Structure> result = (List<Structure>)sqlMapClient
+                List<DBMolecule> result = (List<DBMolecule>)sqlMapClient
                                          .queryForList( sqlMapId, 
                                                         queryParam, 
                                                         skip, 
@@ -138,7 +138,7 @@ public class StructureDao extends GenericDao<Structure>
             }
         }
 
-        public Structure next() {
+        public DBMolecule next() {
             if( nextStructure != null ) {
                 skip++;
                 return nextStructure;
@@ -156,35 +156,35 @@ public class StructureDao extends GenericDao<Structure>
         }
     }
 
-    public void insertWithAnnotation( Structure structure, 
+    public void insertWithAnnotation( DBMolecule dBMolecule, 
                                       String annotationId ) {
 
         getSqlMapClientTemplate().update( "BaseObject.insert", 
-                                          structure );
-        getSqlMapClientTemplate().update( "Structure.insert",  
-                                          structure );
+                                          dBMolecule );
+        getSqlMapClientTemplate().update( "DBMolecule.insert",  
+                                          dBMolecule );
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put( "structureId",  structure.getId() );
+        params.put( "dBMoleculeId",  dBMolecule.getId() );
         params.put( "annotationId", annotationId );
-        getSqlMapClientTemplate().update( "StructureAnnotation.connect", 
+        getSqlMapClientTemplate().update( "DBMoleculeAnnotation.connect", 
                                           params );
     }
 
     public int numberOfStructures() {
         
         return (Integer) getSqlMapClientTemplate()
-                         .queryForObject( "Structure.numberOf" );
+                         .queryForObject( "DBMolecule.numberOf" );
     }
 
-    public Iterator<Structure> fingerPrintSubsetSearch( 
+    public Iterator<DBMolecule> fingerPrintSubsetSearch( 
                                    byte[] fingerPrint ) {
 
         Map<String, byte[]> paramaterMap = new HashMap<String, byte[]>();
         paramaterMap.put( "param", fingerPrint );
         return 
             new StructureIterator( getSqlMapClient(), 
-                                   "Structure.fingerPrintSubsetSearch", 
+                                   "DBMolecule.fingerPrintSubsetSearch", 
                                    paramaterMap );
     }
 
@@ -194,7 +194,7 @@ public class StructureDao extends GenericDao<Structure>
         Map<String, byte[]> paramaterMap = new HashMap<String, byte[]>();
         paramaterMap.put( "param", fingerPrint );
         return (Integer) getSqlMapClientTemplate().queryForObject( 
-            "Structure.numberOfFingerprintSubstructureMatches", 
+            "DBMolecule.numberOfFingerprintSubstructureMatches", 
             paramaterMap );
     };
 }

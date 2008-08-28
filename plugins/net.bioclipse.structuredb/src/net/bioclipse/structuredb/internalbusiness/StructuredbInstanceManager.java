@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 
 import net.bioclipse.core.domain.BioList;
 import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.User;
 
 /**
@@ -45,18 +45,18 @@ public class StructuredbInstanceManager
     }
     
     private void persistRelatedStructures(Annotation annotation) {
-        for( Structure s : annotation.getStructures() ) {
-            if( structureDao.getById(s.getId()) == null) {
-                structureDao.insert(s);
+        for( DBMolecule s : annotation.getDBMolecules() ) {
+            if( dBMoleculeDao.getById(s.getId()) == null) {
+                dBMoleculeDao.insert(s);
             }
             else {
-                structureDao.update(s);
+                dBMoleculeDao.update(s);
             }
         }
     }
 
-    public void insertStructure(Structure structure) {
-        structureDao.insert(structure);
+    public void insertStructure(DBMolecule dBMolecule) {
+        dBMoleculeDao.insert(dBMolecule);
     }
 
     public void insertUser(User user) {
@@ -71,16 +71,16 @@ public class StructuredbInstanceManager
         userDao.delete( user.getId() );
     }
 
-    public void delete(Structure structure) {
-        structureDao.delete( structure.getId() );
+    public void delete(DBMolecule dBMolecule) {
+        dBMoleculeDao.delete( dBMolecule.getId() );
     }
 
     public List<Annotation> retrieveAllAnnotations() {
         return new BioList<Annotation>( annotationDao.getAll() );
     }
 
-    public List<Structure> retrieveAllStructures() {
-        return new BioList<Structure>( structureDao.getAll() );
+    public List<DBMolecule> retrieveAllStructures() {
+        return new BioList<DBMolecule>( dBMoleculeDao.getAll() );
     }
 
     public List<User> retrieveAllUsers() {
@@ -91,8 +91,8 @@ public class StructuredbInstanceManager
         return annotationDao.getByName(name);
     }
 
-    public List<Structure> retrieveStructureByName(String name) {
-        return structureDao.getByName(name);
+    public List<DBMolecule> retrieveStructureByName(String name) {
+        return dBMoleculeDao.getByName(name);
     }
 
     public User retrieveUserByUsername(String username) {
@@ -108,8 +108,8 @@ public class StructuredbInstanceManager
         userDao.update(user);
     }
 
-    public void update(Structure structure) {
-        structureDao.update(structure);
+    public void update(DBMolecule dBMolecule) {
+        dBMoleculeDao.update(dBMolecule);
     }
 
     public User getLoggedInUser() {
@@ -120,32 +120,32 @@ public class StructuredbInstanceManager
         this.loggedInUser = user;
     }
 
-    public Iterator<Structure> allStructuresIterator() {
+    public Iterator<DBMolecule> allStructuresIterator() {
 
-        return structureDao.allStructuresIterator();
+        return dBMoleculeDao.allStructuresIterator();
     }
 
-    public void insertStructureInAnnotation( Structure s, 
+    public void insertStructureInAnnotation( DBMolecule s, 
                                              String folderId ) {
 
-        structureDao.insertWithAnnotation( s, folderId );
+        dBMoleculeDao.insertWithAnnotation( s, folderId );
     }
 
     public int numberOfStructures() {
 
-        return structureDao.numberOfStructures();
+        return dBMoleculeDao.numberOfStructures();
     }
 
-    public Iterator<Structure> 
-           fingerprintSubstructureSearchIterator(Structure s) {
+    public Iterator<DBMolecule> 
+           fingerprintSubstructureSearchIterator(DBMolecule s) {
 
-        return structureDao
+        return dBMoleculeDao
                .fingerPrintSubsetSearch( s.getPersistedFingerprint() );
     }
 
-    public int numberOfFingerprintMatches( Structure queryStructure ) {
+    public int numberOfFingerprintMatches( DBMolecule queryStructure ) {
 
-        return structureDao.numberOfFingerprintSubstructureMatches( 
+        return dBMoleculeDao.numberOfFingerprintSubstructureMatches( 
             queryStructure.getPersistedFingerprint() );
     }
 
@@ -160,12 +160,12 @@ public class StructuredbInstanceManager
         IProgressMonitor sub 
             = new SubProgressMonitor(monitor, (int) (0.1 * ticks));
         sub.beginTask( "Preparing to delete", 1 );
-        List<Structure> structures = annotation.getStructures();
-        int tick = ticks / annotation.getStructures().size();
+        List<DBMolecule> dBMolecules = annotation.getDBMolecules();
+        int tick = ticks / annotation.getDBMolecules().size();
         sub.worked( 1 );
         sub.done();
-        for ( Structure s : structures ) {
-            structureDao.delete( s.getId() );
+        for ( DBMolecule s : dBMolecules ) {
+            dBMoleculeDao.delete( s.getId() );
             monitor.worked( tick );
         }
         annotationDao.delete( annotation.getId() );

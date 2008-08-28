@@ -14,6 +14,9 @@
 
   <osgi:reference id="wrapInProxyAdvice"
                   interface="net.bioclipse.recording.IWrapInProxyAdvice" />
+                  
+    <osgi:reference id="createJobAdvice"
+                    interface="net.bioclipse.ui.jobs.ICreateJobAdvice" />
 
   <bean id="recordingAdvisor"
         class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
@@ -36,6 +39,7 @@
             <value>recordingAdvisor</value>
             <value>wrapInProxyAdvice</value>
             <value>fixClassLoaderAdvice</value>
+            <value>createJobAdvice</value>
         </list>
     </property>
   </bean>

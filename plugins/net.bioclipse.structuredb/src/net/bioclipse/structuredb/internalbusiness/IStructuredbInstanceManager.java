@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.User;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -43,9 +43,9 @@ public interface IStructuredbInstanceManager {
     /**
      * Persists changes in a given user retrieved from the database.
      * 
-     * @param structure
+     * @param dBMolecule
      */
-    public void update(Structure structure);
+    public void update(DBMolecule dBMolecule);
     
     /**
      * Insert a user into the database
@@ -64,9 +64,9 @@ public interface IStructuredbInstanceManager {
     /**
      * Insert a structure into the database
      * 
-     * @param structure to be inserted
+     * @param dBMolecule to be inserted
      */
-    public void insertStructure( Structure structure ); 
+    public void insertStructure( DBMolecule dBMolecule ); 
     
     /**
      * Removes the given library from the database. 
@@ -84,16 +84,16 @@ public interface IStructuredbInstanceManager {
     public void delete(User user);
     
     /**
-     * Removes the given Structure from the database
+     * Removes the given DBMolecule from the database
      * 
-     * @param structure
+     * @param dBMolecule
      */
-    public void delete(Structure structure);
+    public void delete(DBMolecule dBMolecule);
     
     /**
      * @return all structures
      */
-    public List<Structure> retrieveAllStructures();
+    public List<DBMolecule> retrieveAllStructures();
     
     /**
      * @return all libraries
@@ -119,7 +119,7 @@ public interface IStructuredbInstanceManager {
      * @param name
      * @return all structures with the given name
      */
-    public List<Structure> retrieveStructureByName(String name);
+    public List<DBMolecule> retrieveStructureByName(String name);
     
     /**
      * Loads the Annotation with the given name from the database
@@ -142,7 +142,7 @@ public interface IStructuredbInstanceManager {
     /**
      * @return iterator for all structures in the database
      */
-    public Iterator<Structure> allStructuresIterator();
+    public Iterator<DBMolecule> allStructuresIterator();
 
     /**
      * Inserts structure in the folder with the given id
@@ -150,7 +150,7 @@ public interface IStructuredbInstanceManager {
      * @param s
      * @param folderId
      */
-    public void insertStructureInAnnotation( Structure s, 
+    public void insertStructureInAnnotation( DBMolecule s, 
                                              String folderId );
 
     /**
@@ -166,15 +166,15 @@ public interface IStructuredbInstanceManager {
      * @return an iterator to the structures with a for substructure
      * matching fingerprint
      */
-    public Iterator<Structure> fingerprintSubstructureSearchIterator(
-        Structure s );
+    public Iterator<DBMolecule> fingerprintSubstructureSearchIterator(
+        DBMolecule s );
     
     /**
      * @param queryStructure
      * @return the number of structures in the databaes matching a 
      *         fingerprintsubstructure search
      */
-    public int numberOfFingerprintMatches( Structure queryStructure );
+    public int numberOfFingerprintMatches( DBMolecule queryStructure );
 
     
     /**

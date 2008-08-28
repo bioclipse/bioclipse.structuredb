@@ -35,7 +35,7 @@ import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IDatabaseListener.DatabaseUpdateType;
 import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
@@ -233,15 +233,15 @@ public class StructuredbManager implements IStructuredbManager {
         }
     }
 
-    public Structure createStructure( String databaseName,
+    public DBMolecule createStructure( String databaseName,
                                       String moleculeName,
                                       ICDKMolecule cdkMolecule)
                                       throws BioclipseException {
 
         checkDatabaseName(databaseName);
-        Structure s = new Structure( moleculeName, cdkMolecule );
+        DBMolecule s = new DBMolecule( moleculeName, cdkMolecule );
         internalManagers.get(databaseName).insertStructure(s);
-        logger.debug( "Structure " + moleculeName
+        logger.debug( "DBMolecule " + moleculeName
                       + " inserted in " + databaseName );
         return s;
     }
@@ -272,7 +272,7 @@ public class StructuredbManager implements IStructuredbManager {
                                .retrieveAllAnnotations();
     }
 
-    public List<Structure> allStructures(String databaseName) {
+    public List<DBMolecule> allStructures(String databaseName) {
         checkDatabaseName(databaseName);
         return internalManagers.get(databaseName)
                                .retrieveAllStructures();
@@ -291,7 +291,7 @@ public class StructuredbManager implements IStructuredbManager {
                                .retrieveAnnotationByName(folderName);
     }
 
-    public List<Structure> allStructuresByName( String databaseName,
+    public List<DBMolecule> allStructuresByName( String databaseName,
                                                 String structureName ) {
         checkDatabaseName(databaseName);
         return internalManagers.get(databaseName)
@@ -362,8 +362,8 @@ public class StructuredbManager implements IStructuredbManager {
             Object title = molecule.getAtomContainer()
             .getProperty(CDKConstants.TITLE);
 
-            Structure s
-            = new Structure( title == null ? ""
+            DBMolecule s
+            = new DBMolecule( title == null ? ""
                     : title.toString(),
                     molecule);
 
@@ -396,24 +396,24 @@ public class StructuredbManager implements IStructuredbManager {
         return new ArrayList<String>( internalManagers.keySet() );
     }
 
-    public List<Structure> allStructureFingerprintSearch( 
+    public List<DBMolecule> allStructureFingerprintSearch( 
         String databaseName, ICDKMolecule molecule ) 
                            throws BioclipseException {
         
         checkDatabaseName(databaseName);
-        List<Structure> structures = new BioList<Structure>();
-        Iterator<Structure> iterator 
+        List<DBMolecule> dBMolecules = new BioList<DBMolecule>();
+        Iterator<DBMolecule> iterator 
             = internalManagers.get( databaseName )
                               .allStructuresIterator();
         while( iterator.hasNext() ) {
-            Structure current = iterator.next();
+            DBMolecule current = iterator.next();
             if( cdk.fingerPrintMatches( new CDKMolecule( 
                                             current.getAtomContainer() ), 
                                         molecule ) ) {
-                structures.add( current );
+                dBMolecules.add( current );
             }
         }
-        return structures;
+        return dBMolecules;
     }
 
     public void addStructuresFromSDF( String databaseName, 
@@ -424,22 +424,22 @@ public class StructuredbManager implements IStructuredbManager {
         addStructuresFromSDF( databaseName, filePath, null );
     }
 
-    public Iterator<Structure> subStructureSearchIterator( 
+    public Iterator<DBMolecule> subStructureSearchIterator( 
             String databaseName,
             IMolecule queryMolecule,
             IProgressMonitor monitor ) throws BioclipseException {
 
         checkDatabaseName(databaseName);
         ICDKMolecule cdkQueryMolecule;
-        if(queryMolecule instanceof Structure) {
+        if(queryMolecule instanceof DBMolecule) {
             cdkQueryMolecule 
-                = toCDKMolecule( (Structure) queryMolecule );
+                = toCDKMolecule( (DBMolecule) queryMolecule );
         }
         else {
             cdkQueryMolecule 
                 = cdk.fromSmiles( queryMolecule.getSmiles() );
         }
-        Structure queryStructure = new Structure("", cdkQueryMolecule);
+        DBMolecule queryStructure = new DBMolecule("", cdkQueryMolecule);
         if(monitor != null) {
             monitor
             .beginTask( "substructure search", 
@@ -459,7 +459,7 @@ public class StructuredbManager implements IStructuredbManager {
             monitor );
    }
     
-    public Iterator<Structure> subStructureSearchIterator(
+    public Iterator<DBMolecule> subStructureSearchIterator(
         String databaseName, IMolecule molecule )
                                throws BioclipseException {
 
@@ -469,42 +469,42 @@ public class StructuredbManager implements IStructuredbManager {
                                            null );
     }
 
-    public ICDKMolecule toCDKMolecule( Structure structure ) {
+    public ICDKMolecule toCDKMolecule( DBMolecule dBMolecule ) {
         try {
-           return new CDKMolecule( structure.getName(), 
-                                   (IAtomContainer) structure
+           return new CDKMolecule( dBMolecule.getName(), 
+                                   (IAtomContainer) dBMolecule
                                                     .getAtomContainer()
                                                     .clone(),
-                                   structure.getSmiles(),
-                                   structure.getFingerPrint() );
+                                   dBMolecule.getSmiles(),
+                                   dBMolecule.getFingerPrint() );
         } 
         catch ( CloneNotSupportedException e ) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<Structure> subStructureSearch( String databaseName,
+    public List<DBMolecule> subStructureSearch( String databaseName,
                                                IMolecule molecule ) 
                            throws BioclipseException {
         checkDatabaseName(databaseName);
         return subStructureSearch( databaseName, molecule, null );
     }
 
-    public List<Structure> subStructureSearch( String databaseName,
+    public List<DBMolecule> subStructureSearch( String databaseName,
                                                IMolecule molecule,
                                                IProgressMonitor monitor )
                            throws BioclipseException {
         
         checkDatabaseName(databaseName);
-        List<Structure> structures = new BioList<Structure>();
-        Iterator<Structure> iterator 
+        List<DBMolecule> dBMolecules = new BioList<DBMolecule>();
+        Iterator<DBMolecule> iterator 
             = subStructureSearchIterator( databaseName, 
                                           molecule, 
                                           monitor );
         while( iterator.hasNext() ) {
-            structures.add( iterator.next() );
+            dBMolecules.add( iterator.next() );
         }
-        return structures;
+        return dBMolecules;
     }
 
     public void deleteAnnotation( String databaseName, 
@@ -516,16 +516,16 @@ public class StructuredbManager implements IStructuredbManager {
     }
 
     public void deleteStructure( String databaseName, 
-                                 Structure structure ) {
+                                 DBMolecule dBMolecule ) {
      
         checkDatabaseName(databaseName);
-        internalManagers.get( databaseName ).delete( structure );
+        internalManagers.get( databaseName ).delete( dBMolecule );
     }
 
-    public void save( String databaseName, Structure structure ) {
+    public void save( String databaseName, DBMolecule dBMolecule ) {
 
         checkDatabaseName(databaseName);
-        internalManagers.get( databaseName ).update( structure );
+        internalManagers.get( databaseName ).update( dBMolecule );
     }
 
     public void save( String databaseName, Annotation annotation ) {
@@ -534,26 +534,26 @@ public class StructuredbManager implements IStructuredbManager {
         internalManagers.get( databaseName ).update( annotation );
     }
 
-    public List<Structure> smartsQuery( String databaseName, 
+    public List<DBMolecule> smartsQuery( String databaseName, 
                                         String smarts ) {
 
         checkDatabaseName(databaseName);
         return smartsQuery( databaseName, smarts, null );
     }
 
-    public Iterator<Structure> smartsQueryIterator( String databaseName,
+    public Iterator<DBMolecule> smartsQueryIterator( String databaseName,
                                                     String smarts ) {
         checkDatabaseName(databaseName);
         return smartsQueryIterator( databaseName, smarts, null );
     }
     
-    public List<Structure> smartsQuery( String databaseName, 
+    public List<DBMolecule> smartsQuery( String databaseName, 
                                         String smarts,
                                         IProgressMonitor monitor) {
     
         checkDatabaseName(databaseName);
-        List<Structure> hits = new BioList<Structure>();
-        Iterator<Structure> iterator = smartsQueryIterator( databaseName, 
+        List<DBMolecule> hits = new BioList<DBMolecule>();
+        Iterator<DBMolecule> iterator = smartsQueryIterator( databaseName, 
                                                             smarts, 
                                                             monitor );
         while ( iterator.hasNext() ) {
@@ -562,7 +562,7 @@ public class StructuredbManager implements IStructuredbManager {
         return hits;
     }
 
-    public Iterator<Structure> smartsQueryIterator( 
+    public Iterator<DBMolecule> smartsQueryIterator( 
         String databaseName, String smarts, IProgressMonitor monitor) {
 
         checkDatabaseName(databaseName);

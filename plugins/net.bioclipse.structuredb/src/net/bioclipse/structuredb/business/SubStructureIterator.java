@@ -16,7 +16,7 @@ import java.util.Iterator;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.DBMolecule;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -25,16 +25,16 @@ import org.eclipse.core.runtime.IProgressMonitor;
  * @author jonalv
  *
  */
-public class SubStructureIterator implements Iterator<Structure> {
+public class SubStructureIterator implements Iterator<DBMolecule> {
 
-    private Structure next = null;
-    private Iterator<Structure> parent;
+    private DBMolecule next = null;
+    private Iterator<DBMolecule> parent;
     private ICDKManager cdk;
     private ICDKMolecule subStructure;
     private IStructuredbManager structuredb;
     private IProgressMonitor monitor;
 
-    public SubStructureIterator( Iterator<Structure> iterator, 
+    public SubStructureIterator( Iterator<DBMolecule> iterator, 
                                  ICDKManager cdk,
                                  ICDKMolecule subStructure,
                                  IStructuredbManager structuredb, 
@@ -60,10 +60,10 @@ public class SubStructureIterator implements Iterator<Structure> {
         return next != null;
     }
 
-    private Structure findNext() throws BioclipseException {
+    private DBMolecule findNext() throws BioclipseException {
 
         while( parent.hasNext() ) {
-            Structure next = parent.next();
+            DBMolecule next = parent.next();
             if(monitor != null) {
                 monitor.worked( 1 );
             }
@@ -79,13 +79,13 @@ public class SubStructureIterator implements Iterator<Structure> {
         return null;
     }
 
-    public Structure next() {
+    public DBMolecule next() {
 
         if( !hasNext() ) {
             throw new IllegalStateException( "there are no more " +
                                              "such structures" );
         }
-        Structure next = this.next;
+        DBMolecule next = this.next;
         this.next = null;
         return next;
     }

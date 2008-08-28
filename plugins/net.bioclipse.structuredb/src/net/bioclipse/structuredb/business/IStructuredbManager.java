@@ -20,8 +20,9 @@ import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.business.IBioclipseManager;
 import net.bioclipse.core.domain.IMolecule;
+import net.bioclipse.core.jobs.Job;
 import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.User;
 
 import org.eclipse.core.resources.IFile;
@@ -72,7 +73,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Fetches all structures by a " +
                        		           "given name from a database " +
                        		           "with a given name")
-    public List<Structure> allStructuresByName( String databaseName,
+    public List<DBMolecule> allStructuresByName( String databaseName,
                                                 String structureName );
 
     /**
@@ -124,7 +125,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "cdkmolecule and saves it in " +
                        		           "the database with the given " +
                        		           "name" )
-    public Structure createStructure( String databaseName,
+    public DBMolecule createStructure( String databaseName,
                                       String moleculeName,
                                       ICDKMolecule cdkMolecule )
                                       throws BioclipseException;
@@ -183,7 +184,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all structures from a " +
                                        "database with a given name")
-    public List<Structure> allStructures( String databaseName );
+    public List<DBMolecule> allStructures( String databaseName );
 
     /**
      * Retrieves all folders from a database with a given name.
@@ -222,6 +223,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                                        "stored in library named " +
                                        "after the name of the " +
                                        "sdf file")
+    @Job
     public void addStructuresFromSDF( String databaseName, 
                                       String filePath ) 
                 throws BioclipseException;
@@ -273,7 +275,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                       		          "structures in the given " +
                       		          "database that contains the " +
                       		          "given molecule")
-    public Iterator<Structure> subStructureSearchIterator(
+    public Iterator<DBMolecule> subStructureSearchIterator(
         String databaseName, IMolecule molecule )
         throws BioclipseException;
 
@@ -291,7 +293,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                       		          "structures in the given " +
                       		          "database that contains " +
                                       "the given molecule")
-    public List<Structure> subStructureSearch( String databaseName,
+    public List<DBMolecule> subStructureSearch( String databaseName,
                                                IMolecule molecule ) 
                            throws BioclipseException;
     
@@ -304,7 +306,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return
      * @throws BioclipseException
      */
-    public List<Structure> subStructureSearch( String databaseName,
+    public List<DBMolecule> subStructureSearch( String databaseName,
                                                IMolecule molecule, 
                                                IProgressMonitor monitor ) 
                            throws BioclipseException;
@@ -315,10 +317,10 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param structure1
      * @return
      */
-    @PublishedMethod (params = "Structure structure",
+    @PublishedMethod (params = "DBMolecule structure",
                       methodSummary = "Creates a cdk molecule from " +
                       		          "the given structure" )
-    public ICDKMolecule toCDKMolecule( Structure structure );
+    public ICDKMolecule toCDKMolecule( DBMolecule dBMolecule );
 
     
     /**
@@ -336,12 +338,12 @@ public interface IStructuredbManager extends IBioclipseManager {
      * Deletes the given structure from the given database
      * 
      * @param database1
-     * @param structure
+     * @param dBMolecule
      */
-    @PublishedMethod ( params = "String database, Structure structure",
+    @PublishedMethod ( params = "String database, DBMolecule structure",
                        methodSummary = "Deletes the given structure " +
                        		           "from the given database" )
-    public void deleteStructure( String database, Structure structure );
+    public void deleteStructure( String database, DBMolecule dBMolecule );
 
     
     /**
@@ -351,11 +353,11 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param database1
      * @param s
      */
-    @PublishedMethod ( params = "String database, Structure structure",
+    @PublishedMethod ( params = "String database, DBMolecule structure",
                        methodSummary = "Saves changes on a structure " +
                        		           "retrieved from the database " +
                        		           "back to the database." )
-    public void save( String database, Structure structure );
+    public void save( String database, DBMolecule dBMolecule );
 
     
     /**
@@ -382,7 +384,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "returning an iterator to the " +
                        		           "hitting Structures in the " +
                        		           "database" )
-    public Iterator<Structure> smartsQueryIterator( String database,
+    public Iterator<DBMolecule> smartsQueryIterator( String database,
                                                     String smarts );
 
     /**
@@ -394,7 +396,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Performs a SMARTS query " +
                        		           "returning a list of hitting " +
                        		           "Structures in the database" )
-    public List<Structure> smartsQuery( String database, String smarts );
+    public List<DBMolecule> smartsQuery( String database, String smarts );
 
     /**
      * @param database
@@ -402,7 +404,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param monitor
      * @return an iterator to hitting structures
      */
-    public Iterator<Structure> smartsQueryIterator( 
+    public Iterator<DBMolecule> smartsQueryIterator( 
         String database, String smarts, IProgressMonitor monitor );
 
     /**
@@ -411,7 +413,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param monitor
      * @return a List of hitting structures
      */
-    public List<Structure> smartsQuery( String database,
+    public List<DBMolecule> smartsQuery( String database,
                                         String smarts,
                                         IProgressMonitor monitor );
 

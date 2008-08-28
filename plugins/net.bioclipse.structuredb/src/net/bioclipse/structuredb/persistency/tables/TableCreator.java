@@ -39,8 +39,12 @@ public class TableCreator {
         = { "BaseObject.sql", 
             "User.sql",
             "Annotation.sql",
-            "Structure.sql",
-            "StructureAnnotation.sql", };
+            "DBMolecule.sql",
+            "DBMoleculeAnnotation.sql",
+            "ChoiceAnnotation.sql",
+            "RealNumberAnnotation.sql",
+            "TextAnnotation.sql",
+            };
 
     public static final TableCreator INSTANCE = new TableCreator();
     

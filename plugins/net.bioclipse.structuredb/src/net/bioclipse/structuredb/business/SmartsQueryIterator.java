@@ -18,23 +18,23 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.DBMolecule;
 
 
 /**
  * @author jonalv
  *
  */
-public class SmartsQueryIterator implements Iterator<Structure> {
+public class SmartsQueryIterator implements Iterator<DBMolecule> {
 
-    private Structure next = null;
-    private Iterator<Structure> parent;
+    private DBMolecule next = null;
+    private Iterator<DBMolecule> parent;
     private ICDKManager cdk;
     private String smarts;
     private IStructuredbManager structuredb;
     private IProgressMonitor monitor;
     
-    public SmartsQueryIterator( Iterator<Structure> 
+    public SmartsQueryIterator( Iterator<DBMolecule> 
                                     allStructuresIterator,
                                 ICDKManager cdk, 
                                 String smarts,
@@ -62,10 +62,10 @@ public class SmartsQueryIterator implements Iterator<Structure> {
         return next != null;
     }
 
-    private Structure findNext() throws BioclipseException {
+    private DBMolecule findNext() throws BioclipseException {
 
         while( parent.hasNext() ) {
-            Structure next = parent.next();
+            DBMolecule next = parent.next();
             if(monitor != null) {
                 monitor.worked( 1 );
             }
@@ -81,13 +81,13 @@ public class SmartsQueryIterator implements Iterator<Structure> {
         return null;
     }
 
-    public Structure next() {
+    public DBMolecule next() {
 
         if( !hasNext() ) {
             throw new IllegalStateException( "there are no more " +
                                              "such structures" );
         }
-        Structure next = this.next;
+        DBMolecule next = this.next;
         this.next = null;
         return next;
     }

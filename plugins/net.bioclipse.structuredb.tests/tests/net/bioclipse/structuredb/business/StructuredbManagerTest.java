@@ -24,7 +24,7 @@ import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
@@ -144,13 +144,13 @@ public class StructuredbManagerTest
                            .getPath() ) );
         assertNotNull(mol1);
 
-        Structure structure1 = manager
+        DBMolecule structure1 = manager
                                .createStructure( database1,
                                                  "0037",
                                                  mol1 );
         assertNotNull(structure1);
 
-        Structure structure2 
+        DBMolecule structure2 
             = manager
               .createStructure( 
                    database1,
@@ -173,10 +173,10 @@ public class StructuredbManagerTest
                                           structure2.getName() )
                                           .contains(structure2) );
 
-        List<Structure> structures = manager.allStructures(database1);
+        List<DBMolecule> dBMolecules = manager.allStructures(database1);
 
-        assertTrue( structures.contains(structure1) );
-        assertTrue( structures.contains(structure2) );
+        assertTrue( dBMolecules.contains(structure1) );
+        assertTrue( dBMolecules.contains(structure2) );
 
         SmilesGenerator generator = new SmilesGenerator();
         String indoleSmiles  = generator
@@ -188,11 +188,11 @@ public class StructuredbManagerTest
         ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
         ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
 
-        Structure indoleStructure = manager.createStructure( database1, 
+        DBMolecule indoleStructure = manager.createStructure( database1, 
                                                              "indole", 
                                                              indole );
         
-        List<Structure> list = manager.subStructureSearch( database1, 
+        List<DBMolecule> list = manager.subStructureSearch( database1, 
                                                            pyrrole );
         
         assertTrue( list.contains( indoleStructure ));
@@ -209,13 +209,13 @@ public class StructuredbManagerTest
                                       .getPath() ) );
         assertNotNull(mol1);
 
-        Structure structure1 = manager
+        DBMolecule structure1 = manager
                                .createStructure( database1,
                                                  "0037",
                                                  mol1 );
         assertNotNull(structure1);
 
-        Structure structure2 
+        DBMolecule structure2 
             = manager.createStructure( 
                 database1,
                 "0106",
@@ -237,10 +237,10 @@ public class StructuredbManagerTest
                                           structure2.getName() )
                                           .contains(structure2) );
 
-        List<Structure> structures = manager.allStructures(database1);
+        List<DBMolecule> dBMolecules = manager.allStructures(database1);
 
-        assertTrue( structures.contains(structure1) );
-        assertTrue( structures.contains(structure2) );
+        assertTrue( dBMolecules.contains(structure1) );
+        assertTrue( dBMolecules.contains(structure2) );
 
         SmilesGenerator generator = new SmilesGenerator();
         String indoleSmiles  = generator
@@ -250,11 +250,11 @@ public class StructuredbManagerTest
         ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
         ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
 
-        Structure indoleStructure = manager.createStructure( database1, 
+        DBMolecule indoleStructure = manager.createStructure( database1, 
                                                              "indole", 
                                                              indole );
         
-        Iterator<Structure> iterator = manager
+        Iterator<DBMolecule> iterator = manager
                                        .subStructureSearchIterator( database1, 
                                                                     pyrrole );
         boolean foundIndole = false;
@@ -276,13 +276,13 @@ public class StructuredbManagerTest
                                    .getPath() ) );
         assertNotNull(mol1);
 
-        Structure structure1 = manager
+        DBMolecule structure1 = manager
                               .createStructure( database1,
                                                 "0037",
                                                 mol1 );
         assertNotNull(structure1);
 
-        Structure structure2 
+        DBMolecule structure2 
             = manager.createStructure(
                 database1,
                 "0106",
@@ -304,10 +304,10 @@ public class StructuredbManagerTest
                                                 structure2.getName() )
                     .contains(structure2) );
 
-        List<Structure> structures = manager.allStructures(database1);
+        List<DBMolecule> dBMolecules = manager.allStructures(database1);
 
-        assertTrue( structures.contains(structure1) );
-        assertTrue( structures.contains(structure2) );
+        assertTrue( dBMolecules.contains(structure1) );
+        assertTrue( dBMolecules.contains(structure2) );
     }
 
     private void setALoggedInUser(ApplicationContext context) {
@@ -329,7 +329,7 @@ public class StructuredbManagerTest
                                         file.getName()
                                             .replaceAll("\\..*?$", "") );
         assertNotNull(annotation);
-        assertEquals( 2, annotation.getStructures().size() );
+        assertEquals( 2, annotation.getDBMolecules().size() );
     }
 
     public void testCreatingAndRetrievingAnnotations() {
@@ -354,13 +354,13 @@ public class StructuredbManagerTest
     
     public void testDeleteStructure() throws BioclipseException {
         ICDKManager cdk = new CDKManager();
-        Structure structure 
+        DBMolecule dBMolecule 
             = manager.createStructure( database1, 
                                        "test", 
                                        cdk.fromSmiles( "CC" ) );
         assertTrue( manager.allStructures( database1 )
-                           .contains( structure ) );
-        manager.deleteStructure( database1, structure );
+                           .contains( dBMolecule ) );
+        manager.deleteStructure( database1, dBMolecule );
     }
     
     public void testCreatingAndRetrievingUsers() {
@@ -417,7 +417,7 @@ public class StructuredbManagerTest
                                    .getPath() ) );
         assertNotNull(mol1);
 
-        Structure structure1 = new Structure( "0037", mol1 );
+        DBMolecule structure1 = new DBMolecule( "0037", mol1 );
         assertNotNull(structure1);
         
         ICDKMolecule newMolecule = manager.toCDKMolecule(structure1);
@@ -429,14 +429,14 @@ public class StructuredbManagerTest
     }
     
     public void testEditStructure() throws BioclipseException {
-        Structure s = manager.createStructure( database1, 
+        DBMolecule s = manager.createStructure( database1, 
                                                "test", 
                                                cdk.fromSmiles( "CCC" ) );
         Annotation l = manager.createAnnotation( database1, "annotation" );
         s.setName( "edited" );
         s.addAnnotation( l );
         manager.save( database1, s );
-        List<Structure> loaded = manager.allStructuresByName( database1, 
+        List<DBMolecule> loaded = manager.allStructuresByName( database1, 
                                                               "edited" );
         assertEquals( 1, loaded.size() );
         
@@ -456,25 +456,25 @@ public class StructuredbManagerTest
     }
     
     public void testEditAnnotation() throws BioclipseException {
-        Structure s = manager.createStructure( database1, 
+        DBMolecule s = manager.createStructure( database1, 
                                                "test", 
                                                cdk.fromSmiles( "CCC" ) );
         Annotation annotation = manager.createAnnotation( database1, "a annotation" );
         annotation.setName( "edited" );
-        annotation.addStructure( s );
+        annotation.addDBMolecule( s );
         manager.save( database1, annotation );
         Annotation loaded = manager.annotationByName( database1, "edited" );
         
-        List<Structure> structures = loaded.getStructures();
-        assertEquals( 1, structures.size() );
+        List<DBMolecule> dBMolecules = loaded.getDBMolecules();
+        assertEquals( 1, dBMolecules.size() );
         
-        assertEquals( s, structures.get( 0 ) );
+        assertEquals( s, dBMolecules.get( 0 ) );
         
-        annotation.removeStructure( s );
+        annotation.removeDBMolecule( s );
         manager.save( database1, annotation );
         loaded = manager.annotationByName( database1, "edited" );
 
-        assertEquals( 0, loaded.getStructures().size() );
+        assertEquals( 0, loaded.getDBMolecules().size() );
     }
     
     public void testListSMARTSQueryResults() 
@@ -484,11 +484,11 @@ public class StructuredbManagerTest
         String butaneSmiles  = "CCCC"; 
         ICDKMolecule butane  = cdk.fromSmiles( butaneSmiles  );
 
-        Structure butaneStructure = manager.createStructure( database1, 
+        DBMolecule butaneStructure = manager.createStructure( database1, 
                                                              "indole", 
                                                              butane );
         
-        List<Structure> list = manager.smartsQuery( database1, 
+        List<DBMolecule> list = manager.smartsQuery( database1, 
                                                     propaneSmiles );
         
         assertTrue( list.contains(butaneStructure) );
@@ -501,11 +501,11 @@ public class StructuredbManagerTest
         String butaneSmiles  = "CCCC"; 
         ICDKMolecule butane  = cdk.fromSmiles( butaneSmiles  );
 
-        Structure butaneStructure = manager.createStructure( database1, 
+        DBMolecule butaneStructure = manager.createStructure( database1, 
                                                              "indole", 
                                                              butane );
         
-        Iterator<Structure> iterator 
+        Iterator<DBMolecule> iterator 
             = manager.smartsQueryIterator( database1, 
                                            propaneSmiles );
         boolean found = false;
@@ -528,10 +528,10 @@ public class StructuredbManagerTest
     public void testDeletingAnnotationWithStructures() 
                 throws BioclipseException {
         Annotation l = manager.createAnnotation( database1, "annotation1" );
-        Structure s = manager.createStructure( database1, 
+        DBMolecule s = manager.createStructure( database1, 
                                                "test", 
                                                cdk.fromSmiles( "CCC" ) );
-        l.addStructure( s );
+        l.addDBMolecule( s );
         manager.save( database1, l );
         assertTrue( manager.allStructures( database1 ).contains( s ) );
         assertTrue( manager.allAnnotations(     database1 ).contains( l ) );

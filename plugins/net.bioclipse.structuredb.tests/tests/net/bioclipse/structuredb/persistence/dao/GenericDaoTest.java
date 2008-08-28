@@ -8,7 +8,6 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
 

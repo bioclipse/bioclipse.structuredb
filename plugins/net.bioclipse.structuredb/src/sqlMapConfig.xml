@@ -11,8 +11,8 @@
 	
 	<settings lazyLoadingEnabled="true"/>
 		
-	<typeAlias type="net.bioclipse.structuredb.domain.Annotation" alias="Annotation"    />
-	<typeAlias type="net.bioclipse.structuredb.domain.Structure"  alias="Structure"  />
+	<typeAlias type="net.bioclipse.structuredb.domain.Annotation" alias="Annotation" />
+	<typeAlias type="net.bioclipse.structuredb.domain.DBMolecule" alias="DBMolecule" />
 	<typeAlias type="net.bioclipse.structuredb.domain.User"       alias="User"       />
 	<typeAlias type="net.bioclipse.structuredb.domain.BaseObject" alias="BaseObject" />
 	

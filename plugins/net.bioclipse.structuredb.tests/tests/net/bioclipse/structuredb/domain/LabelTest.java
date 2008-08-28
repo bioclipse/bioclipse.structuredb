@@ -24,15 +24,15 @@ public class LabelTest {
     @Test
     public void testHasValuesEqualsTo() {
 
-        Structure s1 = new Structure();
-        Structure s2 = new Structure();
+        DBMolecule s1 = new DBMolecule();
+        DBMolecule s2 = new DBMolecule();
         s2.setName("s2");
         
         Annotation library1 = new Annotation();
-        library1.addStructure(s1);
+        library1.addDBMolecule(s1);
         Annotation library2 = new Annotation(library1);
         Annotation library3 = new Annotation();
-        library3.addStructure(s2);
+        library3.addDBMolecule(s2);
         
         assertTrue(  library1.hasValuesEqualTo(library2) );
         assertFalse( library1.hasValuesEqualTo(library3) );
@@ -41,18 +41,18 @@ public class LabelTest {
     @Test
     public void testDoubleReferences() {
 
-        Structure structure = new Structure();
+        DBMolecule dBMolecule = new DBMolecule();
         
         Annotation annotation = new Annotation();
         
-        annotation.addStructure( structure );
+        annotation.addDBMolecule( dBMolecule );
     
-        assertTrue( annotation.getStructures().contains(structure) );
-        assertTrue( structure.getAnnotations().contains( annotation ) );
+        assertTrue( annotation.getDBMolecules().contains(dBMolecule) );
+        assertTrue( dBMolecule.getAnnotations().contains( annotation ) );
         
-        annotation.removeStructure( structure );
+        annotation.removeDBMolecule( dBMolecule );
         
-        assertFalse( annotation.getStructures().contains(structure) );
-        assertFalse( structure.getAnnotations().contains(annotation) );
+        assertFalse( annotation.getDBMolecules().contains(dBMolecule) );
+        assertFalse( dBMolecule.getAnnotations().contains(annotation) );
     }
 }

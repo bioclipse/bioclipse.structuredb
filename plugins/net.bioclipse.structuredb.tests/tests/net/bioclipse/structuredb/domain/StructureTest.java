@@ -39,9 +39,9 @@ public class StructureTest {
         AtomContainer cycloPropane = TestData.getCycloPropane();
         AtomContainer cycloOctan   = TestData.getCycloOctan();
         
-        Structure structure1 = new Structure( "cycloPropane", cycloPropane );
-        Structure structure2 = new Structure(structure1);
-        Structure structure3 = new Structure( "cycloOctane", cycloOctan );
+        DBMolecule structure1 = new DBMolecule( "cycloPropane", cycloPropane );
+        DBMolecule structure2 = new DBMolecule(structure1);
+        DBMolecule structure3 = new DBMolecule( "cycloOctane", cycloOctan );
         
         assertTrue(  structure1.hasValuesEqualTo(structure2) );
         assertFalse( structure1.hasValuesEqualTo(structure3) );
@@ -54,21 +54,21 @@ public class StructureTest {
         
         Annotation annotation         = new Annotation("label");
         Annotation label2        = new Annotation("label2");
-        Structure structure = new Structure("Cyclopropane", testMolecule);
+        DBMolecule dBMolecule = new DBMolecule("Cyclopropane", testMolecule);
         
-        structure.addAnnotation( annotation );
+        dBMolecule.addAnnotation( annotation );
         
-        assertTrue( structure.getAnnotations().contains(annotation) );
-        assertTrue( annotation.getStructures().contains(structure) );
+        assertTrue( dBMolecule.getAnnotations().contains(annotation) );
+        assertTrue( annotation.getDBMolecules().contains(dBMolecule) );
         
-        structure.addAnnotation( label2 );
+        dBMolecule.addAnnotation( label2 );
         
-        assertTrue( structure.getAnnotations().contains(label2)     );
-        assertTrue( label2.getStructures().contains(structure) );
-        assertTrue( annotation.getStructures().contains(structure)  );
+        assertTrue( dBMolecule.getAnnotations().contains(label2)     );
+        assertTrue( label2.getDBMolecules().contains(dBMolecule) );
+        assertTrue( annotation.getDBMolecules().contains(dBMolecule)  );
         
-        structure.removeAnnotation( annotation );
-        assertFalse( structure.getAnnotations().contains(annotation) );
-        assertFalse( annotation.getStructures().contains(structure) );        
+        dBMolecule.removeAnnotation( annotation );
+        assertFalse( dBMolecule.getAnnotations().contains(annotation) );
+        assertFalse( annotation.getDBMolecules().contains(dBMolecule) );        
     }
 }

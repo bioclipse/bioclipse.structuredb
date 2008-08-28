@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.Structure;
+import net.bioclipse.structuredb.domain.DBMolecule;
 
 /**
  * The annotationDao persists and loads libraries
@@ -50,23 +50,23 @@ public class AnnotationDao extends GenericDao<Annotation>
     private void fixStructureAnnotation( final Annotation annotation ) {
 
         getSqlMapClientTemplate()
-        .delete( "Annotation.deleteStructureCoupling", annotation );
+        .delete( "Annotation.deleteDBMoleculeCoupling", annotation );
         
-        for ( final Structure s : annotation.getStructures() ) {
+        for ( final DBMolecule s : annotation.getDBMolecules() ) {
             Map<String, String> params = new HashMap<String, String>() {
 
                 private static final long serialVersionUID = 1L;
 
                 {
                     put( "annotationId", annotation.getId() );
-                    put( "structureId",  s.getId()          );
+                    put( "dBMoleculeId",  s.getId()          );
                 }
             };
             if ( (Integer) getSqlMapClientTemplate()
-                 .queryForObject( "StructureAnnotation.hasConnection", 
+                 .queryForObject( "DBMoleculeAnnotation.hasConnection", 
                                  params ) == 0 ) {
                 getSqlMapClientTemplate()
-                .update( "StructureAnnotation.connect", params );
+                .update( "DBMoleculeAnnotation.connect", params );
             }
         }
     }
