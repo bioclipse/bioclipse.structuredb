@@ -43,7 +43,7 @@ import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
  *
  */
 public class DBMolecule extends BaseObject
-                        implements net.bioclipse.core.domain.IMolecule {
+                        implements ICDKMolecule {
 
     private static final Logger logger 
         = Logger.getLogger(DBMolecule.class);
@@ -304,5 +304,21 @@ public class DBMolecule extends BaseObject
             = new BioList<net.bioclipse.core.domain.IMolecule>();
         result.add( this );
         return result;
+    }
+
+    public BitSet getFingerprint( boolean force ) 
+                  throws BioclipseException {
+
+        if (force) {
+            Fingerprinter fp = new Fingerprinter();
+            try {
+                fingerPrint = fp.getFingerprint( getAtomContainer() );
+            } 
+            catch (Exception e) {
+                throw new BioclipseException(
+                    "Could not create fingerprint: " + e.getMessage() );
+            }
+        }
+        return fingerPrint;
     }
 }
