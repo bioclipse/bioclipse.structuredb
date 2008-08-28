@@ -27,12 +27,12 @@ public class TextAnnotation extends Annotation {
 
     public TextAnnotation(String value) {
         super( value );
-        this.value = value;
+        this.setValue( value );
     }
 
     public TextAnnotation(TextAnnotation textAnnotation) {
         super( textAnnotation );
-        this.value = textAnnotation.getValue();
+        this.setValue( textAnnotation.getValue() );
     }
 
     public String getValue() {
@@ -48,7 +48,7 @@ public class TextAnnotation extends Annotation {
             return false;
         }
         TextAnnotation annotation = (TextAnnotation)obj;
-        return value.equals( annotation.getValue() );
+        return getValue().equals( annotation.getValue() );
     }
 
     /**
@@ -66,5 +66,10 @@ public class TextAnnotation extends Annotation {
      */
     public TextProperty getProperty() {
         return property;
+    }
+
+    public void setValue( String value ) {
+
+        this.value = value;
     }
 }

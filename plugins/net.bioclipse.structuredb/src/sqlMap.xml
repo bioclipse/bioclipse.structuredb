@@ -57,6 +57,30 @@
 		<result property="passWordMd5"   column="passWord" />
 		<result property="sudoer"        column="sudoer"   />
 	</resultMap>
+	
+	<resultMap class="TextAnnotation" id="TextAnnotation" extends="Annotation">
+		<result property="value" column="value" />
+	</resultMap>
+	
+	<resultMap class="RealNumberAnnotation" id="RealNumberAnnotation" extends="Annotation">
+		<result property="value" column="value" />
+	</resultMap>
+	
+	<resultMap class="ChoiceAnnotation" id="ChoiceAnnotation" extends="Annotation">
+		<result property="value" column="value" />
+	</resultMap>
+	
+	<resultMap class="TextProperty" id="TextProperty" extends="Annotation">
+		<result property="name" column="name" />
+	</resultMap>
+	
+	<resultMap class="RealNumberProperty" id="RealNumberProperty" extends="Annotation">
+		<result property="name" column="name" />
+	</resultMap>
+	
+	<resultMap class="ChoiceProperty" id="ChoiceProperty" extends="Annotation">
+		<result property="name" column="name" />
+	</resultMap>
 
 <!--+
     | SQL FRAGMENTS
@@ -86,6 +110,30 @@
 	   l.name AS name
 	</sql>
 	
+	<sql id="TextAnnotation-fields">
+		a.name AS name
+	</sql>
+	
+	<sql id="RealNumberAnnotation-fields">
+		a.name AS name
+	</sql>
+	
+	<sql id="ChoiceAnnotation-fields">
+		a.name AS name
+	</sql>
+	
+	<sql id="TextProperty-fields">
+		a.name AS name
+	</sql>
+	
+	<sql id="RealNumberProperty-fields">
+		a.name AS name
+	</sql>
+	
+	<sql id="ChoiceProperty">
+		a.name AS name
+	</sql>
+	
 <!--+
     | INSERT STATEMENTS
     +-->
@@ -111,7 +159,37 @@
 	
 	<insert id="Annotation.insert">
 		INSERT INTO Annotation (   id,     baseObject, name   )
-		           VALUES ( '$id$', '$id$',     '$name$' );
+		                VALUES ( '$id$', '$id$',     '$name$' );
+	</insert>
+	
+	<insert id="TextAnnotation.insert">
+		INSERT INTO TextAnnotation (   id,     annotation, val   )
+		                    VALUES ( '$id$', '$id$',     '$value$' );
+	</insert>
+	
+	<insert id="RealNumberAnnotation.insert">
+		INSERT INTO RealNumberAnnotation (  id,     annotation, val   )
+		                         VALUES ( '$id$', '$id$',     '$value$' );
+	</insert>
+	
+	<insert id="ChoiceAnnotation.insert">
+		INSERT INTO ChoiceAnnotation (   id,     annotation, val   )
+		                      VALUES ( '$id$', '$id$',     '$value$' );
+	</insert>
+	
+	<insert id="TextProperty.insert">
+		INSERT INTO TextProperty (   id,     baseObject, name   )
+		                  VALUES ( '$id$', '$id$',     '$name$' );
+	</insert>
+	
+	<insert id="RealNumberProperty.insert">
+		INSERT INTO RealNumberProperty (   id,     baseObject, name   )
+		                        VALUES ( '$id$', '$id$',     '$name$' );
+	</insert>
+	
+	<insert id="ChoiceProperty.insert">
+		INSERT INTO ChoiceProperty (   id,     baseObject, name   )
+		                    VALUES ( '$id$', '$id$',     '$name$' );
 	</insert>
 	
 <!--+
@@ -275,7 +353,7 @@
             sl.DBMoleculeId = #dBMoleculeId# 
             AND sl.AnnotationId = #annotationId#
     </select>
-	
+    
 <!--+
     | DELETE STATEMENTS
     +-->	

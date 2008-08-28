@@ -27,14 +27,14 @@ public class RealNumberAnnotation extends Annotation {
 
     public RealNumberAnnotation(double value) {
         super( value + "" );
-        this.value = value;
+        this.setValue( value );
     }
 
     public RealNumberAnnotation( 
         RealNumberAnnotation realNumberAnnotation ) {
 
         super( realNumberAnnotation );
-        this.value = realNumberAnnotation.getValue();
+        this.setValue( realNumberAnnotation.getValue() );
     }
 
     public boolean hasValuesEqualTo( BaseObject obj ) {
@@ -62,5 +62,10 @@ public class RealNumberAnnotation extends Annotation {
 
     public RealNumberProperty getProperty() {
         return property;
+    }
+
+    public void setValue( double value ) {
+
+        this.value = value;
     }
 }

@@ -11,7 +11,13 @@
 package net.bioclipse.structuredb.persistence;
 
 import net.bioclipse.structuredb.persistence.dao.AnnotationDaoTest;
+import net.bioclipse.structuredb.persistence.dao.ChoiceAnnotationDaoTest;
+import net.bioclipse.structuredb.persistence.dao.ChoicePropertyDaoTest;
 import net.bioclipse.structuredb.persistence.dao.DBMoleculeDaoTest;
+import net.bioclipse.structuredb.persistence.dao.RealNumberAnnotationDaoTest;
+import net.bioclipse.structuredb.persistence.dao.RealNumberPropertyDaoTest;
+import net.bioclipse.structuredb.persistence.dao.TextAnnotationDaoTest;
+import net.bioclipse.structuredb.persistence.dao.TextPropertyDaoTest;
 import net.bioclipse.structuredb.persistence.dao.UserDaoTest;
 
 import org.junit.runner.RunWith;
@@ -22,7 +28,13 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(value=Suite.class)
 @SuiteClasses( value = { AnnotationDaoTest.class,
                          DBMoleculeDaoTest.class,
-                         UserDaoTest.class, } )
+                         UserDaoTest.class,
+                         ChoiceAnnotationDaoTest.class,
+                         ChoicePropertyDaoTest.class,
+                         RealNumberAnnotationDaoTest.class,
+                         RealNumberPropertyDaoTest.class, 
+                         TextAnnotationDaoTest.class, 
+                         TextPropertyDaoTest.class } )
 public class PersistencyTestsSuite {
 
 }

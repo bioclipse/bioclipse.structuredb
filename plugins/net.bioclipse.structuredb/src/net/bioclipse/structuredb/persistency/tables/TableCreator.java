@@ -36,7 +36,8 @@ public class TableCreator {
         = Logger.getLogger(TableCreator.class);
 
     public static final String[] SQL_FILES_RUNORDER 
-        = { "BaseObject.sql", 
+        = { 
+            "BaseObject.sql", 
             "User.sql",
             "Annotation.sql",
             "DBMolecule.sql",
@@ -44,7 +45,10 @@ public class TableCreator {
             "ChoiceAnnotation.sql",
             "RealNumberAnnotation.sql",
             "TextAnnotation.sql",
-            };
+            "TextProperty.sql",
+            "RealNumberProperty.sql",
+            "ChoiceProperty.sql",
+          };
 
     public static final TableCreator INSTANCE = new TableCreator();
     

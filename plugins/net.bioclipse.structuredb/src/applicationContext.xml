@@ -137,6 +137,151 @@
         </property>
 	</bean>
 	
+	<bean id="choiceAnnotationDaoTarget"
+          class="net.bioclipse.structuredb.persistency.dao.ChoiceAnnotationDao" abstract="true">
+        <property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	
+	<bean id="choiceAnnotationDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.structuredb.persistency.dao.IChoiceAnnotationDao</value>
+		</property>
+		<property name="target">
+			<bean parent="choiceAnnotationDaoTarget" />
+		</property>
+		<property name="interceptorNames">
+            <list>
+                <value>auditCreationAdvisor</value>
+            </list>
+        </property>
+	
+	</bean>
+	
+	<bean id="choicePropertyDaoTarget"
+          class="net.bioclipse.structuredb.persistency.dao.ChoicePropertyDao" abstract="true">
+        <property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	
+	<bean id="choicePropertyDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.structuredb.persistency.dao.IChoicePropertyDao</value>
+		</property>
+		<property name="target">
+			<bean parent="choicePropertyDaoTarget" />
+		</property>
+		<property name="interceptorNames">
+            <list>
+                <value>auditCreationAdvisor</value>
+            </list>
+        </property>
+	</bean>
+	
+	<bean id="realNumberAnnotationDaoTarget"
+          class="net.bioclipse.structuredb.persistency.dao.RealNumberAnnotationDao" abstract="true">
+        <property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	
+	<bean id="realNumberAnnotationDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.structuredb.persistency.dao.IRealNumberAnnotationDao</value>
+		</property>
+		<property name="target">
+			<bean parent="realNumberAnnotationDaoTarget" />
+		</property>
+		<property name="interceptorNames">
+            <list>
+                <value>auditCreationAdvisor</value>
+            </list>
+        </property>
+	</bean>
+	
+	<bean id="realNumberPropertyDaoTarget"
+          class="net.bioclipse.structuredb.persistency.dao.RealNumberPropertyDao" abstract="true">
+        <property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	
+	<bean id="realNumberPropertyDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.structuredb.persistency.dao.IRealNumberPropertyDao</value>
+		</property>
+		<property name="target">
+			<bean parent="realNumberPropertyDaoTarget" />
+		</property>
+		<property name="interceptorNames">
+            <list>
+                <value>auditCreationAdvisor</value>
+            </list>
+        </property>
+	</bean>
+	
+	<bean id="textAnnotationDaoTarget"
+          class="net.bioclipse.structuredb.persistency.dao.TextAnnotationDao" abstract="true">
+        <property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	
+	<bean id="textAnnotationDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.structuredb.persistency.dao.ITextAnnotationDao</value>
+		</property>
+		<property name="target">
+			<bean parent="textAnnotationDaoTarget" />
+		</property>
+		<property name="interceptorNames">
+            <list>
+                <value>auditCreationAdvisor</value>
+            </list>
+        </property>
+	</bean>
+	
+	<bean id="textPropertyDaoTarget"
+          class="net.bioclipse.structuredb.persistency.dao.TextPropertyDao" abstract="true">
+        <property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	
+	<bean id="textPropertyDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.structuredb.persistency.dao.ITextPropertyDao</value>
+		</property>
+		<property name="target">
+			<bean parent="textPropertyDaoTarget" />
+		</property>
+		<property name="interceptorNames">
+            <list>
+                <value>auditCreationAdvisor</value>
+            </list>
+        </property>
+	</bean>	
+	
 	<bean id="structuredbInstanceManagerTarget"
 	      class="net.bioclipse.structuredb.internalbusiness.StructuredbInstanceManager">
 	   <property name="userDao">

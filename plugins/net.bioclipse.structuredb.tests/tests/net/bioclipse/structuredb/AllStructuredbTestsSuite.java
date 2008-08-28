@@ -30,13 +30,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses( value = { BusinessTestsSuite.class,
                          DomainTestsSuite.class,
                          InternalBusinessTestsSuite.class, 
-                         PersistencyTestsSuite.class,
-                         ChoiceAnnotationDaoTest.class,
-                         ChoicePropertyDaoTest.class,
-                         RealNumberAnnotationDaoTest.class,
-                         RealNumberPropertyDaoTest.class,
-                         TextAnnotationDaoTest.class,
-                         TextPropertyDaoTest.class } )
+                         PersistencyTestsSuite.class, } )
 public class AllStructuredbTestsSuite {
 
 }

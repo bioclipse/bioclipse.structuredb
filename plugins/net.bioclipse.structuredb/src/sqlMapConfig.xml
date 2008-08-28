@@ -11,10 +11,16 @@
 	
 	<settings lazyLoadingEnabled="true"/>
 		
-	<typeAlias type="net.bioclipse.structuredb.domain.Annotation" alias="Annotation" />
-	<typeAlias type="net.bioclipse.structuredb.domain.DBMolecule" alias="DBMolecule" />
-	<typeAlias type="net.bioclipse.structuredb.domain.User"       alias="User"       />
-	<typeAlias type="net.bioclipse.structuredb.domain.BaseObject" alias="BaseObject" />
+	<typeAlias type="net.bioclipse.structuredb.domain.Annotation"           alias="Annotation"           />
+	<typeAlias type="net.bioclipse.structuredb.domain.DBMolecule"           alias="DBMolecule"           />
+	<typeAlias type="net.bioclipse.structuredb.domain.User"                 alias="User"                 />
+	<typeAlias type="net.bioclipse.structuredb.domain.BaseObject"           alias="BaseObject"           />
+	<typeAlias type="net.bioclipse.structuredb.domain.TextAnnotation"       alias="TextAnnotation"       />
+	<typeAlias type="net.bioclipse.structuredb.domain.RealNumberAnnotation" alias="RealNumberAnnotation" />
+	<typeAlias type="net.bioclipse.structuredb.domain.ChoiceAnnotation"     alias="ChoiceAnnotation"     />
+	<typeAlias type="net.bioclipse.structuredb.domain.TextProperty"         alias="TextProperty"         />
+	<typeAlias type="net.bioclipse.structuredb.domain.RealNumberProperty"   alias="RealNumberProperty"   />
+	<typeAlias type="net.bioclipse.structuredb.domain.ChoiceProperty"       alias="ChoiceProperty"       />
 	
 	<sqlMap resource="sqlMap.xml"   />
 

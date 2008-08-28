@@ -27,12 +27,12 @@ public class ChoiceAnnotation extends Annotation {
 
     public ChoiceAnnotation(String value) {
         super( value );
-        this.value = value;
+        this.setValue( value );
     }
     
     public ChoiceAnnotation(ChoiceAnnotation choiceAnnotation) {
         super(choiceAnnotation);
-        this.value = choiceAnnotation.getValue();
+        this.setValue( choiceAnnotation.getValue() );
     }
 
     public boolean hasValuesEqualTo( BaseObject obj ) {
@@ -44,7 +44,7 @@ public class ChoiceAnnotation extends Annotation {
             return false;
         }
         ChoiceAnnotation annotation = (ChoiceAnnotation)obj;
-        return value.equals( annotation.getValue() );
+        return getValue().equals( annotation.getValue() );
     }
 
     public String getValue() {
@@ -60,5 +60,10 @@ public class ChoiceAnnotation extends Annotation {
 
     public ChoiceProperty getProperty() {
         return property;
+    }
+
+    public void setValue( String value ) {
+
+        this.value = value;
     }
 }
