@@ -32,7 +32,7 @@ public class Structuredb extends AbstractServiceContainer
 
     private final Logger logger = Logger.getLogger( this.getClass() );
 
-    private final String name = "DBMolecule Database";
+    private final String name = "Structuredb";
 
     public Structuredb() {
         Activator.getDefault().getStructuredbManager().addListener(this);
