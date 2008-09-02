@@ -107,7 +107,7 @@
 	</sql>
 	
 	<sql id="Annotation-fields">
-	   l.name AS name
+	   a.name AS name
 	</sql>
 	
 	<sql id="TextAnnotation-fields">
@@ -119,7 +119,7 @@
 	</sql>
 	
 	<sql id="ChoiceAnnotation-fields">
-		a.name AS name
+		c.val AS value
 	</sql>
 	
 	<sql id="TextProperty-fields">
@@ -241,10 +241,10 @@
 			<include refid="BaseObject-fields" />,
 			<include refid="Annotation-fields"      />
 		FROM
-			Annotation l INNER JOIN BaseObject b ON
-			l.baseObject = b.id
+			Annotation a INNER JOIN BaseObject b ON
+			a.baseObject = b.id
 		WHERE 
-			l.id = #value#
+			a.id = #value#
 	</select>
 	
 	<select id="Annotation.getByName" resultMap="Annotation" parameterClass="String">
@@ -252,10 +252,10 @@
             <include refid="BaseObject-fields" />,
             <include refid="Annotation-fields"      />
         FROM
-            Annotation l INNER JOIN BaseObject b ON
-            l.baseObject = b.id
+            Annotation a INNER JOIN BaseObject b ON
+            a.baseObject = b.id
         WHERE 
-            l.name = #value#
+            a.name = #value#
     </select>
 	
 	<select id="Annotation.getDBMolecules" resultMap="DBMolecule" parameterClass="String">
@@ -294,10 +294,10 @@
             <include refid="BaseObject-fields" />,
             <include refid="Annotation-fields"  />
         FROM
-            Annotation l INNER JOIN BaseObject b ON l.baseObject = b.id, 
+            Annotation a INNER JOIN BaseObject b ON a.baseObject = b.id, 
             DBMoleculeAnnotation sl
         WHERE 
-            sl.dBMoleculeId = #value# AND sl.annotationId = l.id
+            sl.dBMoleculeId = #value# AND sl.annotationId = a.id
     </select>
 	
 	<select id="Annotation.getAll" resultMap="Annotation">
@@ -305,8 +305,8 @@
 			<include refid="BaseObject-fields" />,
 			<include refid="Annotation-fields"      />
 		FROM
-			Annotation l INNER JOIN BaseObject b ON
-			l.baseObject = b.id
+			Annotation a INNER JOIN BaseObject b ON
+			a.baseObject = b.id
 	</select>
 
 	<select id="User.getAll" resultMap="User">
@@ -317,6 +317,34 @@
 			User u INNER JOIN BaseObject b ON
 			u.baseObject = b.id
 	</select>
+	
+	<select id="ChoiceAnnotation.getAll" resultMap="User">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="Annotation-fields" />,
+			<include refid="ChoiceAnnotation-fields" />
+		FROM
+			ChoiceAnnotation c 
+			INNER JOIN Annotation a ON
+			c.annotation = a.id
+			INNER JOIN BaseObject b ON
+			a.baseObject = b.id
+	</select>
+	
+	<select id="ChoiceAnnotation.getById" resultMap="ChoiceAnnotation" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="Annotation-fields" />,
+			<include refid="ChoiceAnnotation-fields" />
+		FROM
+			ChoiceAnnotation c 
+			INNER JOIN Annotation a ON
+			c.annotation = a.id
+			INNER JOIN BaseObject b ON
+			a.baseObject = b.id
+		WHERE 
+			c.id = #value#
+	</select>	
 	
 	<select id="DBMolecule.fingerPrintSubsetSearch" 
 	        resultMap="DBMolecule"
@@ -408,6 +436,15 @@
             Annotation
         SET
             name = '$name$'
+        WHERE
+            id = '$id$'    	
+    </update>
+    
+    <update id="ChoiceAnnotation.update" parameterClass="ChoiceAnnotation">
+        UPDATE
+            ChoiceAnnotation
+        SET
+            val = '$value$'
         WHERE
             id = '$id$'    	
     </update>

@@ -24,4 +24,18 @@ public class ChoiceAnnotationDaoTest
     public ChoiceAnnotationDaoTest() {
         super( ChoiceAnnotation.class );
     }
+    
+    @Override
+    public void testUpdate() {
+        ChoiceAnnotation loadedObject1 = dao.getById( object1.getId() );
+        assertFalse(loadedObject1.getName().equals("edited"));
+        loadedObject1.setName("edited");
+        loadedObject1.setValue("edited");
+        dao.update(loadedObject1);
+        loadedObject1 = dao.getById( object1.getId() );
+        assertEquals( "name should have changed", 
+                      "edited", loadedObject1.getName() );
+        assertEquals( "value should have changed", 
+                      "edited", loadedObject1.getValue() );
+    }
 }

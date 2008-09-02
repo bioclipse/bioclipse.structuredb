@@ -59,7 +59,7 @@ public class AnnotationDao extends GenericDao<Annotation>
 
                 {
                     put( "annotationId", annotation.getId() );
-                    put( "dBMoleculeId",  s.getId()          );
+                    put( "dBMoleculeId", s.getId()          );
                 }
             };
             if ( (Integer) getSqlMapClientTemplate()

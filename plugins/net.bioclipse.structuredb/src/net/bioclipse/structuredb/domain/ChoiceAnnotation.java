@@ -23,6 +23,7 @@ public class ChoiceAnnotation extends Annotation {
     
     public ChoiceAnnotation() {
         super();
+        value = "";
     }
 
     public ChoiceAnnotation(String value) {
