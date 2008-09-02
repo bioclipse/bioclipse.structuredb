@@ -11,6 +11,10 @@
  *******************************************************************************/
 package net.bioclipse.structuredb;
 
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IPersistableElement;
+
 import net.bioclipse.services.views.model.AbstractServiceObject;
 import net.bioclipse.services.views.model.IDatabase;
 import net.bioclipse.services.views.model.IServiceContainer;
@@ -19,12 +23,12 @@ import net.bioclipse.services.views.model.IServiceContainer;
 /**
  * @author jonalv
  */
-public class Label extends AbstractServiceObject 
-                   implements IDatabase {
+public class AnnotationUIModel extends AbstractServiceObject 
+                               implements IDatabase, IEditorInput {
 
     private Database parent;
 
-    public Label(String name, Database parent) {
+    public AnnotationUIModel(String name, Database parent) {
         setName( name );
         this.parent = parent;
     }
@@ -36,5 +40,21 @@ public class Label extends AbstractServiceObject
     
     public IServiceContainer getParent() {
         return parent;
+    }
+
+    public boolean exists() {
+        return false;
+    }
+
+    public ImageDescriptor getImageDescriptor() {
+        return ImageDescriptor.getMissingImageDescriptor();
+    }
+
+    public IPersistableElement getPersistable() {
+        return null;
+    }
+
+    public String getToolTipText() {
+        return getName();
     }
 }
