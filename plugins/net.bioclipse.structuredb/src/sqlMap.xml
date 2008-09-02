@@ -70,15 +70,15 @@
 		<result property="value" column="value" />
 	</resultMap>
 	
-	<resultMap class="TextProperty" id="TextProperty" extends="Annotation">
+	<resultMap class="TextProperty" id="TextProperty" extends="BaseObject">
 		<result property="name" column="name" />
 	</resultMap>
 	
-	<resultMap class="RealNumberProperty" id="RealNumberProperty" extends="Annotation">
+	<resultMap class="RealNumberProperty" id="RealNumberProperty" extends="BaseObject">
 		<result property="name" column="name" />
 	</resultMap>
 	
-	<resultMap class="ChoiceProperty" id="ChoiceProperty" extends="Annotation">
+	<resultMap class="ChoiceProperty" id="ChoiceProperty" extends="BaseObject">
 		<result property="name" column="name" />
 	</resultMap>
 
@@ -111,11 +111,11 @@
 	</sql>
 	
 	<sql id="TextAnnotation-fields">
-		a.name AS name
+		t.val AS value
 	</sql>
 	
 	<sql id="RealNumberAnnotation-fields">
-		a.name AS name
+		r.val AS value
 	</sql>
 	
 	<sql id="ChoiceAnnotation-fields">
@@ -123,15 +123,15 @@
 	</sql>
 	
 	<sql id="TextProperty-fields">
-		a.name AS name
+		t.name AS name
 	</sql>
 	
 	<sql id="RealNumberProperty-fields">
-		a.name AS name
+		r.name AS name
 	</sql>
 	
-	<sql id="ChoiceProperty">
-		a.name AS name
+	<sql id="ChoiceProperty-fields">
+		c.name AS name
 	</sql>
 	
 <!--+
@@ -318,7 +318,7 @@
 			u.baseObject = b.id
 	</select>
 	
-	<select id="ChoiceAnnotation.getAll" resultMap="User">
+	<select id="ChoiceAnnotation.getAll" resultMap="ChoiceAnnotation">
 		SELECT 
 			<include refid="BaseObject-fields" />,
 			<include refid="Annotation-fields" />,
@@ -344,7 +344,129 @@
 			a.baseObject = b.id
 		WHERE 
 			c.id = #value#
+	</select>
+	
+	<select id="TextAnnotation.getAll" resultMap="TextAnnotation">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="Annotation-fields" />,
+			<include refid="TextAnnotation-fields" />
+		FROM
+			TextAnnotation t 
+			INNER JOIN Annotation a ON
+			t.annotation = a.id
+			INNER JOIN BaseObject b ON
+			a.baseObject = b.id
+	</select>
+	
+	<select id="TextAnnotation.getById" resultMap="TextAnnotation" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="Annotation-fields" />,
+			<include refid="TextAnnotation-fields" />
+		FROM
+			TextAnnotation t 
+			INNER JOIN Annotation a ON
+			t.annotation = a.id
+			INNER JOIN BaseObject b ON
+			a.baseObject = b.id
+		WHERE 
+			t.id = #value#
 	</select>	
+
+	<select id="RealNumberAnnotation.getAll" resultMap="RealNumberAnnotation">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="Annotation-fields" />,
+			<include refid="RealNumberAnnotation-fields" />
+		FROM
+			RealNumberAnnotation r 
+			INNER JOIN Annotation a ON
+			r.annotation = a.id
+			INNER JOIN BaseObject b ON
+			a.baseObject = b.id
+	</select>
+	
+	<select id="RealNumberAnnotation.getById" resultMap="RealNumberAnnotation" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="Annotation-fields" />,
+			<include refid="RealNumberAnnotation-fields" />
+		FROM
+			RealNumberAnnotation r 
+			INNER JOIN Annotation a ON
+			r.annotation = a.id
+			INNER JOIN BaseObject b ON
+			a.baseObject = b.id
+		WHERE 
+			r.id = #value#
+	</select>	
+
+	<select id="TextProperty.getAll" resultMap="TextProperty">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="TextProperty-fields" />
+		FROM
+			TextProperty t 
+			INNER JOIN BaseObject b ON
+			t.baseObject = b.id
+	</select>
+	
+	<select id="TextProperty.getById" resultMap="TextProperty" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="TextProperty-fields" />
+		FROM
+			TextProperty t 
+			INNER JOIN BaseObject b ON
+			t.baseObject = b.id
+		WHERE 
+			t.id = #value#
+	</select>	
+
+	<select id="RealNumberProperty.getAll" resultMap="RealNumberProperty">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="RealNumberProperty-fields" />
+		FROM
+			RealNumberProperty r 
+			INNER JOIN BaseObject b ON
+			r.baseObject = b.id
+	</select>
+	
+	<select id="RealNumberProperty.getById" resultMap="RealNumberProperty" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="RealNumberProperty-fields" />
+		FROM
+			RealNumberProperty r 
+			INNER JOIN BaseObject b ON
+			r.baseObject = b.id
+		WHERE 
+			r.id = #value#
+	</select>
+	
+	<select id="ChoiceProperty.getAll" resultMap="ChoiceProperty">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="ChoiceProperty-fields" />
+		FROM
+			ChoiceProperty c 
+			INNER JOIN BaseObject b ON
+			c.baseObject = b.id
+	</select>
+	
+	<select id="ChoiceProperty.getById" resultMap="ChoiceProperty" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="ChoiceProperty-fields" />
+		FROM
+			ChoiceProperty c 
+			INNER JOIN BaseObject b ON
+			c.baseObject = b.id
+		WHERE 
+			c.id = #value#
+	</select>
 	
 	<select id="DBMolecule.fingerPrintSubsetSearch" 
 	        resultMap="DBMolecule"
@@ -447,6 +569,51 @@
             val = '$value$'
         WHERE
             id = '$id$'    	
+    </update>
+    
+    <update id="TextAnnotation.update" parameterClass="TextAnnotation">
+        UPDATE
+            TextAnnotation
+        SET
+            val = '$value$'
+        WHERE
+            id = '$id$'    	
+    </update>
+    
+    <update id="RealNumberAnnotation.update" parameterClass="RealNumberAnnotation">
+        UPDATE
+            RealNumberAnnotation
+        SET
+            val = '$value$'
+        WHERE
+            id = '$id$'    	
+    </update>
+    
+    <update id="TextProperty.update" parameterClass="TextProperty">
+        UPDATE
+            TextProperty
+        SET
+            name = '$name$'
+        WHERE
+            id = '$id$'    	
+    </update>
+
+    <update id="RealNumberProperty.update" parameterClass="RealNumberProperty">
+        UPDATE
+            RealNumberProperty
+        SET
+            name = '$name$'
+        WHERE
+            id = '$id$'
+    </update>
+
+    <update id="ChoiceProperty.update" parameterClass="ChoiceProperty">
+        UPDATE
+            ChoiceProperty
+        SET
+            name = '$name$'
+        WHERE
+            id = '$id$'
     </update>
     
     <update id="DBMolecule.update" parameterMap="DBMolecule.update">

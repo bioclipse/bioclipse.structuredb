@@ -25,5 +25,20 @@ public class ChoicePropertyDao
     public ChoicePropertyDao() {
         super( ChoiceProperty.class );
     }
-
+    
+    @Override
+    public void insert(ChoiceProperty property) {
+        getSqlMapClientTemplate().update( "BaseObject.insert", 
+                                          property );
+        getSqlMapClientTemplate().update( "ChoiceProperty.insert",
+                                          property );
+    }
+    
+    @Override
+    public void update(ChoiceProperty property) {
+        getSqlMapClientTemplate().update( "BaseObject.update", 
+                                          property );
+        getSqlMapClientTemplate().update( "ChoiceProperty.update", 
+                                          property );
+    }    
 }

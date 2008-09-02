@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 
 
@@ -25,4 +26,24 @@ public class RealNumberAnnotationDao
     public RealNumberAnnotationDao() {
         super( RealNumberAnnotation.class );
     }
+    
+    @Override
+    public void insert(RealNumberAnnotation annotation) {
+        getSqlMapClientTemplate().update( "BaseObject.insert", 
+                                          annotation );
+        getSqlMapClientTemplate().update( "Annotation.insert",
+                                          annotation );
+        getSqlMapClientTemplate().update( "RealNumberAnnotation.insert",
+                                          annotation );
+    }
+    
+    @Override
+    public void update(RealNumberAnnotation annotation) {
+        getSqlMapClientTemplate().update( "BaseObject.update", 
+                                          annotation );
+        getSqlMapClientTemplate().update( "Annotation.update", 
+                                          annotation );
+        getSqlMapClientTemplate().update( "RealNumberAnnotation.update", 
+                                          annotation );
+    }    
 }

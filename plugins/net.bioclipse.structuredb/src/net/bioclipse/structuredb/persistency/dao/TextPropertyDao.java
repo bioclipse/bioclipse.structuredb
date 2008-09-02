@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
 
 
@@ -25,4 +26,20 @@ public class TextPropertyDao
     public TextPropertyDao() {
         super( TextProperty.class );
     }
+    
+    @Override
+    public void insert(TextProperty property) {
+        getSqlMapClientTemplate().update( "BaseObject.insert", 
+                                          property );
+        getSqlMapClientTemplate().update( "TextProperty.insert",
+                                          property );
+    }
+    
+    @Override
+    public void update(TextProperty property) {
+        getSqlMapClientTemplate().update( "BaseObject.update", 
+                                          property );
+        getSqlMapClientTemplate().update( "TextProperty.update", 
+                                          property );
+    }    
 }

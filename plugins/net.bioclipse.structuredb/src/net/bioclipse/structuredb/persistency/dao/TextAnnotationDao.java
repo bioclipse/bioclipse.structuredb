@@ -12,6 +12,7 @@
 package net.bioclipse.structuredb.persistency.dao;
 
 
+import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 
 
@@ -23,9 +24,26 @@ public class TextAnnotationDao extends GenericDao<TextAnnotation> implements
         ITextAnnotationDao {
 
     public TextAnnotationDao() {
-
         super( TextAnnotation.class );
-        // TODO Auto-generated constructor stub
     }
 
+    @Override
+    public void insert(TextAnnotation annotation) {
+        getSqlMapClientTemplate().update( "BaseObject.insert", 
+                                          annotation );
+        getSqlMapClientTemplate().update( "Annotation.insert",
+                                          annotation );
+        getSqlMapClientTemplate().update( "TextAnnotation.insert",
+                                          annotation );
+    }
+    
+    @Override
+    public void update(TextAnnotation annotation) {
+        getSqlMapClientTemplate().update( "BaseObject.update", 
+                                          annotation );
+        getSqlMapClientTemplate().update( "Annotation.update", 
+                                          annotation );
+        getSqlMapClientTemplate().update( "TextAnnotation.update", 
+                                          annotation );
+    }    
 }

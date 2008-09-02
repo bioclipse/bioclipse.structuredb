@@ -23,6 +23,7 @@ public class TextAnnotation extends Annotation {
     
     public TextAnnotation() {
         super();
+        value = "";
     }
 
     public TextAnnotation(String value) {
