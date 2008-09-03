@@ -161,7 +161,8 @@ public class StructuredbInstanceManager
             = new SubProgressMonitor(monitor, (int) (0.1 * ticks));
         sub.beginTask( "Preparing to delete", 1 );
         List<DBMolecule> dBMolecules = annotation.getDBMolecules();
-        int tick = ticks / annotation.getDBMolecules().size();
+        int molecules = annotation.getDBMolecules().size();
+        int tick = molecules <= 0 ? 0 : ticks / molecules;
         sub.worked( 1 );
         sub.done();
         for ( DBMolecule s : dBMolecules ) {
