@@ -60,6 +60,13 @@
             adaptable="false"
             id="net.bioclipse.structuredb.removeLabel"
             objectClass="net.bioclipse.structuredb.AnnotationUIModel">
+           <action
+                 class="net.bioclipse.structuredb.actions.OpenAnnotationAction"
+                 enablesFor="1"
+                 id="net.bioclipse.structuredb.action.OpenAnnotation"
+                 label="Open"
+                 menubarPath="additions">
+           </action>
             <action
                 class="net.bioclipse.structuredb.actions.RemoveAnnotationAction"
                 enablesFor="1"

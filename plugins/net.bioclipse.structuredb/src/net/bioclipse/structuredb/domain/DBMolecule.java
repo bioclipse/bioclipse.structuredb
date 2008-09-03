@@ -285,7 +285,7 @@ public class DBMolecule extends BaseObject
 
     @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter) {
-        return null;
+        return super.getAdapter(adapter );
     }
     
     public IAtomContainer getAtomContainer() {

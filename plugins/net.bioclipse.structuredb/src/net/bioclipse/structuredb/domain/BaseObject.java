@@ -19,6 +19,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.ui.PlatformUI;
 
 import net.bioclipse.core.domain.IBioObject;
 
@@ -270,8 +272,9 @@ public class BaseObject implements IBioObject {
 
     @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter) {
-        // TODO Auto-generated method stub
-        return null;
+        if(adapter.isAssignableFrom(this.getClass() ))
+            return this;
+        return Platform.getAdapterManager().getAdapter(this, adapter );
     }
     
     public String toString() {
