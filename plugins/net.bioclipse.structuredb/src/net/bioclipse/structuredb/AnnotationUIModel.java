@@ -15,6 +15,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
+import net.bioclipse.cdk.ui.views.IMoleculesEditorModel;
 import net.bioclipse.services.views.model.AbstractServiceObject;
 import net.bioclipse.services.views.model.IDatabase;
 import net.bioclipse.services.views.model.IServiceContainer;
@@ -56,5 +57,16 @@ public class AnnotationUIModel extends AbstractServiceObject
 
     public String getToolTipText() {
         return getName();
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public Object getAdapter( Class adapter ) {
+        
+        if ( adapter.isAssignableFrom( IMoleculesEditorModel.class ) ) {
+            return new DBMoleculesEditorModel( parent.getName(), 
+                                               getName() );
+        }
+        return super.getAdapter( adapter );
     }
 }
