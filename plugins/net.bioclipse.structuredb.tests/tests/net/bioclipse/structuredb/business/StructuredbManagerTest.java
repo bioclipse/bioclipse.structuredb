@@ -140,8 +140,8 @@ public class StructuredbManagerTest
             new MockIFile( TestData
                            .class
                            .getClassLoader()
-                           .getResource("testData/0037.cml")
-                           .getPath() ) );
+                           .getResourceAsStream("testData/0037.cml")
+                           ) );
         assertNotNull(mol1);
 
         DBMolecule structure1 = manager
@@ -159,8 +159,7 @@ public class StructuredbManagerTest
                        new MockIFile( 
                            TestData.class
                                   .getClassLoader()
-                                  .getResource("testData/0106.cml")
-                                  .getPath() ) ) );
+                                  .getResourceAsStream("testData/0106.cml") ) ) );
 
         assertNotNull(structure2);
 
@@ -205,8 +204,7 @@ public class StructuredbManagerTest
         ICDKMolecule mol1 = cdk.loadMolecule( 
               new MockIFile ( TestData.class
                                       .getClassLoader()
-                                      .getResource("testData/0037.cml")
-                                      .getPath() ) );
+                                      .getResourceAsStream("testData/0037.cml") ) );
         assertNotNull(mol1);
 
         DBMolecule structure1 = manager
@@ -223,8 +221,7 @@ public class StructuredbManagerTest
                     new MockIFile(
                         TestData.class
                                 .getClassLoader()
-                                .getResource("testData/0106.cml")
-                                .getPath() ) ) );
+                                .getResourceAsStream("testData/0106.cml") ) ) );
 
         assertNotNull(structure2);
 
@@ -272,8 +269,7 @@ public class StructuredbManagerTest
         ICDKMolecule mol1 = cdk.loadMolecule( 
             new MockIFile( TestData.class
                                    .getClassLoader()
-                                   .getResource("testData/0037.cml")
-                                   .getPath() ) );
+                                   .getResourceAsStream("testData/0037.cml") ) );
         assertNotNull(mol1);
 
         DBMolecule structure1 = manager
@@ -290,8 +286,7 @@ public class StructuredbManagerTest
                     new MockIFile( TestData
                                    .class
                                    .getClassLoader()
-                                   .getResource("testData/0106.cml")
-                                   .getPath() ) ) );
+                                   .getResourceAsStream("testData/0106.cml") ) ) );
 
         assertNotNull(structure2);
 
@@ -387,14 +382,18 @@ public class StructuredbManagerTest
 
     @DirtiesContext
     public void testRemovingDatabaseInstance() {
-        assertTrue( manager.listDatabaseNames().contains(database1) );
-        manager.removeDatabase( database1 );
-        assertFalse( manager.listDatabaseNames().contains(database1) );
-        
-        StructuredbManager anotherManager = new StructuredbManager();
-        assertFalse( anotherManager.listDatabaseNames()
-                                   .contains(database1) );
-        manager.createDatabase( database1 ); // restore order
+    	try {
+	        assertTrue( manager.listDatabaseNames().contains(database1) );
+	        manager.removeDatabase( database1 );
+	        assertFalse( manager.listDatabaseNames().contains(database1) );
+	        
+	        StructuredbManager anotherManager = new StructuredbManager();
+	        assertFalse( anotherManager.listDatabaseNames()
+	                                   .contains(database1) );
+    	}
+    	finally {
+    		manager.createDatabase( database1 ); // restore order
+    	}
     }
     
     public void testUsingUnknownDatabase() {
@@ -413,8 +412,7 @@ public class StructuredbManagerTest
         ICDKMolecule mol1 = cdk.loadMolecule( 
             new MockIFile( TestData.class
                                    .getClassLoader()
-                                   .getResource("testData/0037.cml")
-                                   .getPath() ) );
+                                   .getResourceAsStream("testData/0037.cml") ));
         assertNotNull(mol1);
 
         DBMolecule structure1 = new DBMolecule( "0037", mol1 );
