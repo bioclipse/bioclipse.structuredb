@@ -50,7 +50,7 @@
             objectClass="net.bioclipse.structuredb.Database">
             <action
                 class="net.bioclipse.structuredb.actions.RemoveDatabaseAction"
-                enablesFor="1"
+                enablesFor="+"
                 id="net.bioclipse.structuredb.actions.RemoveDatabaseAction"
                 label="Delete"
                 menubarPath="additions"
@@ -62,7 +62,7 @@
             objectClass="net.bioclipse.structuredb.AnnotationUIModel">
            <action
                  class="net.bioclipse.structuredb.actions.OpenAnnotationAction"
-                 enablesFor="1"
+                 enablesFor="+"
                  id="net.bioclipse.structuredb.action.OpenAnnotation"
                  label="Open"
                  menubarPath="additions">
