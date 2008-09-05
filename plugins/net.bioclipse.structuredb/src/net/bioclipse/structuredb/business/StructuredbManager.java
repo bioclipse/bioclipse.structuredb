@@ -227,9 +227,10 @@ public class StructuredbManager implements IStructuredbManager {
     private void checkDatabaseName(String databaseName) {
 
         if( !internalManagers.containsKey(databaseName) ) {
-            throw new IllegalArgumentException( "There is no database " +
-                                                "named: " 
-                                                + databaseName );
+            throw new IllegalArgumentException(
+                "There is no database " + "named: '" + databaseName + "'.\n"
+                + "Use `" + getNamespace() + ".listDatabaseNames` to show all "
+                + "available names." );
         }
     }
 
