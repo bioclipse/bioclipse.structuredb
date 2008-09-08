@@ -117,4 +117,8 @@ public class Database extends AbstractServiceContainer
             fireChanged( this );
         }
     }
+
+    public void doubleClick() {
+        // TODO Auto-generated method stub
+    }
 }

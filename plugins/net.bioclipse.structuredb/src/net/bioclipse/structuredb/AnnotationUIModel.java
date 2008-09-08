@@ -11,14 +11,19 @@
  *******************************************************************************/
 package net.bioclipse.structuredb;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 import net.bioclipse.cdk.ui.views.IMoleculesEditorModel;
 import net.bioclipse.services.views.model.AbstractServiceObject;
 import net.bioclipse.services.views.model.IDatabase;
 import net.bioclipse.services.views.model.IServiceContainer;
+import net.bioclipse.structuredb.actions.OpenAnnotationAction;
 
 
 /**
@@ -28,6 +33,7 @@ public class AnnotationUIModel extends AbstractServiceObject
                                implements IDatabase, IEditorInput {
 
     private Database parent;
+    private Logger logger;
 
     public AnnotationUIModel(String name, Database parent) {
         setName( name );
@@ -68,5 +74,17 @@ public class AnnotationUIModel extends AbstractServiceObject
                                                getName() );
         }
         return super.getAdapter( adapter );
+    }
+
+    public void doubleClick() {
+        IWorkbenchPage wPage = PlatformUI.getWorkbench()
+                                         .getActiveWorkbenchWindow()
+                                         .getActivePage();
+        try {
+            wPage.openEditor( this, "net.bioclipse.cdk.ui.sdfeditor" );
+        } 
+        catch ( PartInitException e ) {
+            logger.debug("Failed to open editor for Annotaion" );                
+        }
     }
 }
