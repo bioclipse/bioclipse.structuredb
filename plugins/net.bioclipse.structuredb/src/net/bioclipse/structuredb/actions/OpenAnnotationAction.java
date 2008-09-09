@@ -7,6 +7,7 @@
  *
  * Contributors:
  *      Arvid Berg
+ *      Jonathan Alvarsson
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.actions;
@@ -22,32 +23,35 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
 
-
 public class OpenAnnotationAction extends ActionDelegate {
     Logger logger = Logger.getLogger(OpenAnnotationAction.class );
     private ISelection selection;
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.actions.ActionDelegate#run(org.eclipse.jface.action.IAction)
-     */
+
     @Override
     public void run( IAction action ) {   
 
         if ( selection instanceof IStructuredSelection ) {
+
+            IWorkbenchPage wPage = PlatformUI.getWorkbench()
+                                             .getActiveWorkbenchWindow()
+                                             .getActivePage();
             
-            Object element =((IStructuredSelection) selection).getFirstElement();
-            if(element instanceof AnnotationUIModel) {
-            IWorkbenchPage wPage=PlatformUI.getWorkbench()
-                                           .getActiveWorkbenchWindow()
-                                           .getActivePage();
-            try {
-                wPage.openEditor( (AnnotationUIModel) element,
-                                  "net.bioclipse.cdk.ui.sdfeditor");
-            } catch ( PartInitException e ) {
-                logger.debug("Faild to open editor for Annotaion" );                
-            }
+            for ( Object element : 
+                  ( (IStructuredSelection) selection ).toArray() ) {
+                
+                if (element instanceof AnnotationUIModel) {
+                    try {
+                        wPage.openEditor( 
+                            (AnnotationUIModel) element,
+                            "net.bioclipse.cdk.ui.sdfeditor");
+                    } 
+                    catch ( PartInitException e ) {
+                        logger.debug(
+                            "Faild to open editor for Annotation" );                
+                    }
+                }
             }
         }
-
     }
     
     @Override

@@ -50,20 +50,6 @@ public class RemoveAnnotationAction extends ActionDelegate {
         if ( selection instanceof IStructuredSelection ) {
             IStructuredSelection ss = (IStructuredSelection) selection;
             Iterator i = ss.iterator();
-            MessageBox messageBox 
-                = new MessageBox( PlatformUI.getWorkbench()
-                                            .getActiveWorkbenchWindow()
-                                            .getShell(), 
-                                  SWT.ICON_QUESTION | 
-                                  SWT.YES           | 
-                                  SWT.NO            |
-                                  SWT.CANCEL );
-            messageBox.setMessage( "Also remove structures " +
-            		                   "with this labels?" );
-            messageBox.setText("Deleting label");
-            int response = messageBox.open();
-            if (response == SWT.CANCEL)
-              return;
             while ( i.hasNext() ) {
                 Object o = i.next();
                 if (o instanceof AnnotationUIModel) {
@@ -73,6 +59,26 @@ public class RemoveAnnotationAction extends ActionDelegate {
                             annotation = manager
                                          .retrieveAnnotationByName(
                                 l.getParent().getName(), l.getName() );
+                        
+                        MessageBox messageBox 
+                            = new MessageBox( 
+                                      PlatformUI.getWorkbench()
+                                                .getActiveWorkbenchWindow()
+                                                .getShell(), 
+                                      SWT.ICON_QUESTION | 
+                                      SWT.YES           | 
+                                      SWT.NO            |
+                                      SWT.CANCEL );
+                        messageBox.setMessage( "Should all structures " +
+                        		               "annotated with with " +
+                        		               annotation.getName() + 
+                        		               "also be removed?" );
+                        messageBox.setText( "Deleting annotation "
+                                            + annotation.getName() );
+                        int response = messageBox.open();
+                        if (response == SWT.CANCEL)
+                          return;
+                        
                         if (response == SWT.YES) {
                             deleteWithStructures(l.getParent().getName(), 
                                                  annotation);
