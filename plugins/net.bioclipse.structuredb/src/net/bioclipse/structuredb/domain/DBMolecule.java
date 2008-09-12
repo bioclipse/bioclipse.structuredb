@@ -101,8 +101,14 @@ public class DBMolecule extends BaseObject
         fingerPrint          = cdkMolecule.getFingerprint(false);
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         atomContainer        = cdkMolecule.getAtomContainer();
-        smiles               = cdkMolecule.getSmiles();
-        annotations          = new ArrayList<Annotation>();
+        try {
+            smiles = cdkMolecule.getSmiles();
+        }
+        catch (BioclipseException e) {
+            smiles = "";
+        }
+        
+        annotations = new ArrayList<Annotation>();
     }
 
     /**
@@ -245,7 +251,7 @@ public class DBMolecule extends BaseObject
         CMLWriter cmlWriter       = new CMLWriter(stringWriter);
         try {
             cmlWriter.write(atomContainer);
-        } catch (CDKException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             LogUtils.debugTrace(logger, e);
         }

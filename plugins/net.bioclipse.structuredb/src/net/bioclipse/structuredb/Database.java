@@ -121,4 +121,9 @@ public class Database extends AbstractServiceContainer
     public void doubleClick() {
         // TODO Auto-generated method stub
     }
+    
+    @Override
+    public String getIcon() {
+        return "icons/db_with_mol_16.png";
+    }
 }

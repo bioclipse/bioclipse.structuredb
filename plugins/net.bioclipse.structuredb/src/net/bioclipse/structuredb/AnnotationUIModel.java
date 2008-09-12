@@ -87,4 +87,9 @@ public class AnnotationUIModel extends AbstractServiceObject
             logger.debug("Failed to open editor for Annotaion" );                
         }
     }
+    
+    @Override
+    public String getIcon() {
+        return "icons/many_molecules.png";
+    }
 }
