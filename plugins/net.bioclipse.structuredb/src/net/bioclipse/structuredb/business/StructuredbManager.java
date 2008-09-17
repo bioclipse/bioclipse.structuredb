@@ -171,6 +171,11 @@ public class StructuredbManager implements IStructuredbManager {
         fireDatabasesChanged();
     }
 
+    /**
+     * Creates standard user for a local database.
+     * 
+     * @param context
+     */
     private void createLocalUser(ApplicationContext context) {
         IUserDao userDao = (IUserDao) context.getBean("userDao");
         User localUser = new User("local", "", true );
@@ -224,13 +229,20 @@ public class StructuredbManager implements IStructuredbManager {
         return annotation;
     }
 
+    /**
+     * Throws an exception if no such database.
+     * 
+     * @param databaseName
+     * 
+     * @throws IllegalArgumentException if no such database
+     */
     private void checkDatabaseName(String databaseName) {
 
         if( !internalManagers.containsKey(databaseName) ) {
             throw new IllegalArgumentException(
-                "There is no database " + "named: '" + databaseName + "'.\n"
-                + "Use `" + getNamespace() + ".listDatabaseNames` to show all "
-                + "available names." );
+                "There is no database " + "named: '" + databaseName 
+                + "'.\n" + "Use `" + getNamespace() 
+                + ".listDatabaseNames` to show all available names." );
         }
     }
 
@@ -431,7 +443,6 @@ public class StructuredbManager implements IStructuredbManager {
             IProgressMonitor monitor ) throws BioclipseException {
 
         checkDatabaseName(databaseName);
-        ICDKMolecule cdkQueryMolecule;
         if ( !(queryMolecule instanceof ICDKMolecule) ) {
             queryMolecule = cdk.fromSmiles( queryMolecule.getSmiles() );
         }
@@ -548,9 +559,10 @@ public class StructuredbManager implements IStructuredbManager {
     
         checkDatabaseName(databaseName);
         List<DBMolecule> hits = new BioList<DBMolecule>();
-        Iterator<DBMolecule> iterator = smartsQueryIterator( databaseName, 
-                                                            smarts, 
-                                                            monitor );
+        Iterator<DBMolecule> iterator 
+            = smartsQueryIterator( databaseName, 
+                                   smarts, 
+                                   monitor );
         while ( iterator.hasNext() ) {
             hits.add( iterator.next() );
         }
@@ -566,7 +578,7 @@ public class StructuredbManager implements IStructuredbManager {
                                internalManagers.get( databaseName )
                                                .numberOfStructures() );
         }
-         
+        
         return new SmartsQueryIterator( internalManagers
                                         .get( databaseName )
                                         .allStructuresIterator(),
@@ -593,7 +605,7 @@ public class StructuredbManager implements IStructuredbManager {
     }
     
     public void fireAnnotationsChanged() {
-      //the original listeners collection gets edited during the loop
+        //the original listeners collection gets edited during the loop
         for ( IDatabaseListener l 
               : new ArrayList<IDatabaseListener>(listeners) ) {
             l.onDataBaseUpdate( DatabaseUpdateType.LABELS_CHANGED );
@@ -601,11 +613,10 @@ public class StructuredbManager implements IStructuredbManager {
     }
 
     public Annotation retrieveAnnotationByName( String databaseName, 
-                                      String annotationName ) {
+                                                String annotationName ) {
         checkDatabaseName(databaseName);
         return internalManagers.get( databaseName )
-                               .retrieveAnnotationByName( 
-                                   annotationName );
+                               .retrieveAnnotationByName(annotationName);
     }
 
     public void deleteWithStructures( String databaseName, 
