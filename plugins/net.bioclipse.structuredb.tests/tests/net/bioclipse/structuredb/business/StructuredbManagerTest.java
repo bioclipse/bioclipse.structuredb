@@ -28,6 +28,7 @@ import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
+import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
 
 import org.eclipse.core.resources.IFile;
 import org.openscience.cdk.smiles.SmilesGenerator;
@@ -536,5 +537,30 @@ public class StructuredbManagerTest
         manager.deleteWithStructures( database1, l );
         assertFalse( manager.allStructures( database1 ).contains( s ) );
         assertFalse( manager.allAnnotations(     database1 ).contains( l ) );
+    }
+    
+    public void testCreatingStructuresAndAddingToAnnotation() 
+                throws BioclipseException {
+        
+        ICDKMolecule toluene = cdk.fromSmiles("Cc1ccccc1");
+        ICDKMolecule ethanol = cdk.fromSmiles("CCO");
+        ICDKMolecule oxygen  = cdk.fromSmiles("O=O");
+        manager.createDatabase("myDatabase");
+        toluene = manager.createStructure( "myDatabase", 
+                                           "toluene", 
+                                           toluene );
+        ethanol = manager.createStructure( "myDatabase", 
+                                           "ethanol", 
+                                           ethanol );
+        oxygen  = manager.createStructure( "myDatabase", 
+                                           "oxygen", 
+                                           oxygen );
+        Annotation myMolecules = manager
+                                 .createAnnotation( "myDatabase", 
+                                                    "my molecules" );
+        myMolecules.addDBMolecule( (DBMolecule)toluene );
+        myMolecules.addDBMolecule( (DBMolecule)ethanol );
+        myMolecules.addDBMolecule( (DBMolecule)oxygen  );
+        manager.save("db", myMolecules);
     }
 }
