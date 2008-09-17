@@ -432,30 +432,24 @@ public class StructuredbManager implements IStructuredbManager {
 
         checkDatabaseName(databaseName);
         ICDKMolecule cdkQueryMolecule;
-        if(queryMolecule instanceof DBMolecule) {
-            cdkQueryMolecule 
-                = toCDKMolecule( (DBMolecule) queryMolecule );
+        if ( !(queryMolecule instanceof ICDKMolecule) ) {
+            queryMolecule = cdk.fromSmiles( queryMolecule.getSmiles() );
         }
-        else {
-            cdkQueryMolecule 
-                = cdk.fromSmiles( queryMolecule.getSmiles() );
-        }
-        DBMolecule queryStructure = new DBMolecule("", cdkQueryMolecule);
-        if(monitor != null) {
-            monitor
-            .beginTask( "substructure search", 
-                        internalManagers.get( databaseName )
-                                        .numberOfFingerprintMatches(
+        DBMolecule queryStructure 
+            = new DBMolecule( "", (ICDKMolecule)queryMolecule );
+        if (monitor != null) {
+            monitor.beginTask( "substructure search", 
+                               internalManagers.get( databaseName )
+                                   .numberOfFingerprintMatches(
                                             queryStructure) );
         }
-
          
         return new SubStructureIterator( 
             internalManagers.get( databaseName )
                             .fingerprintSubstructureSearchIterator(
                                 queryStructure),
             cdk,
-            cdkQueryMolecule, 
+            (ICDKMolecule)queryMolecule, 
             this, 
             monitor );
    }
