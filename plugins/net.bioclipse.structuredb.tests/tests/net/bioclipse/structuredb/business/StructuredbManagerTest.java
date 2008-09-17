@@ -561,6 +561,11 @@ public class StructuredbManagerTest
         myMolecules.addDBMolecule( (DBMolecule)toluene );
         myMolecules.addDBMolecule( (DBMolecule)ethanol );
         myMolecules.addDBMolecule( (DBMolecule)oxygen  );
-        manager.save("db", myMolecules);
+        manager.save("myDatabase", myMolecules);
+        Annotation loadedAnnotation 
+            = manager.annotationByName( "myDatabase", 
+                                        myMolecules.getName() );
+        assertTrue( "Should have equal values",
+                    myMolecules.hasValuesEqualTo( loadedAnnotation ) );
     }
 }

@@ -13,6 +13,9 @@
 package net.bioclipse.structuredb.domain;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -31,7 +34,7 @@ import net.bioclipse.core.domain.IBioObject;
  * 
  * @author jonalv
  */
-public class BaseObject implements IBioObject {
+public class BaseObject implements IBioObject, Comparable {
 
     private String id; //36 chars long unique id 
     private String name;
@@ -206,7 +209,13 @@ public class BaseObject implements IBioObject {
     protected boolean objectsInHasSameValues( 
         List<? extends BaseObject> list1, 
         List<? extends BaseObject> list2 ) {
-
+        
+        list1 = new ArrayList<BaseObject>(list1);
+        list2 = new ArrayList<BaseObject>(list2);
+        
+        Collections.sort( list1 );
+        Collections.sort( list2 );
+        
         if ( list1.size() != list2.size() ) {
             return false;    
         }
@@ -279,5 +288,12 @@ public class BaseObject implements IBioObject {
     
     public String toString() {
         return "{" + this.getClass().getSimpleName() + ": " + name + "}"; 
+    }
+
+    public int compareTo( Object o ) {
+        if ( !(o instanceof BaseObject) ) {
+            return 0;
+        }
+        return this.name.compareTo( ( (BaseObject)o ).getName() );
     }
 }
