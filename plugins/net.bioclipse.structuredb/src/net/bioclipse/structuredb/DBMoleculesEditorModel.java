@@ -14,6 +14,7 @@ package net.bioclipse.structuredb;
 import java.util.List;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
+import net.bioclipse.cdk.domain.SDFElement;
 import net.bioclipse.cdk.ui.views.IMoleculesEditorModel;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 import net.bioclipse.structuredb.domain.Annotation;
@@ -47,7 +48,18 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
     }
     
     public Object getMoleculeAt( int index ) {
-        return list.get( index );
+        ICDKMolecule mol= list.get( index );
+        // TODO : SDFElement should handle database resources
+        return new SDFElement(null,mol.getName(),-1,index){
+            
+            @Override
+            public Object getAdapter( Class adapter ) {
+                if(adapter.equals( ICDKMolecule.class )) {
+                    return list.get( getNumber() );
+                }
+                return super.getAdapter( adapter );
+            }
+        };
     }
 
     public int getNumberOfMolecules() {
