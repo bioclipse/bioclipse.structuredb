@@ -46,7 +46,7 @@ public class RemoveDatabaseAction extends ActionDelegate {
             while ( i.hasNext() ) {
                 Object o = i.next();
                 if (o instanceof Database) {
-                    manager.removeDatabase( ((Database)o).getName() );
+                    manager.deleteDatabase( ((Database)o).getName() );
                 }
             }
         }

@@ -59,7 +59,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Removes a local database " +
                        		           "with the given name if such " +
                        		           "exists, otherwise does nothing" )
-    public void removeDatabase( String databaseName );
+    public void deleteDatabase( String databaseName );
 
     /**
      * Retrieves all Structures with a given name from a database with a
@@ -259,7 +259,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     @PublishedMethod ( methodSummary = "Returns a list with the " +
     		                           "names of all structuredb " +
     		                           "database instances." )
-    public List<String> listDatabaseNames();
+    public List<String> allDatabaseNames();
 
     /**
      * Returns an iterator to all structures in the given database that 
@@ -414,21 +414,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param listener
      */
     public void removeListener( IDatabaseListener listener );
-
-    /**
-     * @param name
-     * @param string 
-     * @return
-     */
-    @PublishedMethod ( params = "String databaseName, " +
-    		                    "String annotationName", 
-                       methodSummary = "Retrives the annotation with " +
-                       		           "the given name from the " +
-                       		           "database with the given name" )
-    public Annotation retrieveAnnotationByName( String databaseName, 
-                                      String annotationName );
-
-    
+   
     /**
      * Deletes a annotation and all structures having that annotation
      * @param name

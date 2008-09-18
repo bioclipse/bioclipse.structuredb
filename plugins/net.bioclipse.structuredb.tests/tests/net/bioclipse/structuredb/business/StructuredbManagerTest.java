@@ -374,22 +374,22 @@ public class StructuredbManagerTest
     public void testDatabasesFilesAreLoaded() {
         HsqldbUtil.getInstance().stopAllDatabaseInstances();
         StructuredbManager anotherManager = new StructuredbManager();
-        assertTrue( anotherManager.listDatabaseNames()
+        assertTrue( anotherManager.allDatabaseNames()
                                   .contains(database1) );
-        assertTrue( anotherManager.listDatabaseNames()
+        assertTrue( anotherManager.allDatabaseNames()
                                   .contains(database1) );
-        assertEquals( 2, anotherManager.listDatabaseNames().size() );
+        assertEquals( 2, anotherManager.allDatabaseNames().size() );
     }
 
     @DirtiesContext
     public void testRemovingDatabaseInstance() {
     	try {
-	        assertTrue( manager.listDatabaseNames().contains(database1) );
-	        manager.removeDatabase( database1 );
-	        assertFalse( manager.listDatabaseNames().contains(database1) );
+	        assertTrue( manager.allDatabaseNames().contains(database1) );
+	        manager.deleteDatabase( database1 );
+	        assertFalse( manager.allDatabaseNames().contains(database1) );
 	        
 	        StructuredbManager anotherManager = new StructuredbManager();
-	        assertFalse( anotherManager.listDatabaseNames()
+	        assertFalse( anotherManager.allDatabaseNames()
 	                                   .contains(database1) );
     	}
     	finally {
@@ -500,8 +500,8 @@ public class StructuredbManagerTest
     public void testRetrieveingAnnotationByName() {
         
         Annotation l = manager.createAnnotation( database1, "name" );
-        Annotation loaded = manager.retrieveAnnotationByName( database1,  
-                                                    l.getName() );
+        Annotation loaded = manager.annotationByName( database1,  
+                                                      l.getName() );
         assertTrue( l.hasValuesEqualTo( loaded ) );
     }
     

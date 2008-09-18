@@ -57,7 +57,7 @@ public class RemoveAnnotationAction extends ActionDelegate {
                     if ( l.getParent() instanceof Database ) {
                         net.bioclipse.structuredb.domain.Annotation 
                             annotation = manager
-                                         .retrieveAnnotationByName(
+                                         .annotationByName(
                                 l.getParent().getName(), l.getName() );
                         
                         MessageBox messageBox 

@@ -242,7 +242,7 @@ public class StructuredbManager implements IStructuredbManager {
             throw new IllegalArgumentException(
                 "There is no database " + "named: '" + databaseName 
                 + "'.\n" + "Use `" + getNamespace() 
-                + ".listDatabaseNames` to show all available names." );
+                + ".allDatabaseNames` to show all available names." );
         }
     }
 
@@ -271,7 +271,7 @@ public class StructuredbManager implements IStructuredbManager {
         return user;
     }
 
-    public void removeDatabase(String databaseName) {
+    public void deleteDatabase(String databaseName) {
         checkDatabaseName(databaseName);
         internalManagers.remove( databaseName );
         applicationContexts.remove( databaseName );
@@ -405,7 +405,7 @@ public class StructuredbManager implements IStructuredbManager {
                               monitor );
     }
 
-    public List<String> listDatabaseNames() {
+    public List<String> allDatabaseNames() {
         return new ArrayList<String>( internalManagers.keySet() );
     }
 
@@ -596,13 +596,6 @@ public class StructuredbManager implements IStructuredbManager {
               : new ArrayList<IDatabaseListener>(listeners) ) {
             l.onDataBaseUpdate( DatabaseUpdateType.LABELS_CHANGED );
         }
-    }
-
-    public Annotation retrieveAnnotationByName( String databaseName, 
-                                                String annotationName ) {
-        checkDatabaseName(databaseName);
-        return internalManagers.get( databaseName )
-                               .retrieveAnnotationByName(annotationName);
     }
 
     public void deleteWithStructures( String databaseName, 
