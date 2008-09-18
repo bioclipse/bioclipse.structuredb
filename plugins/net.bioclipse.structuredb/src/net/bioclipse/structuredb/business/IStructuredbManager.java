@@ -312,18 +312,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                            throws BioclipseException;
     
     /**
-     * Creates a cdk molecule from a structure
-     * 
-     * @param structure1
-     * @return
-     */
-    @PublishedMethod (params = "DBMolecule structure",
-                      methodSummary = "Creates a cdk molecule from " +
-                      		          "the given structure" )
-    public ICDKMolecule toCDKMolecule( DBMolecule dBMolecule );
-
-    
-    /**
      * Deletes the given annotation from the given database
      * 
      * @param database

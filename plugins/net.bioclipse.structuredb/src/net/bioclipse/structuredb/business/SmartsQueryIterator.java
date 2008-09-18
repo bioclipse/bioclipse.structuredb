@@ -69,9 +69,7 @@ public class SmartsQueryIterator implements Iterator<DBMolecule> {
             if(monitor != null) {
                 monitor.worked( 1 );
             }
-            ICDKMolecule molecule;
-            molecule = structuredb.toCDKMolecule( next );
-            if( cdk.smartsMatches( molecule, smarts ) ) {
+            if( cdk.smartsMatches( next, smarts ) ) {
                 return next;
             }
         }

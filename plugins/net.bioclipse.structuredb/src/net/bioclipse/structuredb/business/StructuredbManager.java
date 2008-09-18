@@ -475,20 +475,6 @@ public class StructuredbManager implements IStructuredbManager {
                                            null );
     }
 
-    public ICDKMolecule toCDKMolecule( DBMolecule dBMolecule ) {
-        try {
-           return new CDKMolecule( dBMolecule.getName(), 
-                                   (IAtomContainer) dBMolecule
-                                                    .getAtomContainer()
-                                                    .clone(),
-                                   dBMolecule.getSmiles(),
-                                   dBMolecule.getFingerPrint() );
-        } 
-        catch ( CloneNotSupportedException e ) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public List<DBMolecule> subStructureSearch( String databaseName,
                                                IMolecule molecule ) 
                            throws BioclipseException {

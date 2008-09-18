@@ -67,9 +67,7 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
             if(monitor != null) {
                 monitor.worked( 1 );
             }
-            ICDKMolecule molecule;
-            molecule = structuredb.toCDKMolecule( next );
-            if( cdk.subStructureMatches( molecule, subStructure ) ) {
+            if( cdk.subStructureMatches( next, subStructure ) ) {
                 return next;
             }
         }

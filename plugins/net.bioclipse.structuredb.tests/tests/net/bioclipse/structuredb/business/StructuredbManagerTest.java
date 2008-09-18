@@ -408,25 +408,6 @@ public class StructuredbManagerTest
         }
     }
 
-    public void testCreatingCDKMoleculeFromStructure() throws Exception {
-
-        ICDKMolecule mol1 = cdk.loadMolecule( 
-            new MockIFile( TestData.class
-                                   .getClassLoader()
-                                   .getResourceAsStream("testData/0037.cml") ));
-        assertNotNull(mol1);
-
-        DBMolecule structure1 = new DBMolecule( "0037", mol1 );
-        assertNotNull(structure1);
-        
-        ICDKMolecule newMolecule = manager.toCDKMolecule(structure1);
-        assertEquals( mol1.getSmiles(), newMolecule.getSmiles() );
-        assertEquals( mol1.getFingerprint( false ), 
-                      newMolecule.getFingerprint( false ) );
-        assertEquals( mol1.getSmiles(), newMolecule.getSmiles() );
-        assertEquals( mol1.getCML(), newMolecule.getCML() );
-    }
-    
     public void testEditStructure() throws BioclipseException {
         DBMolecule s = manager.createStructure( database1, 
                                                "test", 
