@@ -339,12 +339,12 @@ public class StructuredbManager implements IStructuredbManager {
         // first, count the number of items to read. 
         // It's a bit of overhead, but adds to the user experience
         int firstTaskTicks = (int) (0.05 * ticks);
+        int entries = cdk.numberOfEntriesInSDF( 
+                          file, new SubProgressMonitor( monitor, 
+                                                        firstTaskTicks ) );
         int maintTaskTick 
             = (ticks - firstTaskTicks) 
-              / cdk.numberOfEntriesInSDF( file, 
-                                          new SubProgressMonitor( 
-                                              monitor, 
-                                              firstTaskTicks ) );
+              / ( entries != 0 ? entries : 1 ); 
          
         monitor.worked( firstTaskTicks );
         // now really read the structures

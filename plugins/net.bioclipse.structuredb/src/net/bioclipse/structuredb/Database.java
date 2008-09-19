@@ -52,14 +52,14 @@ public class Database extends AbstractServiceContainer
             for ( Object selection : selections.toArray() ) {
                 if (selection instanceof IFile) {
                     final IFile file = (IFile)selection;
-                    final String labelName = getName();
+                    final String dbName = getName();
                     Job job = new Job("Add structures from SDF") {
                         @Override
                         protected IStatus run( IProgressMonitor monitor ) {
                             try {
                                 Activator.getDefault()
                                          .getStructuredbManager()
-                                         .addStructuresFromSDF( labelName, 
+                                         .addStructuresFromSDF( dbName, 
                                                                 file,
                                                                 monitor );
                             } catch ( BioclipseException e ) {
