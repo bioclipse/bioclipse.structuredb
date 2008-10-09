@@ -20,13 +20,15 @@ public class TextAnnotationTest {
     
     @Test
     public void testHasValuesEqualTo() {
+
+        TextProperty property = new TextProperty();
         
         TextAnnotation textAnnotation1 
-            = new TextAnnotation( "textAnnotationname");
+            = new TextAnnotation( "textAnnotationname", property );
         TextAnnotation textAnnotation2 
             = new TextAnnotation(textAnnotation1);
         TextAnnotation textAnnotation3 
-            = new TextAnnotation( "textAnnotationname");
+            = new TextAnnotation( "textAnnotationname", property );
         
         assertTrue(  textAnnotation1.hasValuesEqualTo(textAnnotation2) );
         assertFalse( textAnnotation1.hasValuesEqualTo(textAnnotation3) );

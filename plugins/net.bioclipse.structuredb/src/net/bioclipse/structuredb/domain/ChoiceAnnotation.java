@@ -50,6 +50,7 @@ public class ChoiceAnnotation extends Annotation {
     public ChoiceAnnotation(ChoiceAnnotation choiceAnnotation) {
         super(choiceAnnotation);
         this.setValue( choiceAnnotation.getValue() );
+        this.property = new ChoiceProperty( choiceAnnotation.getProperty() );
     }
 
     public boolean hasValuesEqualTo( BaseObject obj ) {

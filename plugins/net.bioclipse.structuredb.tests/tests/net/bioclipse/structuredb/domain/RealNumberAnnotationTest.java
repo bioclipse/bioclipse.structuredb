@@ -16,17 +16,23 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 
+/**
+ * @author jonalv
+ *
+ */
 public class RealNumberAnnotationTest {
 
     @Test
     public void testHasValuesEqualTo() {
+
+        RealNumberProperty property = new RealNumberProperty();
         
         RealNumberAnnotation realNumberAnnotation1 
-            = new RealNumberAnnotation( 3.14 );
+            = new RealNumberAnnotation( 3.14, property );
         RealNumberAnnotation realNumberAnnotation2 
             = new RealNumberAnnotation(realNumberAnnotation1);
         RealNumberAnnotation realNumberAnnotation3 
-            = new RealNumberAnnotation( 3.14 );
+            = new RealNumberAnnotation( 3.14, property );
         
         assertTrue(  realNumberAnnotation1
                      .hasValuesEqualTo(realNumberAnnotation2) );

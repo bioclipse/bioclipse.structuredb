@@ -68,4 +68,11 @@ public class ChoiceProperty extends Property {
             annotation.setProperty( this );
         }
     }
+
+    public void addPropertyChoice( PropertyChoice propertyChoice ) {
+        this.propertyChoices.add( propertyChoice );
+        if( propertyChoice.getProperty() != this ) {
+            propertyChoice.setProperty(this);
+        }
+    }
 }

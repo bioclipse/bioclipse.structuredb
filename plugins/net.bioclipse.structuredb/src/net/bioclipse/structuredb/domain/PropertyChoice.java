@@ -14,6 +14,7 @@ package net.bioclipse.structuredb.domain;
 public class PropertyChoice extends BaseObject {
 
     private String value;
+    private ChoiceProperty property;
     
     public PropertyChoice() {
         this("");
@@ -46,5 +47,16 @@ public class PropertyChoice extends BaseObject {
     
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public ChoiceProperty getProperty() {
+        return this.property;
+    }
+
+    public void setProperty( ChoiceProperty choiceProperty ) {
+        this.property = choiceProperty;
+        if ( !choiceProperty.getPropertyChoices().contains( this ) ) {
+           choiceProperty.addPropertyChoice( this ); 
+        }
     }
 }

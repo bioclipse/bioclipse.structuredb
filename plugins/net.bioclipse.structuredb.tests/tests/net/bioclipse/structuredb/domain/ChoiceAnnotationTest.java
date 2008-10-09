@@ -21,12 +21,15 @@ public class ChoiceAnnotationTest {
     @Test
     public void testHasValuesEqualTo() {
         
+        ChoiceProperty property = new ChoiceProperty();
+        property.addPropertyChoice( new PropertyChoice("choice") );
+        
         ChoiceAnnotation choiceAnnotation1 
-            = new ChoiceAnnotation( "choiceAnnotationname");
+            = new ChoiceAnnotation( "choice", property );
         ChoiceAnnotation choiceAnnotation2 
             = new ChoiceAnnotation(choiceAnnotation1);
         ChoiceAnnotation choiceAnnotation3 
-            = new ChoiceAnnotation( "choiceAnnotationname");
+            = new ChoiceAnnotation( "choice", property );
         
         assertTrue(  choiceAnnotation1
                      .hasValuesEqualTo(choiceAnnotation2) );
