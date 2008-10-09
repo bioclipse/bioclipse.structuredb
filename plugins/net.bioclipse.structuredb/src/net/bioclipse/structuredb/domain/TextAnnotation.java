@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
 
+import net.bioclipse.structuredb.persistency.dao.TextPropertyDao;
+
 
 /**
  * @author jonalv
@@ -24,16 +26,19 @@ public class TextAnnotation extends Annotation {
     public TextAnnotation() {
         super();
         value = "";
+        this.property = new TextProperty();
     }
 
-    public TextAnnotation(String value) {
+    public TextAnnotation(String value, TextProperty property) {
         super();
         this.setValue( value );
+        this.property = property;
     }
 
     public TextAnnotation(TextAnnotation textAnnotation) {
         super( textAnnotation );
         this.setValue( textAnnotation.getValue() );
+        this.property = new TextProperty( textAnnotation.getProperty() );
     }
 
     public String getValue() {
@@ -49,7 +54,8 @@ public class TextAnnotation extends Annotation {
             return false;
         }
         TextAnnotation annotation = (TextAnnotation)obj;
-        return getValue().equals( annotation.getValue() );
+        return getValue().equals( annotation.getValue() ) &&
+               property.hasValuesEqualTo( annotation.getProperty() );
     }
 
     /**

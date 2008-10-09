@@ -180,8 +180,8 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
     }
     
     public void testGetAnnotations() {
-        Annotation annotation  = new TextAnnotation( "my annotation" );
-        Annotation unusedLabel = new TextAnnotation( "I should not turn up" );
+        Annotation annotation  = new TextAnnotation();
+        Annotation unusedLabel = new TextAnnotation();
         IAnnotationDao annotationDao
             = (IAnnotationDao) applicationContext.getBean("annotationDao");
         annotationDao.insert( annotation );

@@ -25,28 +25,29 @@ public class RealNumberAnnotation extends Annotation {
         super();
     }
 
-    public RealNumberAnnotation(double value) {
+    public RealNumberAnnotation(double value, RealNumberProperty property) {
         super();
         this.setValue( value );
+        this.setProperty( property );
     }
 
-    public RealNumberAnnotation( 
-        RealNumberAnnotation realNumberAnnotation ) {
-
+    public RealNumberAnnotation( RealNumberAnnotation realNumberAnnotation ) {
         super( realNumberAnnotation );
         this.setValue( realNumberAnnotation.getValue() );
+        this.setProperty( realNumberAnnotation.getProperty() );
     }
 
     public boolean hasValuesEqualTo( BaseObject obj ) {
         
-        if( !super.hasValuesEqualTo(obj) ) {
+        if ( !super.hasValuesEqualTo(obj) ) {
             return false;
         }
-        if( !(obj instanceof RealNumberAnnotation) ) {
+        if ( !(obj instanceof RealNumberAnnotation) ) {
             return false;
         }
         RealNumberAnnotation annotation = (RealNumberAnnotation)obj;
-        return Double.compare( getValue(), annotation.getValue() ) == 0;
+        return Double.compare( getValue(), annotation.getValue() ) == 0 &&
+               property.hasValuesEqualTo( annotation.getProperty() );
     }
 
     public double getValue() {
@@ -65,7 +66,6 @@ public class RealNumberAnnotation extends Annotation {
     }
 
     public void setValue( double value ) {
-
         this.value = value;
     }
 }

@@ -24,11 +24,27 @@ public class ChoiceAnnotation extends Annotation {
     public ChoiceAnnotation() {
         super();
         value = "";
+        property = new ChoiceProperty();
     }
 
-    public ChoiceAnnotation(String value) {
+    public ChoiceAnnotation(String value, ChoiceProperty choiceProperty) 
+           throws IllegalArgumentException {
+        
         super();
+        boolean valueOk = false;
+        for ( PropertyChoice p : choiceProperty.getPropertyChoices() ) {
+            if ( p.getValue().equals( value ) ) {
+                valueOk = true;
+                break;
+            }
+        }
+        if ( !valueOk ) {
+            throw new IllegalArgumentException(
+                "This ChoiceProperty:" + choiceProperty.getName() 
+                + "does not support the value:" + value );
+        }
         this.setValue( value );
+        this.property = choiceProperty;
     }
     
     public ChoiceAnnotation(ChoiceAnnotation choiceAnnotation) {
@@ -45,7 +61,8 @@ public class ChoiceAnnotation extends Annotation {
             return false;
         }
         ChoiceAnnotation annotation = (ChoiceAnnotation)obj;
-        return getValue().equals( annotation.getValue() );
+        return getValue().equals( annotation.getValue() ) &&
+               property.hasValuesEqualTo( annotation.getProperty() );
     }
 
     public String getValue() {

@@ -21,6 +21,7 @@
 	<typeAlias type="net.bioclipse.structuredb.domain.TextProperty"         alias="TextProperty"         />
 	<typeAlias type="net.bioclipse.structuredb.domain.RealNumberProperty"   alias="RealNumberProperty"   />
 	<typeAlias type="net.bioclipse.structuredb.domain.ChoiceProperty"       alias="ChoiceProperty"       />
+	<typeAlias type="net.bioclipse.structuredb.domain.PropertyChoice"       alias="PropertyChoice"       /> 
 	
 	<sqlMap resource="sqlMap.xml"   />
 

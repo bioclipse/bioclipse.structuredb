@@ -48,6 +48,7 @@ public class TableCreator {
             "TextProperty.sql",
             "RealNumberProperty.sql",
             "ChoiceProperty.sql",
+            "PropertyChoice.sql",
           };
 
     public static final TableCreator INSTANCE = new TableCreator();

@@ -12,7 +12,9 @@
 package net.bioclipse.structuredb.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -22,19 +24,38 @@ import java.util.List;
 public class ChoiceProperty extends Property {
 
     private List<ChoiceAnnotation> annotations;
+    private Set<PropertyChoice> propertyChoices;
+    
+    public Set<PropertyChoice> getPropertyChoices() {
+    
+        return propertyChoices;
+    }
+    
+    public void setPropertyChoices( Set<PropertyChoice> propertyChoices ) {
+    
+        this.propertyChoices = propertyChoices;
+    }
 
     public ChoiceProperty() {
-        super();
-        annotations = new ArrayList<ChoiceAnnotation>();
+        this("");
+        propertyChoices.add( new PropertyChoice("") );
     }
 
     public ChoiceProperty(String name) {
         super( name );
-        annotations = new ArrayList<ChoiceAnnotation>();
+        annotations     = new ArrayList<ChoiceAnnotation>();
+        propertyChoices = new HashSet<PropertyChoice>();
     }
 
-    public ChoiceProperty(ChoiceProperty choiceProperty) {
+    public ChoiceProperty( ChoiceProperty choiceProperty ) {
         super( choiceProperty );
+        annotations 
+            = new ArrayList<ChoiceAnnotation>();
+        propertyChoices
+            = new HashSet<PropertyChoice>();
+        for ( PropertyChoice p : propertyChoices) {
+            propertyChoices.add( new PropertyChoice(p) );
+        }
     }
 
     public List<ChoiceAnnotation> getAnnotations() {

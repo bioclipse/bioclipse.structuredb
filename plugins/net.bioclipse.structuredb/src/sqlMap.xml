@@ -80,6 +80,10 @@
 	<resultMap class="ChoiceProperty" id="ChoiceProperty" extends="BaseObject">
 		<result property="name" column="name" />
 	</resultMap>
+	
+	<resultMap class="PropertyChoice" id="PropertyChoice" extends="BaseObject">
+		<result property="value" column="value" />
+	</resultMap>
 
 <!--+
     | SQL FRAGMENTS
@@ -130,6 +134,10 @@
 	
 	<sql id="ChoiceProperty-fields">
 		c.name AS name
+	</sql>
+	
+	<sql id="PropertyChoice-fields">
+		p.val AS value
 	</sql>
 	
 <!--+
@@ -190,6 +198,11 @@
 		                    VALUES ( '$id$', '$id$',     '$name$' );
 	</insert>
 	
+	<insert id="PropertyChoice.insert">
+		INSERT INTO PropertyChoice (   id,     baseObject, val  )
+		                    VALUES ( '$id$', '$id$',     '$value$' );
+	</insert>
+	
 <!--+
     | SELECT STATEMENTS
     +-->
@@ -244,17 +257,6 @@
 		WHERE 
 			a.id = #value#
 	</select>
-	
-	<select id="Annotation.getByName" resultMap="Annotation" parameterClass="String">
-        SELECT 
-            <include refid="BaseObject-fields" />,
-            <include refid="Annotation-fields"      />
-        FROM
-            Annotation a INNER JOIN BaseObject b ON
-            a.baseObject = b.id
-        WHERE 
-            a.name = #value#
-    </select>
 	
 	<select id="Annotation.getDBMolecules" resultMap="DBMolecule" parameterClass="String">
 		SELECT 
@@ -502,6 +504,28 @@
             AND sl.AnnotationId = #annotationId#
     </select>
     
+   	<select id="PropertyChoice.getAll" resultMap="PropertyChoice">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="PropertyChoice-fields" />
+		FROM
+			PropertyChoice p 
+			INNER JOIN BaseObject b ON
+			p.baseObject = b.id
+	</select>
+    
+   	<select id="PropertyChoice.getById" resultMap="PropertyChoice" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="PropertyChoice-fields" />
+		FROM
+			PropertyChoice p 
+			INNER JOIN BaseObject b ON
+			p.baseObject = b.id
+		WHERE 
+			p.id = #value#
+	</select>
+    
 <!--+
     | DELETE STATEMENTS
     +-->	
@@ -610,6 +634,15 @@
             ChoiceProperty
         SET
             name = '$name$'
+        WHERE
+            id = '$id$'
+    </update>
+
+    <update id="PropertyChoice.update" parameterClass="PropertyChoice">
+        UPDATE
+            PropertyChoice
+        SET
+            val = '$value$'
         WHERE
             id = '$id$'
     </update>

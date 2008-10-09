@@ -10,10 +10,10 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence;
 
-import net.bioclipse.structuredb.persistence.dao.AnnotationDaoTest;
 import net.bioclipse.structuredb.persistence.dao.ChoiceAnnotationDaoTest;
 import net.bioclipse.structuredb.persistence.dao.ChoicePropertyDaoTest;
 import net.bioclipse.structuredb.persistence.dao.DBMoleculeDaoTest;
+import net.bioclipse.structuredb.persistence.dao.PropertyChoiceDaoTest;
 import net.bioclipse.structuredb.persistence.dao.RealNumberAnnotationDaoTest;
 import net.bioclipse.structuredb.persistence.dao.RealNumberPropertyDaoTest;
 import net.bioclipse.structuredb.persistence.dao.TextAnnotationDaoTest;
@@ -33,7 +33,8 @@ import org.junit.runners.Suite.SuiteClasses;
                          RealNumberAnnotationDaoTest.class,
                          RealNumberPropertyDaoTest.class, 
                          TextAnnotationDaoTest.class, 
-                         TextPropertyDaoTest.class } )
+                         TextPropertyDaoTest.class,
+                         PropertyChoiceDaoTest.class } )
 public class AllPersistencyTestsSuite {
 
 }
