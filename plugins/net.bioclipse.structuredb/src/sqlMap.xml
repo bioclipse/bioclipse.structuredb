@@ -41,7 +41,6 @@
 
 	<resultMap class="Annotation" id="Annotation" extends="BaseObject">
 		<result property="DBMolecules" column="id" select="Annotation.getDBMolecules"  />
-		<result property="name"       column="name"                             />
 	</resultMap>
 	
 	<resultMap class="DBMolecule" id="DBMolecule" extends="BaseObject">
@@ -107,7 +106,6 @@
 	</sql>
 	
 	<sql id="Annotation-fields">
-	   a.name AS name
 	</sql>
 	
 	<sql id="TextAnnotation-fields">
@@ -158,8 +156,8 @@
 	</insert>
 	
 	<insert id="Annotation.insert">
-		INSERT INTO Annotation (   id,     baseObject, name   )
-		                VALUES ( '$id$', '$id$',     '$name$' );
+		INSERT INTO Annotation (   id,     baseObject   )
+		                VALUES ( '$id$', '$id$' );
 	</insert>
 	
 	<insert id="TextAnnotation.insert">

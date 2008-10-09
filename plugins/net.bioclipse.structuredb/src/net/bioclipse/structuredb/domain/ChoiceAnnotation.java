@@ -27,7 +27,7 @@ public class ChoiceAnnotation extends Annotation {
     }
 
     public ChoiceAnnotation(String value) {
-        super( value );
+        super();
         this.setValue( value );
     }
     

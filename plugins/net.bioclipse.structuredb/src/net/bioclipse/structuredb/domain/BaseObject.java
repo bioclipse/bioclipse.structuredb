@@ -37,7 +37,6 @@ import net.bioclipse.core.domain.IBioObject;
 public class BaseObject implements IBioObject, Comparable {
 
     private String id; //36 chars long unique id 
-    private String name;
     
     private User creator;
     private User lastEditor;
@@ -46,23 +45,10 @@ public class BaseObject implements IBioObject, Comparable {
     private Timestamp edited;
     
     public BaseObject() {
-        
+        super();
         this.id = UUID.randomUUID().toString();
-        name = "name";
     }
     
-    /**
-     * Creates a unique id and sets a name for the 
-     * BaseObject
-     * 
-     * @param name 
-     */
-    public BaseObject( String name ) {
-        
-        this.name = name;
-        this.id   = UUID.randomUUID().toString();
-    }
-
     /**
      * Creates a new BaseObject that is an exact copy of the 
      * given instance with the same id.
@@ -70,9 +56,8 @@ public class BaseObject implements IBioObject, Comparable {
      * @param obj
      */
     public BaseObject( BaseObject obj ) {
-        
+        super();
         this.id         = obj.id;
-        this.name       = obj.name;
         this.creator    = obj.getCreator();
         this.lastEditor = obj.getLastEditor();
     }
@@ -91,20 +76,6 @@ public class BaseObject implements IBioObject, Comparable {
         this.id = id;
     }
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name new name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      * 
@@ -112,7 +83,6 @@ public class BaseObject implements IBioObject, Comparable {
      */
     @Override
     public final int hashCode() {
-        
         return id.hashCode(); 
     }
 
@@ -157,9 +127,7 @@ public class BaseObject implements IBioObject, Comparable {
                 return false;
             }
         }
-        
-        return getName().equals( obj.getName() ) 
-              && id.equals( obj.getId()   );
+        return id.equals( obj.getId() );
     }
     
     /**
@@ -206,9 +174,10 @@ public class BaseObject implements IBioObject, Comparable {
     /*
      * This can not be done with equals since it is used for checking id
      */
+    @SuppressWarnings("unchecked")
     protected boolean objectsInHasSameValues( 
-        List<? extends BaseObject> list1, 
-        List<? extends BaseObject> list2 ) {
+            List<? extends BaseObject> list1, 
+            List<? extends BaseObject> list2 ) {
         
         list1 = new ArrayList<BaseObject>(list1);
         list2 = new ArrayList<BaseObject>(list2);
@@ -287,13 +256,13 @@ public class BaseObject implements IBioObject, Comparable {
     }
     
     public String toString() {
-        return "{" + this.getClass().getSimpleName() + ": " + name + "}"; 
+        return "{" + this.getClass().getSimpleName() + "}"; 
     }
 
     public int compareTo( Object o ) {
         if ( !(o instanceof BaseObject) ) {
             return 0;
         }
-        return this.name.compareTo( ( (BaseObject)o ).getName() );
+        return this.id.compareTo( ( (BaseObject)o ).getId() );
     }
 }

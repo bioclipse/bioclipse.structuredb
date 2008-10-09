@@ -26,7 +26,7 @@ public class RealNumberAnnotation extends Annotation {
     }
 
     public RealNumberAnnotation(double value) {
-        super( value + "" );
+        super();
         this.setValue( value );
     }
 

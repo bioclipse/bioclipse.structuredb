@@ -26,8 +26,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 
 @RunWith(value=Suite.class)
-@SuiteClasses( value = { AnnotationDaoTest.class,
-                         DBMoleculeDaoTest.class,
+@SuiteClasses( value = { DBMoleculeDaoTest.class,
                          UserDaoTest.class,
                          ChoiceAnnotationDaoTest.class,
                          ChoicePropertyDaoTest.class,
@@ -35,6 +34,6 @@ import org.junit.runners.Suite.SuiteClasses;
                          RealNumberPropertyDaoTest.class, 
                          TextAnnotationDaoTest.class, 
                          TextPropertyDaoTest.class } )
-public class PersistencyTestsSuite {
+public class AllPersistencyTestsSuite {
 
 }

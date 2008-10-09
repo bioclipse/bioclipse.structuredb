@@ -36,6 +36,7 @@ import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IDatabaseListener.DatabaseUpdateType;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
@@ -220,7 +221,7 @@ public class StructuredbManager implements IStructuredbManager {
                                         String folderName )
             throws IllegalArgumentException {
 
-        Annotation annotation = new Annotation(folderName);
+        Annotation annotation = new TextAnnotation(folderName);
         checkDatabaseName(databaseName);
         internalManagers.get(databaseName).insertAnnotation(annotation);
         logger.debug("Annotation " + folderName 
@@ -294,14 +295,6 @@ public class StructuredbManager implements IStructuredbManager {
     public List<User> allUsers(String databaseName) {
         checkDatabaseName(databaseName);
         return internalManagers.get(databaseName).retrieveAllUsers();
-    }
-
-    public Annotation annotationByName( String databaseName,
-                              String folderName ) {
-
-        checkDatabaseName(databaseName);
-        return internalManagers.get(databaseName)
-                               .retrieveAnnotationByName(folderName);
     }
 
     public List<DBMolecule> allStructuresByName( String databaseName,

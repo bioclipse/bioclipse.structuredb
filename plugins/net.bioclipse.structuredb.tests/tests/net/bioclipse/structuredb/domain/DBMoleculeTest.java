@@ -20,7 +20,7 @@ import org.openscience.cdk.exception.CDKException;
 import testData.TestData;
 
 
-public class StructureTest {
+public class DBMoleculeTest {
 
     static {
         System.setProperty(
@@ -52,19 +52,19 @@ public class StructureTest {
         
         AtomContainer testMolecule = TestData.getCycloPropane();
         
-        Annotation annotation         = new Annotation("label");
-        Annotation label2        = new Annotation("label2");
-        DBMolecule dBMolecule = new DBMolecule("Cyclopropane", testMolecule);
+        Annotation annotation  = new TextAnnotation();
+        Annotation annotation2 = new TextAnnotation();
+        DBMolecule dBMolecule  = new DBMolecule("Cyclopropane", testMolecule);
         
         dBMolecule.addAnnotation( annotation );
         
         assertTrue( dBMolecule.getAnnotations().contains(annotation) );
         assertTrue( annotation.getDBMolecules().contains(dBMolecule) );
         
-        dBMolecule.addAnnotation( label2 );
+        dBMolecule.addAnnotation( annotation2 );
         
-        assertTrue( dBMolecule.getAnnotations().contains(label2)     );
-        assertTrue( label2.getDBMolecules().contains(dBMolecule) );
+        assertTrue( dBMolecule.getAnnotations().contains(annotation2) );
+        assertTrue( annotation2.getDBMolecules().contains(dBMolecule) );
         assertTrue( annotation.getDBMolecules().contains(dBMolecule)  );
         
         dBMolecule.removeAnnotation( annotation );

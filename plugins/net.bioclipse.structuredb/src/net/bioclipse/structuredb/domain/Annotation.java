@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @author jonalv
  */
-public class Annotation extends BaseObject {
+public abstract class Annotation extends BaseObject {
 
     private List<DBMolecule> dBMolecules;
     
@@ -33,11 +33,6 @@ public class Annotation extends BaseObject {
             = new ArrayList<DBMolecule>( annotation.getDBMolecules() );
     }
 
-    public Annotation(String name) {
-        super(name);
-        dBMolecules = new ArrayList<DBMolecule>();
-    }
-    
     public boolean hasValuesEqualTo( BaseObject obj ) {
         
         if( !super.hasValuesEqualTo(obj) ) {
@@ -88,4 +83,9 @@ public class Annotation extends BaseObject {
             dBMolecule.getAnnotations().remove( this );
         }
     }
+
+    /**
+     * @return the Annotations property
+     */
+    public abstract Property getProperty();
 }

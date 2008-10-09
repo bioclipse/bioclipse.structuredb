@@ -77,22 +77,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                                                 String structureName );
 
     /**
-     * Retrieves a folder with a given name from a database with 
-     * a given name.
-     *
-     * @param databaseName
-     * @param annotationName
-     * @return a folder
-     */
-    @PublishedMethod ( params = "String databaseName, " +
-    		                    "String annotationName",
-                       methodSummary = "Fetches a annotation by a " +
-                       		           "given name from a database " +
-                       		           "with a given name" )
-    public Annotation annotationByName( String databaseName,
-                                        String annotationName );
-
-    /**
      * Retrieves a user with a given username from a database 
      * with a given name.
      *

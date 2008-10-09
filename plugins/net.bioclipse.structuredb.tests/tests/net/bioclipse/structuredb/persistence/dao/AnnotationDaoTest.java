@@ -12,6 +12,7 @@ package net.bioclipse.structuredb.persistence.dao;
 
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
 
@@ -19,13 +20,14 @@ import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
  * @author jonalv
  *
  */
-public class AnnotationDaoTest extends GenericDaoTest<Annotation> {
+public abstract class AnnotationDaoTest<T extends Annotation> 
+                extends GenericDaoTest<T> {
 
-    
-    public AnnotationDaoTest() {
-        super(Annotation.class);
+    @SuppressWarnings("unchecked")
+    public AnnotationDaoTest(Class c) {
+        super( c );
     }
-    
+
     @Override
     public void testDelete() {
         
@@ -45,29 +47,11 @@ public class AnnotationDaoTest extends GenericDaoTest<Annotation> {
         assertFalse( dBMolecule.getAnnotations().contains( object1 ) );
     }
     
-    public void testGetByName() {
-
+    public void testGetDBMolecules() {
+        DBMolecule dBMolecule      = new DBMolecule();
+        DBMolecule unusedStructure = new DBMolecule();
         IDBMoleculeDao dBMoleculeDao 
             = (IDBMoleculeDao) applicationContext.getBean("dBMoleculeDao");
-
-        DBMolecule s = new DBMolecule();
-        dBMoleculeDao.insert( s );
-        Annotation annotation = new Annotation("label");
-        addCreatorAndEditor(annotation);
-        dao.insert(annotation);
-        assertEquals( annotation, 
-                      ( (IAnnotationDao)dao ).getByName(annotation.getName()) );
-        annotation.addDBMolecule( s );
-        dao.update( annotation );
-        assertEquals( 1, 
-                      ( (IAnnotationDao)dao ).getByName( annotation.getName() )
-                                        .getDBMolecules().size() );
-    }
-    
-    public void testGetStructures() {
-        DBMolecule dBMolecule       = new DBMolecule();
-        DBMolecule unusedStructure = new DBMolecule();
-        IDBMoleculeDao dBMoleculeDao = (IDBMoleculeDao) applicationContext.getBean("dBMoleculeDao");
         dBMoleculeDao.insert( dBMolecule );
         dBMoleculeDao.insert( unusedStructure );
         

@@ -32,12 +32,6 @@ public class StructuredbInstanceManager
        implements IStructuredbInstanceManager {
 
     private User loggedInUser;
-    
-    public Annotation createAnnotation(String name) {
-        Annotation annotation = new Annotation(name);
-        annotationDao.insert(annotation);
-        return annotation;
-    }
 
     public void insertAnnotation(Annotation annotation) {
         annotationDao.insert(annotation);
@@ -85,10 +79,6 @@ public class StructuredbInstanceManager
 
     public List<User> retrieveAllUsers() {
         return new BioList<User>( userDao.getAll() );
-    }
-
-    public Annotation retrieveAnnotationByName(String name) {
-        return annotationDao.getByName(name);
     }
 
     public List<DBMolecule> retrieveStructureByName(String name) {

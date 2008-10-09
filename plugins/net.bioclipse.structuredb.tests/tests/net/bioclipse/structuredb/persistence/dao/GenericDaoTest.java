@@ -23,10 +23,11 @@ import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalT
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Generic base class for testing the daos. Performs tests of the basic dao methods.
- * Usage: Extend and give the domain class to be tested as generic class parameter.
- *        When extra testsmethods are written setUpTestEnvironment() needs to be called
- *        to initiate the dao.
+ * Generic base class for testing the daos. Performs tests of the basic 
+ * dao methods.
+ * Usage: Extend and give the domain class to be tested as generic class 
+ *        parameter. When extra testsmethods are written setUpTestEnvironment() 
+ *        needs to be called to initiate the dao.
  * 
  * @author jonalv
  *
@@ -72,13 +73,13 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
         testUser = new User("username", "password", true);
         
         ((ILoggedInUserKeeper)applicationContext.getBean("loggedInUserKeeper"))
-        .setLoggedInUser(null);
+            .setLoggedInUser(null);
         
         IUserDao userDao = (IUserDao) applicationContext.getBean("userDao");
         userDao.insert(testUser);
         
         ((ILoggedInUserKeeper)applicationContext.getBean("loggedInUserKeeper"))
-        .setLoggedInUser(testUser);
+            .setLoggedInUser(testUser);
         
         String daoName = domainClass.getSimpleName() + "Dao";
         daoName = firstToLowerCase(daoName);
@@ -86,19 +87,19 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
         try {
             object1 = domainClass.newInstance();
             object2 = domainClass.newInstance();
-            object2.setName("otherName");
             addCreatorAndEditor(object1);
             addCreatorAndEditor(object2);
         } 
         catch (Exception e) {
-            fail( e.toString() );
+            throw new RuntimeException(e);
         }
         dao.insert(object1);
         dao.insert(object2);
     }
     
     private String firstToLowerCase(String daoName) {
-        return Character.toLowerCase( daoName.charAt(0) ) + daoName.substring(1);
+        return Character.toLowerCase( daoName.charAt(0) ) 
+               + daoName.substring(1);
     }
 
     protected void addCreatorAndEditor(BaseObject object) {
@@ -119,17 +120,25 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
     }
     
     /**
-     * tests getting an instance by id of the domain type handled by the tested dao
+     * tests getting an instance by id of the domain type handled by the 
+     * tested dao
      */
     public void testGetById() {
         DomainType loadedObject1 = dao.getById( object1.getId() );
-        assertNotNull( "The lodaded object should not be null", loadedObject1 );
-        assertTrue( "The loaded object should have values equal to the original object", object1.hasValuesEqualTo(loadedObject1) );
-        assertNotSame( "The loaded object and the original object shuold not be the same",  object1, loadedObject1 );
+        assertNotNull( "The lodaded object should not be null", 
+                       loadedObject1 );
+        assertTrue( "The loaded object should have values equal to " 
+                        + "the original object", 
+        		    object1.hasValuesEqualTo(loadedObject1) );
+        assertNotSame( "The loaded object and the original object should "
+                           + "not be the same",  
+                       object1, 
+                       loadedObject1 );
     }
     
     /**
-     * tests deleting of an instance of the domain type handled by the tested dao 
+     * tests deleting of an instance of the domain type handled by the 
+     * tested dao 
      */
     public void testDelete() {
         
@@ -166,11 +175,11 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
      */
     public void testUpdate() {
         DomainType loadedObject1 = dao.getById( object1.getId() );
-        assertFalse(loadedObject1.getName().equals("edited"));
-        loadedObject1.setName("edited");
+        Timestamp before = loadedObject1.getEdited();
         dao.update(loadedObject1);
         loadedObject1 = dao.getById( object1.getId() );
-        assertEquals("name should have changed", "edited", loadedObject1.getName());
+        assertFalse( "timestamp should have changed", 
+                     before.equals( loadedObject1.getEdited() ) );
     }
     
     protected String[] getConfigLocations() {

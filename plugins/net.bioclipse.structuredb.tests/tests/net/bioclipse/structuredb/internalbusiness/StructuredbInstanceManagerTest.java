@@ -17,6 +17,7 @@ import java.util.List;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.persistence.HsqldbTestServerManager;
 import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
@@ -83,8 +84,8 @@ public class StructuredbInstanceManagerTest
                                 .setLoggedInUser(testUser);
     }
     
-    private Annotation createAnnotation(String name) {
-        Annotation annotation = new Annotation(name);
+    private TextAnnotation createAnnotation(String name) {
+        TextAnnotation annotation = new TextAnnotation(name);
         manager.insertAnnotation(annotation);
         return annotation;
     }
@@ -178,15 +179,6 @@ public class StructuredbInstanceManagerTest
                 Arrays.asList(new User[] {user1, user2}) ) );
     }
 
-    public void testRetrieveLibraryByName() {
-        Annotation annotation = createAnnotation("testLibrary1");
-        
-        assertNotNull(annotation);
-        
-        assertEquals( annotation, 
-                      manager.retrieveAnnotationByName("testLibrary1") );
-    }
-
     public void testRetrieveStructureByName() throws CDKException {
         DBMolecule dBMolecule = createStructure( "CycloOctan", 
                                                 TestData.getCycloOctan() );
@@ -205,15 +197,15 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testUpdateLibrary() {
-        Annotation annotation = createAnnotation("testLibrary");
-        annotation.setName("edited");
+        TextAnnotation annotation = createAnnotation("testLibrary");
+        annotation.setValue("edited");
         manager.update(annotation);
         assertEquals( annotation, annotationDao.getById(annotation.getId()) );
     }
 
     public void testUpdateUser() {
         User user = createUser("another username", "secret", false);
-        user.setName("edited");
+        user.setUserName("edited");
         manager.update(user);
         assertEquals( user, userDao.getById(user.getId()) );
     }

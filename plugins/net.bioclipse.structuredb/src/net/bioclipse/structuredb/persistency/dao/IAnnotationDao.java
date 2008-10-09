@@ -15,5 +15,4 @@ import net.bioclipse.structuredb.domain.Annotation;
 
 public interface IAnnotationDao extends IGenericDao<Annotation> {
 
-    public Annotation getByName(String name);
 }

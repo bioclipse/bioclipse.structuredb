@@ -27,7 +27,7 @@ public class TextAnnotation extends Annotation {
     }
 
     public TextAnnotation(String value) {
-        super( value );
+        super();
         this.setValue( value );
     }
 

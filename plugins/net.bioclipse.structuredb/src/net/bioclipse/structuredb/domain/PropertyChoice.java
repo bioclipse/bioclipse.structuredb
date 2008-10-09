@@ -6,22 +6,11 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *      Jonathan Alvarsson
  *     
  *******************************************************************************/
-package net.bioclipse.structuredb.persistence.dao;
+package net.bioclipse.structuredb.domain;
 
-import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 
-/**
- * @author jonalv
- *
- */
-public class RealNumberAnnotationDaoTest 
-             extends AnnotationDaoTest<RealNumberAnnotation> {
-
-    public RealNumberAnnotationDaoTest() {
-        super( RealNumberAnnotation.class );
-    }
+public class PropertyChoice extends BaseObject {
 
 }

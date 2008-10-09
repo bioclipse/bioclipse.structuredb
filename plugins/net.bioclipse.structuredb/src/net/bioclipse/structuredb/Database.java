@@ -100,11 +100,12 @@ public class Database extends AbstractServiceContainer
         List<IDatabase> children 
             = new ArrayList<IDatabase>();
         
-        for ( net.bioclipse.structuredb.domain.Annotation l : 
+        for ( net.bioclipse.structuredb.domain.Annotation a : 
                          Activator.getDefault()
                                   .getStructuredbManager()
                                   .allAnnotations( getName() ) ) {
-            children.add( new AnnotationUIModel( l.getName(), this ) );
+            children.add( new AnnotationUIModel( a.getProperty().getName(), 
+                                                 this ) );
             
         }
         setChildren( children );

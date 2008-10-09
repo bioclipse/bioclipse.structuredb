@@ -120,14 +120,6 @@ public interface IStructuredbInstanceManager {
      * @return all structures with the given name
      */
     public List<DBMolecule> retrieveStructureByName(String name);
-    
-    /**
-     * Loads the Annotation with the given name from the database
-     * 
-     * @param name
-     * @return a Annotation or null if no such Annotation exists
-     */
-    public Annotation retrieveAnnotationByName(String name);
 
     /**
      * @return the logged in user

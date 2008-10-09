@@ -16,6 +16,7 @@ import java.util.List;
 
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
 
@@ -58,9 +59,9 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         }};
     }
     
-    public void testPersistStructureWithLabel() {
+    public void testPersistStructureWithAnnotation() {
         
-        Annotation annotation = new Annotation();
+        Annotation annotation = new TextAnnotation();
         IAnnotationDao annotationDao 
             = (IAnnotationDao) applicationContext.getBean("annotationDao");
         addCreatorAndEditor(annotation);
@@ -80,7 +81,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
 
     public void testPersistStructureWithLabelId() {
         
-        Annotation annotation = new Annotation();
+        Annotation annotation = new TextAnnotation();
         IAnnotationDao annotationDao 
             = (IAnnotationDao) applicationContext.getBean("annotationDao");
         addCreatorAndEditor(annotation);
@@ -102,7 +103,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
     public void testUpdate() {
         super.testUpdate();
         
-        Annotation annotation = new Annotation();
+        Annotation annotation = new TextAnnotation();
         IAnnotationDao annotationDao 
             = (IAnnotationDao) applicationContext.getBean("annotationDao");
         addCreatorAndEditor(annotation);
@@ -179,9 +180,10 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
     }
     
     public void testGetAnnotations() {
-        Annotation annotation = new Annotation( "my annotation" );
-        Annotation unusedLabel = new Annotation( "I should not turn up" );
-        IAnnotationDao annotationDao = (IAnnotationDao) applicationContext.getBean("annotationDao");
+        Annotation annotation  = new TextAnnotation( "my annotation" );
+        Annotation unusedLabel = new TextAnnotation( "I should not turn up" );
+        IAnnotationDao annotationDao
+            = (IAnnotationDao) applicationContext.getBean("annotationDao");
         annotationDao.insert( annotation );
         annotationDao.insert( unusedLabel );
         

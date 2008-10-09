@@ -18,16 +18,20 @@ package net.bioclipse.structuredb.domain;
  */
 public abstract class Property extends BaseObject {
 
+    private String name;
+    
     public Property() {
         super();
     }
 
     public Property(String name) {
-        super( name );
+        super();
+        this.name = name;
     }
 
     public Property(Property property) {
         super(property);
+        this.name = property.name;
     }
 
     public boolean hasValuesEqualTo( BaseObject obj ) {
@@ -38,6 +42,14 @@ public abstract class Property extends BaseObject {
         if( !(obj instanceof Property) ) {
             return false;
         }
-        return true;
+        return ((Property)obj).getName().equals(name);
+    }
+
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
     }
 }

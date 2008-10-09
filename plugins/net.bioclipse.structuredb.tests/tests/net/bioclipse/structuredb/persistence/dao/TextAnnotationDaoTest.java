@@ -19,7 +19,7 @@ import net.bioclipse.structuredb.domain.TextAnnotation;
  *
  */
 public class TextAnnotationDaoTest 
-             extends GenericDaoTest<TextAnnotation> {
+             extends AnnotationDaoTest<TextAnnotation> {
 
     public TextAnnotationDaoTest() {
         super(TextAnnotation.class);

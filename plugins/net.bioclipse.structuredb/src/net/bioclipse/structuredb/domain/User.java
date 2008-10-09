@@ -41,7 +41,7 @@ public class User extends BaseObject {
     }
 
     public User(String userName, String password, boolean sudoer) {
-        super(userName);
+        super();
         this.userName      = userName;
         this.sudoer        = sudoer;
         passWordMd5        = passwordEncryptor.encryptPassword(password);
@@ -175,15 +175,5 @@ public class User extends BaseObject {
         if( baseObject.getCreator() != null ) {
             baseObject.setCreator(null);
         }
-    }
-    
-    @Override
-    public void setName(String name) {
-        userName = name;
-    }
-    
-    @Override
-    public String getName() {
-        return userName;
     }
 }

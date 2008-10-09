@@ -123,15 +123,16 @@ public class StructuredbManagerTest
 
     public void testCreatingTwoAnnotationsInTwoDatabases() {
 
-        Annotation f2 = manager.createAnnotation(database2, "testAnnotation2");
-        assertNotNull(f2);
-        Annotation f1 = manager.createAnnotation(database1, "testAnnotation1");
-        assertNotNull(f1);
+        Annotation a2 = manager.createAnnotation(database2, "testAnnotation2");
+        assertNotNull(a2);
+        Annotation a1 = manager.createAnnotation(database1, "testAnnotation1");
+        assertNotNull(a1);
 
-        assertEquals( f2,
-                      manager.annotationByName( database2, f2.getName() ) );
-        assertEquals( f1,
-                      manager.annotationByName( database1, f1.getName() ) );
+        fail();
+//        assertEquals( a2,
+//                      manager.annotationByName( database2, a2.getName() ) );
+//        assertEquals( a1,
+//                      manager.annotationByName( database1, a1.getName() ) );
     }
 
     public void testListSubstructureSearchResults() throws Exception {
@@ -320,12 +321,13 @@ public class StructuredbManagerTest
                                               FileNotFoundException {
         IFile file = new MockIFile( TestData.getTestSDFFilePath() );
         manager.addStructuresFromSDF( database1, file );
-        Annotation annotation
-            = manager.annotationByName( database1, 
-                                        file.getName()
-                                            .replaceAll("\\..*?$", "") );
-        assertNotNull(annotation);
-        assertEquals( 2, annotation.getDBMolecules().size() );
+        fail();
+//        Annotation annotation
+//            = manager.annotationByName( database1, 
+//                                        file.getName()
+//                                            .replaceAll("\\..*?$", "") );
+//        assertNotNull(annotation);
+//        assertEquals( 2, annotation.getDBMolecules().size() );
     }
 
     public void testCreatingAndRetrievingAnnotations() {
@@ -333,9 +335,6 @@ public class StructuredbManagerTest
         Annotation folder2 = manager.createAnnotation(database1, "folder2");
         assertNotNull(folder1);
         assertNotNull(folder2);
-        assertEquals( folder1,
-                      manager
-                      .annotationByName( database1, folder1.getName() ) );
         List<Annotation> annotations = manager.allAnnotations(database1);
         assertTrue( annotations.contains(folder1) );
         assertTrue( annotations.contains(folder2) );
@@ -365,7 +364,7 @@ public class StructuredbManagerTest
         assertNotNull(user1);
         assertNotNull(user2);
         assertEquals( user1,
-                      manager.userByName(database1, user1.getName()) );
+                      manager.userByName(database1, user1.getUserName()) );
         List<User> users = manager.allUsers(database1);
         assertTrue( users.contains(user1) );
         assertTrue( users.contains(user2) );
@@ -440,21 +439,22 @@ public class StructuredbManagerTest
                                                "test", 
                                                cdk.fromSmiles( "CCC" ) );
         Annotation annotation = manager.createAnnotation( database1, "a annotation" );
-        annotation.setName( "edited" );
-        annotation.addDBMolecule( s );
-        manager.save( database1, annotation );
-        Annotation loaded = manager.annotationByName( database1, "edited" );
-        
-        List<DBMolecule> dBMolecules = loaded.getDBMolecules();
-        assertEquals( 1, dBMolecules.size() );
-        
-        assertEquals( s, dBMolecules.get( 0 ) );
-        
-        annotation.removeDBMolecule( s );
-        manager.save( database1, annotation );
-        loaded = manager.annotationByName( database1, "edited" );
-
-        assertEquals( 0, loaded.getDBMolecules().size() );
+        fail();
+//        annotation.setName( "edited" );
+//        annotation.addDBMolecule( s );
+//        manager.save( database1, annotation );
+//        Annotation loaded = manager.annotationByName( database1, "edited" );
+//        
+//        List<DBMolecule> dBMolecules = loaded.getDBMolecules();
+//        assertEquals( 1, dBMolecules.size() );
+//        
+//        assertEquals( s, dBMolecules.get( 0 ) );
+//        
+//        annotation.removeDBMolecule( s );
+//        manager.save( database1, annotation );
+//        loaded = manager.annotationByName( database1, "edited" );
+//
+//        assertEquals( 0, loaded.getDBMolecules().size() );
     }
     
     public void testListSMARTSQueryResults() 
@@ -497,14 +497,6 @@ public class StructuredbManagerTest
         assertTrue(found);
     }
     
-    public void testRetrieveingAnnotationByName() {
-        
-        Annotation l = manager.createAnnotation( database1, "name" );
-        Annotation loaded = manager.annotationByName( database1,  
-                                                      l.getName() );
-        assertTrue( l.hasValuesEqualTo( loaded ) );
-    }
-    
     public void testDeletingAnnotationWithStructures() 
                 throws BioclipseException {
         Annotation l = manager.createAnnotation( database1, "annotation1" );
@@ -518,35 +510,5 @@ public class StructuredbManagerTest
         manager.deleteWithStructures( database1, l );
         assertFalse( manager.allStructures( database1 ).contains( s ) );
         assertFalse( manager.allAnnotations(     database1 ).contains( l ) );
-    }
-    
-    public void testCreatingStructuresAndAddingToAnnotation() 
-                throws BioclipseException {
-        
-        ICDKMolecule toluene = cdk.fromSmiles("Cc1ccccc1");
-        ICDKMolecule ethanol = cdk.fromSmiles("CCO");
-        ICDKMolecule oxygen  = cdk.fromSmiles("O=O");
-        manager.createDatabase("myDatabase");
-        toluene = manager.createStructure( "myDatabase", 
-                                           "toluene", 
-                                           toluene );
-        ethanol = manager.createStructure( "myDatabase", 
-                                           "ethanol", 
-                                           ethanol );
-        oxygen  = manager.createStructure( "myDatabase", 
-                                           "oxygen", 
-                                           oxygen );
-        Annotation myMolecules = manager
-                                 .createAnnotation( "myDatabase", 
-                                                    "my molecules" );
-        myMolecules.addDBMolecule( (DBMolecule)toluene );
-        myMolecules.addDBMolecule( (DBMolecule)ethanol );
-        myMolecules.addDBMolecule( (DBMolecule)oxygen  );
-        manager.save("myDatabase", myMolecules);
-        Annotation loadedAnnotation 
-            = manager.annotationByName( "myDatabase", 
-                                        myMolecules.getName() );
-        assertTrue( "Should have equal values",
-                    myMolecules.hasValuesEqualTo( loadedAnnotation ) );
     }
 }

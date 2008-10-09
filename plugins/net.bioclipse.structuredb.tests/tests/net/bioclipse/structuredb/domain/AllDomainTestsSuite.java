@@ -18,7 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(value=Suite.class)
 @SuiteClasses( value = { BaseObjectTest.class,
                          LabelTest.class,
-                         StructureTest.class,
+                         DBMoleculeTest.class,
                          UserTest.class,
                          ChoiceAnnotationTest.class,
                          RealNumberAnnotationTest.class,
@@ -26,6 +26,6 @@ import org.junit.runners.Suite.SuiteClasses;
                          ChoicePropertyTest.class,
                          RealNumberPropertyTest.class,
                          TextPropertyTest.class } )
-public class DomainTestsSuite {
+public class AllDomainTestsSuite {
 
 }

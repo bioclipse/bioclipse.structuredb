@@ -28,14 +28,14 @@ public class LabelTest {
         DBMolecule s2 = new DBMolecule();
         s2.setName("s2");
         
-        Annotation library1 = new Annotation();
-        library1.addDBMolecule(s1);
-        Annotation library2 = new Annotation(library1);
-        Annotation library3 = new Annotation();
-        library3.addDBMolecule(s2);
+        TextAnnotation annotation1 = new TextAnnotation();
+        annotation1.addDBMolecule(s1);
+        TextAnnotation annotation2 = new TextAnnotation(annotation1);
+        TextAnnotation annotation3 = new TextAnnotation();
+        annotation3.addDBMolecule(s2);
         
-        assertTrue(  library1.hasValuesEqualTo(library2) );
-        assertFalse( library1.hasValuesEqualTo(library3) );
+        assertTrue(  annotation1.hasValuesEqualTo(annotation2) );
+        assertFalse( annotation1.hasValuesEqualTo(annotation3) );
     }
     
     @Test
@@ -43,7 +43,7 @@ public class LabelTest {
 
         DBMolecule dBMolecule = new DBMolecule();
         
-        Annotation annotation = new Annotation();
+        TextAnnotation annotation = new TextAnnotation();
         
         annotation.addDBMolecule( dBMolecule );
     

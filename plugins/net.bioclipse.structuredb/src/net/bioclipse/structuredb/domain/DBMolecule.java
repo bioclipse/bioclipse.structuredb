@@ -53,6 +53,7 @@ public class DBMolecule extends BaseObject
     private byte[]           persistedFingerPrint;
     private String           smiles;
     private List<Annotation> annotations;
+    private String           name;
 
     public DBMolecule() {
         super();
@@ -62,12 +63,13 @@ public class DBMolecule extends BaseObject
         atomContainer = new AtomContainer();
         smiles = "";
         annotations = new ArrayList<Annotation>();
+        name = "DBMolecule" + getId();
     }
 
     public DBMolecule( String name, AtomContainer molecule ) {
-
-        super(name);
+        super();
         this.atomContainer = molecule;
+        this.name = name;
 
         Fingerprinter fingerprinter = new Fingerprinter();
         try {
@@ -97,7 +99,8 @@ public class DBMolecule extends BaseObject
     public DBMolecule( String name, ICDKMolecule cdkMolecule )
            throws BioclipseException {
 
-        super(name);
+        super();
+        this.name            = name;
         fingerPrint          = cdkMolecule.getFingerprint(false);
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         atomContainer        = cdkMolecule.getAtomContainer();
@@ -326,5 +329,15 @@ public class DBMolecule extends BaseObject
             }
         }
         return fingerPrint;
+    }
+    
+    public String getName() {
+        
+        return name;
+    }
+    
+    public void setName( String name ) {
+    
+        this.name = name;
     }
 }

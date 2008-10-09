@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
+import java.sql.Timestamp;
+
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 
 
@@ -19,7 +21,7 @@ import net.bioclipse.structuredb.domain.ChoiceAnnotation;
  *
  */
 public class ChoiceAnnotationDaoTest 
-             extends GenericDaoTest<ChoiceAnnotation> {
+             extends AnnotationDaoTest<ChoiceAnnotation> {
 
     public ChoiceAnnotationDaoTest() {
         super( ChoiceAnnotation.class );
@@ -28,14 +30,13 @@ public class ChoiceAnnotationDaoTest
     @Override
     public void testUpdate() {
         ChoiceAnnotation loadedObject1 = dao.getById( object1.getId() );
-        assertFalse(loadedObject1.getName().equals("edited"));
-        loadedObject1.setName("edited");
+        Timestamp before = loadedObject1.getEdited();
         loadedObject1.setValue("edited");
         dao.update(loadedObject1);
         loadedObject1 = dao.getById( object1.getId() );
-        assertEquals( "name should have changed", 
-                      "edited", loadedObject1.getName() );
         assertEquals( "value should have changed", 
                       "edited", loadedObject1.getValue() );
+        assertFalse( "Edited timestamp should ahve changed",
+                     before.equals( loadedObject1.getEdited() ) );
     }
 }
