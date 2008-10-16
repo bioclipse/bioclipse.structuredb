@@ -223,4 +223,22 @@ public class StructuredbInstanceManager
         // TODO Auto-generated method stub
         
     }
+
+    public void update( ChoiceProperty choiceProperty ) {
+
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void update( RealNumberProperty realNumberProperty ) {
+
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void update( TextProperty textProperty ) {
+
+        // TODO Auto-generated method stub
+        
+    }
 }

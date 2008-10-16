@@ -248,4 +248,25 @@ public interface IStructuredbInstanceManager {
      * @param textProperty
      */
     public void delete( TextProperty textProperty );
+
+    /**
+     * Update textProperty in Database
+     * 
+     * @param choiceProperty
+     */
+    public void update( ChoiceProperty choiceProperty );
+
+    /**
+     * Update realNumberProperty in database
+     * 
+     * @param realNumberProperty
+     */
+    public void update( RealNumberProperty realNumberProperty );
+
+    /**
+     * Update textProperty in database
+     * 
+     * @param textProperty
+     */
+    public void update( TextProperty textProperty );
 }

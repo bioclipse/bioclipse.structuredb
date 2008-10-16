@@ -378,22 +378,24 @@ public class StructuredbInstanceManagerTest
         
         assertNotNull(user);
         
-        assertEquals( user,
-                      manager.retrieveUserByUsername("another username") );
+        assertTrue( user.hasValuesEqualTo( 
+                        manager.retrieveUserByUsername("another username") ) );
     }
 
     public void testUpdateLibrary() {
         TextAnnotation annotation = createAnnotation("testLibrary");
         annotation.setValue("edited");
         manager.update(annotation);
-        assertEquals( annotation, annotationDao.getById(annotation.getId()) );
+        assertTrue( 
+            annotation.hasValuesEqualTo( 
+                annotationDao.getById(annotation.getId()) ) );
     }
 
     public void testUpdateUser() {
         User user = createUser("another username", "secret", false);
         user.setUserName("edited");
         manager.update(user);
-        assertEquals( user, userDao.getById(user.getId()) );
+        assertTrue( user.hasValuesEqualTo( userDao.getById(user.getId()) ) );
     }
 
     public void testUpdateStructure() throws CDKException {
@@ -401,7 +403,68 @@ public class StructuredbInstanceManagerTest
                                                TestData.getCycloOctan() );
         dBMolecule.setName("edited");
         manager.update(dBMolecule);
-        assertEquals( dBMolecule, dBMoleculeDao.getById(dBMolecule.getId()) );
+        assertTrue( 
+            dBMolecule.hasValuesEqualTo( 
+                dBMoleculeDao.getById(dBMolecule.getId()) ) );
+    }
+    
+    public void testUpdateChoiceProperty() {
+        ChoiceProperty choiceProperty = createChoiceProperty( "name" );
+        choiceProperty.setName( "edited" );
+        manager.update( choiceProperty );
+        assertTrue( 
+            choiceProperty.hasValuesEqualTo( 
+                choicePropertyDao.getById( choiceProperty.getId() ) ) );
+    }
+    
+    public void testUpdateRealNumberProperty() {
+        RealNumberProperty realNumberProperty 
+            = createRealNumberProperty( "name" );
+        realNumberProperty.setName( "edited" );
+        manager.update( realNumberProperty );
+        assertTrue(
+            realNumberProperty.hasValuesEqualTo( 
+                realNumberPropertyDao.getById( 
+                    realNumberProperty.getId() ) ) );
+    }
+    
+    public void testUpdateTextProperty() {
+        TextProperty textProperty = createTextProperty( "name" );
+        textProperty.setName( "edited" );
+        manager.update( textProperty );
+        assertTrue(
+            textProperty.hasValuesEqualTo( 
+                textPropertyDao.getById( textProperty.getId() ) ) );
+    }
+    
+    public void testUpdateChoiceAnnotation() {
+        ChoiceAnnotation choiceAnnotation 
+            = createChoiceAnnotation( "name", createChoiceProperty( "name" ) );
+        choiceAnnotation.setValue( "edited" );
+        manager.update( choiceAnnotation );
+        assertTrue(
+            choiceAnnotation.hasValuesEqualTo( 
+                choiceAnnotationDao.getById( choiceAnnotation.getId() ) ) );
+    }
+    
+    public void testUpdateRealNumberAnnotation() {
+        RealNumberAnnotation realNumberAnnotation
+            = createRealNumberAnnotation( 1, 
+                                          createRealNumberProperty( "name" ) );
+        manager.update( realNumberAnnotation );
+        assertTrue( 
+            realNumberAnnotation.hasValuesEqualTo( 
+                realNumberAnnotationDao.getById( 
+                    realNumberAnnotation.getId() ) ) );
+    }
+    
+    public void testUpdateTextAnnotation() {
+        TextAnnotation textAnnotation 
+            = createTextAnnotation( "value", createTextProperty( "name" ) );
+        manager.update( textAnnotation );
+        assertTrue( 
+            textAnnotation.hasValuesEqualTo( 
+                textAnnotationDao.getById( textAnnotation.getId() ) ) );
     }
     
     public void testDeleteLabelAndStructures() throws CDKException {
