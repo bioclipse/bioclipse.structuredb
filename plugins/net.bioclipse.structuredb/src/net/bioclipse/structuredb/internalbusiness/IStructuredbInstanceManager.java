@@ -15,7 +15,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.structuredb.domain.Annotation;
+import net.bioclipse.structuredb.domain.ChoiceAnnotation;
+import net.bioclipse.structuredb.domain.ChoiceProperty;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.RealNumberAnnotation;
+import net.bioclipse.structuredb.domain.RealNumberProperty;
+import net.bioclipse.structuredb.domain.TextAnnotation;
+import net.bioclipse.structuredb.domain.TextProperty;
 import net.bioclipse.structuredb.domain.User;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -176,4 +182,49 @@ public interface IStructuredbInstanceManager {
      */
     public void deleteWithStructures( Annotation annotation, 
                                       IProgressMonitor monitor );
+    
+    /**
+     * Insert textproperty into database
+     * 
+     * @param textProperty
+     */
+    public void insertTextProperty( TextProperty textProperty );
+
+    
+    /**
+     * Insert choiceProperty into database
+     * 
+     * @param choiceProperty
+     */
+    public void insertChoiceProperty( ChoiceProperty choiceProperty );
+
+    /**
+     * Insert realNumberProperty into database
+     * 
+     * @param realNumberProperty
+     */
+    public void insertRealNumberProperty( 
+        RealNumberProperty realNumberProperty );
+
+    /**
+     * Insert choiceAnnotation into database
+     * 
+     * @param choiceAnnotation
+     */
+    public void insertChoiceAnnotation( ChoiceAnnotation choiceAnnotation );
+
+    /**
+     * Insert realNumberAnnotation into database
+     * 
+     * @param realNumberAnnotation
+     */
+    public void insertRealNumberAnnotation( 
+        RealNumberAnnotation realNumberAnnotation );
+
+    /**
+     * Insert textAnnotation into database
+     * 
+     * @param textAnnotation
+     */
+    public void insertTextAnnotation( TextAnnotation textAnnotation );
 }

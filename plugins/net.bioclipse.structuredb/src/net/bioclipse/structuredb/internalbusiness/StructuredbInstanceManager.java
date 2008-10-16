@@ -20,7 +20,13 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 
 import net.bioclipse.core.domain.BioList;
 import net.bioclipse.structuredb.domain.Annotation;
+import net.bioclipse.structuredb.domain.ChoiceAnnotation;
+import net.bioclipse.structuredb.domain.ChoiceProperty;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.RealNumberAnnotation;
+import net.bioclipse.structuredb.domain.RealNumberProperty;
+import net.bioclipse.structuredb.domain.TextAnnotation;
+import net.bioclipse.structuredb.domain.TextProperty;
 import net.bioclipse.structuredb.domain.User;
 
 /**
@@ -161,5 +167,42 @@ public class StructuredbInstanceManager
         }
         annotationDao.delete( annotation.getId() );
         monitor.done();
+    }
+
+    public void insertChoiceAnnotation( ChoiceAnnotation choiceAnnotation ) {
+
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void insertChoiceProperty( ChoiceProperty choiceProperty ) {
+
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void insertRealNumberAnnotation(
+                                            RealNumberAnnotation realNumberAnnotation ) {
+
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void insertRealNumberProperty( RealNumberProperty realNumberProperty ) {
+
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void insertTextAnnotation( TextAnnotation textAnnotation ) {
+
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void insertTextProperty( TextProperty textProperty ) {
+
+        // TODO Auto-generated method stub
+        
     }
 }
