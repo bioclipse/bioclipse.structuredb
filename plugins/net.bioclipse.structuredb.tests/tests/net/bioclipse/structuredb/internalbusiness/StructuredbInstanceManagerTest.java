@@ -285,7 +285,60 @@ public class StructuredbInstanceManagerTest
         manager.delete(dBMolecule);
         assertFalse( dBMoleculeDao.getAll().contains(dBMolecule) );
     }
-
+    
+    public void testDeleteChoiceProperty() {
+        ChoiceProperty choiceProperty = createChoiceProperty( "name" );
+        assertTrue( choicePropertyDao.getAll().contains( choiceProperty ) );
+        manager.delete( choiceProperty );
+        assertFalse( choicePropertyDao.getAll().contains( choiceProperty ) );
+    }
+    
+    public void testDeleteRealNumberProperty() {
+        RealNumberProperty realNumberProperty 
+            = createRealNumberProperty( "name" );
+        assertTrue( realNumberPropertyDao.getAll()
+                                         .contains( realNumberProperty ) );
+        manager.delete( realNumberProperty );
+        assertFalse( realNumberPropertyDao.getAll()
+                                          .contains( realNumberProperty ) );
+    }
+    
+    public void testDeleteTextProperty() {
+        TextProperty textProperty = createTextProperty( "name" );
+        assertTrue( textPropertyDao.getAll().contains( textProperty ) );
+        manager.delete( textProperty );
+        assertFalse( textPropertyDao.getAll().contains( textProperty ) );
+    }
+    
+    public void testDeleteTextAnnotation() {
+        TextAnnotation textAnnotation 
+            = createTextAnnotation( "value", 
+                                    createTextProperty( "name" ) );
+        assertTrue( textPropertyDao.getAll().contains( textAnnotation ) );
+        manager.delete( textAnnotation );
+        assertFalse( textPropertyDao.getAll().contains( textAnnotation ) );
+    }
+    
+    public void testRealNumberAnnotationDelete() {
+        RealNumberAnnotation realNumberAnnotation 
+            = createRealNumberAnnotation( 1, 
+                                          createRealNumberProperty( "name" ) );
+        assertTrue( realNumberAnnotationDao.getAll()
+                                           .contains(realNumberAnnotation) );
+        manager.delete( realNumberAnnotation );
+        assertFalse( realNumberAnnotationDao.getAll()
+                                            .contains(realNumberAnnotation) );
+    }
+    
+    public void testTextAnnotationDelete() {
+        TextAnnotation textAnnotation 
+            = createTextAnnotation( "value",
+                                    createTextProperty( "name" ) );
+        assertTrue( textAnnotationDao.getAll().contains( textAnnotation ) );
+        manager.delete( textAnnotation );
+        assertFalse( textAnnotationDao.getAll().contains( textAnnotation ) );
+    }
+    
     public void testRetrieveAllLibraries() {
         Annotation folder1 = createAnnotation("testLibrary1");
         Annotation folder2 = createAnnotation("testLibrary2");

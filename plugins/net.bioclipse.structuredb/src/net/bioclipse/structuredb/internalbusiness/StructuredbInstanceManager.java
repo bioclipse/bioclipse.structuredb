@@ -205,4 +205,22 @@ public class StructuredbInstanceManager
         // TODO Auto-generated method stub
         
     }
+
+    public void delete( ChoiceProperty choiceProperty ) {
+
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void delete( RealNumberProperty realNumberProperty ) {
+
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void delete( TextProperty textProperty ) {
+
+        // TODO Auto-generated method stub
+        
+    }
 }

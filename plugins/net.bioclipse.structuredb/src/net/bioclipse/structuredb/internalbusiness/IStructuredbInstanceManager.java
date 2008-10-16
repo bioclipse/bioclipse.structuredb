@@ -227,4 +227,25 @@ public interface IStructuredbInstanceManager {
      * @param textAnnotation
      */
     public void insertTextAnnotation( TextAnnotation textAnnotation );
+
+    /**
+     * Delete choiceProperty from the database
+     * 
+     * @param choiceProperty
+     */
+    public void delete( ChoiceProperty choiceProperty );
+
+    /**
+     * Delete realNumberProperty from the database
+     * 
+     * @param realNumberProperty
+     */
+    public void delete( RealNumberProperty realNumberProperty );
+
+    /**
+     * Delete textProperty from database
+     * 
+     * @param textProperty
+     */
+    public void delete( TextProperty textProperty );
 }
