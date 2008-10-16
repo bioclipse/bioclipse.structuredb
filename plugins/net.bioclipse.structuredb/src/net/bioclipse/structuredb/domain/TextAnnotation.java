@@ -79,4 +79,9 @@ public class TextAnnotation extends Annotation {
 
         this.value = value;
     }
+
+    @Override
+    public String getSortOf() {
+        return "Text";
+    }
 }

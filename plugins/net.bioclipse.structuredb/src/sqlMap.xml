@@ -41,6 +41,11 @@
 
 	<resultMap class="Annotation" id="Annotation" extends="BaseObject">
 		<result property="DBMolecules" column="id" select="Annotation.getDBMolecules"  />
+		<discriminator column="sortOf" javaType="String">
+			<subMap value="Text"       resultMap="TextAnnotation"/>
+			<subMap value="RealNumber" resultMap="RealNumberAnnotation"/>
+			<subMap value="Choice"     resultMap="ChoiceAnnotation"/>
+		</discriminator>
 	</resultMap>
 	
 	<resultMap class="DBMolecule" id="DBMolecule" extends="BaseObject">
@@ -58,7 +63,7 @@
 	</resultMap>
 	
 	<resultMap class="TextAnnotation" id="TextAnnotation" extends="Annotation">
-		<result property="value" column="value" />
+		<result property="value" column="value" /> 
 	</resultMap>
 	
 	<resultMap class="RealNumberAnnotation" id="RealNumberAnnotation" extends="Annotation">
@@ -110,6 +115,7 @@
 	</sql>
 	
 	<sql id="Annotation-fields">
+		a.sortOf AS sortOf
 	</sql>
 	
 	<sql id="TextAnnotation-fields">
@@ -164,8 +170,8 @@
 	</insert>
 	
 	<insert id="Annotation.insert">
-		INSERT INTO Annotation (   id,     baseObject   )
-		                VALUES ( '$id$', '$id$' );
+		INSERT INTO Annotation (   id,     baseObject, sortOf   )
+		                VALUES ( '$id$', '$id$',     '$sortOf$' );
 	</insert>
 	
 	<insert id="TextAnnotation.insert">
@@ -250,7 +256,7 @@
 	<select id="Annotation.getById" resultMap="Annotation" parameterClass="String">
 		SELECT 
 			<include refid="BaseObject-fields" />,
-			<include refid="Annotation-fields"      />
+			<include refid="Annotation-fields" />
 		FROM
 			Annotation a INNER JOIN BaseObject b ON
 			a.baseObject = b.id
@@ -291,8 +297,7 @@
 	
 	<select id="DBMolecule.getAnnotations" resultMap="Annotation" parameterClass="String">
         SELECT 
-            <include refid="BaseObject-fields" />,
-            <include refid="Annotation-fields"  />
+            <include refid="BaseObject-fields" />
         FROM
             Annotation a INNER JOIN BaseObject b ON a.baseObject = b.id, 
             DBMoleculeAnnotation sl
@@ -303,7 +308,7 @@
 	<select id="Annotation.getAll" resultMap="Annotation">
 		SELECT
 			<include refid="BaseObject-fields" />,
-			<include refid="Annotation-fields"      />
+			<include refid="Annotation-fields" />
 		FROM
 			Annotation a INNER JOIN BaseObject b ON
 			a.baseObject = b.id
@@ -576,12 +581,7 @@
     </update>
     
     <update id="Annotation.update" parameterClass="Annotation">
-        UPDATE
-            Annotation
-        SET
-            name = '$name$'
-        WHERE
-            id = '$id$'    	
+
     </update>
     
     <update id="ChoiceAnnotation.update" parameterClass="ChoiceAnnotation">

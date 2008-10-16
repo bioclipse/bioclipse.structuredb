@@ -61,7 +61,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
     
     public void testPersistStructureWithAnnotation() {
         
-        Annotation annotation = new TextAnnotation();
+        TextAnnotation annotation = new TextAnnotation();
         IAnnotationDao annotationDao 
             = (IAnnotationDao) applicationContext.getBean("annotationDao");
         addCreatorAndEditor(annotation);

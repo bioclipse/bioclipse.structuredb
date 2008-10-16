@@ -21,6 +21,8 @@ import java.util.List;
 public abstract class Annotation extends BaseObject {
 
     private List<DBMolecule> dBMolecules;
+
+    public abstract String getSortOf();
     
     public Annotation() {
         super();

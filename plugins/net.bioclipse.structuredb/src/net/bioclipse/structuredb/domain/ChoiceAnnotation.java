@@ -85,4 +85,9 @@ public class ChoiceAnnotation extends Annotation {
 
         this.value = value;
     }
+
+    @Override
+    public String getSortOf() {
+        return "Choice";
+    }
 }

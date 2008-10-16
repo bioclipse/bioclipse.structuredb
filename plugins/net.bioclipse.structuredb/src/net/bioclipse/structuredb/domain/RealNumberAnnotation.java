@@ -68,4 +68,9 @@ public class RealNumberAnnotation extends Annotation {
     public void setValue( double value ) {
         this.value = value;
     }
+
+    @Override
+    public String getSortOf() {
+        return "RealNumber";
+    }
 }
