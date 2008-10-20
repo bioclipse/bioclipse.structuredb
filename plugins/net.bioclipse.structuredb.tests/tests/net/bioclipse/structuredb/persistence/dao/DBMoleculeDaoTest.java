@@ -74,7 +74,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         dao.insert(dBMolecule);
         
         DBMolecule loaded = dao.getById( dBMolecule.getId() );
-        assertNotNull("The lodaded object shuold not be null", loaded);
+        assertNotNull("The lodaded object should not be null", loaded);
         assertNotSame(dBMolecule, loaded);
         assertTrue( dBMolecule.hasValuesEqualTo(loaded) );
         assertTrue( "Should contain the annotation",

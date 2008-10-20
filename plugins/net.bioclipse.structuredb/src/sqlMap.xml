@@ -310,9 +310,9 @@
 			<include refid="RealNumberAnnotation-fields" />
         FROM
             Annotation a INNER JOIN BaseObject b           ON a.baseObject = b.id
-                         INNER JOIN TextAnnotation t       ON t.annotation = a.id
-                         INNER JOIN ChoiceAnnotation c     ON c.annotation = a.id
-                         INNER JOIN RealNumberAnnotation r ON r.annotation = a.id, 
+                         LEFT OUTER JOIN TextAnnotation t       ON t.annotation = a.id
+                         LEFT OUTER JOIN ChoiceAnnotation c     ON c.annotation = a.id
+                         LEFT OUTER JOIN RealNumberAnnotation r ON r.annotation = a.id, 
             DBMoleculeAnnotation sl
         WHERE 
             sl.dBMoleculeId = #value# AND sl.annotationId = a.id
