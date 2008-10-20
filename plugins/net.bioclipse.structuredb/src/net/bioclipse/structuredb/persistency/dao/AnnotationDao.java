@@ -23,15 +23,15 @@ import net.bioclipse.structuredb.domain.DBMolecule;
  * @author jonalv
  *
  */
-public class AnnotationDao extends GenericDao<Annotation> 
-                           implements IAnnotationDao {
+public abstract class AnnotationDao<T extends Annotation> extends GenericDao<T> 
+                                      implements IAnnotationDao<T> {
 
-    public AnnotationDao() {
-        super(Annotation.class);
+    public AnnotationDao(Class<T> type) {
+        super( type );
     }
 
     @Override
-    public void insert(Annotation annotation) {
+    public void insert(T annotation) {
         getSqlMapClientTemplate().update( "BaseObject.insert", 
                                           annotation );
         getSqlMapClientTemplate().update( "Annotation.insert",
@@ -39,7 +39,7 @@ public class AnnotationDao extends GenericDao<Annotation>
     }
     
     @Override
-    public void update(Annotation annotation) {
+    public void update(T annotation) {
         getSqlMapClientTemplate().update( "BaseObject.update", 
                                           annotation );
         getSqlMapClientTemplate().update( "Annotation.update", 
@@ -47,7 +47,7 @@ public class AnnotationDao extends GenericDao<Annotation>
         fixStructureAnnotation( annotation );
     }
     
-    private void fixStructureAnnotation( final Annotation annotation ) {
+    private void fixStructureAnnotation( final T annotation ) {
 
         getSqlMapClientTemplate()
         .delete( "Annotation.deleteDBMoleculeCoupling", annotation );

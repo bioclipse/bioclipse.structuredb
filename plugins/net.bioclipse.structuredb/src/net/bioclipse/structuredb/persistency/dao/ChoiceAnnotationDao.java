@@ -20,25 +20,19 @@ import net.bioclipse.structuredb.domain.ChoiceAnnotation;
  *
  */
 public class ChoiceAnnotationDao 
-       extends GenericDao<ChoiceAnnotation> 
+       extends AnnotationDao<ChoiceAnnotation> 
        implements IChoiceAnnotationDao {
 
     @Override
     public void insert(ChoiceAnnotation annotation) {
-        getSqlMapClientTemplate().update( "BaseObject.insert", 
-                                          annotation );
-        getSqlMapClientTemplate().update( "Annotation.insert",
-                                          annotation );
+        super.insert( annotation );
         getSqlMapClientTemplate().update( "ChoiceAnnotation.insert",
                                           annotation );
     }
     
     @Override
     public void update(ChoiceAnnotation annotation) {
-        getSqlMapClientTemplate().update( "BaseObject.update", 
-                                          annotation );
-        getSqlMapClientTemplate().update( "Annotation.update", 
-                                          annotation );
+        super.update( annotation );
         getSqlMapClientTemplate().update( "ChoiceAnnotation.update", 
                                           annotation );
     }    

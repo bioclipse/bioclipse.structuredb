@@ -20,8 +20,8 @@ import net.bioclipse.structuredb.domain.TextAnnotation;
  * @author jonalv
  *
  */
-public class TextAnnotationDao extends GenericDao<TextAnnotation> implements
-        ITextAnnotationDao {
+public class TextAnnotationDao extends AnnotationDao<TextAnnotation> 
+                               implements ITextAnnotationDao {
 
     public TextAnnotationDao() {
         super( TextAnnotation.class );
@@ -29,20 +29,14 @@ public class TextAnnotationDao extends GenericDao<TextAnnotation> implements
 
     @Override
     public void insert(TextAnnotation annotation) {
-        getSqlMapClientTemplate().update( "BaseObject.insert", 
-                                          annotation );
-        getSqlMapClientTemplate().update( "Annotation.insert",
-                                          annotation );
+        super.insert( annotation );
         getSqlMapClientTemplate().update( "TextAnnotation.insert",
                                           annotation );
     }
     
     @Override
     public void update(TextAnnotation annotation) {
-        getSqlMapClientTemplate().update( "BaseObject.update", 
-                                          annotation );
-        getSqlMapClientTemplate().update( "Annotation.update", 
-                                          annotation );
+        super.update( annotation );
         getSqlMapClientTemplate().update( "TextAnnotation.update", 
                                           annotation );
     }    

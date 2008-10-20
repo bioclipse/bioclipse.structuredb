@@ -18,7 +18,7 @@ import net.bioclipse.structuredb.domain.RealNumberAnnotation;
  *
  */
 public class RealNumberAnnotationDao 
-       extends GenericDao<RealNumberAnnotation> 
+       extends AnnotationDao<RealNumberAnnotation> 
        implements IRealNumberAnnotationDao {
 
     public RealNumberAnnotationDao() {
@@ -27,20 +27,14 @@ public class RealNumberAnnotationDao
     
     @Override
     public void insert(RealNumberAnnotation annotation) {
-        getSqlMapClientTemplate().update( "BaseObject.insert", 
-                                          annotation );
-        getSqlMapClientTemplate().update( "Annotation.insert",
-                                          annotation );
+        super.insert( annotation );
         getSqlMapClientTemplate().update( "RealNumberAnnotation.insert",
                                           annotation );
     }
     
     @Override
     public void update(RealNumberAnnotation annotation) {
-        getSqlMapClientTemplate().update( "BaseObject.update", 
-                                          annotation );
-        getSqlMapClientTemplate().update( "Annotation.update", 
-                                          annotation );
+        super.update( annotation );
         getSqlMapClientTemplate().update( "RealNumberAnnotation.update", 
                                           annotation );
     }    

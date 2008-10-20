@@ -23,6 +23,7 @@ public class RealNumberAnnotation extends Annotation {
     
     public RealNumberAnnotation() {
         super();
+        this.setProperty( new RealNumberProperty() );
     }
 
     public RealNumberAnnotation(double value, RealNumberProperty property) {

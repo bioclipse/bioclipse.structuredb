@@ -85,6 +85,7 @@
 		<property name="interceptorNames">
             <list>
                 <value>auditCreationAdvisor</value>
+				<value>auditUpdateAdvisor</value>
             </list>
         </property>
 	</bean>
@@ -109,6 +110,7 @@
 		<property name="interceptorNames">
             <list>
                 <value>auditCreationAdvisor</value>
+                <value>auditUpdateAdvisor</value>
             </list>
         </property>
 	</bean>
@@ -133,6 +135,7 @@
 		<property name="interceptorNames">
             <list>
                 <value>auditCreationAdvisor</value>
+                <value>auditUpdateAdvisor</value>
             </list>
         </property>
 	</bean>
@@ -157,6 +160,7 @@
 		<property name="interceptorNames">
             <list>
                 <value>auditCreationAdvisor</value>
+                <value>auditUpdateAdvisor</value>
             </list>
         </property>
 	
@@ -182,6 +186,7 @@
 		<property name="interceptorNames">
             <list>
                 <value>auditCreationAdvisor</value>
+                <value>auditUpdateAdvisor</value>
             </list>
         </property>
 	</bean>
@@ -206,6 +211,7 @@
 		<property name="interceptorNames">
             <list>
                 <value>auditCreationAdvisor</value>
+                <value>auditUpdateAdvisor</value>
             </list>
         </property>
 	</bean>
@@ -230,6 +236,7 @@
 		<property name="interceptorNames">
             <list>
                 <value>auditCreationAdvisor</value>
+                <value>auditUpdateAdvisor</value>
             </list>
         </property>
 	</bean>
@@ -254,6 +261,7 @@
 		<property name="interceptorNames">
             <list>
                 <value>auditCreationAdvisor</value>
+                <value>auditUpdateAdvisor</value>
             </list>
         </property>
 	</bean>
@@ -278,6 +286,7 @@
 		<property name="interceptorNames">
             <list>
                 <value>auditCreationAdvisor</value>
+                <value>auditUpdateAdvisor</value>
             </list>
         </property>
 	</bean>	
@@ -302,6 +311,7 @@
 		<property name="interceptorNames">
             <list>
                 <value>auditCreationAdvisor</value>
+                <value>auditUpdateAdvisor</value>
             </list>
         </property>
 	</bean>	
@@ -343,6 +353,19 @@
     </bean>
 	
 	<bean id="auditCreationAdvice"
+        class="net.bioclipse.structuredb.internalbusiness.AuditCreationAdvice">
+        <property name="loggedInUserKeeper">
+            <ref local="loggedInUserKeeper"/>
+        </property>
+    </bean>
+    
+    <bean id="auditUpdateAdvisor"
+          class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="advice"  ref="auditCreationAdvice" />
+        <property name="pattern" value=".*update.*" />
+    </bean>
+	
+	<bean id="auditUpdateAdvice"
         class="net.bioclipse.structuredb.internalbusiness.AuditCreationAdvice">
         <property name="loggedInUserKeeper">
             <ref local="loggedInUserKeeper"/>
