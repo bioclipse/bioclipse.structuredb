@@ -41,30 +41,33 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
         getSqlMapClientTemplate().update( "BaseObject.insert", 
                                           dBMolecule );
         getSqlMapClientTemplate()
-        .update( type.getSimpleName() + ".insert", dBMolecule );
+            .update( type.getSimpleName() + ".insert", 
+                     dBMolecule );
         fixStructureAnnotation(dBMolecule);
     }
     
     private void fixStructureAnnotation( final DBMolecule dBMolecule ) {
 
         getSqlMapClientTemplate()
-        .delete( "DBMolecule.deleteAnnotationCoupling", 
-                 dBMolecule );
-        for( final Annotation l : dBMolecule.getAnnotations() ) {
+            .delete( "DBMolecule.deleteAnnotationCoupling", 
+                     dBMolecule );
+        for ( final Annotation a : dBMolecule.getAnnotations() ) {
             Map<String, String> params = new HashMap<String, String>() {
                 private static final long serialVersionUID = 1L;
 
                 {
-                    put( "annotationId", l.getId()         );
-                    put( "dBMoleculeId",  dBMolecule.getId() );
+                    put( "annotationId", a.getId()          );
+                    put( "dBMoleculeId", dBMolecule.getId() );
                 }
             };
-            if ( (Integer) getSqlMapClientTemplate()
-                .queryForObject( "DBMoleculeAnnotation.hasConnection", 
-                                 params ) == 0 ) {
+            if ( (Integer) getSqlMapClientTemplate().queryForObject( 
+                     "DBMoleculeAnnotation.hasConnection", 
+                      params ) 
+                 == 0 ) {
+                
                 getSqlMapClientTemplate()
-                .update( "DBMoleculeAnnotation.connect", 
-                         params );
+                    .update( "DBMoleculeAnnotation.connect", 
+                             params );
             }
         }
     }
