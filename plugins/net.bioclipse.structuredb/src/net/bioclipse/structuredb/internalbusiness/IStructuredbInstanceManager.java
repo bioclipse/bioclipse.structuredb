@@ -33,13 +33,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public interface IStructuredbInstanceManager {
 
     /**
-     * Persists changes in a given library retrieved from the database.
-     * 
-     * @param annotation
-     */
-    public void update(Annotation annotation);
-    
-    /**
      * Persists changes in a given user retrieved from the database.
      * 
      * @param user
@@ -59,13 +52,6 @@ public interface IStructuredbInstanceManager {
      * @param user to be inserted
      */
     public void insertUser( User user );
-    
-    /**
-     * Insert a folder into the database
-     * 
-     * @param annotation to be inserted
-     */
-    public void insertAnnotation( Annotation annotation );
     
     /**
      * Insert a structure into the database
@@ -99,12 +85,12 @@ public interface IStructuredbInstanceManager {
     /**
      * @return all structures
      */
-    public List<DBMolecule> retrieveAllStructures();
+    public List<DBMolecule> retrieveAllMolecules();
     
     /**
      * @return all libraries
      */
-    public List<Annotation> retrieveAllAnnotations();
+    public List<? extends Annotation> retrieveAllAnnotations();
     
     /**
      * @return all users
@@ -148,7 +134,7 @@ public interface IStructuredbInstanceManager {
      * @param s
      * @param folderId
      */
-    public void insertStructureInAnnotation( DBMolecule s, 
+    public void insertMoleculeInAnnotation( DBMolecule s, 
                                              String folderId );
 
     /**
@@ -157,7 +143,7 @@ public interface IStructuredbInstanceManager {
      * 
      * @return
      */
-    public int numberOfStructures();
+    public int numberOfMolecules();
 
     /**
      * @param s
@@ -269,4 +255,16 @@ public interface IStructuredbInstanceManager {
      * @param textProperty
      */
     public void update( TextProperty textProperty );
+
+    
+    /**
+     * Update choiceAnnotation in database
+     * 
+     * @param choiceAnnotation
+     */
+    public void update( ChoiceAnnotation choiceAnnotation );
+
+    public void update( RealNumberAnnotation realNumberAnnotation );
+
+    public void update( TextAnnotation textAnnotation );
 }

@@ -47,7 +47,6 @@ public class StructuredbInstanceManagerTest
     
     protected IStructuredbInstanceManager manager;
     
-    protected IAnnotationDao           annotationDao;
     protected IUserDao                 userDao;
     protected IDBMoleculeDao           dBMoleculeDao;
     protected IChoicePropertyDao       choicePropertyDao;
@@ -82,9 +81,6 @@ public class StructuredbInstanceManagerTest
         manager                = (IStructuredbInstanceManager) 
                                  applicationContext
                                      .getBean("structuredbInstanceManager");
-        annotationDao          = (IAnnotationDao) 
-                                 applicationContext
-                                     .getBean("annotationDao");
         dBMoleculeDao          = (IDBMoleculeDao) 
                                  applicationContext
                                      .getBean("dBMoleculeDao");
@@ -130,17 +126,11 @@ public class StructuredbInstanceManagerTest
             manager.insertTextProperty(textProperty);
         }
         TextAnnotation annotation = new TextAnnotation(name, textProperty);
-        manager.insertAnnotation(annotation);
+        manager.insertTextAnnotation(annotation);
         return annotation;
     }
     
-    public void testInsertLabel() {
-        Annotation annotation = createAnnotation("testLabel");
-        List<Annotation> allLabels = annotationDao.getAll(); 
-        assertTrue( allLabels.contains(annotation) );
-    }
-
-    private DBMolecule createStructure( String name, 
+    private DBMolecule createMolecule( String name, 
                                         AtomContainer atomContainer) 
                        throws CDKException {
         long before = System.currentTimeMillis();
@@ -153,12 +143,12 @@ public class StructuredbInstanceManagerTest
         return dBMolecule;
     }
     
-    public void testInsertStructure() throws CDKException {
+    public void testInsertDBMolecule() throws CDKException {
         
-        DBMolecule dBMolecule = createStructure( "CycloOctan", 
-                                               TestData.getCycloOctan() );
-        List<DBMolecule> allStructures = dBMoleculeDao.getAll(); 
-        assertTrue( allStructures.contains(dBMolecule) );
+        DBMolecule dBMolecule = createMolecule( "CycloOctan", 
+                                                 TestData.getCycloOctan() );
+        List<DBMolecule> allMolecules = dBMoleculeDao.getAll(); 
+        assertTrue( allMolecules.contains(dBMolecule) );
     }
 
     private User createUser(String username, String password, boolean sudoer) {
@@ -264,13 +254,6 @@ public class StructuredbInstanceManagerTest
         assertTrue( allTextAnnotations.contains( textAnnotation ) );
     }
 
-    public void testDeleteAnnotation() {
-        Annotation annotation = createAnnotation("testLabel");
-        assertTrue( annotationDao.getAll().contains(annotation) );
-        manager.delete(annotation);
-        assertFalse( annotationDao.getAll().contains(annotation) );
-    }
-
     public void testDeleteUser() {
         User user = createUser("another username", "secrest", true);
         assertTrue( userDao.getAll().contains(user) );
@@ -279,7 +262,7 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testDeleteStructure() throws CDKException {
-        DBMolecule dBMolecule = createStructure( "CycloOcan", 
+        DBMolecule dBMolecule = createMolecule( "CycloOcan", 
                                                TestData.getCycloOctan() );
         assertTrue( dBMoleculeDao.getAll().contains(dBMolecule) );
         manager.delete(dBMolecule);
@@ -339,21 +322,21 @@ public class StructuredbInstanceManagerTest
         assertFalse( textAnnotationDao.getAll().contains( textAnnotation ) );
     }
     
-    public void testRetrieveAllLibraries() {
-        Annotation folder1 = createAnnotation("testLibrary1");
-        Annotation folder2 = createAnnotation("testLibrary2");
+    public void testRetrieveAllAnnotations() {
+        Annotation annotation1 = createAnnotation("testAnnotation1");
+        Annotation annotation2 = createAnnotation("testAnnotation2");
         
-        assertTrue( annotationDao.getAll().containsAll( 
-                Arrays.asList(new Annotation[] {folder1, folder2}) ) );
+        assertTrue( manager.retrieveAllAnnotations().containsAll( 
+                Arrays.asList(new Annotation[] {annotation1, annotation2}) ) );
     }
 
     public void testRetrieveAllStructures() throws CDKException {
-        DBMolecule structure1 = createStructure( "CycloOctan", 
+        DBMolecule structure1 = createMolecule( "CycloOctan", 
                                                  TestData.getCycloOctan() );
-        DBMolecule structure2 = createStructure( "CycloPropane", 
+        DBMolecule structure2 = createMolecule( "CycloPropane", 
                                                  TestData.getCycloPropane() );
         
-        assertTrue( dBMoleculeDao.getAll().containsAll(
+        assertTrue( manager.retrieveAllMolecules().containsAll(
                 Arrays.asList(new DBMolecule[] {structure1, structure2}) ) );
     }
 
@@ -361,12 +344,12 @@ public class StructuredbInstanceManagerTest
         User user1 = createUser("username1", "secret", false);
         User user2 = createUser("username2", "masterkey", true);
         
-        assertTrue( userDao.getAll().containsAll( 
+        assertTrue( manager.retrieveAllUsers().containsAll( 
                 Arrays.asList(new User[] {user1, user2}) ) );
     }
 
     public void testRetrieveStructureByName() throws CDKException {
-        DBMolecule dBMolecule = createStructure( "CycloOctan", 
+        DBMolecule dBMolecule = createMolecule( "CycloOctan", 
                                                 TestData.getCycloOctan() );
         assertTrue( manager
                     .retrieveStructureByName("CycloOctan")
@@ -383,12 +366,12 @@ public class StructuredbInstanceManagerTest
     }
 
     public void testUpdateLibrary() {
-        TextAnnotation annotation = createAnnotation("testLibrary");
+        TextAnnotation annotation = createAnnotation("testAnnotatin");
         annotation.setValue("edited");
         manager.update(annotation);
         assertTrue( 
             annotation.hasValuesEqualTo( 
-                annotationDao.getById(annotation.getId()) ) );
+                textAnnotationDao.getById(annotation.getId()) ) );
     }
 
     public void testUpdateUser() {
@@ -398,9 +381,9 @@ public class StructuredbInstanceManagerTest
         assertTrue( user.hasValuesEqualTo( userDao.getById(user.getId()) ) );
     }
 
-    public void testUpdateStructure() throws CDKException {
-        DBMolecule dBMolecule = createStructure( "CycloOctan", 
-                                               TestData.getCycloOctan() );
+    public void testUpdateMolecule() throws CDKException {
+        DBMolecule dBMolecule = createMolecule( "CycloOctan", 
+                                                TestData.getCycloOctan() );
         dBMolecule.setName("edited");
         manager.update(dBMolecule);
         assertTrue( 
@@ -467,24 +450,24 @@ public class StructuredbInstanceManagerTest
                 textAnnotationDao.getById( textAnnotation.getId() ) ) );
     }
     
-    public void testDeleteLabelAndStructures() throws CDKException {
-        DBMolecule dBMolecule = createStructure( "CycloOcan", 
+    public void testDeleteMoleculeAndStructures() throws CDKException {
+        DBMolecule dBMolecule = createMolecule( "CycloOcan", 
                                                TestData.getCycloOctan() );
-        Annotation annotation = createAnnotation( "test" );
+        TextAnnotation annotation = createAnnotation( "test" );
         dBMolecule.addAnnotation( annotation );
         manager.update( annotation );
         
-        assertTrue( annotationDao.getById( annotation.getId() )
-                            .getDBMolecules()
-                            .contains(dBMolecule) );
+        assertTrue( textAnnotationDao.getById( annotation.getId() )
+                                     .getDBMolecules()
+                                     .contains(dBMolecule) );
         manager.deleteWithStructures( annotation, null );
         assertFalse( dBMoleculeDao.getAll().contains(dBMolecule) );
-        assertFalse( annotationDao.getAll().contains(annotation) );
+        assertFalse( textAnnotationDao.getAll().contains(annotation) );
     }
     
     public void testAllStructureIterator() throws CDKException {
         testRetrieveAllStructures();
-        List<DBMolecule> dBMolecules = manager.retrieveAllStructures();
+        List<DBMolecule> dBMolecules = manager.retrieveAllMolecules();
         Iterator<DBMolecule> structureIterator = manager.allStructuresIterator();
         assertTrue( structureIterator.hasNext() );
         while ( structureIterator.hasNext() ) {

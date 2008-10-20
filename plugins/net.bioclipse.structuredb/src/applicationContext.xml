@@ -325,6 +325,12 @@
         </property>
 	</bean>	
 	
+<!--+
+    |
+    | The manager
+    |
+    +-->
+	
 	<bean id="structuredbInstanceManagerTarget"
 	      class="net.bioclipse.structuredb.internalbusiness.StructuredbInstanceManager">
 	   <property name="userDao">
@@ -332,9 +338,6 @@
 	   </property>
 	   <property name="DBMoleculeDao">
            <ref local="dBMoleculeDao"/>
-       </property>
-       <property name="annotationDao">
-           <ref local="annotationDao"/>
        </property>
 	</bean>
 	

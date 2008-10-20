@@ -289,7 +289,7 @@ public class StructuredbManager implements IStructuredbManager {
     public List<DBMolecule> allStructures(String databaseName) {
         checkDatabaseName(databaseName);
         return internalManagers.get(databaseName)
-                               .retrieveAllStructures();
+                               .retrieveAllMolecules();
     }
 
     public List<User> allUsers(String databaseName) {
@@ -378,7 +378,7 @@ public class StructuredbManager implements IStructuredbManager {
             }
 
             internalManagers.get(databaseName)
-                            .insertStructureInAnnotation( s, 
+                            .insertMoleculeInAnnotation( s, 
                                                           annotationId );
             monitor.worked( maintTaskTick );
         }
@@ -555,7 +555,7 @@ public class StructuredbManager implements IStructuredbManager {
         if(monitor != null) {
             monitor.beginTask( "substructure search", 
                                internalManagers.get( databaseName )
-                                               .numberOfStructures() );
+                                               .numberOfMolecules() );
         }
         
         return new SmartsQueryIterator( internalManagers

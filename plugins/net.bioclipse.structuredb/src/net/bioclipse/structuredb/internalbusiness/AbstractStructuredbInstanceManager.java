@@ -12,7 +12,14 @@
 package net.bioclipse.structuredb.internalbusiness;
 
 import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
+import net.bioclipse.structuredb.persistency.dao.IChoiceAnnotationDao;
+import net.bioclipse.structuredb.persistency.dao.IChoicePropertyDao;
 import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
+import net.bioclipse.structuredb.persistency.dao.IPropertyChoiceDao;
+import net.bioclipse.structuredb.persistency.dao.IRealNumberAnnotationDao;
+import net.bioclipse.structuredb.persistency.dao.IRealNumberPropertyDao;
+import net.bioclipse.structuredb.persistency.dao.ITextAnnotationDao;
+import net.bioclipse.structuredb.persistency.dao.ITextPropertyDao;
 import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
 /**
@@ -22,20 +29,81 @@ import net.bioclipse.structuredb.persistency.dao.IUserDao;
 public abstract class AbstractStructuredbInstanceManager 
                       implements IStructuredbInstanceManager {
 
-    protected IAnnotationDao annotationDao;
-    protected IDBMoleculeDao dBMoleculeDao;
-    protected IUserDao       userDao;
+    protected IDBMoleculeDao           dBMoleculeDao;
+    protected IUserDao                 userDao;
+    protected IChoiceAnnotationDao     choiceAnnotationDao;
+    protected IRealNumberAnnotationDao realNumberAnnotationDao;
+    protected ITextAnnotationDao       textAnnotationDAO;
+    protected IChoicePropertyDao       choicePropertyDao;
+    protected IRealNumberPropertyDao   realNumberPropertyDao;
+    protected ITextPropertyDao         textPropertyDao;
+    protected IPropertyChoiceDao       propertyChoiceDao;
     
+    
+    public IChoiceAnnotationDao getChoiceAnnotationDao() {
+        return choiceAnnotationDao;
+    }
+    
+    public void setChoiceAnnotationDao( 
+        IChoiceAnnotationDao choiceAnnotationDao ) {
+        
+        this.choiceAnnotationDao = choiceAnnotationDao;
+    }
+    
+    public IRealNumberAnnotationDao getRealNumberAnnotationDao() {
+        return realNumberAnnotationDao;
+    }
+    
+    public void setRealNumberAnnotationDao(
+        IRealNumberAnnotationDao realNumberAnnotationDao ) {
+    
+        this.realNumberAnnotationDao = realNumberAnnotationDao;
+    }
+    
+    public ITextAnnotationDao getTextAnnotationDAO() {
+        return textAnnotationDAO;
+    }
+    
+    public void setTextAnnotationDAO( ITextAnnotationDao textAnnotationDAO ) {
+        this.textAnnotationDAO = textAnnotationDAO;
+    }
+    
+    public IChoicePropertyDao getChoicePropertyDao() {
+        return choicePropertyDao;
+    }
+    
+    public void setChoicePropertyDao( IChoicePropertyDao choicePropertyDao ) {
+        this.choicePropertyDao = choicePropertyDao;
+    }
+    
+    public IRealNumberPropertyDao getRealNumberPropertyDao() {
+        return realNumberPropertyDao;
+    }
+    
+    public void setRealNumberPropertyDao(
+        IRealNumberPropertyDao realNumberPropertyDao ) {
+    
+        this.realNumberPropertyDao = realNumberPropertyDao;
+    }
+    
+    public ITextPropertyDao getTextPropertyDao() {
+        return textPropertyDao;
+    }
+    
+    public void setTextPropertyDao( ITextPropertyDao textPropertyDao ) {
+        this.textPropertyDao = textPropertyDao;
+    }
+    
+    public IPropertyChoiceDao getPropertyChoiceDao() {
+        return propertyChoiceDao;
+    }
+    
+    public void setPropertyChoiceDao( IPropertyChoiceDao propertyChoiceDao ) {
+        this.propertyChoiceDao = propertyChoiceDao;
+    }
+
     public AbstractStructuredbInstanceManager() {
         
-    }
-
-    public IAnnotationDao getLabelDao() {
-        return annotationDao;
-    }
-
-    public void setAnnotationDao(IAnnotationDao annotationDao) {
-        this.annotationDao = annotationDao;
     }
 
     public IDBMoleculeDao getDBMoleculeDao() {

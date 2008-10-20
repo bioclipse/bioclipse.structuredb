@@ -28,6 +28,7 @@ import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
 import net.bioclipse.structuredb.domain.User;
+import net.bioclipse.structuredb.persistency.dao.AnnotationDao;
 
 /**
  * @author jonalv
@@ -39,11 +40,6 @@ public class StructuredbInstanceManager
 
     private User loggedInUser;
 
-    public void insertAnnotation(Annotation annotation) {
-        annotationDao.insert(annotation);
-        persistRelatedStructures(annotation);
-    }
-    
     private void persistRelatedStructures(Annotation annotation) {
         for( DBMolecule s : annotation.getDBMolecules() ) {
             if( dBMoleculeDao.getById(s.getId()) == null) {
@@ -63,10 +59,6 @@ public class StructuredbInstanceManager
         userDao.insert(user);
     }
 
-    public void delete(Annotation annotation) {
-        annotationDao.delete( annotation.getId() );
-    }
-
     public void delete(User user) {
         userDao.delete( user.getId() );
     }
@@ -76,10 +68,14 @@ public class StructuredbInstanceManager
     }
 
     public List<Annotation> retrieveAllAnnotations() {
-        return new BioList<Annotation>( annotationDao.getAll() );
+        BioList<Annotation> result = new BioList<Annotation>();
+        result.addAll( textAnnotationDAO.getAll()       );
+        result.addAll( realNumberAnnotationDao.getAll() );
+        result.addAll( choiceAnnotationDao.getAll()     );
+        return result;
     }
 
-    public List<DBMolecule> retrieveAllStructures() {
+    public List<DBMolecule> retrieveAllMolecules() {
         return new BioList<DBMolecule>( dBMoleculeDao.getAll() );
     }
 
@@ -93,11 +89,6 @@ public class StructuredbInstanceManager
 
     public User retrieveUserByUsername(String username) {
         return userDao.getByUserName(username);
-    }
-
-    public void update(Annotation annotation) {
-        annotationDao.update(annotation);
-        persistRelatedStructures(annotation);
     }
 
     public void update(User user) {
@@ -117,17 +108,16 @@ public class StructuredbInstanceManager
     }
 
     public Iterator<DBMolecule> allStructuresIterator() {
-
         return dBMoleculeDao.allStructuresIterator();
     }
 
-    public void insertStructureInAnnotation( DBMolecule s, 
-                                             String folderId ) {
+    public void insertMoleculeInAnnotation( DBMolecule s, 
+                                            String folderId ) {
 
         dBMoleculeDao.insertWithAnnotation( s, folderId );
     }
 
-    public int numberOfStructures() {
+    public int numberOfMolecules() {
 
         return dBMoleculeDao.numberOfStructures();
     }
@@ -136,7 +126,7 @@ public class StructuredbInstanceManager
            fingerprintSubstructureSearchIterator(DBMolecule s) {
 
         return dBMoleculeDao
-               .fingerPrintSubsetSearch( s.getPersistedFingerprint() );
+                   .fingerPrintSubsetSearch( s.getPersistedFingerprint() );
     }
 
     public int numberOfFingerprintMatches( DBMolecule queryStructure ) {
@@ -165,80 +155,91 @@ public class StructuredbInstanceManager
             dBMoleculeDao.delete( s.getId() );
             monitor.worked( tick );
         }
-        annotationDao.delete( annotation.getId() );
+        if ( annotation instanceof ChoiceAnnotation) {
+            choiceAnnotationDao.delete( annotation.getId() );
+        }
+        else if ( annotation instanceof RealNumberAnnotation ) {
+            realNumberAnnotationDao.delete( annotation.getId() );
+        }
+        else if ( annotation instanceof TextAnnotation ) {
+            textAnnotationDAO.delete( annotation.getId() );
+        }
         monitor.done();
     }
 
     public void insertChoiceAnnotation( ChoiceAnnotation choiceAnnotation ) {
-
-        // TODO Auto-generated method stub
-        
+        choiceAnnotationDao.insert( choiceAnnotation );
     }
 
     public void insertChoiceProperty( ChoiceProperty choiceProperty ) {
-
-        // TODO Auto-generated method stub
-        
+        choicePropertyDao.insert( choiceProperty );
     }
 
     public void insertRealNumberAnnotation(
-                                            RealNumberAnnotation realNumberAnnotation ) {
+        RealNumberAnnotation realNumberAnnotation ) {
 
-        // TODO Auto-generated method stub
-        
+        realNumberAnnotationDao.insert( realNumberAnnotation );
     }
 
-    public void insertRealNumberProperty( RealNumberProperty realNumberProperty ) {
+    public void insertRealNumberProperty( 
+        RealNumberProperty realNumberProperty ) {
 
-        // TODO Auto-generated method stub
-        
+        realNumberPropertyDao.insert( realNumberProperty );
     }
 
     public void insertTextAnnotation( TextAnnotation textAnnotation ) {
-
-        // TODO Auto-generated method stub
-        
+        textAnnotationDAO.insert( textAnnotation );
     }
 
     public void insertTextProperty( TextProperty textProperty ) {
-
-        // TODO Auto-generated method stub
-        
+        textPropertyDao.insert( textProperty );
     }
 
     public void delete( ChoiceProperty choiceProperty ) {
-
-        // TODO Auto-generated method stub
-        
+        choicePropertyDao.delete( choiceProperty.getId() );
     }
 
     public void delete( RealNumberProperty realNumberProperty ) {
-
-        // TODO Auto-generated method stub
-        
+        realNumberPropertyDao.delete( realNumberProperty.getId() );
     }
 
     public void delete( TextProperty textProperty ) {
-
-        // TODO Auto-generated method stub
-        
+        textPropertyDao.delete( textProperty.getId() );
     }
 
     public void update( ChoiceProperty choiceProperty ) {
-
-        // TODO Auto-generated method stub
-        
+        choicePropertyDao.update( choiceProperty );
     }
 
     public void update( RealNumberProperty realNumberProperty ) {
-
-        // TODO Auto-generated method stub
-        
+        realNumberPropertyDao.update( realNumberProperty );
     }
 
     public void update( TextProperty textProperty ) {
+        textPropertyDao.update( textProperty );
+    }
 
-        // TODO Auto-generated method stub
-        
+    public void delete( Annotation annotation ) {
+        if ( annotation instanceof ChoiceAnnotation ) {
+            choiceAnnotationDao.delete( annotation.getId() );
+        }
+        else if ( annotation instanceof RealNumberAnnotation ) {
+            realNumberPropertyDao.delete( annotation.getId() );
+        }
+        else if ( annotation instanceof TextAnnotation ) {
+            textAnnotationDAO.delete( annotation.getId() );
+        }
+    }
+
+    public void update( ChoiceAnnotation choiceAnnotation ) {
+        choiceAnnotationDao.update( choiceAnnotation );
+    }
+
+    public void update( RealNumberAnnotation realNumberAnnotation ) {
+        realNumberAnnotationDao.update( realNumberAnnotation );
+    }
+
+    public void update( TextAnnotation textAnnotation ) {
+        textAnnotationDAO.update( textAnnotation );
     }
 }
