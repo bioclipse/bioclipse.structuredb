@@ -11,10 +11,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
-
-import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.TextAnnotation;
-
+import net.bioclipse.structuredb.domain.TextProperty;
 
 /**
  * @author jonalv
@@ -23,6 +21,8 @@ import net.bioclipse.structuredb.domain.TextAnnotation;
 public class TextAnnotationDao extends AnnotationDao<TextAnnotation> 
                                implements ITextAnnotationDao {
 
+    private ITextPropertyDao textPropertyDao;
+
     public TextAnnotationDao() {
         super( TextAnnotation.class );
     }
@@ -30,6 +30,7 @@ public class TextAnnotationDao extends AnnotationDao<TextAnnotation>
     @Override
     public void insert(TextAnnotation annotation) {
         super.insert( annotation );
+        insertOrUpdateProperty( annotation.getProperty() );
         getSqlMapClientTemplate().update( "TextAnnotation.insert",
                                           annotation );
     }
@@ -37,7 +38,29 @@ public class TextAnnotationDao extends AnnotationDao<TextAnnotation>
     @Override
     public void update(TextAnnotation annotation) {
         super.update( annotation );
+        insertOrUpdateProperty( annotation.getProperty() );
         getSqlMapClientTemplate().update( "TextAnnotation.update", 
                                           annotation );
-    }    
+    }
+    
+    private void insertOrUpdateProperty( TextProperty property ) {
+        TextProperty loaded 
+            = getTextPropertyDao().getById( property.getId() );
+        if (loaded == null) {
+            getTextPropertyDao().insert( property );
+        }
+        else {
+            if ( !property.hasValuesEqualTo( loaded ) ) {
+                getTextPropertyDao().update( property );
+            }
+        }
+    }
+
+    public void setTextPropertyDao( ITextPropertyDao textPropertyDao ) {
+        this.textPropertyDao = textPropertyDao;
+    }
+
+    public ITextPropertyDao getTextPropertyDao() {
+        return textPropertyDao;
+    }   
 }

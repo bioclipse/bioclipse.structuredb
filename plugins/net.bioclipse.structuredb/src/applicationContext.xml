@@ -148,6 +148,9 @@
 		<property name="sqlMapClient">
 			<ref local="sqlMapClient" />
 		</property>
+		<property name="choicePropertyDao">
+			<ref local="choicePropertyDao" />
+		</property>
 	</bean>
 	
 	<bean id="choiceAnnotationDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
@@ -199,6 +202,9 @@
 		<property name="sqlMapClient">
 			<ref local="sqlMapClient" />
 		</property>
+		<property name="realNumberPropertyDao">
+			<ref local="realNumberPropertyDao" />
+		</property>
 	</bean>
 	
 	<bean id="realNumberAnnotationDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
@@ -248,6 +254,9 @@
 		</property>
 		<property name="sqlMapClient">
 			<ref local="sqlMapClient" />
+		</property>
+		<property name="textPropertyDao">
+			<ref local="textPropertyDao" />
 		</property>
 	</bean>
 	

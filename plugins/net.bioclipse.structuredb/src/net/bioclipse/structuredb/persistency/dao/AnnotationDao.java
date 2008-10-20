@@ -50,7 +50,7 @@ public abstract class AnnotationDao<T extends Annotation> extends GenericDao<T>
     private void fixStructureAnnotation( final T annotation ) {
 
         getSqlMapClientTemplate()
-        .delete( "Annotation.deleteDBMoleculeCoupling", annotation );
+            .delete( "Annotation.deleteDBMoleculeCoupling", annotation );
         
         for ( final DBMolecule s : annotation.getDBMolecules() ) {
             Map<String, String> params = new HashMap<String, String>() {
@@ -66,7 +66,7 @@ public abstract class AnnotationDao<T extends Annotation> extends GenericDao<T>
                  .queryForObject( "DBMoleculeAnnotation.hasConnection", 
                                  params ) == 0 ) {
                 getSqlMapClientTemplate()
-                .update( "DBMoleculeAnnotation.connect", params );
+                    .update( "DBMoleculeAnnotation.connect", params );
             }
         }
     }

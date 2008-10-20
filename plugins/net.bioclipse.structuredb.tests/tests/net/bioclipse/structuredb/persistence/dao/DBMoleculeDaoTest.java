@@ -19,6 +19,7 @@ import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
+import net.bioclipse.structuredb.persistency.dao.ITextAnnotationDao;
 
 import org.openscience.cdk.exception.CDKException;
 
@@ -59,13 +60,13 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         }};
     }
     
-    public void testPersistStructureWithAnnotation() {
+    public void testPersistDBMoleculeWithAnnotation() {
         
         TextAnnotation annotation = new TextAnnotation();
-        IAnnotationDao annotationDao 
-            = (IAnnotationDao) applicationContext.getBean("annotationDao");
+        ITextAnnotationDao textAnnotationDao 
+            = (ITextAnnotationDao) applicationContext.getBean("textAnnotationDao");
         addCreatorAndEditor(annotation);
-        annotationDao.insert(annotation);
+        textAnnotationDao.insert(annotation);
         
         DBMolecule dBMolecule = new DBMolecule();
         dBMolecule.addAnnotation(annotation);
@@ -76,38 +77,43 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         assertNotNull("The lodaded object shuold not be null", loaded);
         assertNotSame(dBMolecule, loaded);
         assertTrue( dBMolecule.hasValuesEqualTo(loaded) );
-        assertTrue( loaded.getAnnotations().contains(annotation) );
+        assertTrue( "Should contain the annotation",
+                    loaded.getAnnotations().contains(annotation) );
     }
 
-    public void testPersistStructureWithLabelId() {
+    public void testPersistDBMoleculeWithAnnotationId() {
         
-        Annotation annotation = new TextAnnotation();
-        IAnnotationDao annotationDao 
-            = (IAnnotationDao) applicationContext.getBean("annotationDao");
+        TextAnnotation annotation = new TextAnnotation();
+        ITextAnnotationDao textAnnotationDao 
+            = (ITextAnnotationDao) 
+              applicationContext.getBean("textAnnotationDao");
         addCreatorAndEditor(annotation);
-        annotationDao.insert(annotation);
+        textAnnotationDao.insert(annotation);
         
         DBMolecule dBMolecule = new DBMolecule();
 
         addCreatorAndEditor(dBMolecule);
-        ((IDBMoleculeDao)dao).insertWithAnnotation( dBMolecule, annotation.getId() );
+        ((IDBMoleculeDao)dao).insertWithAnnotation( dBMolecule, 
+                                                    annotation.getId() );
         
         DBMolecule loaded = dao.getById( dBMolecule.getId() );
         assertNotNull("The lodaded object should not be null", loaded);
         assertNotSame(dBMolecule, loaded);
         assertTrue( dBMolecule.hasValuesEqualTo(loaded) );
-        assertTrue( loaded.getAnnotations().contains(annotation) );
+        assertTrue( "Should contain the annotation", 
+                    loaded.getAnnotations().contains(annotation) );
     }
     
     @Override
     public void testUpdate() {
         super.testUpdate();
         
-        Annotation annotation = new TextAnnotation();
-        IAnnotationDao annotationDao 
-            = (IAnnotationDao) applicationContext.getBean("annotationDao");
+        TextAnnotation annotation = new TextAnnotation();
+        ITextAnnotationDao textAnnotationDao 
+            = (ITextAnnotationDao) 
+              applicationContext.getBean("textAnnotationDao");
         addCreatorAndEditor(annotation);
-        annotationDao.insert(annotation);
+        textAnnotationDao.insert(annotation);
         
         DBMolecule dBMolecule = new DBMolecule();
         dBMolecule.addAnnotation(annotation);
@@ -180,12 +186,13 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
     }
     
     public void testGetAnnotations() {
-        Annotation annotation  = new TextAnnotation();
-        Annotation unusedLabel = new TextAnnotation();
-        IAnnotationDao annotationDao
-            = (IAnnotationDao) applicationContext.getBean("annotationDao");
-        annotationDao.insert( annotation );
-        annotationDao.insert( unusedLabel );
+        TextAnnotation annotation       = new TextAnnotation();
+        TextAnnotation unusedAnnotation = new TextAnnotation();
+        ITextAnnotationDao textAnnotationDao
+            = (ITextAnnotationDao) 
+              applicationContext.getBean("textAnnotationDao");
+        textAnnotationDao.insert( annotation );
+        textAnnotationDao.insert( unusedAnnotation );
         
         molecule1.addAnnotation( annotation );
         dao.update( molecule1 );
