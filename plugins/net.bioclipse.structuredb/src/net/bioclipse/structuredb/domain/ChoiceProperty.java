@@ -53,7 +53,7 @@ public class ChoiceProperty extends Property {
             = new ArrayList<ChoiceAnnotation>();
         propertyChoices
             = new HashSet<PropertyChoice>();
-        for ( PropertyChoice p : propertyChoices) {
+        for ( PropertyChoice p : choiceProperty.propertyChoices ) {
             propertyChoices.add( new PropertyChoice(p) );
         }
     }
@@ -74,5 +74,14 @@ public class ChoiceProperty extends Property {
         if( propertyChoice.getProperty() != this ) {
             propertyChoice.setProperty(this);
         }
+    }
+    
+    @Override
+    public boolean hasValuesEqualTo( BaseObject obj ) {
+        return super.hasValuesEqualTo( obj ) && 
+               (obj instanceof ChoiceProperty) &&
+               objectsInHasSameValues( propertyChoices, 
+                                       ( (ChoiceProperty)obj )
+                                          .getPropertyChoices() );
     }
 }
