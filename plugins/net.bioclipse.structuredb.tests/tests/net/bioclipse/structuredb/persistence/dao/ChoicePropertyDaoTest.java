@@ -12,6 +12,8 @@
 package net.bioclipse.structuredb.persistence.dao;
 
 import net.bioclipse.structuredb.domain.ChoiceProperty;
+import net.bioclipse.structuredb.domain.PropertyChoice;
+import net.bioclipse.structuredb.persistency.dao.IChoicePropertyDao;
 
 
 /**
@@ -21,7 +23,53 @@ import net.bioclipse.structuredb.domain.ChoiceProperty;
 public class ChoicePropertyDaoTest 
              extends GenericDaoTest<ChoiceProperty> {
 
+    private IChoicePropertyDao choicePropertyDao;
+    
     public ChoicePropertyDaoTest() {
         super( ChoiceProperty.class );
     }
+    
+    @Override
+    public void onSetUpInTransaction() throws Exception {
+        super.onSetUpInTransaction();
+        choicePropertyDao = (IChoicePropertyDao) 
+                            applicationContext.getBean( "choicePropertyDao" );
+    }
+
+    private ChoiceProperty createChoicePropertyWithPropertyChoice() {
+
+        ChoiceProperty choiceProperty = new ChoiceProperty("name");
+        PropertyChoice propertyChoice = new PropertyChoice("value");
+        choiceProperty.addPropertyChoice( propertyChoice );
+ 
+        choicePropertyDao.insert( choiceProperty );
+        return choiceProperty;
+    }
+    
+    public void testInsertingWithPropertyChoice() {
+        
+        ChoiceProperty choiceProperty 
+            = createChoicePropertyWithPropertyChoice();
+
+        ChoiceProperty loaded 
+            = choicePropertyDao.getById( choiceProperty.getId() );
+        assertTrue( choiceProperty.hasValuesEqualTo( loaded ) );
+        assertEquals( choiceProperty.getPropertyChoices().size(),
+                      loaded.getPropertyChoices().size() );
+    }
+
+    public void testUpdateWithPropertyChoice() {
+        ChoiceProperty choiceProperty 
+            = createChoicePropertyWithPropertyChoice();
+        PropertyChoice propertyChoice = new PropertyChoice("another value");
+        choiceProperty.addPropertyChoice( propertyChoice );
+        choicePropertyDao.update( choiceProperty );
+        ChoiceProperty loaded 
+            = choicePropertyDao.getById( choiceProperty.getId() );
+        assertTrue( choiceProperty.hasValuesEqualTo( loaded ) );
+        assertEquals( choiceProperty.getPropertyChoices().size(),
+                      loaded.getPropertyChoices().size() );
+    }
+    
+    
 }

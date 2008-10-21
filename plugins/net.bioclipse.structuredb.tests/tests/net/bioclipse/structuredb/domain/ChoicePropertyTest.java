@@ -34,6 +34,9 @@ public class ChoicePropertyTest {
         
         assertTrue(  choiceProperty1.hasValuesEqualTo(choiceProperty2) );
         assertFalse( choiceProperty1.hasValuesEqualTo(choiceProperty3) );
+        
+        choiceProperty1.addPropertyChoice( new PropertyChoice() );
+        assertFalse( choiceProperty1.hasValuesEqualTo(choiceProperty2) );
     }
     
     @Test
