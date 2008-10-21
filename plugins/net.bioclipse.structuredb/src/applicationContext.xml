@@ -334,11 +334,32 @@
 	<bean id="structuredbInstanceManagerTarget"
 	      class="net.bioclipse.structuredb.internalbusiness.StructuredbInstanceManager">
 	   <property name="userDao">
-	       <ref local="userDao"/>
+	       <ref local="userDao" />
 	   </property>
 	   <property name="DBMoleculeDao">
-           <ref local="dBMoleculeDao"/>
+           <ref local="dBMoleculeDao" />
        </property>
+       <property name="choiceAnnotationDao">
+		   <ref local="choiceAnnotationDao" />
+       </property>   
+       <property name="realNumberAnnotationDao">
+           <ref local="realNumberAnnotationDao" />
+       </property>
+       <property name="textAnnotationDao">
+           <ref local="textAnnotationDao" />
+       </property>
+       <property name="choicePropertyDao">
+           <ref local="choicePropertyDao" />
+       </property>
+       <property name="realNumberPropertyDao">
+           <ref local="realNumberPropertyDao" />
+       </property>
+       <property name="textPropertyDao">
+           <ref local="textPropertyDao" />
+       </property>
+       <property name="propertyChoiceDao">
+       	   <ref local="propertyChoiceDao" />
+       </property>  
 	</bean>
 	
 	<bean id="structuredbInstanceManager"

@@ -19,6 +19,7 @@ import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.ChoiceProperty;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.PropertyChoice;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextAnnotation;
@@ -166,6 +167,9 @@ public class StructuredbInstanceManagerTest
     private ChoiceProperty createChoiceProperty( String name ) {
         ChoiceProperty choiceProperty = new ChoiceProperty(name);
         manager.insertChoiceProperty(choiceProperty);
+        PropertyChoice propertyChoice = new PropertyChoice("value");
+        choiceProperty.addPropertyChoice( propertyChoice );
+        manager.update( choiceProperty );
         return choiceProperty;
     }
     
@@ -297,9 +301,9 @@ public class StructuredbInstanceManagerTest
         TextAnnotation textAnnotation 
             = createTextAnnotation( "value", 
                                     createTextProperty( "name" ) );
-        assertTrue( textPropertyDao.getAll().contains( textAnnotation ) );
+        assertTrue( textAnnotationDao.getAll().contains( textAnnotation ) );
         manager.delete( textAnnotation );
-        assertFalse( textPropertyDao.getAll().contains( textAnnotation ) );
+        assertFalse( textAnnotationDao.getAll().contains( textAnnotation ) );
     }
     
     public void testRealNumberAnnotationDelete() {

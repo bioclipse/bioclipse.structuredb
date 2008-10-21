@@ -33,7 +33,7 @@ public abstract class AbstractStructuredbInstanceManager
     protected IUserDao                 userDao;
     protected IChoiceAnnotationDao     choiceAnnotationDao;
     protected IRealNumberAnnotationDao realNumberAnnotationDao;
-    protected ITextAnnotationDao       textAnnotationDAO;
+    protected ITextAnnotationDao       textAnnotationDao;
     protected IChoicePropertyDao       choicePropertyDao;
     protected IRealNumberPropertyDao   realNumberPropertyDao;
     protected ITextPropertyDao         textPropertyDao;
@@ -60,12 +60,12 @@ public abstract class AbstractStructuredbInstanceManager
         this.realNumberAnnotationDao = realNumberAnnotationDao;
     }
     
-    public ITextAnnotationDao getTextAnnotationDAO() {
-        return textAnnotationDAO;
+    public ITextAnnotationDao getTextAnnotationDao() {
+        return textAnnotationDao;
     }
     
-    public void setTextAnnotationDAO( ITextAnnotationDao textAnnotationDAO ) {
-        this.textAnnotationDAO = textAnnotationDAO;
+    public void setTextAnnotationDao( ITextAnnotationDao textAnnotationDao ) {
+        this.textAnnotationDao = textAnnotationDao;
     }
     
     public IChoicePropertyDao getChoicePropertyDao() {

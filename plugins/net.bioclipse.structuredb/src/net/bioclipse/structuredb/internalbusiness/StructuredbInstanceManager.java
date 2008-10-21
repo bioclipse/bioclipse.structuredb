@@ -69,7 +69,7 @@ public class StructuredbInstanceManager
 
     public List<Annotation> retrieveAllAnnotations() {
         BioList<Annotation> result = new BioList<Annotation>();
-        result.addAll( textAnnotationDAO.getAll()       );
+        result.addAll( textAnnotationDao.getAll()       );
         result.addAll( realNumberAnnotationDao.getAll() );
         result.addAll( choiceAnnotationDao.getAll()     );
         return result;
@@ -162,7 +162,7 @@ public class StructuredbInstanceManager
             realNumberAnnotationDao.delete( annotation.getId() );
         }
         else if ( annotation instanceof TextAnnotation ) {
-            textAnnotationDAO.delete( annotation.getId() );
+            textAnnotationDao.delete( annotation.getId() );
         }
         monitor.done();
     }
@@ -188,7 +188,7 @@ public class StructuredbInstanceManager
     }
 
     public void insertTextAnnotation( TextAnnotation textAnnotation ) {
-        textAnnotationDAO.insert( textAnnotation );
+        textAnnotationDao.insert( textAnnotation );
     }
 
     public void insertTextProperty( TextProperty textProperty ) {
@@ -227,7 +227,7 @@ public class StructuredbInstanceManager
             realNumberPropertyDao.delete( annotation.getId() );
         }
         else if ( annotation instanceof TextAnnotation ) {
-            textAnnotationDAO.delete( annotation.getId() );
+            textAnnotationDao.delete( annotation.getId() );
         }
     }
 
@@ -240,6 +240,6 @@ public class StructuredbInstanceManager
     }
 
     public void update( TextAnnotation textAnnotation ) {
-        textAnnotationDAO.update( textAnnotation );
+        textAnnotationDao.update( textAnnotation );
     }
 }
