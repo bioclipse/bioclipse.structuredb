@@ -12,6 +12,7 @@
 package net.bioclipse.structuredb.persistency.dao;
 
 import net.bioclipse.structuredb.domain.ChoiceProperty;
+import net.bioclipse.structuredb.domain.PropertyChoice;
 
 
 /**
@@ -22,8 +23,22 @@ public class ChoicePropertyDao
        extends GenericDao<ChoiceProperty> 
        implements IChoicePropertyDao {
 
+    private IPropertyChoiceDao propertyChoiceDao;
+    
     public ChoicePropertyDao() {
         super( ChoiceProperty.class );
+    }
+    
+    private void persistRelatedPropertyChoices( ChoiceProperty property ) {
+        for ( PropertyChoice p : property.getPropertyChoices() ) {
+            PropertyChoice loaded = propertyChoiceDao.getById( p.getId() );
+            if ( loaded == null ) {
+                propertyChoiceDao.insert( p );
+            }
+            else if ( !p.hasValuesEqualTo( loaded ) ) {
+                propertyChoiceDao.update( p );
+            }
+        }
     }
     
     @Override
@@ -32,6 +47,7 @@ public class ChoicePropertyDao
                                           property );
         getSqlMapClientTemplate().update( "ChoiceProperty.insert",
                                           property );
+        persistRelatedPropertyChoices( property );
     }
     
     @Override
@@ -40,5 +56,16 @@ public class ChoicePropertyDao
                                           property );
         getSqlMapClientTemplate().update( "ChoiceProperty.update", 
                                           property );
+        persistRelatedPropertyChoices( property );
+    }
+
+    public void setPropertyChoiceDao( IPropertyChoiceDao propertyChoiceDao ) {
+
+        this.propertyChoiceDao = propertyChoiceDao;
+    }
+
+    public IPropertyChoiceDao getPropertyChoiceDao() {
+
+        return propertyChoiceDao;
     }    
 }

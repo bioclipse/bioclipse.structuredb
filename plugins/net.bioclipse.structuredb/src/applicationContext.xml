@@ -177,6 +177,9 @@
 		<property name="sqlMapClient">
 			<ref local="sqlMapClient" />
 		</property>
+		<property name="propertyChoiceDao">
+			<ref local="propertyChoiceDao" />
+		</property>
 	</bean>
 	
 	<bean id="choicePropertyDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >

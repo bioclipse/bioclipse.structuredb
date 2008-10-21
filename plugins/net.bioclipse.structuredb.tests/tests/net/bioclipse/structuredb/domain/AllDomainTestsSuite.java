@@ -25,7 +25,8 @@ import org.junit.runners.Suite.SuiteClasses;
                          TextAnnotationTest.class,
                          ChoicePropertyTest.class,
                          RealNumberPropertyTest.class,
-                         TextPropertyTest.class } )
+                         TextPropertyTest.class,
+                         PropertyChoiceTest.class } )
 public class AllDomainTestsSuite {
 
 }

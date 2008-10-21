@@ -50,5 +50,12 @@ public class ChoicePropertyTest {
         assertTrue( choiceProperty.getAnnotations()
                                   .contains( annotation ) );
         assertTrue( annotation.getProperty() == choiceProperty );
+        
+        PropertyChoice propertyChoice = new PropertyChoice();
+        choiceProperty.addPropertyChoice( propertyChoice );
+        
+        assertTrue( choiceProperty.getPropertyChoices()
+                                  .contains( propertyChoice ) );
+        assertTrue( propertyChoice.getProperty() == choiceProperty );
     }
 }

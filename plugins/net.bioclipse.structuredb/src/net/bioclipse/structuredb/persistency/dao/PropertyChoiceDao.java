@@ -28,15 +28,27 @@ public class PropertyChoiceDao
     public void insert(PropertyChoice propertyChoice) {
         getSqlMapClientTemplate().update( "BaseObject.insert", 
                                           propertyChoice );
-        getSqlMapClientTemplate().update( "PropertyChoice.insert",
-                                          propertyChoice );
+        if ( propertyChoice.getProperty() == null ) {
+            getSqlMapClientTemplate().update( "PropertyChoice.insert",
+                                              propertyChoice );
+        }
+        else {
+            getSqlMapClientTemplate().update( "PropertyChoice.insertWithChoiceProperty",
+                                              propertyChoice );
+        }
     }
 
     @Override
     public void update(PropertyChoice propertyChoice) {
         getSqlMapClientTemplate().update( "BaseObject.update", 
                                           propertyChoice );
-        getSqlMapClientTemplate().update( "PropertyChoice.update", 
-                                          propertyChoice );
+        if ( propertyChoice.getProperty() == null ) {
+            getSqlMapClientTemplate().update( "PropertyChoice.update",
+                                              propertyChoice );
+        }
+        else {
+            getSqlMapClientTemplate().update( "PropertyChoice.updateWithChoiceProperty",
+                                              propertyChoice );
+        }
     }
 }

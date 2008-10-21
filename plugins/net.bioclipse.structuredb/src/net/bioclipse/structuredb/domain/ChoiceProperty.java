@@ -24,14 +24,14 @@ import java.util.Set;
 public class ChoiceProperty extends Property {
 
     private List<ChoiceAnnotation> annotations;
-    private Set<PropertyChoice> propertyChoices;
+    private List<PropertyChoice> propertyChoices;
     
-    public Set<PropertyChoice> getPropertyChoices() {
+    public List<PropertyChoice> getPropertyChoices() {
     
         return propertyChoices;
     }
     
-    public void setPropertyChoices( Set<PropertyChoice> propertyChoices ) {
+    public void setPropertyChoices( List<PropertyChoice> propertyChoices ) {
     
         this.propertyChoices = propertyChoices;
     }
@@ -44,7 +44,7 @@ public class ChoiceProperty extends Property {
     public ChoiceProperty(String name) {
         super( name );
         annotations     = new ArrayList<ChoiceAnnotation>();
-        propertyChoices = new HashSet<PropertyChoice>();
+        propertyChoices = new ArrayList<PropertyChoice>();
     }
 
     public ChoiceProperty( ChoiceProperty choiceProperty ) {
@@ -52,7 +52,7 @@ public class ChoiceProperty extends Property {
         annotations 
             = new ArrayList<ChoiceAnnotation>();
         propertyChoices
-            = new HashSet<PropertyChoice>();
+            = new ArrayList<PropertyChoice>();
         for ( PropertyChoice p : choiceProperty.propertyChoices ) {
             propertyChoices.add( new PropertyChoice(p) );
         }
@@ -71,7 +71,7 @@ public class ChoiceProperty extends Property {
 
     public void addPropertyChoice( PropertyChoice propertyChoice ) {
         this.propertyChoices.add( propertyChoice );
-        if( propertyChoice.getProperty() != this ) {
+        if ( propertyChoice.getProperty() != this ) {
             propertyChoice.setProperty(this);
         }
     }

@@ -87,6 +87,7 @@
 	
 	<resultMap class="ChoiceProperty" id="ChoiceProperty" extends="BaseObject">
 		<result property="name" column="name" />
+		<result property="propertyChoices" column="id" select="ChoiceProperty.getPropertyChoices" />
 	</resultMap>
 	
 	<resultMap class="PropertyChoice" id="PropertyChoice" extends="BaseObject">
@@ -211,8 +212,13 @@
 	</insert>
 	
 	<insert id="PropertyChoice.insert">
-		INSERT INTO PropertyChoice (   id,     baseObject, val  )
+		INSERT INTO PropertyChoice (   id,     baseObject, val     )
 		                    VALUES ( '$id$', '$id$',     '$value$' );
+	</insert>
+	
+	<insert id="PropertyChoice.insertWithChoiceProperty">
+		INSERT INTO PropertyChoice (   id,     baseObject, val,       choicePropertyId )
+		                    VALUES ( '$id$', '$id$',     '$value$', '$property.id$'    );
 	</insert>
 	
 <!--+
@@ -477,6 +483,18 @@
 			c.id = #value#
 	</select>
 	
+	<select id="ChoiceProperty.getPropertyChoices" resultMap="PropertyChoice" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+		    <include refid="PropertyChoice-fields" />
+		FROM 
+		    PropertyChoice p 
+		    INNER JOIN BaseObject b ON
+		    p.baseObject = b.id
+		WHERE
+		    p.id = b.id AND p.choicePropertyId = #value#
+	</select>
+	
 	<select id="DBMolecule.fingerPrintSubsetSearch" 
 	        resultMap="DBMolecule"
 	        parameterClass="java.util.Map">
@@ -647,6 +665,16 @@
             PropertyChoice
         SET
             val = '$value$'
+        WHERE
+            id = '$id$'
+    </update>
+    
+    <update id="PropertyChoice.updateWithChoiceProperty" parameterClass="PropertyChoice">
+        UPDATE
+            PropertyChoice
+        SET
+            val = '$value$'
+            choicePropertyId = '$property.id$'
         WHERE
             id = '$id$'
     </update>
