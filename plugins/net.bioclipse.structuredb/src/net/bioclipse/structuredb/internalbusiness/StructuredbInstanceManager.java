@@ -51,7 +51,7 @@ public class StructuredbInstanceManager
         }
     }
 
-    public void insertStructure(DBMolecule dBMolecule) {
+    public void insertMolecule(DBMolecule dBMolecule) {
         dBMoleculeDao.insert(dBMolecule);
     }
 
@@ -135,7 +135,7 @@ public class StructuredbInstanceManager
             queryStructure.getPersistedFingerprint() );
     }
 
-    public void deleteWithStructures( Annotation annotation, 
+    public void deleteWithMolecules( Annotation annotation, 
                                       IProgressMonitor monitor ) {
 
         int ticks = 1000;

@@ -58,7 +58,7 @@ public interface IStructuredbInstanceManager {
      * 
      * @param dBMolecule to be inserted
      */
-    public void insertStructure( DBMolecule dBMolecule ); 
+    public void insertMolecule( DBMolecule dBMolecule ); 
     
     /**
      * Removes the given library from the database. 
@@ -90,7 +90,7 @@ public interface IStructuredbInstanceManager {
     /**
      * @return all libraries
      */
-    public List<? extends Annotation> retrieveAllAnnotations();
+    public List<Annotation> retrieveAllAnnotations();
     
     /**
      * @return all users
@@ -166,7 +166,7 @@ public interface IStructuredbInstanceManager {
      * @param annotation
      * @param monitor 
      */
-    public void deleteWithStructures( Annotation annotation, 
+    public void deleteWithMolecules( Annotation annotation, 
                                       IProgressMonitor monitor );
     
     /**

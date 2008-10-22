@@ -25,6 +25,7 @@ import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
@@ -123,78 +124,75 @@ public class StructuredbManagerTest
 
     public void testCreatingTwoAnnotationsInTwoDatabases() {
 
-        Annotation a2 = manager.createAnnotation(database2, "testAnnotation2");
+        Annotation a2 = manager.createTextAnnotation( database2, 
+                                                      "test", 
+                                                      "testAnnotation2" );
         assertNotNull(a2);
-        Annotation a1 = manager.createAnnotation(database1, "testAnnotation1");
+        Annotation a1 = manager.createTextAnnotation( database1, 
+                                                      "test",
+                                                      "testAnnotation1" );
         assertNotNull(a1);
 
-        fail();
-//        assertEquals( a2,
-//                      manager.annotationByName( database2, a2.getName() ) );
-//        assertEquals( a1,
-//                      manager.annotationByName( database1, a1.getName() ) );
+        assertTrue( manager.allAnnotations( database2 ).contains( a2 ) );
+        assertTrue( manager.allAnnotations( database1 ).contains( a1 ) );
     }
 
     public void testListSubstructureSearchResults() throws Exception {
         ICDKManager cdk = new CDKManager();
 
         ICDKMolecule mol1 = cdk.loadMolecule( 
-            new MockIFile( TestData
-                           .class
-                           .getClassLoader()
-                           .getResourceAsStream("testData/0037.cml")
-                           ) );
+            new MockIFile( TestData.class
+                                   .getClassLoader()
+                                   .getResourceAsStream("testData/0037.cml")
+                         ) );
         assertNotNull(mol1);
 
-        DBMolecule structure1 = manager
-                               .createStructure( database1,
-                                                 "0037",
-                                                 mol1 );
+        DBMolecule structure1 = manager.createMolecule( database1,
+                                                        "0037",
+                                                        mol1 );
         assertNotNull(structure1);
 
         DBMolecule structure2 
-            = manager
-              .createStructure( 
-                   database1,
-                   "0106",
-                   cdk.loadMolecule(
-                       new MockIFile( 
-                           TestData.class
-                                  .getClassLoader()
-                                  .getResourceAsStream("testData/0106.cml") ) ) );
+            = manager.createMolecule( database1,
+                                      "0106",
+                                      cdk.loadMolecule(
+                                          new MockIFile( 
+                                              TestData.class
+                                                      .getClassLoader()
+                                                      .getResourceAsStream(
+                                                          "testData/0106.cml") 
+                                     ) ) );
 
         assertNotNull(structure2);
 
         assertTrue( manager
-                    .allStructuresByName( database1,
+                    .allMoleculesByName( database1,
                                           structure1.getName() )
                                           .contains(structure1) );
         assertTrue( manager
-                    .allStructuresByName( database1,
+                    .allMoleculesByName( database1,
                                           structure2.getName() )
                                           .contains(structure2) );
 
-        List<DBMolecule> dBMolecules = manager.allStructures(database1);
+        List<DBMolecule> dBMolecules = manager.allMolecules(database1);
 
         assertTrue( dBMolecules.contains(structure1) );
         assertTrue( dBMolecules.contains(structure2) );
 
         SmilesGenerator generator = new SmilesGenerator();
-        String indoleSmiles  = generator
-                               .createSMILES( 
+        String indoleSmiles  = generator.createSMILES( 
                                    MoleculeFactory.makeIndole() );
-        String pyrroleSmiles = generator
-                               .createSMILES( 
+        String pyrroleSmiles = generator.createSMILES( 
                                    MoleculeFactory.makePyrrole() );
         ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
         ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
 
-        DBMolecule indoleStructure = manager.createStructure( database1, 
+        DBMolecule indoleStructure = manager.createMolecule( database1, 
                                                              "indole", 
                                                              indole );
         
         List<DBMolecule> list = manager.subStructureSearch( database1, 
-                                                           pyrrole );
+                                                            pyrrole );
         
         assertTrue( list.contains( indoleStructure ));
     }
@@ -206,37 +204,38 @@ public class StructuredbManagerTest
         ICDKMolecule mol1 = cdk.loadMolecule( 
               new MockIFile ( TestData.class
                                       .getClassLoader()
-                                      .getResourceAsStream("testData/0037.cml") ) );
+                                      .getResourceAsStream(
+                                          "testData/0037.cml") ) );
         assertNotNull(mol1);
 
-        DBMolecule structure1 = manager
-                               .createStructure( database1,
-                                                 "0037",
-                                                 mol1 );
+        DBMolecule structure1 = manager.createMolecule( database1,
+                                                        "0037",
+                                                        mol1 );
         assertNotNull(structure1);
 
         DBMolecule structure2 
-            = manager.createStructure( 
+            = manager.createMolecule( 
                 database1,
                 "0106",
                 cdk.loadMolecule( 
                     new MockIFile(
                         TestData.class
                                 .getClassLoader()
-                                .getResourceAsStream("testData/0106.cml") ) ) );
+                                .getResourceAsStream(
+                                    "testData/0106.cml") ) ) );
 
         assertNotNull(structure2);
 
         assertTrue( manager
-                    .allStructuresByName( database1,
-                                          structure1.getName() )
-                                          .contains(structure1) );
+                    .allMoleculesByName( database1,
+                                         structure1.getName() )
+                                                   .contains(structure1) );
         assertTrue( manager
-                    .allStructuresByName( database1,
-                                          structure2.getName() )
-                                          .contains(structure2) );
+                    .allMoleculesByName( database1,
+                                         structure2.getName() )
+                                                   .contains(structure2) );
 
-        List<DBMolecule> dBMolecules = manager.allStructures(database1);
+        List<DBMolecule> dBMolecules = manager.allMolecules(database1);
 
         assertTrue( dBMolecules.contains(structure1) );
         assertTrue( dBMolecules.contains(structure2) );
@@ -249,7 +248,7 @@ public class StructuredbManagerTest
         ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
         ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
 
-        DBMolecule indoleStructure = manager.createStructure( database1, 
+        DBMolecule indoleStructure = manager.createMolecule( database1, 
                                                              "indole", 
                                                              indole );
         
@@ -257,8 +256,8 @@ public class StructuredbManagerTest
                                        .subStructureSearchIterator( database1, 
                                                                     pyrrole );
         boolean foundIndole = false;
-        while(iterator.hasNext()) {
-            if( iterator.next().equals( indoleStructure ) ) {
+        while (iterator.hasNext()) {
+            if ( iterator.next().equals( indoleStructure ) ) {
                 foundIndole = true;
             }
         }
@@ -271,37 +270,39 @@ public class StructuredbManagerTest
         ICDKMolecule mol1 = cdk.loadMolecule( 
             new MockIFile( TestData.class
                                    .getClassLoader()
-                                   .getResourceAsStream("testData/0037.cml") ) );
+                                   .getResourceAsStream(
+                                       "testData/0037.cml") ) );
         assertNotNull(mol1);
 
         DBMolecule structure1 = manager
-                              .createStructure( database1,
-                                                "0037",
-                                                mol1 );
+                                .createMolecule( database1,
+                                                 "0037",
+                                                 mol1 );
         assertNotNull(structure1);
 
         DBMolecule structure2 
-            = manager.createStructure(
+            = manager.createMolecule(
                 database1,
                 "0106",
                 cdk.loadMolecule( 
                     new MockIFile( TestData
                                    .class
                                    .getClassLoader()
-                                   .getResourceAsStream("testData/0106.cml") ) ) );
+                                   .getResourceAsStream(
+                                       "testData/0106.cml") ) ) );
 
         assertNotNull(structure2);
 
         assertTrue( manager
-                    .allStructuresByName( database1,
-                                              structure1.getName() )
+                    .allMoleculesByName( database1,
+                                         structure1.getName() )
                     .contains(structure1) );
         assertTrue( manager
-                    .allStructuresByName( database1,
-                                                structure2.getName() )
+                    .allMoleculesByName( database1,
+                                         structure2.getName() )
                     .contains(structure2) );
 
-        List<DBMolecule> dBMolecules = manager.allStructures(database1);
+        List<DBMolecule> dBMolecules = manager.allMolecules(database1);
 
         assertTrue( dBMolecules.contains(structure1) );
         assertTrue( dBMolecules.contains(structure2) );
@@ -321,39 +322,54 @@ public class StructuredbManagerTest
                                               FileNotFoundException {
         IFile file = new MockIFile( TestData.getTestSDFFilePath() );
         manager.addStructuresFromSDF( database1, file );
-        fail();
-//        Annotation annotation
-//            = manager.annotationByName( database1, 
-//                                        file.getName()
-//                                            .replaceAll("\\..*?$", "") );
-//        assertNotNull(annotation);
-//        assertEquals( 2, annotation.getDBMolecules().size() );
+        boolean foundAnnotation = false;
+        for ( Annotation annotation : manager.allAnnotations( database1 ) ) {
+            if ( annotation instanceof TextAnnotation ) {
+                if ( ( (TextAnnotation)annotation )
+                                       .getValue()
+                                       .equals( 
+                                           file.getName()
+                                               .replaceAll("\\..*?$", "") ) ) {
+                    foundAnnotation = true;
+                    assertEquals( 2, annotation.getDBMolecules().size() );
+                }
+            }
+        }
+        assertTrue(foundAnnotation);
     }
 
     public void testCreatingAndRetrievingAnnotations() {
-        Annotation folder1 = manager.createAnnotation(database1, "folder1");
-        Annotation folder2 = manager.createAnnotation(database1, "folder2");
-        assertNotNull(folder1);
-        assertNotNull(folder2);
+        Annotation annotation1 = manager.createTextAnnotation( database1,
+                                                               "test",
+                                                               "folder1" );
+        Annotation annotation2 = manager.createTextAnnotation( database1,
+                                                               "test",
+                                                               "folder2" );
+        assertNotNull(annotation1);
+        assertNotNull(annotation2);
         List<Annotation> annotations = manager.allAnnotations(database1);
-        assertTrue( annotations.contains(folder1) );
-        assertTrue( annotations.contains(folder2) );
+        assertTrue( annotations.contains(annotation1) );
+        assertTrue( annotations.contains(annotation2) );
     }
 
     public void testDeleteAnnotation() {
-        Annotation annotation = manager.createAnnotation( database1, "annotation" );
-        assertTrue( manager.allAnnotations( database1 ).contains( annotation ) );
+        Annotation annotation = manager.createTextAnnotation( database1,
+                                                              "test",
+                                                              "annotation" );
+        assertTrue( manager.allAnnotations( database1 )
+                           .contains( annotation ) );
         manager.deleteAnnotation(database1, annotation);
-        assertFalse( manager.allAnnotations( database1 ).contains( annotation ) );
+        assertFalse( manager.allAnnotations( database1 )
+                            .contains( annotation ) );
     }
     
     public void testDeleteStructure() throws BioclipseException {
         ICDKManager cdk = new CDKManager();
         DBMolecule dBMolecule 
-            = manager.createStructure( database1, 
+            = manager.createMolecule( database1, 
                                        "test", 
                                        cdk.fromSmiles( "CC" ) );
-        assertTrue( manager.allStructures( database1 )
+        assertTrue( manager.allMolecules( database1 )
                            .contains( dBMolecule ) );
         manager.deleteStructure( database1, dBMolecule );
     }
@@ -398,8 +414,9 @@ public class StructuredbManagerTest
     
     public void testUsingUnknownDatabase() {
         try {
-            manager.createAnnotation( "unknown database", 
-                                 "some folder name" );
+            manager.createTextAnnotation( "unknown database",
+                                          "test",
+                                          "some folder name" );
             fail("should throw exception");
         }
         catch (IllegalArgumentException e) {
@@ -408,14 +425,16 @@ public class StructuredbManagerTest
     }
 
     public void testEditStructure() throws BioclipseException {
-        DBMolecule s = manager.createStructure( database1, 
+        DBMolecule s = manager.createMolecule( database1, 
                                                "test", 
                                                cdk.fromSmiles( "CCC" ) );
-        Annotation l = manager.createAnnotation( database1, "annotation" );
+        Annotation l = manager.createTextAnnotation( database1, 
+                                                     "test",
+                                                     "annotation" );
         s.setName( "edited" );
         s.addAnnotation( l );
         manager.save( database1, s );
-        List<DBMolecule> loaded = manager.allStructuresByName( database1, 
+        List<DBMolecule> loaded = manager.allMoleculesByName( database1, 
                                                               "edited" );
         assertEquals( 1, loaded.size() );
         
@@ -426,7 +445,7 @@ public class StructuredbManagerTest
         
         s.removeAnnotation(l);
         manager.save( database1, s );
-        loaded = manager.allStructuresByName( database1, 
+        loaded = manager.allMoleculesByName( database1, 
                                               "edited" );
         assertEquals( 1, loaded.size() );
 
@@ -434,13 +453,15 @@ public class StructuredbManagerTest
         assertEquals( 0, annotations.size() );
     }
     
-    public void testEditAnnotation() throws BioclipseException {
-        DBMolecule s = manager.createStructure( database1, 
+    public void testEditTextAnnotation() throws BioclipseException {
+        DBMolecule s = manager.createMolecule( database1, 
                                                "test", 
                                                cdk.fromSmiles( "CCC" ) );
-        Annotation annotation = manager.createAnnotation( database1, "a annotation" );
-        fail();
-//        annotation.setName( "edited" );
+        Annotation annotation = manager.createTextAnnotation( database1, 
+                                                              "test",
+                                                              "annotation" );
+        fail("not yet implemented");
+//        annotation.setVale( "edited" );
 //        annotation.addDBMolecule( s );
 //        manager.save( database1, annotation );
 //        Annotation loaded = manager.annotationByName( database1, "edited" );
@@ -457,6 +478,14 @@ public class StructuredbManagerTest
 //        assertEquals( 0, loaded.getDBMolecules().size() );
     }
     
+    public void testEditRealNumberAnnotation() {
+        fail("not yet implemented");
+    }
+    
+    public void testEditChoiceAnnotation() {
+        fail("not yet implemented");
+    }
+    
     public void testListSMARTSQueryResults() 
                 throws IOException, BioclipseException {
 
@@ -464,7 +493,7 @@ public class StructuredbManagerTest
         String butaneSmiles  = "CCCC"; 
         ICDKMolecule butane  = cdk.fromSmiles( butaneSmiles  );
 
-        DBMolecule butaneStructure = manager.createStructure( database1, 
+        DBMolecule butaneStructure = manager.createMolecule( database1, 
                                                              "indole", 
                                                              butane );
         
@@ -481,7 +510,7 @@ public class StructuredbManagerTest
         String butaneSmiles  = "CCCC"; 
         ICDKMolecule butane  = cdk.fromSmiles( butaneSmiles  );
 
-        DBMolecule butaneStructure = manager.createStructure( database1, 
+        DBMolecule butaneStructure = manager.createMolecule( database1, 
                                                              "indole", 
                                                              butane );
         
@@ -499,16 +528,18 @@ public class StructuredbManagerTest
     
     public void testDeletingAnnotationWithStructures() 
                 throws BioclipseException {
-        Annotation l = manager.createAnnotation( database1, "annotation1" );
-        DBMolecule s = manager.createStructure( database1, 
+        Annotation a = manager.createTextAnnotation( database1, 
+                                                     "test", 
+                                                     "annotation1" );
+        DBMolecule s = manager.createMolecule( database1, 
                                                "test", 
                                                cdk.fromSmiles( "CCC" ) );
-        l.addDBMolecule( s );
-        manager.save( database1, l );
-        assertTrue( manager.allStructures( database1 ).contains( s ) );
-        assertTrue( manager.allAnnotations(     database1 ).contains( l ) );
-        manager.deleteWithStructures( database1, l );
-        assertFalse( manager.allStructures( database1 ).contains( s ) );
-        assertFalse( manager.allAnnotations(     database1 ).contains( l ) );
+        a.addDBMolecule( s );
+        manager.save( database1, a );
+        assertTrue( manager.allMolecules(   database1 ).contains( s ) );
+        assertTrue( manager.allAnnotations( database1 ).contains( a ) );
+        manager.deleteWithMolecules( database1, a );
+        assertFalse( manager.allMolecules(   database1 ).contains( s ) );
+        assertFalse( manager.allAnnotations( database1 ).contains( a ) );
     }
 }

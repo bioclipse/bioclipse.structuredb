@@ -59,7 +59,7 @@ public class Database extends AbstractServiceContainer
                             try {
                                 Activator.getDefault()
                                          .getStructuredbManager()
-                                         .addStructuresFromSDF( dbName, 
+                                         .addMoleculesFromSDF( dbName, 
                                                                 file,
                                                                 monitor );
                             } catch ( BioclipseException e ) {

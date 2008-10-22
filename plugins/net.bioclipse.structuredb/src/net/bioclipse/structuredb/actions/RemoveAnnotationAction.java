@@ -103,7 +103,7 @@ public class RemoveAnnotationAction extends ActionDelegate {
             protected IStatus run( IProgressMonitor monitor ) {
                 Activator.getDefault()
                          .getStructuredbManager()
-                         .deleteWithStructures( name, 
+                         .deleteWithMolecules( name, 
                                                 annotation, 
                                                 monitor );
                 return Status.OK_STATUS;

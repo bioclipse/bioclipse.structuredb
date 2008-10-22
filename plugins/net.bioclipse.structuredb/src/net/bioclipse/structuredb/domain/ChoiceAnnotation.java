@@ -40,8 +40,8 @@ public class ChoiceAnnotation extends Annotation {
         }
         if ( !valueOk ) {
             throw new IllegalArgumentException(
-                "This ChoiceProperty:" + choiceProperty.getName() 
-                + "does not support the value:" + value );
+                "The ChoiceProperty: " + choiceProperty.getName() 
+                + " does not support the value: " + value );
         }
         this.setValue( value );
         this.property = choiceProperty;

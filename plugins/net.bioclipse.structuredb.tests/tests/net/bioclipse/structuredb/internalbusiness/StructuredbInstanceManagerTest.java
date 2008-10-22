@@ -137,7 +137,7 @@ public class StructuredbInstanceManagerTest
         long before = System.currentTimeMillis();
         DBMolecule dBMolecule = new DBMolecule( name, atomContainer );
         long inBetween = System.currentTimeMillis();
-        manager.insertStructure(dBMolecule);
+        manager.insertMolecule(dBMolecule);
         long after = System.currentTimeMillis();
         System.out.println("Creating structure took: " + (inBetween - before) + "ms");
         System.out.println("Persisting structure took: " + (after - inBetween) + "ms");
@@ -464,7 +464,7 @@ public class StructuredbInstanceManagerTest
         assertTrue( textAnnotationDao.getById( annotation.getId() )
                                      .getDBMolecules()
                                      .contains(dBMolecule) );
-        manager.deleteWithStructures( annotation, null );
+        manager.deleteWithMolecules( annotation, null );
         assertFalse( dBMoleculeDao.getAll().contains(dBMolecule) );
         assertFalse( textAnnotationDao.getAll().contains(annotation) );
     }
