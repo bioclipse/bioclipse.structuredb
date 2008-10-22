@@ -24,7 +24,9 @@ import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Annotation;
+import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
@@ -307,6 +309,72 @@ public class StructuredbManagerTest
         assertTrue( dBMolecules.contains(structure1) );
         assertTrue( dBMolecules.contains(structure2) );
     }
+    
+    public void testCreatingTextAnnotation() {
+        TextAnnotation annotation1 = 
+            manager.createTextAnnotation( database1, "test", "annotation1" );
+        TextAnnotation annotation2 = 
+            manager.createTextAnnotation( database1, "test", "annotation2" );
+        TextAnnotation annotation3 =
+            manager.createTextAnnotation( database1, "test2", "annotation3" );
+        assertNotNull( annotation1 );
+        assertNotNull( annotation2 );
+        assertNotNull( annotation3 );
+        assertTrue( annotation1.getProperty()
+                               .hasValuesEqualTo( 
+                                   annotation2.getProperty() ) );
+        assertFalse( annotation1.getProperty()
+                                .hasValuesEqualTo( 
+                                   annotation3.getProperty() ) );
+    }
+    
+    public void testCreatingRealNumberAnnotation() {
+        RealNumberAnnotation annotation1 = 
+            manager.createRealNumberAnnotation( database1, 
+                                                "test", 
+                                                "annotation1" );
+        RealNumberAnnotation annotation2 = 
+            manager.createRealNumberAnnotation( database1, 
+                                                "test", 
+                                                "annotation2" );
+        RealNumberAnnotation annotation3 =
+            manager.createRealNumberAnnotation( database1, 
+                                                "test2", 
+                                                "annotation3" );
+        assertNotNull( annotation1 );
+        assertNotNull( annotation2 );
+        assertNotNull( annotation3 );
+        assertTrue( annotation1.getProperty()
+                               .hasValuesEqualTo( 
+                                   annotation2.getProperty() ) );
+        assertFalse( annotation1.getProperty()
+                                .hasValuesEqualTo( 
+                                   annotation3.getProperty() ) );
+    }
+    
+    public void testCreatingChoiceAnnotation() {
+        ChoiceAnnotation annotation1 = 
+            manager.createChoiceAnnotation( database1, 
+                                            "test", 
+                                            "annotation1" );
+        ChoiceAnnotation annotation2 = 
+            manager.createChoiceAnnotation( database1, 
+                                            "test", 
+                                            "annotation2" );
+        ChoiceAnnotation annotation3 =
+            manager.createChoiceAnnotation( database1, 
+                                            "test2", 
+                                            "annotation3" );
+        assertNotNull( annotation1 );
+        assertNotNull( annotation2 );
+        assertNotNull( annotation3 );
+        assertTrue( annotation1.getProperty()
+                               .hasValuesEqualTo( 
+                                   annotation2.getProperty() ) );
+        assertFalse( annotation1.getProperty()
+                                .hasValuesEqualTo( 
+                                   annotation3.getProperty() ) );
+    }
 
     private void setALoggedInUser(ApplicationContext context) {
         LoggedInUserKeeper keeper = (LoggedInUserKeeper)
@@ -457,33 +525,85 @@ public class StructuredbManagerTest
         DBMolecule s = manager.createMolecule( database1, 
                                                "test", 
                                                cdk.fromSmiles( "CCC" ) );
-        Annotation annotation = manager.createTextAnnotation( database1, 
-                                                              "test",
-                                                              "annotation" );
-        fail("not yet implemented");
-//        annotation.setVale( "edited" );
-//        annotation.addDBMolecule( s );
-//        manager.save( database1, annotation );
-//        Annotation loaded = manager.annotationByName( database1, "edited" );
-//        
-//        List<DBMolecule> dBMolecules = loaded.getDBMolecules();
-//        assertEquals( 1, dBMolecules.size() );
-//        
-//        assertEquals( s, dBMolecules.get( 0 ) );
-//        
-//        annotation.removeDBMolecule( s );
-//        manager.save( database1, annotation );
-//        loaded = manager.annotationByName( database1, "edited" );
-//
-//        assertEquals( 0, loaded.getDBMolecules().size() );
+        TextAnnotation annotation = manager.createTextAnnotation( database1, 
+                                                                  "test",
+                                                                  "annotation" );
+        annotation.setValue( "edited" );
+        annotation.addDBMolecule( s );
+        manager.save( database1, annotation );
+        Annotation loaded = annotationByValue( annotation.getValue() );
+        
+        List<DBMolecule> dBMolecules = loaded.getDBMolecules();
+        assertEquals( 1, dBMolecules.size() );
+        
+        assertEquals( s, dBMolecules.get( 0 ) );
+        
+        annotation.removeDBMolecule( s );
+        manager.save( database1, annotation );
+        loaded = annotationByValue( annotation.getId() );
+
+        assertEquals( 0, loaded.getDBMolecules().size() );
     }
     
-    public void testEditRealNumberAnnotation() {
-        fail("not yet implemented");
+    private Annotation annotationByValue( Object value ) {
+
+        for ( Annotation a : manager.allAnnotations( database1 ) ) {
+            if ( a instanceof TextAnnotation && 
+                 value.equals( ((TextAnnotation)a).getValue() ) ) {
+                return a;
+            }
+        }
+        throw new RuntimeException("No such annotation found");
+    }
+
+    public void testEditRealNumberAnnotation() throws BioclipseException {
+        DBMolecule s = manager.createMolecule( database1, 
+                                               "test", 
+                                               cdk.fromSmiles( "CCC" ) );
+        RealNumberAnnotation annotation 
+            = manager.createRealNumberAnnotation( database1, 
+                                                  "test",
+                                                  "annotation" );
+        annotation.setValue( -56.56 );
+        annotation.addDBMolecule( s );
+        manager.save( database1, annotation );
+        Annotation loaded = annotationByValue( annotation.getValue() );
+        
+        List<DBMolecule> dBMolecules = loaded.getDBMolecules();
+        assertEquals( 1, dBMolecules.size() );
+        
+        assertEquals( s, dBMolecules.get( 0 ) );
+        
+        annotation.removeDBMolecule( s );
+        manager.save( database1, annotation );
+        loaded = annotationByValue( annotation.getId() );
+
+        assertEquals( 0, loaded.getDBMolecules().size() );
     }
     
-    public void testEditChoiceAnnotation() {
-        fail("not yet implemented");
+    public void testEditChoiceAnnotation() throws BioclipseException {
+        DBMolecule s = manager.createMolecule( database1, 
+                                               "test", 
+                                               cdk.fromSmiles( "CCC" ) );
+        ChoiceAnnotation annotation 
+            = manager.createChoiceAnnotation( database1, 
+                                              "test",
+                                              "annotation" );
+        annotation.setValue( "edited" );
+        annotation.addDBMolecule( s );
+        manager.save( database1, annotation );
+        Annotation loaded = annotationByValue( annotation.getValue() );
+        
+        List<DBMolecule> dBMolecules = loaded.getDBMolecules();
+        assertEquals( 1, dBMolecules.size() );
+        
+        assertEquals( s, dBMolecules.get( 0 ) );
+        
+        annotation.removeDBMolecule( s );
+        manager.save( database1, annotation );
+        loaded = annotationByValue( annotation.getId() );
+
+        assertEquals( 0, loaded.getDBMolecules().size() );
     }
     
     public void testListSMARTSQueryResults() 

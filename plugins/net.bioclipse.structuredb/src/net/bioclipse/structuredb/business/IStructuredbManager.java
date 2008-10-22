@@ -22,7 +22,10 @@ import net.bioclipse.core.business.IBioclipseManager;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.jobs.Job;
 import net.bioclipse.structuredb.domain.Annotation;
+import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.RealNumberAnnotation;
+import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.User;
 
 import org.eclipse.core.resources.IFile;
@@ -119,45 +122,46 @@ public interface IStructuredbManager extends IBioclipseManager {
      * persists it in the database with the given name.
      *
      * @param databaseName
-     * @param annotationName
      * @param propertyName must be a ChoiceProperty
+     * @param value
      * @return the folder
      * @throws IllegalArgumentException
      */
     @PublishedMethod ( params = "String databaseName, " +
                                 "String propertyName, " +
-    		                    "String annotationName",
+    		                    "String value",
                        methodSummary = "Creates a ChoiceAnnotation with " +
                        		           "the given property (which must be a " +
                        		           "ChoiceProperty), " +
                        		           "name and saves it in the database" +
                        		           " with the given name" )
-    public Annotation createChoiceAnnotation( String databaseName,
-                                              String propertyName,
-                                              String annotationName )
-                 throws IllegalArgumentException;
+    public ChoiceAnnotation createChoiceAnnotation( String databaseName,
+                                                    String propertyName,
+                                                    String value )
+                            throws IllegalArgumentException;
 
     /**
      * Creates a RealNumberAnnotation with the given property and name and 
      * persists it in the database with the given name.
      *
      * @param databaseName
-     * @param annotationName
+     * @param value
      * @param propertyName must be a RealNumberProperty
      * @return the folder
      * @throws IllegalArgumentException
      */
     @PublishedMethod ( params = "String databaseName, " +
                                 "String propertyName, " +
-                                "String annotationName",
+                                "String value",
                        methodSummary = "Creates a RealNumberAnnotation with " +
                                        "the given property (which must be a " +
                                        "RealNumberProperty), " +
                                        "name and saves it in the database" +
                                        " with the given name" )
-    public Annotation createRealNumberAnnotation( String databaseName,
+    public RealNumberAnnotation createRealNumberAnnotation( 
+                                                  String databaseName,
                                                   String propertyName,
-                                                  String annotationName )
+                                                  String value )
                  throws IllegalArgumentException;
 
     /**
@@ -165,22 +169,22 @@ public interface IStructuredbManager extends IBioclipseManager {
      * persists it in the database with the given name.
      *
      * @param databaseName
-     * @param annotationName
+     * @param value
      * @param propertyName must be a TextProperty
      * @return the folder
      * @throws IllegalArgumentException
      */
     @PublishedMethod ( params = "String databaseName, " +
                                 "String propertyName, " +
-                                "String annotationName",
+                                "String value",
                        methodSummary = "Creates a TextAnnotation with " +
                                        "the given property (which must be a " +
                                        "TextProperty), " +
                                        "name and saves it in the database" +
                                        " with the given name" )
-    public Annotation createTextAnnotation( String databaseName,
-                                            String propertyName,
-                                            String annotationName )
+    public TextAnnotation createTextAnnotation( String databaseName,
+                                                String propertyName,
+                                                String value )
                  throws IllegalArgumentException;
     
     /**

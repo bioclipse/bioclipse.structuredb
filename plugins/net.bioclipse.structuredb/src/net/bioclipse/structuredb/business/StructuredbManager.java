@@ -605,30 +605,31 @@ public class StructuredbManager implements IStructuredbManager {
                              new NullProgressMonitor() );
     }
 
-    public Annotation createChoiceAnnotation( String databaseName,
-                                              String propertyName,
-                                              String annotationName )
-                      throws IllegalArgumentException {
+    public ChoiceAnnotation createChoiceAnnotation( String databaseName,
+                                                    String propertyName,
+                                                    String annotationName )
+                            throws IllegalArgumentException {
 
-        // TODO Auto-generated method stub
+        checkDatabaseName( databaseName );
         return null;
     }
 
-    public Annotation createRealNumberAnnotation( String databaseName,
+    public RealNumberAnnotation createRealNumberAnnotation( 
+                                                  String databaseName,
                                                   String propertyName,
                                                   String annotationName )
-                      throws IllegalArgumentException {
+                                throws IllegalArgumentException {
 
-        // TODO Auto-generated method stub
+        checkDatabaseName( databaseName );
         return null;
     }
 
-    public Annotation createTextAnnotation( String databaseName,
-                                            String propertyName,
-                                            String annotationName )
-                      throws IllegalArgumentException {
+    public TextAnnotation createTextAnnotation( String databaseName,
+                                                String propertyName,
+                                                String annotationName )
+                          throws IllegalArgumentException {
 
-        // TODO Auto-generated method stub
+        checkDatabaseName( databaseName );
         return null;
     }
 }
