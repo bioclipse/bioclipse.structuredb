@@ -161,7 +161,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     public RealNumberAnnotation createRealNumberAnnotation( 
                                                   String databaseName,
                                                   String propertyName,
-                                                  String value )
+                                                  double value )
                  throws IllegalArgumentException;
 
     /**

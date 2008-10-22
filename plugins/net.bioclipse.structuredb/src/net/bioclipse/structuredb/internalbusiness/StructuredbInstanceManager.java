@@ -23,6 +23,7 @@ import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.ChoiceProperty;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.Property;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextAnnotation;
@@ -241,5 +242,11 @@ public class StructuredbInstanceManager
 
     public void update( TextAnnotation textAnnotation ) {
         textAnnotationDao.update( textAnnotation );
+    }
+
+    public Property retrievePropertyByName( String propertyName ) {
+
+        // TODO Auto-generated method stub
+        return null;
     }
 }

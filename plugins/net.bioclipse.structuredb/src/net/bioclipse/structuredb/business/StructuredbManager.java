@@ -36,9 +36,13 @@ import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IDatabaseListener.DatabaseUpdateType;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
+import net.bioclipse.structuredb.domain.ChoiceProperty;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.Property;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
+import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextAnnotation;
+import net.bioclipse.structuredb.domain.TextProperty;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
@@ -607,29 +611,53 @@ public class StructuredbManager implements IStructuredbManager {
 
     public ChoiceAnnotation createChoiceAnnotation( String databaseName,
                                                     String propertyName,
-                                                    String annotationName )
+                                                    String value )
                             throws IllegalArgumentException {
 
         checkDatabaseName( databaseName );
-        return null;
+        ChoiceProperty property = (ChoiceProperty) 
+                                   internalManagers.get( databaseName )
+                                                   .retrievePropertyByName(
+                                                       propertyName );
+        ChoiceAnnotation annotation = new ChoiceAnnotation( value,
+                                                            property );
+        internalManagers.get( databaseName )
+                        .insertChoiceAnnotation( annotation );
+        return annotation;
     }
 
     public RealNumberAnnotation createRealNumberAnnotation( 
                                                   String databaseName,
                                                   String propertyName,
-                                                  String annotationName )
+                                                  double value )
                                 throws IllegalArgumentException {
 
         checkDatabaseName( databaseName );
-        return null;
+        RealNumberProperty property 
+            = (RealNumberProperty) 
+              internalManagers.get( databaseName )
+                             .retrievePropertyByName( propertyName );
+        RealNumberAnnotation annotation = new RealNumberAnnotation( value,
+                                                                    property );
+        internalManagers.get( databaseName )
+                        .insertRealNumberAnnotation( annotation );
+        return annotation;
     }
 
     public TextAnnotation createTextAnnotation( String databaseName,
                                                 String propertyName,
-                                                String annotationName )
+                                                String value )
                           throws IllegalArgumentException {
 
         checkDatabaseName( databaseName );
-        return null;
+        TextProperty property 
+            = (TextProperty) 
+              internalManagers.get( databaseName )
+                              .retrievePropertyByName( propertyName );
+        TextAnnotation annotation = new TextAnnotation( value,
+                                                        property );
+        internalManagers.get( databaseName )
+                        .insertTextAnnotation( annotation );
+        return annotation;
     }
 }

@@ -332,15 +332,15 @@ public class StructuredbManagerTest
         RealNumberAnnotation annotation1 = 
             manager.createRealNumberAnnotation( database1, 
                                                 "test", 
-                                                "annotation1" );
+                                                1 );
         RealNumberAnnotation annotation2 = 
             manager.createRealNumberAnnotation( database1, 
                                                 "test", 
-                                                "annotation2" );
+                                                1 );
         RealNumberAnnotation annotation3 =
             manager.createRealNumberAnnotation( database1, 
                                                 "test2", 
-                                                "annotation3" );
+                                                2 );
         assertNotNull( annotation1 );
         assertNotNull( annotation2 );
         assertNotNull( annotation3 );
@@ -563,7 +563,7 @@ public class StructuredbManagerTest
         RealNumberAnnotation annotation 
             = manager.createRealNumberAnnotation( database1, 
                                                   "test",
-                                                  "annotation" );
+                                                  1 );
         annotation.setValue( -56.56 );
         annotation.addDBMolecule( s );
         manager.save( database1, annotation );
