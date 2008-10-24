@@ -186,8 +186,8 @@ public class StructuredbManagerTest
                                    MoleculeFactory.makeIndole() );
         String pyrroleSmiles = generator.createSMILES( 
                                    MoleculeFactory.makePyrrole() );
-        ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
-        ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
+        ICDKMolecule indole  = cdk.fromSMILES( indoleSmiles );
+        ICDKMolecule pyrrole = cdk.fromSMILES( pyrroleSmiles );
 
         DBMolecule indoleStructure = manager.createMolecule( database1, 
                                                              "indole", 
@@ -247,8 +247,8 @@ public class StructuredbManagerTest
                                .createSMILES( MoleculeFactory.makeIndole() );
         String pyrroleSmiles = generator
                                .createSMILES( MoleculeFactory.makePyrrole() );
-        ICDKMolecule indole  = cdk.fromSmiles( indoleSmiles );
-        ICDKMolecule pyrrole = cdk.fromSmiles( pyrroleSmiles );
+        ICDKMolecule indole  = cdk.fromSMILES( indoleSmiles );
+        ICDKMolecule pyrrole = cdk.fromSMILES( pyrroleSmiles );
 
         DBMolecule indoleStructure = manager.createMolecule( database1, 
                                                              "indole", 
@@ -436,7 +436,7 @@ public class StructuredbManagerTest
         DBMolecule dBMolecule 
             = manager.createMolecule( database1, 
                                        "test", 
-                                       cdk.fromSmiles( "CC" ) );
+                                       cdk.fromSMILES( "CC" ) );
         assertTrue( manager.allMolecules( database1 )
                            .contains( dBMolecule ) );
         manager.deleteStructure( database1, dBMolecule );
@@ -495,7 +495,7 @@ public class StructuredbManagerTest
     public void testEditStructure() throws BioclipseException {
         DBMolecule s = manager.createMolecule( database1, 
                                                "test", 
-                                               cdk.fromSmiles( "CCC" ) );
+                                               cdk.fromSMILES( "CCC" ) );
         Annotation l = manager.createTextAnnotation( database1, 
                                                      "test",
                                                      "annotation" );
@@ -524,7 +524,7 @@ public class StructuredbManagerTest
     public void testEditTextAnnotation() throws BioclipseException {
         DBMolecule s = manager.createMolecule( database1, 
                                                "test", 
-                                               cdk.fromSmiles( "CCC" ) );
+                                               cdk.fromSMILES( "CCC" ) );
         TextAnnotation annotation = manager.createTextAnnotation( database1, 
                                                                   "test",
                                                                   "annotation" );
@@ -559,7 +559,7 @@ public class StructuredbManagerTest
     public void testEditRealNumberAnnotation() throws BioclipseException {
         DBMolecule s = manager.createMolecule( database1, 
                                                "test", 
-                                               cdk.fromSmiles( "CCC" ) );
+                                               cdk.fromSMILES( "CCC" ) );
         RealNumberAnnotation annotation 
             = manager.createRealNumberAnnotation( database1, 
                                                   "test",
@@ -584,7 +584,7 @@ public class StructuredbManagerTest
     public void testEditChoiceAnnotation() throws BioclipseException {
         DBMolecule s = manager.createMolecule( database1, 
                                                "test", 
-                                               cdk.fromSmiles( "CCC" ) );
+                                               cdk.fromSMILES( "CCC" ) );
         ChoiceAnnotation annotation 
             = manager.createChoiceAnnotation( database1, 
                                               "test",
@@ -611,7 +611,7 @@ public class StructuredbManagerTest
 
         String propaneSmiles = "CCC";
         String butaneSmiles  = "CCCC"; 
-        ICDKMolecule butane  = cdk.fromSmiles( butaneSmiles  );
+        ICDKMolecule butane  = cdk.fromSMILES( butaneSmiles  );
 
         DBMolecule butaneStructure = manager.createMolecule( database1, 
                                                              "indole", 
@@ -628,7 +628,7 @@ public class StructuredbManagerTest
 
         String propaneSmiles = "CCC";
         String butaneSmiles  = "CCCC"; 
-        ICDKMolecule butane  = cdk.fromSmiles( butaneSmiles  );
+        ICDKMolecule butane  = cdk.fromSMILES( butaneSmiles  );
 
         DBMolecule butaneStructure = manager.createMolecule( database1, 
                                                              "indole", 
@@ -653,7 +653,7 @@ public class StructuredbManagerTest
                                                      "annotation1" );
         DBMolecule s = manager.createMolecule( database1, 
                                                "test", 
-                                               cdk.fromSmiles( "CCC" ) );
+                                               cdk.fromSMILES( "CCC" ) );
         a.addDBMolecule( s );
         manager.save( database1, a );
         assertTrue( manager.allMolecules(   database1 ).contains( s ) );
