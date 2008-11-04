@@ -3,7 +3,7 @@ CREATE TABLE DBMolecule (
     baseObject           VARCHAR(36) NOT NULL,
     name                 VARCHAR(50) NOT NULL,
     persistedFingerprint BINARY,
-    smiles               VARCHAR(5000),
+    SMILES               VARCHAR(5000),
     molecule             VARCHAR,
 
     PRIMARY KEY (id)

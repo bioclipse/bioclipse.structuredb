@@ -207,7 +207,7 @@ public class DBMolecule extends BaseObject
     /**
      * @param smiles the smiles representation to set
      */
-    public void setSmiles(String smiles) {
+    public void setSMILES(String smiles) {
         this.smiles = smiles;
     }
 

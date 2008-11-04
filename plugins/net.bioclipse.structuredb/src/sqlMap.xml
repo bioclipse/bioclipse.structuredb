@@ -16,13 +16,13 @@
         <parameter property="id"                                     />     
         <parameter property="name"                                   />
         <parameter property="id"                                     />    
-        <parameter property="smiles"                                 />   
+        <parameter property="SMILES"                                 />   
         <parameter property="persistedFingerprint" jdbcType="binary" />     
         <parameter property="CML"                                    /> 
     </parameterMap>
 
     <parameterMap class="DBMolecule" id="DBMolecule.update">
-        <parameter property="smiles"                                 />
+        <parameter property="SMILES"                                 />
         <parameter property="persistedFingerprint" jdbcType="binary" />
         <parameter property="CML"                                    />
         <parameter property="name"                                   />    
@@ -51,7 +51,7 @@
 	<resultMap class="DBMolecule" id="DBMolecule" extends="BaseObject">
 		<result property="annotations"          column="id" select="DBMolecule.getAnnotations" />
 		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
-		<result property="smiles"               column="smiles"                         />
+		<result property="SMILES"               column="SMILES"                         />
 		<result property="CML"                  column="molecule"                       />
 		<result property="name"                 column="name"                           />
 	</resultMap>
@@ -107,7 +107,7 @@
 	
 	<sql id="DBMolecule-fields">
 		s.persistedFingerprint AS persistedFingerprint,
-		s.smiles               AS smiles,
+		s.SMILES               AS SMILES,
 		s.molecule             AS molecule,
 		s.name                 AS name	
 	</sql>
@@ -172,7 +172,7 @@
 	</insert>
 	
 	<insert id="DBMolecule.insert" parameterMap="DBMolecule.insert">
-		INSERT INTO DBMolecule ( id, name, baseObject, smiles, persistedFingerprint, molecule )
+		INSERT INTO DBMolecule ( id, name, baseObject, SMILES, persistedFingerprint, molecule )
 		               VALUES ( ?, ?, ?, ?, ?, ? ); 
 	</insert>
 	
@@ -683,7 +683,7 @@
     	UPDATE 
     		DBMolecule
     	SET 
-	    	smiles               = ?,
+	    	SMILES               = ?,
 	    	persistedFingerprint = ?,
 	    	molecule             = ?,
 	    	name                 = ?
