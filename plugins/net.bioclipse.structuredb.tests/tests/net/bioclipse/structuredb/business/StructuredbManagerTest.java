@@ -59,12 +59,12 @@ public class StructuredbManagerTest
             Thread.currentThread().setContextClassLoader(
                 StructuredbManagerTest.class.getClassLoader());
         System.setProperty(
-            "javax.xml.parsers.SAXParserFactory", 
-            "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"
+          "javax.xml.parsers.SAXParserFactory", 
+          "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"
         );
         System.setProperty(
-            "javax.xml.parsers.DocumentBuilderFactory", 
-            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
+          "javax.xml.parsers.DocumentBuilderFactory", 
+          "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
         );
         deepDelete( HsqldbUtil.getInstance().getDatabaseFilesDirectory() );
     }
@@ -77,7 +77,7 @@ public class StructuredbManagerTest
                                         .getBean("structuredbManagerTarget");
         assertNotNull(manager);
 
-        if(setUpWasRun) {
+        if (setUpWasRun) {
             return;
         }
         setUpWasRun = true;
@@ -85,7 +85,7 @@ public class StructuredbManagerTest
         manager.createDatabase(database1);
         manager.createDatabase(database2);
 
-        for( ApplicationContext context :
+        for ( ApplicationContext context :
              ((StructuredbManager)manager).applicationContexts.values() ) {
 
             setALoggedInUser(context);

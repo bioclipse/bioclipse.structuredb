@@ -115,7 +115,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     public DBMolecule createMolecule( String databaseName,
                                       String moleculeName,
                                       ICDKMolecule cdkMolecule )
-                                      throws BioclipseException;
+                      throws BioclipseException;
 
     /**
      * Creates a ChoiceAnnotation with the given property and name and 
