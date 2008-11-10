@@ -6,5 +6,11 @@ CREATE TABLE TextProperty (
 	PRIMARY KEY (id)
 );
 
-ALTER TABLE TextProperty ADD UNIQUE (id);
-ALTER TABLE TextProperty ADD FOREIGN KEY (baseObject) REFERENCES BaseObject(id) ON DELETE CASCADE;
+ALTER TABLE TextProperty 
+	ADD UNIQUE (id);
+ALTER TABLE TextProperty 
+	ADD FOREIGN KEY (baseObject) 
+	REFERENCES BaseObject(id) 
+	ON DELETE CASCADE;
+ALTER TABLE TextProperty
+	ADD UNIQUE (name);

@@ -37,7 +37,10 @@ public class ChoiceProperty extends Property {
     }
 
     public ChoiceProperty() {
-        this("");
+        super();
+        annotations     = new ArrayList<ChoiceAnnotation>();
+        propertyChoices = new ArrayList<PropertyChoice>();
+     
         propertyChoices.add( new PropertyChoice("") );
     }
 

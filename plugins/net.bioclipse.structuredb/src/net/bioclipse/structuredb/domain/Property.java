@@ -22,7 +22,7 @@ public abstract class Property extends BaseObject {
     
     public Property() {
         super();
-        name = "";
+        name = getId();
     }
 
     public Property(String name) {

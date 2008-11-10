@@ -8,6 +8,7 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -92,6 +93,15 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
         } 
         catch (Exception e) {
             throw new RuntimeException(e);
+        }
+        try {
+            Method m = object1.getClass().getMethod( "setName", String.class );
+            m.invoke( object1, "object1" );
+            m.invoke( object2, "object2" );
+        }
+        catch ( NoSuchMethodException e ) {
+            //TODO: find a way to test this with an if instead...
+            //      ...if there is one...
         }
         dao.insert(object1);
         dao.insert(object2);

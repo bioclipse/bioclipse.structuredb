@@ -6,5 +6,11 @@ CREATE TABLE RealNumberProperty (
 	PRIMARY KEY (id)
 );
 
-ALTER TABLE RealNumberProperty ADD UNIQUE (id);
-ALTER TABLE RealNumberProperty ADD FOREIGN KEY (baseObject) REFERENCES BaseObject(id) ON DELETE CASCADE;
+ALTER TABLE RealNumberProperty 
+	ADD UNIQUE (id);
+ALTER TABLE RealNumberProperty
+	ADD UNIQUE (name);
+ALTER TABLE RealNumberProperty 
+	ADD FOREIGN KEY (baseObject) 
+	REFERENCES BaseObject(id) 
+	ON DELETE CASCADE;
