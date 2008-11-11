@@ -12,6 +12,9 @@
 package net.bioclipse.structuredb.persistence.dao;
 
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
+import net.bioclipse.structuredb.domain.RealNumberProperty;
+import net.bioclipse.structuredb.domain.TextAnnotation;
+import net.bioclipse.structuredb.domain.TextProperty;
 
 /**
  * @author jonalv
@@ -24,4 +27,17 @@ public class RealNumberAnnotationDaoTest
         super( RealNumberAnnotation.class );
     }
 
+    public void testWithRealNumberProperty() {
+        RealNumberProperty property = new RealNumberProperty();
+        object1.setProperty( property );
+        dao.update( object1 );
+        RealNumberAnnotation loaded = dao.getById( object1.getId() );
+        assertTrue( object1.hasValuesEqualTo(loaded) );
+        
+        RealNumberAnnotation newAnnotation = new RealNumberAnnotation();
+        newAnnotation.setProperty( property );
+        dao.insert( newAnnotation );
+        loaded = dao.getById( newAnnotation.getId() );
+        assertTrue( newAnnotation.hasValuesEqualTo( loaded ) );
+    }
 }
