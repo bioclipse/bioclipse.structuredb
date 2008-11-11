@@ -610,7 +610,8 @@
         UPDATE
             ChoiceAnnotation
         SET
-            val = '$value$'
+            val = '$value$',
+            choiceProperty = '$property.id$'
         WHERE
             id = '$id$'    	
     </update>
@@ -619,7 +620,8 @@
         UPDATE
             TextAnnotation
         SET
-            val = '$value$'
+            val = '$value$',
+            textProperty = '$property.id$'
         WHERE
             id = '$id$'    	
     </update>
@@ -628,7 +630,8 @@
         UPDATE
             RealNumberAnnotation
         SET
-            val = '$value$'
+            val = '$value$',
+            realNumberProperty = '$property.id$'
         WHERE
             id = '$id$'    	
     </update>
