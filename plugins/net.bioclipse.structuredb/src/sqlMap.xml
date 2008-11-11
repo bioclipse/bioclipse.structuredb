@@ -437,6 +437,18 @@
 			t.baseObject = b.id
 		WHERE 
 			t.id = #value#
+	</select>
+	
+	<select id="TextProperty.getByName" resultMap="TextProperty" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="TextProperty-fields" />
+		FROM
+			TextProperty t 
+			INNER JOIN BaseObject b ON
+			t.baseObject = b.id
+		WHERE 
+			t.name = #value#
 	</select>	
 
 	<select id="RealNumberProperty.getAll" resultMap="RealNumberProperty">
@@ -460,6 +472,18 @@
 		WHERE 
 			r.id = #value#
 	</select>
+
+	<select id="RealNumberProperty.getByName" resultMap="RealNumberProperty" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="RealNumberProperty-fields" />
+		FROM
+			RealNumberProperty r 
+			INNER JOIN BaseObject b ON
+			r.baseObject = b.id
+		WHERE 
+			r.name = #value#
+	</select>
 	
 	<select id="ChoiceProperty.getAll" resultMap="ChoiceProperty">
 		SELECT 
@@ -481,6 +505,18 @@
 			c.baseObject = b.id
 		WHERE 
 			c.id = #value#
+	</select>
+
+	<select id="ChoiceProperty.getByName" resultMap="ChoiceProperty" parameterClass="String">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="ChoiceProperty-fields" />
+		FROM
+			ChoiceProperty c 
+			INNER JOIN BaseObject b ON
+			c.baseObject = b.id
+		WHERE 
+			c.name = #value#
 	</select>
 	
 	<select id="ChoiceProperty.getPropertyChoices" resultMap="PropertyChoice" parameterClass="String">

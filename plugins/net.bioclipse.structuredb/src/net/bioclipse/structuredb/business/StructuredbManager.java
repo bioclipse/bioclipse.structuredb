@@ -619,6 +619,11 @@ public class StructuredbManager implements IStructuredbManager {
                                    internalManagers.get( databaseName )
                                                    .retrievePropertyByName(
                                                        propertyName );
+        if ( property == null ) {
+            property = new ChoiceProperty(propertyName);
+            internalManagers.get( databaseName )
+                            .insertChoiceProperty( property );
+        }
         ChoiceAnnotation annotation = new ChoiceAnnotation( value,
                                                             property );
         internalManagers.get( databaseName )
@@ -636,7 +641,12 @@ public class StructuredbManager implements IStructuredbManager {
         RealNumberProperty property 
             = (RealNumberProperty) 
               internalManagers.get( databaseName )
-                             .retrievePropertyByName( propertyName );
+                              .retrievePropertyByName( propertyName );
+        if ( property == null ) {
+            property = new RealNumberProperty(propertyName);
+            internalManagers.get( databaseName )
+                            .insertRealNumberProperty( property );
+        }
         RealNumberAnnotation annotation = new RealNumberAnnotation( value,
                                                                     property );
         internalManagers.get( databaseName )
@@ -654,6 +664,11 @@ public class StructuredbManager implements IStructuredbManager {
             = (TextProperty) 
               internalManagers.get( databaseName )
                               .retrievePropertyByName( propertyName );
+        if ( property == null ) {
+            property = new TextProperty( propertyName );
+            internalManagers.get( databaseName )
+                            .insertTextProperty( property );
+        }
         TextAnnotation annotation = new TextAnnotation( value,
                                                         property );
         internalManagers.get( databaseName )

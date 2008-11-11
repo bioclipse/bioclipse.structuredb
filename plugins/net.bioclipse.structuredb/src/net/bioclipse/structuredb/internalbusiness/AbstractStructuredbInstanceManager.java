@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
 
-import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.IChoiceAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.IChoicePropertyDao;
 import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
@@ -38,7 +37,6 @@ public abstract class AbstractStructuredbInstanceManager
     protected IRealNumberPropertyDao   realNumberPropertyDao;
     protected ITextPropertyDao         textPropertyDao;
     protected IPropertyChoiceDao       propertyChoiceDao;
-    
     
     public IChoiceAnnotationDao getChoiceAnnotationDao() {
         return choiceAnnotationDao;

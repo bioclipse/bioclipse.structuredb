@@ -12,6 +12,7 @@
 package net.bioclipse.structuredb.persistency.dao;
 
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
+import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextProperty;
 
 
@@ -41,5 +42,10 @@ public class TextPropertyDao
                                           property );
         getSqlMapClientTemplate().update( "TextProperty.update", 
                                           property );
+    }
+
+    public TextProperty getByName( String name ) {
+        return (TextProperty)getSqlMapClientTemplate().queryForObject( 
+                "TextProperty.getByName", name );
     }    
 }

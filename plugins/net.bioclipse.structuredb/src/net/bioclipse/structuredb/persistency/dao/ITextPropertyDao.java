@@ -21,4 +21,6 @@ import net.bioclipse.structuredb.domain.TextProperty;
 public interface ITextPropertyDao 
        extends IGenericDao<TextProperty> {
 
+    public TextProperty getByName( String name );
+
 }

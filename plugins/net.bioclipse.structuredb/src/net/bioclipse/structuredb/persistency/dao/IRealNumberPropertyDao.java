@@ -21,4 +21,6 @@ import net.bioclipse.structuredb.domain.RealNumberProperty;
 public interface IRealNumberPropertyDao 
        extends IGenericDao<RealNumberProperty> {
 
+    public RealNumberProperty getByName( String name );
+
 }

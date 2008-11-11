@@ -30,6 +30,7 @@ import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.persistency.dao.AnnotationDao;
+import net.bioclipse.structuredb.persistency.dao.ChoicePropertyDao;
 
 /**
  * @author jonalv
@@ -245,8 +246,13 @@ public class StructuredbInstanceManager
     }
 
     public Property retrievePropertyByName( String propertyName ) {
+        return fallback( 
+                   fallback( choicePropertyDao.getByName(propertyName), 
+                             realNumberPropertyDao.getByName(propertyName) ), 
+                   textPropertyDao.getByName(propertyName) ); 
+    }
 
-        // TODO Auto-generated method stub
-        return null;
+    private Property fallback(Property p1, Property p2){
+        return p1 != null ? p1 : p2 ;
     }
 }

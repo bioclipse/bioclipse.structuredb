@@ -12,6 +12,7 @@
 package net.bioclipse.structuredb.persistence.dao;
 
 import net.bioclipse.structuredb.domain.ChoiceProperty;
+import net.bioclipse.structuredb.domain.Property;
 import net.bioclipse.structuredb.domain.PropertyChoice;
 import net.bioclipse.structuredb.persistency.dao.IChoicePropertyDao;
 
@@ -71,5 +72,13 @@ public class ChoicePropertyDaoTest
                       loaded.getPropertyChoices().size() );
     }
     
-    
+    public void testGetByName() {
+        ChoiceProperty choiceProperty 
+            = createChoicePropertyWithPropertyChoice();
+        choiceProperty.setName( "name" );
+        choicePropertyDao.update( choiceProperty );
+        ChoiceProperty loaded 
+            = choicePropertyDao.getByName( choiceProperty.getName() );
+        assertTrue( choiceProperty.hasValuesEqualTo( loaded ) );
+    }
 }

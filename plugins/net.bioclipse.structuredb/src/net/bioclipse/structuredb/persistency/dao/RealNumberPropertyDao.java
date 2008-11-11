@@ -41,5 +41,11 @@ public class RealNumberPropertyDao
                                           property );
         getSqlMapClientTemplate().update( "RealNumberProperty.update", 
                                           property );
+    }
+
+    public RealNumberProperty getByName( String name ) {
+
+        return (RealNumberProperty)getSqlMapClientTemplate().queryForObject( 
+                   "RealNumberProperty.getByName", name );
     }    
 }

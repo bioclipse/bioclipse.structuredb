@@ -368,6 +368,25 @@ public class StructuredbInstanceManagerTest
         assertTrue( user.hasValuesEqualTo( 
                         manager.retrieveUserByUsername("another username") ) );
     }
+    
+    public void testRetrievePropertyByName() {
+        final String NAME1 = "1";
+        final String NAME2 = "2";
+        final String NAME3 = "3";
+        TextProperty textProperty             = new TextProperty(NAME1);
+        RealNumberProperty realNumberProperty = new RealNumberProperty(NAME2);
+        ChoiceProperty choiceProperty         = new ChoiceProperty(NAME3);
+        manager.insertTextProperty(       textProperty       );
+        manager.insertRealNumberProperty( realNumberProperty );
+        manager.insertChoiceProperty(     choiceProperty     );
+        
+        assertTrue( textProperty.hasValuesEqualTo( 
+                        manager.retrievePropertyByName(NAME1) ) );
+        assertTrue( realNumberProperty.hasValuesEqualTo( 
+                        manager.retrievePropertyByName(NAME2) ) );
+        assertTrue( choiceProperty.hasValuesEqualTo(
+                        manager.retrievePropertyByName(NAME3 ) ) );
+    }
 
     public void testUpdateLibrary() {
         TextAnnotation annotation = createAnnotation("testAnnotatin");

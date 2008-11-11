@@ -331,15 +331,15 @@ public class StructuredbManagerTest
     public void testCreatingRealNumberAnnotation() {
         RealNumberAnnotation annotation1 = 
             manager.createRealNumberAnnotation( database1, 
-                                                "test", 
+                                                "testProperty", 
                                                 1 );
         RealNumberAnnotation annotation2 = 
             manager.createRealNumberAnnotation( database1, 
-                                                "test", 
+                                                "testProperty", 
                                                 1 );
         RealNumberAnnotation annotation3 =
             manager.createRealNumberAnnotation( database1, 
-                                                "test2", 
+                                                "testProperty2", 
                                                 2 );
         assertNotNull( annotation1 );
         assertNotNull( annotation2 );
@@ -355,15 +355,15 @@ public class StructuredbManagerTest
     public void testCreatingChoiceAnnotation() {
         ChoiceAnnotation annotation1 = 
             manager.createChoiceAnnotation( database1, 
-                                            "test", 
+                                            "testChoiceProperty", 
                                             "annotation1" );
         ChoiceAnnotation annotation2 = 
             manager.createChoiceAnnotation( database1, 
-                                            "test", 
+                                            "testChoiceProperty", 
                                             "annotation2" );
         ChoiceAnnotation annotation3 =
             manager.createChoiceAnnotation( database1, 
-                                            "test2", 
+                                            "testChoiceProperty2", 
                                             "annotation3" );
         assertNotNull( annotation1 );
         assertNotNull( annotation2 );
@@ -540,7 +540,7 @@ public class StructuredbManagerTest
         
         annotation.removeDBMolecule( s );
         manager.save( database1, annotation );
-        loaded = annotationByValue( annotation.getId() );
+        loaded = annotationByValue( annotation.getValue() );
 
         assertEquals( 0, loaded.getDBMolecules().size() );
     }
@@ -549,7 +549,13 @@ public class StructuredbManagerTest
 
         for ( Annotation a : manager.allAnnotations( database1 ) ) {
             if ( a instanceof TextAnnotation && 
-                 value.equals( ((TextAnnotation)a).getValue() ) ) {
+                     value.equals( ((TextAnnotation)a).getValue() ) ||
+                 a instanceof RealNumberAnnotation && 
+                     Double.compare( (Double)value, 
+                                     ( (RealNumberAnnotation)a )
+                                         .getValue() ) == 0 ||
+                 a instanceof ChoiceAnnotation && 
+                     value.equals( ((ChoiceAnnotation)a ).getValue() ) ) {
                 return a;
             }
         }
@@ -562,7 +568,7 @@ public class StructuredbManagerTest
                                                cdk.fromSMILES( "CCC" ) );
         RealNumberAnnotation annotation 
             = manager.createRealNumberAnnotation( database1, 
-                                                  "test",
+                                                  "testRealNumberProperty",
                                                   1 );
         annotation.setValue( -56.56 );
         annotation.addDBMolecule( s );
@@ -576,7 +582,7 @@ public class StructuredbManagerTest
         
         annotation.removeDBMolecule( s );
         manager.save( database1, annotation );
-        loaded = annotationByValue( annotation.getId() );
+        loaded = annotationByValue( annotation.getValue() );
 
         assertEquals( 0, loaded.getDBMolecules().size() );
     }
@@ -587,7 +593,7 @@ public class StructuredbManagerTest
                                                cdk.fromSMILES( "CCC" ) );
         ChoiceAnnotation annotation 
             = manager.createChoiceAnnotation( database1, 
-                                              "test",
+                                              "testChoiceProperty",
                                               "annotation" );
         annotation.setValue( "edited" );
         annotation.addDBMolecule( s );

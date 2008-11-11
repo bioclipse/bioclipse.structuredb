@@ -44,6 +44,9 @@ public class TextAnnotationDao extends AnnotationDao<TextAnnotation>
     }
     
     private void insertOrUpdateProperty( TextProperty property ) {
+        if (property == null) {
+            return;
+        }
         TextProperty loaded 
             = getTextPropertyDao().getById( property.getId() );
         if (loaded == null) {

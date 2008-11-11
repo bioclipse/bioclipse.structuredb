@@ -13,6 +13,7 @@ package net.bioclipse.structuredb.persistency.dao;
 
 import net.bioclipse.structuredb.domain.ChoiceProperty;
 import net.bioclipse.structuredb.domain.PropertyChoice;
+import net.bioclipse.structuredb.domain.RealNumberProperty;
 
 
 /**
@@ -67,5 +68,11 @@ public class ChoicePropertyDao
     public IPropertyChoiceDao getPropertyChoiceDao() {
 
         return propertyChoiceDao;
+    }
+
+    public ChoiceProperty getByName( String name ) {
+
+        return (ChoiceProperty)getSqlMapClientTemplate().queryForObject( 
+               "ChoiceProperty.getByName", name );
     }    
 }
