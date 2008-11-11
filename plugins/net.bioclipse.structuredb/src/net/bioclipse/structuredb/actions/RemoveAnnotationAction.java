@@ -55,39 +55,39 @@ public class RemoveAnnotationAction extends ActionDelegate {
                 if (o instanceof AnnotationUIModel) {
                     AnnotationUIModel l = (AnnotationUIModel)o;
                     if ( l.getParent() instanceof Database ) {
-                        net.bioclipse.structuredb.domain.Annotation 
-                            annotation = manager
-                                         .annotationByName(
-                                l.getParent().getName(), l.getName() );
-                        
-                        MessageBox messageBox 
-                            = new MessageBox( 
-                                      PlatformUI.getWorkbench()
-                                                .getActiveWorkbenchWindow()
-                                                .getShell(), 
-                                      SWT.ICON_QUESTION | 
-                                      SWT.YES           | 
-                                      SWT.NO            |
-                                      SWT.CANCEL );
-                        messageBox.setMessage( "Should all structures " +
-                        		               "annotated with with " +
-                        		               annotation.getName() + 
-                        		               "also be removed?" );
-                        messageBox.setText( "Deleting annotation "
-                                            + annotation.getName() );
-                        int response = messageBox.open();
-                        if (response == SWT.CANCEL)
-                          return;
-                        
-                        if (response == SWT.YES) {
-                            deleteWithStructures(l.getParent().getName(), 
-                                                 annotation);
-                        }
-                        else {
-                            manager.deleteAnnotation( 
-                                l.getParent().getName(), 
-                                annotation );
-                        }
+//                        net.bioclipse.structuredb.domain.Annotation 
+//                            annotation = manager
+//                                         .annotationByName(
+//                                l.getParent().getName(), l.getName() );
+//                        
+//                        MessageBox messageBox 
+//                            = new MessageBox( 
+//                                      PlatformUI.getWorkbench()
+//                                                .getActiveWorkbenchWindow()
+//                                                .getShell(), 
+//                                      SWT.ICON_QUESTION | 
+//                                      SWT.YES           | 
+//                                      SWT.NO            |
+//                                      SWT.CANCEL );
+//                        messageBox.setMessage( "Should all structures " +
+//                        		               "annotated with with " +
+//                        		               annotation.getName() + 
+//                        		               "also be removed?" );
+//                        messageBox.setText( "Deleting annotation "
+//                                            + annotation.getName() );
+//                        int response = messageBox.open();
+//                        if (response == SWT.CANCEL)
+//                          return;
+//                        
+//                        if (response == SWT.YES) {
+//                            deleteWithStructures(l.getParent().getName(), 
+//                                                 annotation);
+//                        }
+//                        else {
+//                            manager.deleteAnnotation( 
+//                                l.getParent().getName(), 
+//                                annotation );
+//                        }
                     }
                 }
             }

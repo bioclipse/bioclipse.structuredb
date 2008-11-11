@@ -340,4 +340,8 @@ public class DBMolecule extends BaseObject
     
         this.name = name;
     }
+    
+    public String toString() {
+        return name;
+    }
 }

@@ -42,8 +42,8 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
     
     public DBMoleculesEditorModel( String databaseName, 
                                    String annotationName ) {
-        annotation = structuredb.annotationByName( databaseName, 
-                                                   annotationName );
+//        annotation = structuredb.annotationByName( databaseName, 
+//                                                   annotationName );
         list = annotation.getDBMolecules();
         this.databaseName = databaseName;
     }
