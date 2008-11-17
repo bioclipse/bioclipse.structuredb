@@ -342,7 +342,7 @@ public class StructuredbManager implements IStructuredbManager {
         } 
         String annotationId 
             = createTextAnnotation( databaseName,
-                                    "file_origin",
+                                    "label",
                                     file.getName()
                                      //extracts a name for our 
                                      //new annotation
@@ -674,5 +674,11 @@ public class StructuredbManager implements IStructuredbManager {
         internalManagers.get( databaseName )
                         .insertTextAnnotation( annotation );
         return annotation;
+    }
+
+    public List<TextAnnotation> allLabels( String databaseName ) {
+
+        return internalManagers.get( databaseName )
+                              .allLabels();
     }
 }

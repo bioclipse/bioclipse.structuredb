@@ -24,6 +24,7 @@ import net.bioclipse.services.views.model.AbstractServiceObject;
 import net.bioclipse.services.views.model.IDatabase;
 import net.bioclipse.services.views.model.IServiceContainer;
 import net.bioclipse.structuredb.actions.OpenAnnotationAction;
+import net.bioclipse.structuredb.domain.TextAnnotation;
 
 
 /**
@@ -35,8 +36,8 @@ public class AnnotationUIModel extends AbstractServiceObject
     private Database parent;
     private Logger logger;
 
-    public AnnotationUIModel(String name, Database parent) {
-        setName( name );
+    public AnnotationUIModel(TextAnnotation textAnnotation, Database parent) {
+        setName( textAnnotation.getValue() );
         this.parent = parent;
     }
 

@@ -374,6 +374,24 @@
 			a.baseObject = b.id
 	</select>
 	
+	<select id="TextAnnotation.getAllLabels" resultMap="TextAnnotation">
+		SELECT 
+			<include refid="BaseObject-fields" />,
+			<include refid="Annotation-fields" />,
+			<include refid="TextAnnotation-fields" />
+		FROM
+			TextAnnotation t 
+			INNER JOIN Annotation a ON
+			t.annotation = a.id
+			INNER JOIN BaseObject b ON
+			a.baseObject = b.id,
+			TextProperty p
+			
+		WHERE
+		    t.textProperty = p.id AND
+		    p.name = 'label'
+	</select>
+	
 	<select id="TextAnnotation.getById" resultMap="TextAnnotation" parameterClass="String">
 		SELECT 
 			<include refid="BaseObject-fields" />,

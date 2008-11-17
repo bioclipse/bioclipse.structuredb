@@ -11,8 +11,10 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
+import sun.rmi.runtime.GetThreadPoolAction;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
+import net.bioclipse.structuredb.persistency.dao.ITextAnnotationDao;
 
 
 /**
@@ -38,5 +40,18 @@ public class TextAnnotationDaoTest
         dao.insert( newAnnotation );
         loaded = dao.getById( newAnnotation.getId() );
         assertTrue( newAnnotation.hasValuesEqualTo( loaded ) );
+    }
+    
+    public void testGetAllLabels() {
+        TextAnnotation a = new TextAnnotation( "label", 
+                                               new TextProperty("label") );
+        TextAnnotation b = new TextAnnotation( "not label",
+                                               new TextProperty("not label") );
+        dao.insert( a );
+        dao.insert( b );
+        
+        ITextAnnotationDao textAnnotationDao = (ITextAnnotationDao)dao;
+        assertTrue( textAnnotationDao.getAllLabels().contains( a ) );
+        assertFalse( textAnnotationDao.getAllLabels().contains( b ) );
     }
 }

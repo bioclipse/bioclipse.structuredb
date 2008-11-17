@@ -255,4 +255,8 @@ public class StructuredbInstanceManager
     private Property fallback(Property p1, Property p2){
         return p1 != null ? p1 : p2 ;
     }
+
+    public List<TextAnnotation> allLabels() {
+        return textAnnotationDao.getAllLabels(); 
+    }
 }

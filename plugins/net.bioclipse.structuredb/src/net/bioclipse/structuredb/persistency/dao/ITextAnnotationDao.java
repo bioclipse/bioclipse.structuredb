@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.util.List;
+
 import net.bioclipse.structuredb.domain.TextAnnotation;
 
 
@@ -20,5 +22,7 @@ import net.bioclipse.structuredb.domain.TextAnnotation;
  */
 public interface ITextAnnotationDao 
        extends IGenericDao<TextAnnotation> {
+
+    List<TextAnnotation> getAllLabels();
 
 }

@@ -498,6 +498,18 @@ public class StructuredbInstanceManagerTest
         }
     }
     
+    public void testAllLabels() {
+        TextAnnotation a = new TextAnnotation( "a label", 
+                                               new TextProperty("label") );
+        TextAnnotation b = new TextAnnotation( "not a label", 
+                                               new TextProperty("not label") );
+        manager.insertTextAnnotation( a );
+        manager.insertTextAnnotation( b );
+        
+        assertTrue( manager.allLabels().contains( a ) );
+        assertFalse( manager.allLabels().contains( b ) );
+    }
+    
     protected String[] getConfigLocations() {
         String path = Structuredb.class.getClassLoader()
                                  .getResource("applicationContext.xml")

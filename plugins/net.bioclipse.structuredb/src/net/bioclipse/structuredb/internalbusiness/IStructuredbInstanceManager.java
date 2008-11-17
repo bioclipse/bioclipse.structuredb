@@ -270,4 +270,6 @@ public interface IStructuredbInstanceManager {
     public void update( TextAnnotation textAnnotation );
 
     public Property retrievePropertyByName( String propertyName );
+
+    public List<TextAnnotation> allLabels();
 }

@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.util.List;
+
+import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
 
@@ -65,5 +68,11 @@ public class TextAnnotationDao extends AnnotationDao<TextAnnotation>
 
     public ITextPropertyDao getTextPropertyDao() {
         return textPropertyDao;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<TextAnnotation> getAllLabels() {
+        return getSqlMapClientTemplate()
+                   .queryForList( "TextAnnotation.getAllLabels" );
     }   
 }

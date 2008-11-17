@@ -669,4 +669,15 @@ public class StructuredbManagerTest
         assertFalse( manager.allMolecules(   database1 ).contains( s ) );
         assertFalse( manager.allAnnotations( database1 ).contains( a ) );
     }
+    
+    public void testAllLabels() {
+        Annotation a = manager.createTextAnnotation( database1, 
+                                                     "label", 
+                                                     "a label" );
+        Annotation b = manager.createTextAnnotation( database1, 
+                                                     "no label", 
+                                                     "not a label" );
+        assertTrue( manager.allLabels( database1 ).contains( a ) );
+        assertFalse( manager.allLabels( database1 ).contains( b ) );
+    }
 }

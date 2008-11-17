@@ -32,6 +32,7 @@ import net.bioclipse.structuredb.domain.User;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.openscience.cdk.annotations.TestMethod;
 
 /**
  * @author jonalv
@@ -505,4 +506,20 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     public void addStructuresFromSDF( String databaseName, IFile file ) 
                 throws BioclipseException;
+
+    /**
+     * Gives all labels in the database with the given name. That is: all 
+     * TextAnnotations with the corresponding Property being "label"
+     * 
+     * @param databaseName
+     * @return
+     */
+    @TestMethod("testAllLabels")
+    @PublishedMethod( params = "String databaseName",
+                      methodSummary = "Returns all labels in a " +
+                      		          "database. " +
+                      		          "That is: all TextAnnotations with " +
+                      		          "the corresponding Property being " +
+                      		          "\"label\"")
+    public List<TextAnnotation> allLabels( String databaseName );
 }
