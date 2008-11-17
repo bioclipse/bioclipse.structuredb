@@ -17,6 +17,7 @@ import java.util.List;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
+import net.bioclipse.core.TestClasses;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.business.IBioclipseManager;
 import net.bioclipse.core.domain.IMolecule;
@@ -35,6 +36,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
  * @author jonalv
  */
 @PublishedClass ("Handles structure databases")
+@TestClasses("net.bioclipse.structuredb.business.StructuredbManagerTest")
 public interface IStructuredbManager extends IBioclipseManager {
 
     /**
