@@ -18,6 +18,7 @@ import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.TestClasses;
+import net.bioclipse.core.TestMethods;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.business.IBioclipseManager;
 import net.bioclipse.core.domain.IMolecule;
@@ -36,7 +37,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
  * @author jonalv
  */
 @PublishedClass ("Handles structure databases")
-@TestClasses("net.bioclipse.structuredb.business.StructuredbManagerTest")
+@TestClasses("net.bioclipse.structuredb.business.StructuredbManagerTest," + 
+             "net.bioclipse.structuredb.business.CoverageTest," + 
+             "net.bioclipse.structuredb.business.BioclipseManagerTests")
 public interface IStructuredbManager extends IBioclipseManager {
 
     /**
@@ -46,6 +49,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @throws IllegalArgumentException if a database with the given
      *                                  name already exists
      */
+    @TestMethods("testRemovingDatabaseInstance")
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Creates a local structure " +
                        		           "database with the given name " +
@@ -60,6 +64,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      *
      * @param databaseName name of the database instance to be deleted
      */
+    @TestMethods("testRemovingDatabaseInstance")
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Removes a local database " +
                        		           "with the given name if such " +
@@ -74,6 +79,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param structureName
      * @return
      */
+    @TestMethods("testListSubstructureSearchResults")
     @PublishedMethod ( params = "String databaseName, String name",
                        methodSummary = "Fetches all structures by a " +
                        		           "given name from a database " +
@@ -89,6 +95,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param username
      * @return
      */
+    @TestMethods("testCreatingAndRetrievingUsers")
     @PublishedMethod ( params = "String databaseName, String username",
                        methodSummary = "Fetches a user with a given " +
                        		           "username from a database " +
@@ -106,6 +113,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return the structure
      * @throws BioclipseException
      */
+    @TestMethods("testListSubstructureSearchResults")
     @PublishedMethod ( params = "String databaseName, " +
     		                    "String moleculeName, " +
                                 "ICDKMolecule cdkMolecule",
@@ -129,6 +137,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return the folder
      * @throws IllegalArgumentException
      */
+    @TestMethods("testCreatingChoiceAnnotation")
     @PublishedMethod ( params = "String databaseName, " +
                                 "String propertyName, " +
     		                    "String value",
@@ -152,6 +161,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return the folder
      * @throws IllegalArgumentException
      */
+    @TestMethods("testCreatingRealNumberAnnotation")
     @PublishedMethod ( params = "String databaseName, " +
                                 "String propertyName, " +
                                 "String value",
@@ -176,6 +186,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return the folder
      * @throws IllegalArgumentException
      */
+    @TestMethods("testCreatingTextAnnotation")
     @PublishedMethod ( params = "String databaseName, " +
                                 "String propertyName, " +
                                 "String value",
@@ -200,6 +211,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return the user
      * @throws IllegalArgumentException
      */
+    @TestMethods("testCreatingAndRetrievingUsers")
     @PublishedMethod ( params = "String databaseName, " +
     		                    "String username, " +
                                 "String password, " +
@@ -221,6 +233,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param databaseName
      * @return
      */
+    @TestMethods("testListSubstructureSearchResults")
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all molecules from a " +
                                        "database with a given name")
@@ -232,6 +245,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param databaseName
      * @return
      */
+    @TestMethods("testCreatingAndRetrievingAnnotations")
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all annotations from a " +
                        		           "database with a given name" )
@@ -243,6 +257,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param databaseName
      * @return
      */
+    @TestMethods("testCreatingAndRetrievingUsers")
     @PublishedMethod ( params = "String databaseName",
                        methodSummary = "Fetches all users from a " +
                        		           "database with a given name" )
@@ -255,6 +270,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param path
      * @throws BioclipseException
      */
+    
     @PublishedMethod ( params = "String databaseName, String filePath",
                        methodSummary = "Saves all molecules in a " +
                        		           "given sdf file in the " +
@@ -294,6 +310,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     /**
      * @return a list of the names of all databases
      */
+    @TestMethods("testRemovingDatabaseInstance")
     @PublishedMethod ( methodSummary = "Returns a list with the " +
     		                           "names of all structuredb " +
     		                           "database instances." )
@@ -308,6 +325,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return
      * @throws BioclipseException
      */
+    @TestMethods("testSubstructureSearch")
     @PublishedMethod (params = "String databaseName, IMolecule molecule",
                       methodSummary = "Returns an iterator to all " +
                       		          "molecules in the given " +
@@ -326,6 +344,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return
      * @throws BioclipseException
      */
+    @TestMethods("testListSubstructureSearchResults")
     @PublishedMethod (params = "String databaseName, IMolecule molecule",
                       methodSummary = "Returns a list of all " +
                       		          "molecules in the given " +
@@ -355,6 +374,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param database
      * @param annotation
      */
+    @TestMethods("testDeleteAnnotation")
     @PublishedMethod ( params = "String database, Annotation annotation", 
                        methodSummary = "Deletes the given annotation " +
                        		           "from the given database" )
@@ -366,6 +386,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param database1
      * @param dBMolecule
      */
+    @TestMethods("testDeleteStructure")
     @PublishedMethod ( params = "String database, DBMolecule molecule",
                        methodSummary = "Deletes the given molecule " +
                        		           "from the given database" )
@@ -378,6 +399,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param database1
      * @param s
      */
+    @TestMethods("testEditDBMolecule")
     @PublishedMethod ( params = "String database, DBMolecule molecule",
                        methodSummary = "Saves changes on a molecule " +
                        		           "retrieved from the database " +
@@ -391,6 +413,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param database
      * @param annotation
      */
+    @TestMethods("testEditTextAnnotation")
     @PublishedMethod ( params = "String database, Annotation annotation", 
                        methodSummary = "Saves changes on a " +
                        		           "annotation retrieved from " +
@@ -403,6 +426,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param smarts
      * @return an iterator to the hitting molecules
      */
+    @TestMethods("testSmartsQueryIterator")
     @PublishedMethod ( params = "String database, String smarts", 
                        methodSummary = "Performs a SMARTS query " +
                        		           "returning an iterator to the " +
@@ -416,6 +440,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param smarts
      * @return a List of hitting molecules
      */
+    @TestMethods("testListSMARTSQueryResults")
     @PublishedMethod ( params = "String database, String smarts",
                        methodSummary = "Performs a SMARTS query " +
                        		           "returning a list of hitting " +
@@ -456,6 +481,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param name
      * @param annotation
      */
+    @TestMethods("testDeletingAnnotationWithMolecules")
     @PublishedMethod ( params =  "String name, Annotation annotation", 
                        methodSummary = "Deletes the given annotation " +
                        		           "from the specified database and all " +

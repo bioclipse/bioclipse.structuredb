@@ -478,6 +478,7 @@ public class StructuredbManagerTest
     	finally {
     		manager.createDatabase( database1 ); // restore order
     	}
+    	assertTrue( manager.allDatabaseNames().contains( database1 ) );
     }
     
     public void testUsingUnknownDatabase() {
@@ -492,7 +493,7 @@ public class StructuredbManagerTest
         }
     }
 
-    public void testEditStructure() throws BioclipseException {
+    public void testEditDBMolecule() throws BioclipseException {
         DBMolecule s = manager.createMolecule( database1, 
                                                "test", 
                                                cdk.fromSMILES( "CCC" ) );
@@ -652,7 +653,7 @@ public class StructuredbManagerTest
         assertTrue(found);
     }
     
-    public void testDeletingAnnotationWithStructures() 
+    public void testDeletingAnnotationWithMolecules() 
                 throws BioclipseException {
         Annotation a = manager.createTextAnnotation( database1, 
                                                      "test", 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2008 Bioclipse Project
+ * Copyright (c) 2007 Bioclipse Project
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,15 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import net.bioclipse.core.business.IBioclipseManager;
+import net.bioclipse.core.tests.AbstractManagerTest;
 
 
-@RunWith(value=Suite.class)
-@SuiteClasses( value = { StructuredbManagerTest.class,
-                         BioclipseManagerTests.class,
-                         CoverageTest.class } )
-public class BusinessTestsSuite {
+public class BioclipseManagerTests extends AbstractManagerTest {
+
+    @Override
+    public IBioclipseManager getManager() {
+        return new StructuredbManager();
+    }
 
 }
