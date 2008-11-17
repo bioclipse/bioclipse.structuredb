@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.bioclipse.structuredb_feature"
+      label="StructureDB Feature"
+      version="1.0.0"
+      provider-name="Jonathan Alvarsson">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import feature="net.bioclipse.chemoinformatics_feature" version="2.0.0.A20081028"/>
+   </requires>
+
+   <plugin
+         id="net.bioclipse.structuredb"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.bioclipse.usermanager"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.bioclipse.services"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.bioclipse.hsqldb"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
