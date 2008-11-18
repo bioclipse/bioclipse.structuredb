@@ -11,12 +11,17 @@
 package net.bioclipse.structuredb.persistence.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import net.bioclipse.cdk.business.CDKManager;
+import net.bioclipse.cdk.business.ICDKManager;
+import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
+import net.bioclipse.structuredb.domain.TextProperty;
 import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
 import net.bioclipse.structuredb.persistency.dao.ITextAnnotationDao;
@@ -199,5 +204,32 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         DBMolecule loaded = dao.getById( molecule1.getId() );
         assertEquals( 1, loaded.getAnnotations().size() );
         assertEquals( annotation, molecule1.getAnnotations().get( 0 ) );
+    }
+    
+    public void testGetMoleculeAtIndexInParamater() throws BioclipseException {
+        TextAnnotation annotation 
+            = new TextAnnotation( "test", new TextProperty("label") );
+        ITextAnnotationDao textAnnotationDao
+            = (ITextAnnotationDao) 
+              applicationContext.getBean("textAnnotationDao");
+        textAnnotationDao.insert( annotation );
+        IDBMoleculeDao dbMoleculeDao = (IDBMoleculeDao)dao;
+        ICDKManager cdk = new CDKManager();
+        List<String> SMILES = Arrays.asList( new String[] { "C", 
+                                                            "CC", 
+                                                            "CCC" } );
+        for ( String s : SMILES ) {
+            dbMoleculeDao
+                .insertWithAnnotation( new DBMolecule( s, 
+                                                       cdk.fromSMILES( s ) ), 
+                                       annotation.getId() );
+        }
+
+        for ( int i = 0 ; i < SMILES.size() ; i++ ) {
+            assertTrue( 
+                SMILES.contains( 
+                    dbMoleculeDao.getMoleculeAtIndexInLabel( annotation, i )
+                                 .getSMILES() ) );
+        }
     }
 }

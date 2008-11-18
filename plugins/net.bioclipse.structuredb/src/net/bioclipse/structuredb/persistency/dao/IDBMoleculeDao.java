@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.TextAnnotation;
 
 /**
  * @author jonalv
@@ -27,13 +28,13 @@ public interface IDBMoleculeDao extends IGenericDao<DBMolecule> {
     public Iterator<DBMolecule> allStructuresIterator();
 
     /**
-     * Inserts the structure into the database and the folder 
+     * Inserts the structure into the database and the annotation 
      * with the given id
      * 
      * @param s
-     * @param folderId
+     * @param annotationId
      */
-    public void insertWithAnnotation( DBMolecule s, String folderId );
+    public void insertWithAnnotation( DBMolecule s, String annotationId );
 
     /**
      * @return number of structures in the database
@@ -53,4 +54,7 @@ public interface IDBMoleculeDao extends IGenericDao<DBMolecule> {
      */
     public int numberOfFingerprintSubstructureMatches(
         byte[] fingerPrint );
+    
+    public DBMolecule getMoleculeAtIndexInLabel( TextAnnotation label, 
+                                                 int index );
 }

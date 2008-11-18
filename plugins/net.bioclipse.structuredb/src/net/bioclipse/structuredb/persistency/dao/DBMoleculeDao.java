@@ -21,6 +21,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.TextAnnotation;
 
 /**
  * The DBMoleculeDao persists and loads structures
@@ -197,4 +198,18 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
             "DBMolecule.numberOfFingerprintSubstructureMatches", 
             paramaterMap );
     };
+    
+    @SuppressWarnings("unchecked")
+    public DBMolecule getMoleculeAtIndexInLabel( TextAnnotation label, 
+                                                 int index ) {
+        
+        List<DBMolecule> results 
+            = getSqlMapClientTemplate()
+                  .queryForList( "DBMolecule.atIndexInLabel", 
+                                 label, 
+                                 index, 
+                                 1 );
+        return results.size() == 1 ? results.get( 0 ) 
+                                   : null;
+    }
 }
