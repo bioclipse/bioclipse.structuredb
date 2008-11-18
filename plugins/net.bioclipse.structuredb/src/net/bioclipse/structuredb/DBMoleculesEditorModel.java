@@ -19,6 +19,7 @@ import net.bioclipse.cdk.ui.views.IMoleculesEditorModel;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.TextAnnotation;
 
 /*
  * TODO: This implementation loads all molecules from the database 
@@ -41,9 +42,8 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
     private String databaseName;
     
     public DBMoleculesEditorModel( String databaseName, 
-                                   String annotationName ) {
-//        annotation = structuredb.annotationByName( databaseName, 
-//                                                   annotationName );
+                                   TextAnnotation annotation ) {
+        this.annotation = annotation;
         list = annotation.getDBMolecules();
         this.databaseName = databaseName;
     }

@@ -35,14 +35,15 @@ public class AnnotationUIModel extends AbstractServiceObject
 
     private Database parent;
     private Logger logger;
+    private TextAnnotation annotation;
 
     public AnnotationUIModel(TextAnnotation textAnnotation, Database parent) {
         setName( textAnnotation.getValue() );
-        this.parent = parent;
+        this.parent     = parent;
+        this.annotation = textAnnotation;
     }
 
     public boolean drop( Object data ) {
-
         return false;
     }
     
@@ -72,7 +73,7 @@ public class AnnotationUIModel extends AbstractServiceObject
         
         if ( adapter.isAssignableFrom( IMoleculesEditorModel.class ) ) {
             return new DBMoleculesEditorModel( parent.getName(), 
-                                               getName() );
+                                               annotation );
         }
         return super.getAdapter( adapter );
     }
