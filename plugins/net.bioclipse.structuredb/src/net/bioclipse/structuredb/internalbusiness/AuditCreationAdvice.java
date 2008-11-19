@@ -15,7 +15,6 @@ import java.lang.reflect.Method;
 import java.sql.Timestamp;
 
 import net.bioclipse.structuredb.domain.BaseObject;
-import net.bioclipse.usermanager.business.IUserManager;
 
 /**
  * @author jonalv
