@@ -299,12 +299,26 @@
 	<select id="DBMolecule.getByName" resultMap="DBMolecule" parameterClass="String">
         SELECT
             <include refid="BaseObject-fields" />, 
-            <include refid="DBMolecule-fields"  />
+            <include refid="DBMolecule-fields" />
         FROM
             DBMolecule s INNER JOIN BaseObject b ON
             s.baseObject = b.id
         WHERE
             s.name = #value#
+    </select>
+    
+    <select id="DBMolecule.atIndexInLabel" resultMap="DBMolecule" parameterClass="String">
+    	SELECT
+    		<include refid="BaseObject-fields" />, 
+            <include refid="DBMolecule-fields" />
+        FROM
+            DBMolecule s INNER JOIN BaseObject b ON s.baseObject = b.id,
+            DBMoleculeAnnotation ma,
+            Annotation a 
+        WHERE
+            s.id = ma.dBMoleculeId AND
+            ma.annotationId = a.id AND
+            a.id = #value#
     </select>
 	
 	<select id="DBMolecule.getAnnotations" resultMap="Annotation" parameterClass="String">

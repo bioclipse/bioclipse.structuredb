@@ -206,7 +206,7 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
         List<DBMolecule> results 
             = getSqlMapClientTemplate()
                   .queryForList( "DBMolecule.atIndexInLabel", 
-                                 label, 
+                                 label.getId(), 
                                  index, 
                                  1 );
         return results.size() == 1 ? results.get( 0 ) 
