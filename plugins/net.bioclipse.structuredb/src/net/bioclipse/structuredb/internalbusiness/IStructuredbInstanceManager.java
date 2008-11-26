@@ -24,6 +24,7 @@ import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
 import net.bioclipse.structuredb.domain.User;
+import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -272,4 +273,9 @@ public interface IStructuredbInstanceManager {
     public Property retrievePropertyByName( String propertyName );
 
     public List<TextAnnotation> allLabels();
+
+    public DBMolecule moleculeAtIndexInLabel( int index, 
+                                              TextAnnotation annotation );
+
+    public int numberOfMoleculesInLabel( TextAnnotation annotation );
 }

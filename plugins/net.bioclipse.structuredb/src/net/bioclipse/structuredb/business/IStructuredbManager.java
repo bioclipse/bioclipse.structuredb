@@ -522,4 +522,12 @@ public interface IStructuredbManager extends IBioclipseManager {
                       		          "the corresponding Property being " +
                       		          "\"label\"")
     public List<TextAnnotation> allLabels( String databaseName );
+
+    public int numberOfMoleculesInLabel( String databaseName, 
+                                         TextAnnotation annotation );
+
+    public DBMolecule moleculeAtIndexInLabel( String databaseName, 
+                                              int index, 
+                                              TextAnnotation annotation );
+    
 }

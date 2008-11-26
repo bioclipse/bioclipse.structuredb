@@ -22,6 +22,7 @@ import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
+import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
 import net.bioclipse.structuredb.persistency.dao.ITextAnnotationDao;
@@ -231,5 +232,34 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
                     dbMoleculeDao.getMoleculeAtIndexInLabel( annotation, i )
                                  .getSMILES() ) );
         }
+    }
+
+    public void testGetNumberOfMoleculesWithLabel() {
+        TextAnnotation annotation 
+            = new TextAnnotation( "test", new TextProperty("label") );
+        ITextAnnotationDao textAnnotationDao
+            = (ITextAnnotationDao) 
+              applicationContext.getBean("textAnnotationDao");
+        textAnnotationDao.insert( annotation );
+        IDBMoleculeDao dbMoleculeDao = (IDBMoleculeDao)dao;
+        assertEquals( 0, 
+                      dbMoleculeDao.getNumberOfMoleculesWithLabel( 
+                          annotation ) );
+        object1.addAnnotation( annotation );
+        object2.addAnnotation( annotation );
+        
+        IStructuredbInstanceManager manager 
+            = (IStructuredbInstanceManager) 
+              applicationContext.getBean("structuredbInstanceManager");
+        
+        manager.update( annotation );
+        
+        assertEquals( 2, 
+                      textAnnotationDao.getById( annotation.getId() )
+                                       .getDBMolecules().size() );
+        
+        assertEquals( 2, 
+                      dbMoleculeDao.getNumberOfMoleculesWithLabel( 
+                          annotation ) );
     }
 }

@@ -259,4 +259,15 @@ public class StructuredbInstanceManager
     public List<TextAnnotation> allLabels() {
         return textAnnotationDao.getAllLabels(); 
     }
+
+    public DBMolecule moleculeAtIndexInLabel( int index, 
+                                              TextAnnotation annotation ) {
+
+        return dBMoleculeDao.getMoleculeAtIndexInLabel( annotation, index );
+    }
+
+    public int numberOfMoleculesInLabel( TextAnnotation annotation ) {
+
+        return dBMoleculeDao.getNumberOfMoleculesWithLabel( annotation );
+    }
 }

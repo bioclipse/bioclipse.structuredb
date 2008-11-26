@@ -57,4 +57,6 @@ public interface IDBMoleculeDao extends IGenericDao<DBMolecule> {
     
     public DBMolecule getMoleculeAtIndexInLabel( TextAnnotation label, 
                                                  int index );
+
+    public int getNumberOfMoleculesWithLabel( TextAnnotation label );
 }

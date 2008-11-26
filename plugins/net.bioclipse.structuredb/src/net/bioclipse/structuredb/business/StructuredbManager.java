@@ -690,4 +690,19 @@ public class StructuredbManager implements IStructuredbManager {
         return internalManagers.get( databaseName )
                               .allLabels();
     }
+
+    public DBMolecule moleculeAtIndexInLabel( String databaseName, int index,
+                                              TextAnnotation annotation ) {
+
+        return internalManagers.get( databaseName )
+                               .moleculeAtIndexInLabel(index, annotation);
+        
+    }
+
+    public int numberOfMoleculesInLabel( String databaseName,
+                                         TextAnnotation annotation ) {
+
+        return internalManagers.get( databaseName )
+                               .numberOfMoleculesInLabel(annotation);
+    }
 }

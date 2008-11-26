@@ -338,6 +338,19 @@
             sl.dBMoleculeId = #value# AND sl.annotationId = a.id
     </select>
 
+	<select id="DBMolecule.numberOfMoleculesWithLabel" 
+	        resultClass="Integer" 
+	        parameterClass="String">
+		SELECT
+			COUNT(*)
+		FROM
+			DBMolecule m, DBMoleculeAnnotation ma
+		WHERE
+			m.id = ma.dBMoleculeId AND
+			ma.annotationId = #value#
+		
+	</select>
+
 	<select id="User.getAll" resultMap="User">
 		SELECT 
 			<include refid="BaseObject-fields" />,

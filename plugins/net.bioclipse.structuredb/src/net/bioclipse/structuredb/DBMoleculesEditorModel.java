@@ -37,21 +37,20 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
     private IStructuredbManager structuredb = Activator
                                               .getDefault()
                                               .getStructuredbManager();
-    private List<? extends DBMolecule> list;
-    private Annotation annotation;
+    private TextAnnotation annotation;
     private String databaseName;
     
     public DBMoleculesEditorModel( String databaseName, 
                                    TextAnnotation annotation ) {
         this.annotation = annotation;
-        list = annotation.getDBMolecules();
         this.databaseName = databaseName;
     }
     
     public Object getMoleculeAt( int index ) {
-        final DBMolecule mol= list.get( index );
-        // TODO : SDFElement should handle database resources
-        return new SDFElement(null,mol.getName(),-1,index){
+        final DBMolecule mol= structuredb.moleculeAtIndexInLabel( databaseName, 
+                                                                  index, 
+                                                                  annotation );
+        return new SDFElement(null,mol.getName(),-1,index) {
             
             @Override
             public Object getAdapter( Class adapter ) {
@@ -67,7 +66,7 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
     }
 
     public int getNumberOfMolecules() {
-        return list.size();
+        return structuredb.numberOfMoleculesInLabel(databaseName, annotation);
     }
 
     public void save() {

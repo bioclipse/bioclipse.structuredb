@@ -202,7 +202,6 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
     @SuppressWarnings("unchecked")
     public DBMolecule getMoleculeAtIndexInLabel( TextAnnotation label, 
                                                  int index ) {
-        
         List<DBMolecule> results 
             = getSqlMapClientTemplate()
                   .queryForList( "DBMolecule.atIndexInLabel", 
@@ -211,5 +210,12 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
                                  1 );
         return results.size() == 1 ? results.get( 0 ) 
                                    : null;
+    }
+
+    public int getNumberOfMoleculesWithLabel( TextAnnotation label ) {
+        return (Integer) getSqlMapClientTemplate()
+                         .queryForObject( 
+                             "DBMolecule.numberOfMoleculesWithLabel", 
+                             label.getId() );
     }
 }
