@@ -109,7 +109,7 @@ public class DBMolecule extends BaseObject
         }
         catch (BioclipseException e) {
             smiles = "";
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             smiles = "";
         }
         
