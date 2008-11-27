@@ -350,7 +350,7 @@ public class StructuredbManager implements IStructuredbManager {
                                     "label",
                                     "no SMILES" );
         
-        while ( iterator.hasNext() ) {
+        while ( iterator.hasNext() && !monitor.isCanceled()) {
             monitor.subTask("reading " + moleculesRead + "/" + entries);
 
             ICDKMolecule molecule = iterator.next();
@@ -375,6 +375,7 @@ public class StructuredbManager implements IStructuredbManager {
             }
             monitor.worked( maintTaskTick );
         }
+        iterator = null;
         internalManagers.get(databaseName).update( noSMILESAnnotation );
         monitor.done();
         fireAnnotationsChanged();        
