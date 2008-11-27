@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
-import sun.rmi.runtime.GetThreadPoolAction;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
 import net.bioclipse.structuredb.persistency.dao.ITextAnnotationDao;
