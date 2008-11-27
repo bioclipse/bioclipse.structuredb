@@ -38,7 +38,6 @@ import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.ChoiceProperty;
 import net.bioclipse.structuredb.domain.DBMolecule;
-import net.bioclipse.structuredb.domain.Property;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextAnnotation;
@@ -57,7 +56,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.openscience.cdk.CDKConstants;
-import org.openscience.cdk.interfaces.IAtomContainer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -329,10 +327,9 @@ public class StructuredbManager implements IStructuredbManager {
         monitor.worked( firstTaskTicks );
         // now really read the structures
         
-        monitor.subTask( "importing molecules" );
-        
         Iterator<ICDKMolecule> iterator;
         int moleculesRead = 0;
+        monitor.subTask("reading " + moleculesRead + "/" + entries);
         try {
             iterator = cdk.createMoleculeIterator( file ); 
         } 
@@ -354,6 +351,8 @@ public class StructuredbManager implements IStructuredbManager {
                                     "no SMILES" );
         
         while ( iterator.hasNext() ) {
+            monitor.subTask("reading " + moleculesRead + "/" + entries);
+
             ICDKMolecule molecule = iterator.next();
             moleculesRead++;
             
