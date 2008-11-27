@@ -109,6 +109,8 @@ public class DBMolecule extends BaseObject
         }
         catch (BioclipseException e) {
             smiles = "";
+        } catch (Exception e) {
+            smiles = "";
         }
         
         annotations = new ArrayList<Annotation>();
