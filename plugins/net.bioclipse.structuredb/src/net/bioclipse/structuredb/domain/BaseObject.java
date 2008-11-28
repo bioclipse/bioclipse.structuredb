@@ -198,17 +198,7 @@ public class BaseObject implements IBioObject, Comparable {
     }
 
     public void setCreator(User creator) {
-        User oldCreator = this.creator;
         this.creator = creator;
-        
-        if ( oldCreator != null && oldCreator != creator ) {
-            oldCreator.removeCreatedBaseObject(this);
-        }
-        
-        if ( creator != null 
-             && !creator.getCreatedBaseObjects().contains(this) ) {
-            creator.addCreatedBaseObject( this );
-        }
     }
 
     public void setLastEditor(User editor) {

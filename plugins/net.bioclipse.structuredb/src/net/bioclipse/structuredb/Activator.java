@@ -81,7 +81,7 @@ public class Activator extends AbstractUIPlugin {
     public IStructuredbManager getStructuredbManager() {
         IStructuredbManager manager = null;
         try {
-            manager = (IStructuredbManager) finderTracker.waitForService(1000*10);
+            manager = (IStructuredbManager) finderTracker.waitForService(1000*30);
         } 
         catch (InterruptedException e) {
             logger.warn("Exception occurred while attempting " +

@@ -27,7 +27,6 @@ public class User extends BaseObject {
 
     private String  userName;
     private boolean sudoer;
-    private Set<BaseObject> createdBaseObjects;
     
     private EncryptedPassword encryptedPassword; 
     
@@ -35,7 +34,6 @@ public class User extends BaseObject {
         super();
         userName           = "user" + getId();
         encryptedPassword  = EncryptedPassword.fromPlaintextPassword( "" );
-        createdBaseObjects = new HashSet<BaseObject>();
     }
 
     public User(String userName, String password, boolean sudoer) {
@@ -43,7 +41,6 @@ public class User extends BaseObject {
         this.userName      = userName;
         this.sudoer        = sudoer;
         encryptedPassword  = EncryptedPassword.fromPlaintextPassword(password);
-        createdBaseObjects = new HashSet<BaseObject>();
     }
 
     /**
@@ -136,45 +133,5 @@ public class User extends BaseObject {
      */
     public void setPassWord(String password) {
         encryptedPassword = EncryptedPassword.fromPlaintextPassword(password);
-    }
-
-    /**
-     * @return the objects created by this user
-     */
-    public Set<BaseObject> getCreatedBaseObjects() {
-        return createdBaseObjects;
-    }
-
-    /**
-     * @param createdBaseObjects the objects to set
-     */
-    public void setCreatedBaseObjects( 
-        Set<BaseObject> createdBaseObjects ) {
-        
-        this.createdBaseObjects = createdBaseObjects;
-    }
-
-    /**
-     * Adds a new object among this users created objects
-     * 
-     * @param baseObject the object to add
-     */
-    public void addCreatedBaseObject(BaseObject baseObject) {
-        createdBaseObjects.add(baseObject);
-        if( baseObject.getCreator() != this ) {
-            baseObject.setCreator(this);
-        }
-    }
-
-    /**
-     * Removes an object from a user created objects set
-     * 
-     * @param baseObject object to remove
-     */
-    public void removeCreatedBaseObject(BaseObject baseObject) {
-        createdBaseObjects.remove(baseObject);
-        if( baseObject.getCreator() != null ) {
-            baseObject.setCreator(null);
-        }
     }
 }

@@ -100,8 +100,13 @@ public class DBMolecule extends BaseObject
            throws BioclipseException {
 
         super();
-        this.name            = name;
-        fingerPrint          = cdkMolecule.getFingerprint(false);
+        this.name = name;
+        try {
+            fingerPrint = cdkMolecule.getFingerprint(false);
+        }
+        catch ( BioclipseException e ) {
+            logger.error( "Could not create fingerprint for molecule", e );
+        }
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         atomContainer        = cdkMolecule.getAtomContainer();
         try {

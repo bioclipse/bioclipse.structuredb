@@ -345,11 +345,6 @@ public class StructuredbManager implements IStructuredbManager {
                                      //new annotation
                                     .replaceAll("\\..*?$", "") ).getId();
 
-        TextAnnotation noSMILESAnnotation 
-            = createTextAnnotation( databaseName,
-                                    "label",
-                                    "no SMILES" );
-        
         while ( iterator.hasNext() && !monitor.isCanceled()) {
             monitor.subTask("reading " + moleculesRead + "/" + entries);
 
@@ -370,13 +365,9 @@ public class StructuredbManager implements IStructuredbManager {
             internalManagers.get(databaseName)
                             .insertMoleculeInAnnotation( s, 
                                                          annotationId );
-            if ( "".equals( s.getSMILES() ) ) {
-                noSMILESAnnotation.addDBMolecule( s );
-            }
             monitor.worked( maintTaskTick );
         }
         iterator = null;
-        internalManagers.get(databaseName).update( noSMILESAnnotation );
         monitor.done();
         fireAnnotationsChanged();        
     }

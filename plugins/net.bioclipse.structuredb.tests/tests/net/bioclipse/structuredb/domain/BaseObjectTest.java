@@ -36,21 +36,4 @@ public class BaseObjectTest {
         assertTrue(  baseObject1.hasValuesEqualTo(baseObject2) );
         assertFalse( baseObject1.hasValuesEqualTo(baseObject3) );
     }
-    
-    @Test
-    public void testDoubleReferences() {
-        BaseObject baseObject = new BaseObject();
-        
-        User user = new User();
-        
-        user.addCreatedBaseObject( baseObject );
-    
-        assertTrue( user.getCreatedBaseObjects().contains(baseObject) );
-        assertTrue( baseObject.getCreator() == user );
-        
-        user.removeCreatedBaseObject( baseObject );
-        
-        assertFalse( user.getCreatedBaseObjects().contains(baseObject) );
-        assertFalse( baseObject.getCreator() == user );
-    }
 }

@@ -27,16 +27,4 @@ public class UserTest {
         assertTrue(  user1.hasValuesEqualTo(user2) );
         assertFalse( user1.hasValuesEqualTo(user3) );
     }
-    
-    @Test
-    public void testDoubleReferences() {
-        DBMolecule dBMolecule = new DBMolecule();
-        
-        User user = new User();
-        
-        user.addCreatedBaseObject( dBMolecule );
-    
-        assertTrue( user.getCreatedBaseObjects().contains(dBMolecule) );
-        assertTrue( dBMolecule.getCreator() == user );
-    }
 }
