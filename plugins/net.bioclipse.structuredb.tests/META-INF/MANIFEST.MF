@@ -27,4 +27,5 @@ Bundle-ClassPath: .,
  libs/slf4j-simple-1.5.0.jar
 Import-Package: org.apache.commons.logging;version="1.0.4",
  org.apache.log4j
-Export-Package: net.bioclipse.structuredb
+Export-Package: net.bioclipse.structuredb,
+ net.bioclipse.structuredb.business
