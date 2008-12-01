@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.sql.Timestamp;
 
 import net.bioclipse.structuredb.domain.BaseObject;
+import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
 /**
  * @author jonalv

@@ -1,4 +1,4 @@
-CREATE TABLE RealNumberAnnotation (
+CREATE CACHED TABLE RealNumberAnnotation (
 	id                 VARCHAR(36) NOT NULL,
     val                FLOAT       NOT NULL,
 	annotation         VARCHAR(36) NOT NULL,

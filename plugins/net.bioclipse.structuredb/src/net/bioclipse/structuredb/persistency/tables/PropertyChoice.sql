@@ -1,4 +1,4 @@
-CREATE TABLE PropertyChoice (
+CREATE CACHED TABLE PropertyChoice (
 	id               VARCHAR(36) NOT NULL,
 	baseObject       VARCHAR(36) NOT NULL,
 	val              VARCHAR(50) NOT NULL,

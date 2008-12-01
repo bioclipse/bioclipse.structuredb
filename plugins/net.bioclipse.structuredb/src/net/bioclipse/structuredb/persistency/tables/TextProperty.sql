@@ -1,4 +1,4 @@
-CREATE TABLE TextProperty (
+CREATE CACHED TABLE TextProperty (
 	id         VARCHAR(36) NOT NULL,
     name       VARCHAR(50) NOT NULL,
 	baseObject VARCHAR(36) NOT NULL,

@@ -1,4 +1,4 @@
-CREATE TABLE TextAnnotation (
+CREATE CACHED TABLE TextAnnotation (
 	id           VARCHAR(36) NOT NULL,
     val          VARCHAR(50) NOT NULL,
 	annotation   VARCHAR(36) NOT NULL,

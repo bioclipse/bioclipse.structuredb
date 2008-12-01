@@ -1,4 +1,4 @@
-CREATE TABLE User (
+CREATE CACHED TABLE User (
 	id         VARCHAR(36) NOT NULL,
 	userName   VARCHAR(50),
 	passWord   VARCHAR(50),

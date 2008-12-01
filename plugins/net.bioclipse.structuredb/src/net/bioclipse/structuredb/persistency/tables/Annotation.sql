@@ -1,4 +1,4 @@
-CREATE TABLE Annotation (
+CREATE CACHED TABLE Annotation (
 	id         VARCHAR(36) NOT NULL,
 	baseObject VARCHAR(36) NOT NULL,
     sortOf     VARCHAR(32) NOT NULL,

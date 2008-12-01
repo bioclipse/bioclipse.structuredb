@@ -1,4 +1,4 @@
-CREATE TABLE ChoiceProperty (
+CREATE CACHED TABLE ChoiceProperty (
 	id         VARCHAR(36) NOT NULL,
     name       VARCHAR(50) NOT NULL,
 	baseObject VARCHAR(36) NOT NULL,

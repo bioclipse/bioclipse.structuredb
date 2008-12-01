@@ -1,4 +1,4 @@
-CREATE TABLE DBMolecule (
+CREATE CACHED TABLE DBMolecule (
     id                   VARCHAR(36) NOT NULL,
     baseObject           VARCHAR(36) NOT NULL,
     name                 VARCHAR(50) NOT NULL,

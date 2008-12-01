@@ -187,6 +187,9 @@ public class DBMolecule extends BaseObject
     }
 
     private byte[] makePersistedFingerPrint(BitSet fingerPrint) {
+        if ( fingerPrint == null ) {
+            return new byte[0];
+        }
         byte[] persistedFingerPrint = new byte[fingerPrint.size()];
         for( int i = 0 ; i < fingerPrint.size() ; i++) {
             persistedFingerPrint[i] = (byte) (fingerPrint.get(i) ? 1 

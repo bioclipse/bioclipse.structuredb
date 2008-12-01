@@ -1,4 +1,4 @@
-CREATE TABLE DBMoleculeAnnotation (
+CREATE CACHED TABLE DBMoleculeAnnotation (
     dBMoleculeId VARCHAR(36) NOT NULL,
     annotationId VARCHAR(36) NOT NULL,
 

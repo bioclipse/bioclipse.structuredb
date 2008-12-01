@@ -1,4 +1,4 @@
-CREATE TABLE BaseObject (
+CREATE CACHED TABLE BaseObject (
 	id   VARCHAR(36) NOT NULL,
 	created TIMESTAMP,
 	edited TIMESTAMP,
