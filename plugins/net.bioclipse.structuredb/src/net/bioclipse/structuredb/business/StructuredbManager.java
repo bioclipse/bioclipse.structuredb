@@ -345,6 +345,7 @@ public class StructuredbManager implements IStructuredbManager {
                                      //new annotation
                                     .replaceAll("\\..*?$", "") ).getId();
 
+        long start = System.currentTimeMillis();
         while ( iterator.hasNext() && !monitor.isCanceled()) {
             monitor.subTask("reading " + moleculesRead + "/" + entries);
 
@@ -367,6 +368,8 @@ public class StructuredbManager implements IStructuredbManager {
                                                          annotationId );
             monitor.worked( maintTaskTick );
         }
+        long end = System.currentTimeMillis();
+        System.out.println("Time consumed: " + (end - start)/1000);
         iterator = null;
         monitor.done();
         fireAnnotationsChanged();        
