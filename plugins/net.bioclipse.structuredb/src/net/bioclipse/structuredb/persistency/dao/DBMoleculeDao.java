@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
@@ -35,6 +36,9 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
     public DBMoleculeDao() {
         super(DBMolecule.class);
     }
+    
+    private Map<String, DBMolecule> cache 
+        = new HashMap<String, DBMolecule>();
 
     @Override
     public void insert( final DBMolecule dBMolecule ) {
@@ -202,14 +206,34 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
     @SuppressWarnings("unchecked")
     public DBMolecule getMoleculeAtIndexInLabel( TextAnnotation label, 
                                                  int index ) {
+        
+        DBMolecule result = cache.get( getKey(label, index) ); 
+        
+        if ( result != null ) {
+            return result;
+        }
+        
+        final int CACHESIZE = 200;
+        
         List<DBMolecule> results 
             = getSqlMapClientTemplate()
                   .queryForList( "DBMolecule.atIndexInLabel", 
                                  label.getId(), 
-                                 index, 
-                                 1 );
-        return results.size() == 1 ? results.get( 0 ) 
+                                 index > CACHESIZE/2 ? index -CACHESIZE/2 
+                                                     : 0, 
+                                 CACHESIZE );
+        int i = index > CACHESIZE/2 ? -CACHESIZE/2 
+                                    : -index ;
+        cache.clear();
+        for (DBMolecule m  : results ) {
+            cache.put( getKey( label, index + i++), m );
+        }
+        return results.size() != 0 ? cache.get( getKey( label, index ) ) 
                                    : null;
+    }
+
+    private String getKey( TextAnnotation label, int index ) {
+        return label.getProperty().getName() + index;
     }
 
     public int getNumberOfMoleculesWithLabel( TextAnnotation label ) {
