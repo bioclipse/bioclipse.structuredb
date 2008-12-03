@@ -12,7 +12,7 @@ package net.bioclipse.structuredb.actions;
 
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.business.IStructuredbManager;
-import net.bioclipse.structuredb.dialogs.CreateStructureDatabaseDialog;
+import net.bioclipse.structuredb.dialogs.CreateNewStructureDBDialog;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
@@ -27,12 +27,10 @@ public class CreateStructuredbAction extends ActionDelegate {
 
     @Override
     public void run(IAction action) {
-        CreateStructureDatabaseDialog dialog = 
-            new CreateStructureDatabaseDialog(PlatformUI
-                                              .getWorkbench()
-                                              .getActiveWorkbenchWindow()
-                                              .getShell(), 
-                                              SWT.NONE);
+        CreateNewStructureDBDialog dialog = 
+            new CreateNewStructureDBDialog(PlatformUI.getWorkbench()
+                                                     .getActiveWorkbenchWindow()
+                                                     .getShell());
         dialog.open();
         String name = dialog.getName();
         if ( name != null ) {
