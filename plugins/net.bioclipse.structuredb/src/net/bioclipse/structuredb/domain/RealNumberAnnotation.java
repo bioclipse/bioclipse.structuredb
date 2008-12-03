@@ -51,7 +51,7 @@ public class RealNumberAnnotation extends Annotation {
                property.hasValuesEqualTo( annotation.getProperty() );
     }
 
-    public double getValue() {
+    public Double getValue() {
         return value;
     }
 

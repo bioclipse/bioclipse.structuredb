@@ -73,7 +73,7 @@ public class AnnotationUIModel extends AbstractServiceObject
         
         if ( adapter.isAssignableFrom( IMoleculesEditorModel.class ) ) {
             return new DBMoleculesEditorModel( parent.getName(), 
-                                               annotation );
+                                               getAnnotation() );
         }
         return super.getAdapter( adapter );
     }
@@ -93,5 +93,10 @@ public class AnnotationUIModel extends AbstractServiceObject
     @Override
     public String getIcon() {
         return "icons/many_molecules.png";
+    }
+
+    public TextAnnotation getAnnotation() {
+
+        return annotation;
     }
 }

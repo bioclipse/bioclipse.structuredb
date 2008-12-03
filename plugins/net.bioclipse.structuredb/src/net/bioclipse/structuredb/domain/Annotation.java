@@ -90,4 +90,6 @@ public abstract class Annotation extends BaseObject {
      * @return the Annotations property
      */
     public abstract Property getProperty();
+
+    public abstract Object getValue();
 }
