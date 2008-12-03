@@ -117,7 +117,7 @@ public class TableCreator {
 
     private String createDropStatement(String createStatement) {
         String result = "DROP TABLE";
-        Pattern regexp = Pattern.compile("^CREATE\\s+TABLE\\s+(\\w+)");
+        Pattern regexp = Pattern.compile("^CREATE\\s+CACHED\\s+TABLE\\s+(\\w+)");
         Matcher m = regexp.matcher(createStatement);
         if( !m.find() ) {
             throw new IllegalArgumentException(

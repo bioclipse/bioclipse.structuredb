@@ -12,6 +12,7 @@ package net.bioclipse.structuredb.persistence;
 
 import java.io.PrintWriter;
 
+import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.persistency.tables.TableCreator;
 
 import org.hsqldb.Server;
