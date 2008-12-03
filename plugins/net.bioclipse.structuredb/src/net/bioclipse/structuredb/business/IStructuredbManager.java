@@ -279,6 +279,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                                        "name. The molecules are " +
                                        "annotated with file_origin" )
     @Job
+    @TestMethods("testAddMoleculesFromSDF")
     public void addMoleculeFromSDF( String databaseName, 
                                     String filePath ) 
                 throws BioclipseException;
@@ -514,7 +515,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param databaseName
      * @return
      */
-    @TestMethod("testAllLabels")
+    @TestMethods("testAllLabels")
     @PublishedMethod( params = "String databaseName",
                       methodSummary = "Returns all labels in a " +
                       		          "database. " +

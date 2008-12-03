@@ -680,4 +680,9 @@ public class StructuredbManagerTest
         assertTrue( manager.allLabels( database1 ).contains( a ) );
         assertFalse( manager.allLabels( database1 ).contains( b ) );
     }
+    
+    public void testAddMoleculesFromSDF() {
+        fail("Not yet implemented");
+    }
+    
 }
