@@ -56,9 +56,9 @@ public class CreateNewStructureDBDialog extends TitleAreaDialog {
 
 		text = new Text(container, SWT.BORDER);
 		final FormData fd_text = new FormData();
-		fd_text.bottom = new FormAttachment(0, 34);
+		fd_text.bottom = new FormAttachment(100, -6);
+		fd_text.left = new FormAttachment(databaseNameLabel, 0, SWT.DEFAULT);
 		fd_text.right = new FormAttachment(100, -10);
-		fd_text.left = new FormAttachment(databaseNameLabel, 0, SWT.RIGHT);
 		text.setLayoutData(fd_text);
 		setTitle("Create new StructureDB instance");
 		setMessage("Enter a name for the new database");
