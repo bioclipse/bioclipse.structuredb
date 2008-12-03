@@ -18,6 +18,8 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.swt.layout.grouplayout.LayoutStyle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -44,22 +46,32 @@ public class CreateNewStructureDBDialog extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
 		Composite container = new Composite(area, SWT.NONE);
-		container.setLayout(new FormLayout());
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		final Label databaseNameLabel = new Label(container, SWT.NONE);
-		final FormData fd_databaseNameLabel = new FormData();
-		fd_databaseNameLabel.bottom = new FormAttachment(100, -9);
-		fd_databaseNameLabel.left = new FormAttachment(0, 5);
-		databaseNameLabel.setLayoutData(fd_databaseNameLabel);
+		Label databaseNameLabel;
+		databaseNameLabel = new Label(container, SWT.NONE);
 		databaseNameLabel.setText("Database name:");
 
 		text = new Text(container, SWT.BORDER);
-		final FormData fd_text = new FormData();
-		fd_text.bottom = new FormAttachment(100, -6);
-		fd_text.left = new FormAttachment(databaseNameLabel, 0, SWT.DEFAULT);
-		fd_text.right = new FormAttachment(100, -10);
-		text.setLayoutData(fd_text);
+		final GroupLayout groupLayout = new GroupLayout(container);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(5, 5, 5)
+					.add(databaseNameLabel)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(text, GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(12, 12, 12)
+					.add(groupLayout.createParallelGroup(GroupLayout.BASELINE)
+						.add(databaseNameLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.add(text, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(9, 9, 9))
+		);
+		container.setLayout(groupLayout);
 		setTitle("Create new StructureDB instance");
 		setMessage("Enter a name for the new database");
 		//
