@@ -104,7 +104,7 @@ public class Database extends AbstractServiceContainer
                          Activator.getDefault()
                                   .getStructuredbManager()
                                   .allLabels( getName() ) ) {
-            children.add( new AnnotationUIModel( a, 
+            children.add( new Label( a, 
                                                  this ) );
             
         }

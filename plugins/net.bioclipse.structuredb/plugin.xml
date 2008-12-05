@@ -59,7 +59,7 @@
         <objectContribution
             adaptable="false"
             id="net.bioclipse.structuredb.removeLabel"
-            objectClass="net.bioclipse.structuredb.AnnotationUIModel">
+            objectClass="net.bioclipse.structuredb.Label">
            <action
                  class="net.bioclipse.structuredb.actions.OpenAnnotationAction"
                  enablesFor="+"

@@ -12,7 +12,7 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.actions;
 
-import net.bioclipse.structuredb.AnnotationUIModel;
+import net.bioclipse.structuredb.Label;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.IAction;
@@ -39,10 +39,10 @@ public class OpenAnnotationAction extends ActionDelegate {
             for ( Object element : 
                   ( (IStructuredSelection) selection ).toArray() ) {
                 
-                if (element instanceof AnnotationUIModel) {
+                if (element instanceof Label) {
                     try {
                         wPage.openEditor( 
-                            (AnnotationUIModel) element,
+                            (Label) element,
                             "net.bioclipse.cdk.ui.sdfeditor");
                     } 
                     catch ( PartInitException e ) {

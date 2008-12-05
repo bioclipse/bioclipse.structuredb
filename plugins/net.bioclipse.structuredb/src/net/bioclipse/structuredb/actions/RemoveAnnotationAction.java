@@ -15,7 +15,7 @@ import java.util.Iterator;
 
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Database;
-import net.bioclipse.structuredb.AnnotationUIModel;
+import net.bioclipse.structuredb.Label;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -52,8 +52,8 @@ public class RemoveAnnotationAction extends ActionDelegate {
             Iterator i = ss.iterator();
             while ( i.hasNext() ) {
                 Object o = i.next();
-                if (o instanceof AnnotationUIModel) {
-                    AnnotationUIModel m = (AnnotationUIModel)o;
+                if (o instanceof Label) {
+                    Label m = (Label)o;
                     
                     net.bioclipse.structuredb.domain.Annotation annotation 
                         = m.getAnnotation();

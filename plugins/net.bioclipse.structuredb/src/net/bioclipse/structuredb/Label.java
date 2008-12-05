@@ -30,14 +30,14 @@ import net.bioclipse.structuredb.domain.TextAnnotation;
 /**
  * @author jonalv
  */
-public class AnnotationUIModel extends AbstractServiceObject 
-                               implements IDatabase, IEditorInput {
+public class Label extends AbstractServiceObject 
+                   implements IDatabase, IEditorInput {
 
     private Database parent;
     private Logger logger;
     private TextAnnotation annotation;
 
-    public AnnotationUIModel(TextAnnotation textAnnotation, Database parent) {
+    public Label(TextAnnotation textAnnotation, Database parent) {
         setName( textAnnotation.getValue() );
         this.parent     = parent;
         this.annotation = textAnnotation;
