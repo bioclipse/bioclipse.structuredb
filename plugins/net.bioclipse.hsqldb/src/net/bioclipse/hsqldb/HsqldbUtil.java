@@ -133,12 +133,34 @@ public class HsqldbUtil {
     public void remove( String databaseName ) {
         
         File[] files = fileFolder.listFiles(); 
-        if( files == null ) {
+        if ( files == null ) {
            logger.error( fileFolder + " doesn't seem to be a directory" );
            return;
         }
         
-        urls.remove( buildUrl( databaseName ) );
+        try {
+            Class.forName("org.hsqldb.jdbcDriver");
+        } 
+        catch (ClassNotFoundException e1) {
+            throw new RuntimeException(e1);
+        }
+        
+        String url = buildUrl( databaseName );
+        try {
+            Connection con = DriverManager.getConnection(url);
+        
+            Statement stmt = con.createStatement();
+            String statement = "SHUTDOWN";
+            stmt.executeUpdate( statement );
+            stmt.close();
+            con.close();
+            logger.debug(statement + " sent to " + url);
+        } 
+        catch (SQLException e) {
+            throw new IllegalStateException(
+                    "Could not perform shutdown statement", e);
+        }
+        urls.remove( url );
         
         for ( File f : files ) {
             if( f.getName().contains( databaseName ) ) {
