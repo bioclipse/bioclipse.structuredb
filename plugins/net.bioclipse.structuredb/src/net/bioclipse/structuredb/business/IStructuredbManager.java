@@ -10,10 +10,8 @@
  *
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
-
 import java.util.Iterator;
 import java.util.List;
-
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
@@ -29,11 +27,9 @@ import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.User;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.openscience.cdk.annotations.TestMethod;
-
 /**
  * @author jonalv
  */
@@ -42,7 +38,6 @@ import org.openscience.cdk.annotations.TestMethod;
              "net.bioclipse.structuredb.business.CoverageTest," + 
              "net.bioclipse.structuredb.business.BioclipseManagerTests")
 public interface IStructuredbManager extends IBioclipseManager {
-
     /**
      * Creates a local database instance.
      *
@@ -58,7 +53,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "exists." )
     public void createDatabase( String databaseName )
         throws IllegalArgumentException;
-
     /**
      * Removes a local database instance with a given name if such 
      * a database exists, otherwise does nothing.
@@ -71,7 +65,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "with the given name if such " +
                        		           "exists, otherwise does nothing" )
     public void deleteDatabase( String databaseName );
-
     /**
      * Retrieves all Molecules with a given name from a database with a
      * given name.
@@ -87,7 +80,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "with a given name")
     public List<DBMolecule> allMoleculesByName( String databaseName,
                                                 String structureName );
-
     /**
      * Retrieves a user with a given username from a database 
      * with a given name.
@@ -103,7 +95,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "with a given name")
     public User userByName( String databaseName,
                             String username );
-
     /**
      * Creates a structure with the given name from the given 
      * cdkmolecule and persists it in the database with the given name
@@ -127,7 +118,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                                       String moleculeName,
                                       ICDKMolecule cdkMolecule )
                       throws BioclipseException;
-
     /**
      * Creates a ChoiceAnnotation with the given property and name and 
      * persists it in the database with the given name.
@@ -151,7 +141,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                                                     String propertyName,
                                                     String value )
                             throws IllegalArgumentException;
-
     /**
      * Creates a RealNumberAnnotation with the given property and name and 
      * persists it in the database with the given name.
@@ -176,7 +165,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                                                   String propertyName,
                                                   double value )
                  throws IllegalArgumentException;
-
     /**
      * Creates a TextAnnotation with the given property and name and 
      * persists it in the database with the given name.
@@ -200,7 +188,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                                                 String propertyName,
                                                 String value )
                  throws IllegalArgumentException;
-    
     /**
      * Creates a user with the given username, password and sudoer flag 
      * and persists it in the database with the given name.
@@ -227,7 +214,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                             String password,
                             boolean sudoer ) 
                 throws IllegalArgumentException;
-
     /**
      * Retrieves all molecules from a database with a given name.
      *
@@ -239,7 +225,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Fetches all molecules from a " +
                                        "database with a given name")
     public List<DBMolecule> allMolecules( String databaseName );
-
     /**
      * Retrieves all Annotations from a database with a given name.
      *
@@ -251,7 +236,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Fetches all annotations from a " +
                        		           "database with a given name" )
     public List<Annotation> allAnnotations( String databaseName );
-
     /**
      * Retrieves all users from a database with a given name.
      *
@@ -263,7 +247,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Fetches all users from a " +
                        		           "database with a given name" )
     public List<User> allUsers( String databaseName );
-
     /**
      * Persists all molecules in an sdf file in the specified database in
      * a folder named after the file.
@@ -271,7 +254,6 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param path
      * @throws BioclipseException
      */
-    
     @PublishedMethod ( params = "String databaseName, String filePath",
                        methodSummary = "Saves all molecules in a " +
                        		           "given sdf file in the " +
@@ -283,7 +265,6 @@ public interface IStructuredbManager extends IBioclipseManager {
     public void addMoleculeFromSDF( String databaseName, 
                                     String filePath ) 
                 throws BioclipseException;
-
     /**
      * @param databaseName
      * @param file
@@ -294,7 +275,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                                      IFile file, 
                                      IProgressMonitor monitor ) 
                 throws BioclipseException;
-    
     /**
      * Persists all molecules in a sdf file in the specified database annotated
      * with file_origin using a progressmonitor
@@ -308,7 +288,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                                      String filePath, 
                                      IProgressMonitor monitor ) 
                 throws BioclipseException;
-    
     /**
      * @return a list of the names of all databases
      */
@@ -317,7 +296,6 @@ public interface IStructuredbManager extends IBioclipseManager {
     		                           "names of all structuredb " +
     		                           "database instances." )
     public List<String> allDatabaseNames();
-
     /**
      * Returns an iterator to all molecules in the given database that 
      * contains the given molecule
@@ -336,7 +314,6 @@ public interface IStructuredbManager extends IBioclipseManager {
     public Iterator<DBMolecule> subStructureSearchIterator(
         String databaseName, IMolecule molecule )
         throws BioclipseException;
-
     /**
      * Returns a list of all molecules in the given database that 
      * contains the given molecule
@@ -355,7 +332,6 @@ public interface IStructuredbManager extends IBioclipseManager {
     public List<DBMolecule> subStructureSearch( String databaseName,
                                                IMolecule molecule ) 
                            throws BioclipseException;
-    
     /**
      * Substructuresearch with progressmonitor
      *
@@ -369,7 +345,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                                                IMolecule molecule, 
                                                IProgressMonitor monitor ) 
                            throws BioclipseException;
-    
     /**
      * Deletes the given annotation from the given database
      * 
@@ -381,7 +356,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Deletes the given annotation " +
                        		           "from the given database" )
     public void deleteAnnotation( String database, Annotation annotation );
-
     /**
      * Deletes the given molecule from the given database
      * 
@@ -393,7 +367,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Deletes the given molecule " +
                        		           "from the given database" )
     public void deleteStructure( String database, DBMolecule dBMolecule );
-
     /**
      * Saves the changes on the given molecule to the database. The 
      * molecule must come from the given database.
@@ -407,7 +380,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "retrieved from the database " +
                        		           "back to the database." )
     public void save( String database, DBMolecule dBMolecule );
-
     /**
      * Saves the changes on the given annotation back to the database. 
      * The annotation must come from the given database.
@@ -422,7 +394,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "the database back to the " +
                        		           "database.")
     public void save( String database, Annotation annotation );
-
     /**
      * @param database
      * @param smarts
@@ -436,7 +407,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "database" )
     public Iterator<DBMolecule> smartsQueryIterator( String database,
                                                      String smarts );
-
     /**
      * @param database
      * @param smarts
@@ -448,7 +418,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "returning a list of hitting " +
                        		           "molecules in the database" )
     public List<DBMolecule> smartsQuery( String database, String smarts );
-
     /**
      * @param database
      * @param smarts
@@ -457,7 +426,6 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     public Iterator<DBMolecule> smartsQueryIterator( 
         String database, String smarts, IProgressMonitor monitor );
-
     /**
      * @param database
      * @param smarts
@@ -467,17 +435,14 @@ public interface IStructuredbManager extends IBioclipseManager {
     public List<DBMolecule> smartsQuery( String database,
                                         String smarts,
                                         IProgressMonitor monitor );
-
     /**
      * @param listener
      */
     public void addListener( IDatabaseListener listener );
-    
     /**
      * @param listener
      */
     public void removeListener( IDatabaseListener listener );
-   
     /**
      * Deletes an annotation and all molecules having that annotation
      * @param name
@@ -491,7 +456,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "annotation" )
     public void deleteWithMolecules( String databaseName, 
                                       Annotation annotation );
-
     /**
      * @param name
      * @param annotation
@@ -499,7 +463,6 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     public void deleteWithMolecules( String name, Annotation annotation,
                                       IProgressMonitor monitor );
-
     /**
      * @param databaseName
      * @param file
@@ -507,7 +470,6 @@ public interface IStructuredbManager extends IBioclipseManager {
      */
     public void addStructuresFromSDF( String databaseName, IFile file ) 
                 throws BioclipseException;
-
     /**
      * Gives all labels in the database with the given name. That is: all 
      * TextAnnotations with the corresponding Property being "label"
@@ -523,12 +485,9 @@ public interface IStructuredbManager extends IBioclipseManager {
                       		          "the corresponding Property being " +
                       		          "\"label\"")
     public List<TextAnnotation> allLabels( String databaseName );
-
     public int numberOfMoleculesInLabel( String databaseName, 
                                          TextAnnotation annotation );
-
     public DBMolecule moleculeAtIndexInLabel( String databaseName, 
                                               int index, 
                                               TextAnnotation annotation );
-    
 }

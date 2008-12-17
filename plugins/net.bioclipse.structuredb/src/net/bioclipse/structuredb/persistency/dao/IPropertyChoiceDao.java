@@ -10,13 +10,10 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
-
 import net.bioclipse.structuredb.domain.PropertyChoice;
-
 /**
  * @author jonalv
  *
  */
 public interface IPropertyChoiceDao extends IGenericDao<PropertyChoice> {
-
 }

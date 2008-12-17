@@ -9,17 +9,13 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb;
-
 import net.bioclipse.structuredb.business.BusinessTestsSuite;
 import net.bioclipse.structuredb.domain.AllDomainTestsSuite;
 import net.bioclipse.structuredb.internalbusiness.InternalBusinessTestsSuite;
 import net.bioclipse.structuredb.persistence.AllPersistencyTestsSuite;
-
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
-
 /**
  * @author jonalv
  *
@@ -30,5 +26,4 @@ import org.junit.runners.Suite.SuiteClasses;
                          InternalBusinessTestsSuite.class, 
                          AllPersistencyTestsSuite.class, } )
 public class AllStructuredbTestsSuite {
-
 }

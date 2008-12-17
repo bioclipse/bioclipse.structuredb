@@ -9,24 +9,18 @@
  *      Jonathan Alvarsson    
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
-
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.persistency.dao.IRealNumberPropertyDao;
-
-
 /**
  * @author jonalv
  *
  */
 public class RealNumberPropertyDaoTest 
              extends GenericDaoTest<RealNumberProperty> {
-
     private IRealNumberPropertyDao realNumberPropertyDao;
-
     public RealNumberPropertyDaoTest() {
         super( RealNumberProperty.class );
     }
-    
     @Override
     public void onSetUpInTransaction() throws Exception {
         super.onSetUpInTransaction();
@@ -34,7 +28,6 @@ public class RealNumberPropertyDaoTest
             = (IRealNumberPropertyDao) 
               applicationContext.getBean( "realNumberPropertyDao" );
     }
-    
     public void testGetByName() {
         RealNumberProperty property = new RealNumberProperty();
         dao.insert( property );

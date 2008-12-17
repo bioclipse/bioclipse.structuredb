@@ -10,35 +10,26 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.actions;
-
 import java.util.Iterator;
-
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Database;
 import net.bioclipse.structuredb.business.IStructuredbManager;
-
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.actions.ActionDelegate;
-
-
 /**
  * @author jonalv
  *
  */
 public class RemoveDatabaseAction extends ActionDelegate {
-
     private ISelection selection;
-
     @SuppressWarnings("unchecked")
     @Override
     public void run(IAction action) {
-        
         IStructuredbManager manager = Activator
                                       .getDefault()
                                       .getStructuredbManager();
-        
         if ( selection instanceof IStructuredSelection ) {
             IStructuredSelection ss = (IStructuredSelection) selection;
             System.out.println("Selected: " + ss.getFirstElement() );
@@ -51,7 +42,6 @@ public class RemoveDatabaseAction extends ActionDelegate {
             }
         }
     }
-    
     @Override
     public void selectionChanged( IAction action, 
                                   ISelection selection ) {

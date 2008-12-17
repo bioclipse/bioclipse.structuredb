@@ -10,20 +10,16 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
-
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
-
 import com.ibatis.sqlmap.client.SqlMapClient;
-
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
-
 /**
  * The DBMoleculeDao persists and loads structures
  * 
@@ -32,17 +28,13 @@ import net.bioclipse.structuredb.domain.TextAnnotation;
  */
 public class DBMoleculeDao extends GenericDao<DBMolecule> 
                            implements IDBMoleculeDao {
-
     public DBMoleculeDao() {
         super(DBMolecule.class);
     }
-    
     private Map<String, DBMolecule> cache 
         = new HashMap<String, DBMolecule>();
-
     @Override
     public void insert( final DBMolecule dBMolecule ) {
-        
         getSqlMapClientTemplate().update( "BaseObject.insert", 
                                           dBMolecule );
         getSqlMapClientTemplate()
@@ -50,16 +42,13 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
                      dBMolecule );
         fixStructureAnnotation(dBMolecule);
     }
-    
     private void fixStructureAnnotation( final DBMolecule dBMolecule ) {
-
         getSqlMapClientTemplate()
             .delete( "DBMolecule.deleteAnnotationCoupling", 
                      dBMolecule );
         for ( final Annotation a : dBMolecule.getAnnotations() ) {
             Map<String, String> params = new HashMap<String, String>() {
                 private static final long serialVersionUID = 1L;
-
                 {
                     put( "annotationId", a.getId()          );
                     put( "dBMoleculeId", dBMolecule.getId() );
@@ -69,14 +58,12 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
                      "DBMoleculeAnnotation.hasConnection", 
                       params ) 
                  == 0 ) {
-                
                 getSqlMapClientTemplate()
                     .update( "DBMoleculeAnnotation.connect", 
                              params );
             }
         }
     }
-
     @Override
     public void update(DBMolecule dBMolecule) {
         getSqlMapClientTemplate().update( "DBMolecule.update",  
@@ -85,33 +72,26 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
                                           dBMolecule );
         fixStructureAnnotation( dBMolecule );
     }
-
     @SuppressWarnings("unchecked")
     public List<DBMolecule> getByName(String name) {
         return getSqlMapClientTemplate()
                .queryForList( "DBMolecule.getByName", name );
     }
-
     public Iterator<DBMolecule> allStructuresIterator() {
-        
         return new StructureIterator( getSqlMapClient(), 
                                       "DBMolecule.getAll" );
     }
-    
     private class StructureIterator implements Iterator<DBMolecule> {
-        
         private SqlMapClient sqlMapClient;
         private DBMolecule nextStructure = null;
         private int skip = 0;
         private String sqlMapId;
         private Object queryParam = null;
-        
         public StructureIterator( SqlMapClient sqlMapClient,
                                   String sqlMapId ) {
             this.sqlMapClient = sqlMapClient;
             this.sqlMapId = sqlMapId;
         }
-        
         public StructureIterator( SqlMapClient sqlMapClient, 
                                   String sqlMapId,
                                   Object queryParam ) {
@@ -119,10 +99,8 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
             this.sqlMapId = sqlMapId;
             this.queryParam = queryParam;
         }
-
         @SuppressWarnings("unchecked")
         public boolean hasNext() {
-
             try {
                 List<DBMolecule> result = (List<DBMolecule>)sqlMapClient
                                          .queryForList( sqlMapId, 
@@ -142,7 +120,6 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
                 throw new RuntimeException(e);
             }
         }
-
         public DBMolecule next() {
             if( nextStructure != null ) {
                 skip++;
@@ -155,36 +132,28 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
             throw new IllegalStateException( 
                 "There is no next structure" );
         }
-
         public void remove() {
             throw new UnsupportedOperationException();            
         }
     }
-
     public void insertWithAnnotation( DBMolecule dBMolecule, 
                                       String annotationId ) {
-
         getSqlMapClientTemplate().update( "BaseObject.insert", 
                                           dBMolecule );
         getSqlMapClientTemplate().update( "DBMolecule.insert",  
                                           dBMolecule );
-
         Map<String, String> params = new HashMap<String, String>();
         params.put( "dBMoleculeId",  dBMolecule.getId() );
         params.put( "annotationId", annotationId );
         getSqlMapClientTemplate().update( "DBMoleculeAnnotation.connect", 
                                           params );
     }
-
     public int numberOfStructures() {
-        
         return (Integer) getSqlMapClientTemplate()
                          .queryForObject( "DBMolecule.numberOf" );
     }
-
     public Iterator<DBMolecule> fingerPrintSubsetSearch( 
                                    byte[] fingerPrint ) {
-
         Map<String, byte[]> paramaterMap = new HashMap<String, byte[]>();
         paramaterMap.put( "param", fingerPrint );
         return 
@@ -192,29 +161,22 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
                                    "DBMolecule.fingerPrintSubsetSearch", 
                                    paramaterMap );
     }
-
     public int numberOfFingerprintSubstructureMatches( 
                    byte[] fingerPrint ) {
-        
         Map<String, byte[]> paramaterMap = new HashMap<String, byte[]>();
         paramaterMap.put( "param", fingerPrint );
         return (Integer) getSqlMapClientTemplate().queryForObject( 
             "DBMolecule.numberOfFingerprintSubstructureMatches", 
             paramaterMap );
     };
-    
     @SuppressWarnings("unchecked")
     public DBMolecule getMoleculeAtIndexInLabel( TextAnnotation label, 
                                                  int index ) {
-        
         DBMolecule result = cache.get( getKey(label, index) ); 
-        
         if ( result != null ) {
             return result;
         }
-        
         final int CACHESIZE = 200;
-        
         List<DBMolecule> results 
             = getSqlMapClientTemplate()
                   .queryForList( "DBMolecule.atIndexInLabel", 
@@ -231,11 +193,9 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
         return results.size() != 0 ? cache.get( getKey( label, index ) ) 
                                    : null;
     }
-
     private String getKey( TextAnnotation label, int index ) {
         return label.getProperty().getName() + index;
     }
-
     public int getNumberOfMoleculesWithLabel( TextAnnotation label ) {
         return (Integer) getSqlMapClientTemplate()
                          .queryForObject( 

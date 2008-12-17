@@ -9,14 +9,11 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
-
 import net.bioclipse.structuredb.domain.PropertyChoice;
-
 /**
  * @author jonalv
  */
 public class PropertyChoiceDaoTest extends GenericDaoTest<PropertyChoice> {
-
     public PropertyChoiceDaoTest() {
         super( PropertyChoice.class );
     }

@@ -10,13 +10,10 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
-
 import org.springframework.aop.MethodBeforeAdvice;
-
 /**
  * @author jonalv
  *
  */
 public interface IAuditAdvice extends MethodBeforeAdvice {
-
 }

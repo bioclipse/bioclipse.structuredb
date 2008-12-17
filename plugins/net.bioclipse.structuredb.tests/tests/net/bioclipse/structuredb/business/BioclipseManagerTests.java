@@ -9,16 +9,11 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
-
 import net.bioclipse.core.business.IBioclipseManager;
 import net.bioclipse.core.tests.AbstractManagerTest;
-
-
 public class BioclipseManagerTests extends AbstractManagerTest {
-
     @Override
     public IBioclipseManager getManager() {
         return new StructuredbManager();
     }
-
 }

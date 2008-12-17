@@ -10,26 +10,20 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
-
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextProperty;
 import net.bioclipse.structuredb.persistency.dao.IRealNumberPropertyDao;
 import net.bioclipse.structuredb.persistency.dao.ITextPropertyDao;
-
-
 /**
  * @author jonalv
  *
  */
 public class TextPropertyDaoTest 
              extends GenericDaoTest<TextProperty> {
-
     private ITextPropertyDao textPropertyDao;
-    
     public TextPropertyDaoTest() {
         super( TextProperty.class );
     }
-    
     @Override
     public void onSetUpInTransaction() throws Exception {
         super.onSetUpInTransaction();
@@ -37,7 +31,6 @@ public class TextPropertyDaoTest
             = (ITextPropertyDao) 
               applicationContext.getBean( "textPropertyDao" );
     }
-    
     public void testGetByName() {
         TextProperty property = new TextProperty();
         dao.insert( property );

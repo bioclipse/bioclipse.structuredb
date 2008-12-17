@@ -10,30 +10,23 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
-
 import java.util.Iterator;
-
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.structuredb.domain.DBMolecule;
-
 import org.eclipse.core.runtime.IProgressMonitor;
-
-
 /**
  * @author jonalv
  *
  */
 public class SubStructureIterator implements Iterator<DBMolecule> {
-
     private DBMolecule next = null;
     private Iterator<DBMolecule> parent;
     private ICDKManager cdk;
     private ICDKMolecule subStructure;
     private IStructuredbManager structuredb;
     private IProgressMonitor monitor;
-
     public SubStructureIterator( Iterator<DBMolecule> iterator, 
                                  ICDKManager cdk,
                                  ICDKMolecule subStructure,
@@ -45,9 +38,7 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
         this.structuredb = structuredb;
         this.monitor = monitor;
     }
-
     public boolean hasNext() {
-
         if( next != null ) {
             return true;
         }
@@ -59,9 +50,7 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
         }
         return next != null;
     }
-
     private DBMolecule findNext() throws BioclipseException {
-
         while( parent.hasNext() ) {
             DBMolecule next = parent.next();
             if(monitor != null) {
@@ -76,9 +65,7 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
         }
         return null;
     }
-
     public DBMolecule next() {
-
         if( !hasNext() ) {
             throw new IllegalStateException( "there are no more " +
                                              "such structures" );
@@ -87,7 +74,6 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
         this.next = null;
         return next;
     }
-
     public void remove() {
         throw new UnsupportedOperationException();
     }

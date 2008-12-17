@@ -10,35 +10,26 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
-
 import java.util.ArrayList;
 import java.util.List;
-
-
 /**
  * @author jonalv
  *
  */
 public class TextProperty extends Property {
-
     private List<TextAnnotation> annotations;
-
     public TextProperty() {
         super();
         annotations = new ArrayList<TextAnnotation>();
     }
-
     public TextProperty(String name) {
         super( name );
         annotations = new ArrayList<TextAnnotation>();
     }
-    
     public TextProperty(TextProperty textProperty) {
         super( textProperty );
     }
-
     public boolean hasValuesEqualTo( BaseObject obj ) {
-        
         if( !super.hasValuesEqualTo(obj) ) {
             return false;
         }
@@ -47,11 +38,9 @@ public class TextProperty extends Property {
         }
         return true;
     }
-
     public List<TextAnnotation> getAnnotations() {
         return annotations;
     }
-
     public void addAnnotation( TextAnnotation annotation ) {
         annotations.add( annotation );
         if ( annotation.getProperty() != this ) {

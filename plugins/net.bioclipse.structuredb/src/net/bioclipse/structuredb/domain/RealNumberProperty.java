@@ -10,35 +10,26 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
-
 import java.util.ArrayList;
 import java.util.List;
-
-
 /**
  * @author jonalv
  *
  */
 public class RealNumberProperty extends Property {
-
     private List<RealNumberAnnotation> annotations;
-
     public RealNumberProperty() {
         super();
         annotations = new ArrayList<RealNumberAnnotation>(); 
     }
-
     public RealNumberProperty(String name) {
         super( name );
         annotations = new ArrayList<RealNumberAnnotation>();
     }
-
     public RealNumberProperty(RealNumberProperty realNumberProperty) {
         super( realNumberProperty );
     }
-
     public boolean hasValuesEqualTo( BaseObject obj ) {
-        
         if ( !super.hasValuesEqualTo(obj) ) {
             return false;
         }
@@ -47,11 +38,9 @@ public class RealNumberProperty extends Property {
         }
         return true;
     }
-
     public List<RealNumberAnnotation> getAnnotations() {
         return annotations;
     }
-
     public void addAnnotation( RealNumberAnnotation annotation ) {
         annotations.add( annotation );
         if ( annotation.getProperty() != this ) {

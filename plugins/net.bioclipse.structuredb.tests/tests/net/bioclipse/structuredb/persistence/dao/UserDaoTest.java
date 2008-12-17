@@ -9,20 +9,16 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
-
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.persistency.dao.IUserDao;
-
 /**
  * @author jonalv
  *
  */
 public class UserDaoTest extends GenericDaoTest<User> {
-
     public UserDaoTest() {
         super(User.class);
     }
-    
     public void testGetByUsername() {
         User user = new User("me", "me", true);
         dao.insert(user);

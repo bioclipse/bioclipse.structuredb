@@ -10,12 +10,9 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
-
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.ChoiceProperty;
-
-
 /**
  * @author jonalv
  *
@@ -23,13 +20,10 @@ import net.bioclipse.structuredb.domain.ChoiceProperty;
 public class ChoiceAnnotationDao 
        extends AnnotationDao<ChoiceAnnotation> 
        implements IChoiceAnnotationDao {
-
     private IChoicePropertyDao choicePropertyDao;
-    
     public ChoiceAnnotationDao() {
         super( ChoiceAnnotation.class );
     }
-    
     @Override
     public void insert(ChoiceAnnotation annotation) {
         super.insert( annotation );
@@ -37,7 +31,6 @@ public class ChoiceAnnotationDao
         getSqlMapClientTemplate().update( "ChoiceAnnotation.insert",
                                           annotation );
     }
-    
     @Override
     public void update(ChoiceAnnotation annotation) {
         super.update( annotation );
@@ -45,7 +38,6 @@ public class ChoiceAnnotationDao
         getSqlMapClientTemplate().update( "ChoiceAnnotation.update", 
                                           annotation );
     }    
-
     private void insertOrUpdateProperty( ChoiceProperty property ) {
         ChoiceProperty loaded = choicePropertyDao.getById( property.getId() );
         if (loaded == null) {
@@ -57,11 +49,9 @@ public class ChoiceAnnotationDao
             }
         }
     }
-
     public void setChoicePropertyDao( IChoicePropertyDao choicePropertyDao ) {
         this.choicePropertyDao = choicePropertyDao;
     }
-
     public IChoicePropertyDao getChoicePropertyDao() {
         return choicePropertyDao;
     }

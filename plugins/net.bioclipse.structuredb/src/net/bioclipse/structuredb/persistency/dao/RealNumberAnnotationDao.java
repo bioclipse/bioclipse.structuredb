@@ -10,10 +10,8 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
-
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
-
 /**
  * @author jonalv
  *
@@ -21,13 +19,10 @@ import net.bioclipse.structuredb.domain.RealNumberProperty;
 public class RealNumberAnnotationDao 
        extends AnnotationDao<RealNumberAnnotation> 
        implements IRealNumberAnnotationDao {
-
     private IRealNumberPropertyDao realNumberPropertyDao;
-
     public RealNumberAnnotationDao() {
         super( RealNumberAnnotation.class );
     }
-    
     @Override
     public void insert(RealNumberAnnotation annotation) {
         super.insert( annotation );
@@ -35,7 +30,6 @@ public class RealNumberAnnotationDao
         getSqlMapClientTemplate().update( "RealNumberAnnotation.insert",
                                           annotation );
     }
-    
     @Override
     public void update(RealNumberAnnotation annotation) {
         super.update( annotation );
@@ -43,7 +37,6 @@ public class RealNumberAnnotationDao
         getSqlMapClientTemplate().update( "RealNumberAnnotation.update", 
                                           annotation );
     }
-    
     private void insertOrUpdateProperty( RealNumberProperty property ) {
         RealNumberProperty loaded 
             = realNumberPropertyDao.getById( property.getId() );
@@ -56,12 +49,10 @@ public class RealNumberAnnotationDao
             }
         }
     }
-
     public void setRealNumberPropertyDao( 
                   IRealNumberPropertyDao realNumberPropertyDao ) {
         this.realNumberPropertyDao = realNumberPropertyDao;
     }
-
     public IRealNumberPropertyDao getRealNumberPropertyDao() {
         return realNumberPropertyDao;
     }

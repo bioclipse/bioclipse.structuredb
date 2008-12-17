@@ -10,12 +10,9 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
-
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextProperty;
-
-
 /**
  * @author jonalv
  *
@@ -23,11 +20,9 @@ import net.bioclipse.structuredb.domain.TextProperty;
 public class TextPropertyDao 
        extends GenericDao<TextProperty> 
        implements ITextPropertyDao {
-
     public TextPropertyDao() {
         super( TextProperty.class );
     }
-    
     @Override
     public void insert(TextProperty property) {
         getSqlMapClientTemplate().update( "BaseObject.insert", 
@@ -35,7 +30,6 @@ public class TextPropertyDao
         getSqlMapClientTemplate().update( "TextProperty.insert",
                                           property );
     }
-    
     @Override
     public void update(TextProperty property) {
         getSqlMapClientTemplate().update( "BaseObject.update", 
@@ -43,7 +37,6 @@ public class TextPropertyDao
         getSqlMapClientTemplate().update( "TextProperty.update", 
                                           property );
     }
-
     public TextProperty getByName( String name ) {
         return (TextProperty)getSqlMapClientTemplate().queryForObject( 
                 "TextProperty.getByName", name );

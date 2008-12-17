@@ -9,9 +9,7 @@
  *     Jonathan Alvarsson
  *     
  *******************************************************************************/
-
 package net.bioclipse.structuredb.domain;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,13 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.PlatformUI;
-
 import net.bioclipse.core.domain.IBioObject;
-
 /**
  * A baseclass for all domain objects. 
  * It creates a unique id for the object and contains code for comparisons 
@@ -35,20 +30,15 @@ import net.bioclipse.core.domain.IBioObject;
  * @author jonalv
  */
 public class BaseObject implements IBioObject, Comparable {
-
     private String id; //36 chars long unique id 
-    
     private User creator;
     private User lastEditor;
-    
     private Timestamp created;
     private Timestamp edited;
-    
     public BaseObject() {
         super();
         this.id = UUID.randomUUID().toString();
     }
-    
     /**
      * Creates a new BaseObject that is an exact copy of the 
      * given instance with the same id.
@@ -61,21 +51,18 @@ public class BaseObject implements IBioObject, Comparable {
         this.creator    = obj.getCreator();
         this.lastEditor = obj.getLastEditor();
     }
-
     /**
      * @return the id
      */
     public String getId() {
         return id;
     }
-
     /**
      * @param id the id to be set
      */
     public void setId(String id) {
         this.id = id;
     }
-
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      * 
@@ -85,7 +72,6 @@ public class BaseObject implements IBioObject, Comparable {
     public final int hashCode() {
         return id.hashCode(); 
     }
-
     /**
      * Checks whether two objects correspond to the same database row.
      * Final since we only want equals to check the id for the domain 
@@ -106,7 +92,6 @@ public class BaseObject implements IBioObject, Comparable {
         }
         return id.equals( ( (BaseObject)obj ).getId() );
     }
-
     /**
      * @param obj a BaseObject to be compared
      * @return whether all fields (including id) of the given object 
@@ -129,7 +114,6 @@ public class BaseObject implements IBioObject, Comparable {
         }
         return id.equals( obj.getId() );
     }
-    
     /**
      * Checks that the objects in both sets are alike and that no 
      * object exists in one set but not in the other.
@@ -144,7 +128,6 @@ public class BaseObject implements IBioObject, Comparable {
     protected boolean objectsInHasSameValues( 
         Set<? extends BaseObject> set1, 
         Set<? extends BaseObject> set2 ) {
-
         if ( set1.size() != set2.size() ) {
             return false;    
         }
@@ -153,7 +136,6 @@ public class BaseObject implements IBioObject, Comparable {
         for ( BaseObject obj : set2) {
             hash2.put(obj.getId(), obj);
         }
-        
         for ( BaseObject obj : set1) {
             if ( hash2.get(obj.getId()) == null 
                  || !hash2.get( obj.getId() ).hasValuesEqualTo(obj) ) {
@@ -162,7 +144,6 @@ public class BaseObject implements IBioObject, Comparable {
         }
         return true;
     }
-    
     /**
      * Checks that the objects in both lists are alike and in the 
      * same order.
@@ -178,17 +159,13 @@ public class BaseObject implements IBioObject, Comparable {
     protected boolean objectsInHasSameValues( 
             List<? extends BaseObject> list1, 
             List<? extends BaseObject> list2 ) {
-        
         list1 = new ArrayList<BaseObject>(list1);
         list2 = new ArrayList<BaseObject>(list2);
-        
         Collections.sort( list1 );
         Collections.sort( list2 );
-        
         if ( list1.size() != list2.size() ) {
             return false;    
         }
-    
         for (int i = 0; i < list1.size(); i++) {
             if ( !list2.get( i ).hasValuesEqualTo( list1.get(i) ) ) {
                 return false;
@@ -196,59 +173,46 @@ public class BaseObject implements IBioObject, Comparable {
         }
         return true;
     }
-
     public void setCreator(User creator) {
         this.creator = creator;
     }
-
     public void setLastEditor(User editor) {
         this.lastEditor = editor;
     }
-
     public User getCreator() {
         return creator;
     }
-
     public User getLastEditor() {
         return lastEditor;
     }
-
     public Timestamp getCreated() {
         return created;
     }
-
     public void setCreated(Timestamp created) {
         this.created = created;
     }
-
     public Timestamp getEdited() {
         return edited;
     }
-
     public void setEdited(Timestamp edited) {
         this.edited = edited;
     }
-
     public IResource getResource() {
         // TODO Auto-generated method stub
         return null;
     }
-
     public String getUID() {
         return getId();
     }
-
     @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter) {
         if(adapter.isAssignableFrom(this.getClass() ))
             return this;
         return Platform.getAdapterManager().getAdapter(this, adapter );
     }
-    
     public String toString() {
         return "{" + this.getClass().getSimpleName() + "}"; 
     }
-
     public int compareTo( Object o ) {
         if ( !(o instanceof BaseObject) ) {
             return 0;

@@ -10,43 +10,33 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
-
 import net.bioclipse.structuredb.persistency.dao.TextPropertyDao;
-
-
 /**
  * @author jonalv
  *
  */
 public class TextAnnotation extends Annotation {
-
     private String value;
     private TextProperty property;
-    
     public TextAnnotation() {
         super();
         value = "";
         this.property = new TextProperty();
     }
-
     public TextAnnotation(String value, TextProperty property) {
         super();
         this.setValue( value );
         this.property = property;
     }
-
     public TextAnnotation(TextAnnotation textAnnotation) {
         super( textAnnotation );
         this.setValue( textAnnotation.getValue() );
         this.property = new TextProperty( textAnnotation.getProperty() );
     }
-
     public String getValue() {
         return value;
     }
-        
     public boolean hasValuesEqualTo( BaseObject obj ) {
-        
         if( !super.hasValuesEqualTo(obj) ) {
             return false;
         }
@@ -57,7 +47,6 @@ public class TextAnnotation extends Annotation {
         return getValue().equals( annotation.getValue() ) &&
                property.hasValuesEqualTo( annotation.getProperty() );
     }
-
     /**
      * @param property
      */
@@ -67,19 +56,15 @@ public class TextAnnotation extends Annotation {
             property.addAnnotation( this );
         }
     }
-
     /**
      * @return
      */
     public TextProperty getProperty() {
         return property;
     }
-
     public void setValue( String value ) {
-
         this.value = value;
     }
-
     @Override
     public String getSortOf() {
         return "Text";

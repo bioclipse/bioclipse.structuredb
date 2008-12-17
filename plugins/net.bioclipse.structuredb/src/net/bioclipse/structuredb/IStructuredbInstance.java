@@ -10,13 +10,10 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb;
-
 import net.bioclipse.services.views.model.IServiceContainer;
-
 /**
  * @author jonalv
  *
  */
 public interface IStructuredbInstance extends IServiceContainer {
-
 }

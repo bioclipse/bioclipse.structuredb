@@ -10,18 +10,14 @@
  *
  *******************************************************************************/
 package net.bioclipse.structuredb;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import net.bioclipse.services.views.model.AbstractServiceContainer;
 import net.bioclipse.services.views.model.IDatabase;
 import net.bioclipse.services.views.model.IDatabaseType;
 import net.bioclipse.services.views.model.IServiceObject;
 import net.bioclipse.structuredb.business.IDatabaseListener;
-
 import org.apache.log4j.Logger;
-
 /**
  * 
  * @author jonalv
@@ -29,26 +25,19 @@ import org.apache.log4j.Logger;
  */
 public class Structuredb extends AbstractServiceContainer
                          implements IDatabaseType, IDatabaseListener {
-
     private final Logger logger = Logger.getLogger( this.getClass() );
-
     private final String name = "Structuredb";
-
     public Structuredb() {
         Activator.getDefault().getStructuredbManager().addListener(this);
     }
-
     public String getName() {
         return name;
     }
-
     public String toString() {
         return name;
     }
-
     @Override
     public void createChildren() {
-        
         // remove all children from listening 
         // (otherwise the garbage collector won't have a chance...)
         if ( children != null ) {
@@ -59,10 +48,8 @@ public class Structuredb extends AbstractServiceContainer
                          .removeListener( (IDatabaseListener)db );
             }
         }
-        
         List<IDatabase> children 
             = new ArrayList<IDatabase>();
-        
         for ( String s : Activator.getDefault()
                                   .getStructuredbManager()
                                   .allDatabaseNames() ) {
@@ -72,13 +59,11 @@ public class Structuredb extends AbstractServiceContainer
         }
         setChildren( children );
     }
-
     @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter) {
         // TODO Auto-generated method stub
         return null;
     }
-
     public void onDataBaseUpdate( DatabaseUpdateType updateType ) {
         if ( updateType == DatabaseUpdateType.DATABASES_CHANGED ) {
             createChildren();

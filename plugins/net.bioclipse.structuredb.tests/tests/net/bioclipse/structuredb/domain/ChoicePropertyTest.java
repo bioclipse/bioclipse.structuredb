@@ -9,51 +9,37 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
-
-
 /**
  * @author jonalv
  *
  */
 public class ChoicePropertyTest {
-
     @Test
     public void testHasValuesEqualTo() {
-        
         ChoiceProperty choiceProperty1 
             = new ChoiceProperty( "choicePropertyname");
         ChoiceProperty choiceProperty2 
             = new ChoiceProperty(choiceProperty1);
         ChoiceProperty choiceProperty3 
             = new ChoiceProperty( "choicePropertyname");
-        
         assertTrue(  choiceProperty1.hasValuesEqualTo(choiceProperty2) );
         assertFalse( choiceProperty1.hasValuesEqualTo(choiceProperty3) );
-        
         choiceProperty1.addPropertyChoice( new PropertyChoice() );
         assertFalse( choiceProperty1.hasValuesEqualTo(choiceProperty2) );
     }
-    
     @Test
     public void testDoubleReferences() {
         ChoiceAnnotation annotation = new ChoiceAnnotation();
-        
         ChoiceProperty choiceProperty = new ChoiceProperty();
-        
         choiceProperty.addAnnotation(annotation);
-    
         assertTrue( choiceProperty.getAnnotations()
                                   .contains( annotation ) );
         assertTrue( annotation.getProperty() == choiceProperty );
-        
         PropertyChoice propertyChoice = new PropertyChoice();
         choiceProperty.addPropertyChoice( propertyChoice );
-        
         assertTrue( choiceProperty.getPropertyChoices()
                                   .contains( propertyChoice ) );
         assertTrue( propertyChoice.getProperty() == choiceProperty );

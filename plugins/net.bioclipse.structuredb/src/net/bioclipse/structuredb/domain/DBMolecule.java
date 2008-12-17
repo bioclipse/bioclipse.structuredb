@@ -9,21 +9,17 @@
  *     Jonathan Alvarsson
  *
  *******************************************************************************/
-
 package net.bioclipse.structuredb.domain;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.BioList;
 import net.bioclipse.core.util.LogUtils;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
 import org.openscience.cdk.AtomContainer;
@@ -37,24 +33,20 @@ import org.openscience.cdk.io.CMLReader;
 import org.openscience.cdk.io.CMLWriter;
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
-
 /**
  * @author jonalv
  *
  */
 public class DBMolecule extends BaseObject
                         implements ICDKMolecule {
-
     private static final Logger logger 
         = Logger.getLogger(DBMolecule.class);
-
     private IAtomContainer   atomContainer;
     private BitSet           fingerPrint;
     private byte[]           persistedFingerPrint;
     private String           smiles;
     private List<Annotation> annotations;
     private String           name;
-
     public DBMolecule() {
         super();
         fingerPrint = new BitSet();
@@ -65,12 +57,10 @@ public class DBMolecule extends BaseObject
         annotations = new ArrayList<Annotation>();
         name = "DBMolecule" + getId();
     }
-
     public DBMolecule( String name, AtomContainer molecule ) {
         super();
         this.atomContainer = molecule;
         this.name = name;
-
         Fingerprinter fingerprinter = new Fingerprinter();
         try {
             fingerPrint = fingerprinter.getFingerprint(molecule);
@@ -81,7 +71,6 @@ public class DBMolecule extends BaseObject
                     "could not create fingerPrint for Atomcontainer:" 
                     + name );
         }
-
         SmilesGenerator sg = new SmilesGenerator();
         //If atomContainer often isn't an instance of IMolecule
         //maybe something else is needed
@@ -95,10 +84,8 @@ public class DBMolecule extends BaseObject
         }
         annotations = new ArrayList<Annotation>();
     }
-
     public DBMolecule( String name, ICDKMolecule cdkMolecule )
            throws BioclipseException {
-
         super();
         this.name = name;
         try {
@@ -117,10 +104,8 @@ public class DBMolecule extends BaseObject
         } catch (NullPointerException e) {
             smiles = "";
         }
-        
         annotations = new ArrayList<Annotation>();
     }
-
     /**
      * Creates a new DBMolecule that is an exact copy of the
      * given instance including the same id.
@@ -128,9 +113,7 @@ public class DBMolecule extends BaseObject
      * @param dBMolecule
      */
     public DBMolecule(DBMolecule dBMolecule) {
-
         super(dBMolecule);
-
         atomContainer        = dBMolecule.getMolecule();
         fingerPrint          = (BitSet)dBMolecule.getFingerPrint()
                                                 .clone();
@@ -139,45 +122,37 @@ public class DBMolecule extends BaseObject
         annotations          = new ArrayList<Annotation>( 
                                    dBMolecule.getAnnotations() );
     }
-
     public boolean hasValuesEqualTo( BaseObject object ) {
-
         if( !super.hasValuesEqualTo(object) ) {
             return false;
         }
         if( !(object instanceof DBMolecule) ) {
             return false;
         }
-
         DBMolecule dBMolecule = (DBMolecule)object;
-
         return fingerPrint.equals( dBMolecule.getFingerPrint() )
                &&   smiles.equals( dBMolecule.getSMILES()      );
 // TODO: can give false positives without?
 //             && atomContainer.equals( structure.getMolecule()    ); 
     }
-
     /**
      * @return the CDK AtomContainer
      */
     public IAtomContainer getMolecule() {
         return atomContainer;
     }
-
     /**
      * @param atomContainer the CDK atomContainer to set
      */
     public void setMolecule(IAtomContainer molecule) {
         this.atomContainer = molecule;
     }
-
     /**
      * @return the structure's fingerprint
      */
     public BitSet getFingerPrint() {
         return fingerPrint;
     }
-
     /**
      * @param fingerPrint the fingerprint to set
      */
@@ -185,7 +160,6 @@ public class DBMolecule extends BaseObject
         this.fingerPrint     = fingerPrint;
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
     }
-
     private byte[] makePersistedFingerPrint(BitSet fingerPrint) {
         if ( fingerPrint == null ) {
             return new byte[0];
@@ -197,7 +171,6 @@ public class DBMolecule extends BaseObject
         }
         return persistedFingerPrint;
     }
-
     private BitSet makeFingerPrint(byte[] persistedFingerPrint) {
         BitSet fingerPrint = new BitSet( persistedFingerPrint.length );
         for(int i = 0 ; i < persistedFingerPrint.length ; i++) {
@@ -206,21 +179,18 @@ public class DBMolecule extends BaseObject
         }
         return fingerPrint;
     }
-
     /**
      * @return the structure's smiles representation
      */
     public String getSMILES() {
         return smiles;
     }
-
     /**
      * @param smiles the smiles representation to set
      */
     public void setSMILES(String smiles) {
         this.smiles = smiles;
     }
-
     /**
      * @return the annotation containing this structure or null
      * if the structure isn't in any annotation
@@ -228,7 +198,6 @@ public class DBMolecule extends BaseObject
     public List<Annotation> getAnnotations() {
         return annotations;
     }
-
     /**
      * Adds an Annotation to this structure
      *
@@ -238,27 +207,22 @@ public class DBMolecule extends BaseObject
         annotations.add( annotation );
         if( annotation != null && 
             !annotation.getDBMolecules().contains(this) ) {
-            
             annotation.addDBMolecule( this );
         }
     }
-    
     /*
      * used by Spring to inject the annotations
      */
     void setAnnotations(List<Annotation> annotations) {
         this.annotations = annotations;
     }
-
     public byte[] getPersistedFingerprint() {
         return persistedFingerPrint;
     }
-
     public void setPersistedFingerprint(byte[] persistedFingerPrint) {
         this.persistedFingerPrint = persistedFingerPrint;
         this.fingerPrint = makeFingerPrint(persistedFingerPrint);
     }
-
     public String getCML() {
         StringWriter stringWriter = new StringWriter();
         CMLWriter cmlWriter       = new CMLWriter(stringWriter);
@@ -270,7 +234,6 @@ public class DBMolecule extends BaseObject
         }
         return stringWriter.toString();
     }
-
     /**
      * Sets the given cml. Does not update other fields like for example 
      * smiles
@@ -292,42 +255,34 @@ public class DBMolecule extends BaseObject
                                         e);
         }
     }
-
     public IResource getResource() {
         // TODO Auto-generated method stub
         return null;
     }
-
     public String getUID() {
         return getId();
     }
-
     @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter) {
         return super.getAdapter(adapter );
     }
-    
     public IAtomContainer getAtomContainer() {
         return atomContainer;
     }
-
     public void removeAnnotation( Annotation annotation ) {
         if ( annotation.getDBMolecules().contains(this) ) {
             annotation.removeDBMolecule(this);
         }
         annotations.remove( annotation );
     }
-
     public List<net.bioclipse.core.domain.IMolecule> getConformers() {
         List<net.bioclipse.core.domain.IMolecule> result 
             = new BioList<net.bioclipse.core.domain.IMolecule>();
         result.add( this );
         return result;
     }
-
     public BitSet getFingerprint( boolean force ) 
                   throws BioclipseException {
-
         if (force) {
             Fingerprinter fp = new Fingerprinter();
             try {
@@ -340,17 +295,12 @@ public class DBMolecule extends BaseObject
         }
         return fingerPrint;
     }
-    
     public String getName() {
-        
         return name;
     }
-    
     public void setName( String name ) {
-    
         this.name = name;
     }
-    
     public String toString() {
         return name;
     }

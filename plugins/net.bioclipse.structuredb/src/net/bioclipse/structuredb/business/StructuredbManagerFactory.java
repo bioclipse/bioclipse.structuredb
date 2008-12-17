@@ -9,17 +9,13 @@
  *     Jonathan Alvarsson
  *     
  ******************************************************************************/
-
 package net.bioclipse.structuredb.business;
-
 import net.bioclipse.structuredb.Activator;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
-
 /**
  * 
  * @author jonalv
@@ -27,24 +23,18 @@ import org.eclipse.core.runtime.IExecutableExtensionFactory;
 public class StructuredbManagerFactory 
              implements IExecutableExtension, 
                         IExecutableExtensionFactory {
-
     private Logger logger = Logger.getLogger(
                                 StructuredbManagerFactory.class );
     private Object structuredbManager;
-    
     public void setInitializationData( IConfigurationElement config,
                                        String propertyName, 
                                        Object data ) 
                 throws CoreException {
-    
         logger.debug("StructuredbManagerFactory.setInitializationData");
-        
         structuredbManager = Activator.getDefault()
                                       .getStructuredbManager();
     }
-
     public Object create() throws CoreException {
-        
         logger.debug("StructuredbManagerFactory.create");
         return structuredbManager;
     }

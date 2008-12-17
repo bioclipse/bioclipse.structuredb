@@ -10,7 +10,6 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.tables;
-
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,20 +20,15 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import net.bioclipse.core.util.LogUtils;
-
 import org.apache.log4j.Logger;
-
 /**
  * @author jonalv
  *
  */
 public class TableCreator {
-    
     private static final Logger logger 
         = Logger.getLogger(TableCreator.class);
-
     public static final String[] SQL_FILES_RUNORDER 
         = { 
             "BaseObject.sql", 
@@ -50,25 +44,17 @@ public class TableCreator {
             "ChoiceProperty.sql",
             "PropertyChoice.sql",
           };
-
     public static final TableCreator INSTANCE = new TableCreator();
-    
     private List<String> createTableStatements = new ArrayList<String>();
     private List<String> alterTableStatements  = new ArrayList<String>();
-    
     private TableCreator() {
-        
     }
-    
     public void createTables(String url) {
         createTableStatements.clear();
         alterTableStatements.clear();
         try {
-            
             Class.forName("org.hsqldb.jdbcDriver");
-            
             Connection con = getConnection(url);
-            
             for ( String sqlFile : SQL_FILES_RUNORDER ) {
                 Scanner scanner 
                     = new Scanner( this.getClass().getResourceAsStream(
@@ -114,7 +100,6 @@ public class TableCreator {
                 "Could not find the jdbcDriver class", e);
         }
     }
-
     private String createDropStatement(String createStatement) {
         String result = "DROP TABLE";
         Pattern regexp = Pattern.compile("^CREATE\\s+CACHED\\s+TABLE\\s+(\\w+)");
@@ -126,7 +111,6 @@ public class TableCreator {
         result = result + " " + m.group(1) + " IF EXISTS CASCADE;";
         return result;
     }
-
     private String readStatement(Scanner scanner) {
         StringBuilder result = new StringBuilder();
         String line;
@@ -140,7 +124,6 @@ public class TableCreator {
         while( !m.find() );  //<== Still doesn't work
         return result.toString();
     }
-
     private void runStatement(Connection con, String statement) {
         try {
             Statement stmt = con.createStatement();
@@ -152,7 +135,6 @@ public class TableCreator {
             throw new RuntimeException("error running statement", e);
         }
     }
-
     private Connection getConnection(String url) {
         Connection conn = null;
         boolean gotConnection = false;
@@ -168,7 +150,6 @@ public class TableCreator {
                     int sleepTime = 100;
                     Thread.sleep(sleepTime);
                     slept += sleepTime;
-                    
                 } catch (InterruptedException e1) {
                     LogUtils.debugTrace(logger, e1);
                 }

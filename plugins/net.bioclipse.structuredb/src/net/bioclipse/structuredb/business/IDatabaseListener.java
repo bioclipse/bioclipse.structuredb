@@ -10,15 +10,11 @@
  *          
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
-
-
 /**
  * @author jonalv
  */
 public interface IDatabaseListener {
-
     public void onDataBaseUpdate(DatabaseUpdateType updateType);
-
     public enum DatabaseUpdateType {
         DATABASES_CHANGED, 
         LABELS_CHANGED

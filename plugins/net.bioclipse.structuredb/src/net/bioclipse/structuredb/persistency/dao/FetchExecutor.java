@@ -9,24 +9,19 @@
  *      Jonathan Alvarsson
  *     
  *******************************************************************************/
-
 package net.bioclipse.structuredb.persistency.dao;
-
 import java.lang.reflect.Method;
 import java.util.List;
-
 /**
  * @author jonalv
  *
  * @param <T>
  */
 public interface FetchExecutor<T> {
-
     /**
      * Execute a fetch of multiple objects with the appropriate arguments
      */
     List<T> executeListFetch( Method method, Object[] queryArgs );
-    
     /**
      * Execute a fetch of a single object with the appropriate arguments
      */

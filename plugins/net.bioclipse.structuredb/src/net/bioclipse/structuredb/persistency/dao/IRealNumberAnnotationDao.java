@@ -10,15 +10,11 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
-
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
-
-
 /**
  * @author jonalv
  *
  */
 public interface IRealNumberAnnotationDao 
        extends IGenericDao<RealNumberAnnotation> {
-
 }

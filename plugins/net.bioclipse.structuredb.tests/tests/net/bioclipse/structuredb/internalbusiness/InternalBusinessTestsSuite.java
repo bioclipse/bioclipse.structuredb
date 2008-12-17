@@ -9,14 +9,10 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
-
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
-
 @RunWith(value=Suite.class)
 @SuiteClasses( value = { StructuredbInstanceManagerTest.class } )
 public class InternalBusinessTestsSuite {
-
 }

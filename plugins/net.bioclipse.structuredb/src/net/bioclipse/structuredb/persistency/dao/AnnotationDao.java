@@ -10,13 +10,10 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
-
 /**
  * The annotationDao persists and loads libraries
  * 
@@ -25,11 +22,9 @@ import net.bioclipse.structuredb.domain.DBMolecule;
  */
 public abstract class AnnotationDao<T extends Annotation> extends GenericDao<T> 
                                       implements IAnnotationDao<T> {
-
     public AnnotationDao(Class<T> type) {
         super( type );
     }
-
     @Override
     public void insert(T annotation) {
         getSqlMapClientTemplate().update( "BaseObject.insert", 
@@ -37,7 +32,6 @@ public abstract class AnnotationDao<T extends Annotation> extends GenericDao<T>
         getSqlMapClientTemplate().update( "Annotation.insert",
                                           annotation );
     }
-    
     @Override
     public void update(T annotation) {
         getSqlMapClientTemplate().update( "BaseObject.update", 
@@ -46,17 +40,12 @@ public abstract class AnnotationDao<T extends Annotation> extends GenericDao<T>
                                           annotation );
         fixStructureAnnotation( annotation );
     }
-    
     private void fixStructureAnnotation( final T annotation ) {
-
         getSqlMapClientTemplate()
             .delete( "Annotation.deleteDBMoleculeCoupling", annotation );
-        
         for ( final DBMolecule s : annotation.getDBMolecules() ) {
             Map<String, String> params = new HashMap<String, String>() {
-
                 private static final long serialVersionUID = 1L;
-
                 {
                     put( "annotationId", annotation.getId() );
                     put( "dBMoleculeId", s.getId()          );
@@ -70,7 +59,6 @@ public abstract class AnnotationDao<T extends Annotation> extends GenericDao<T>
             }
         }
     }
-
     public Annotation getByName(String name) {
         return (Annotation)getSqlMapClientTemplate()
                .queryForObject( "Annotation.getByName", name);

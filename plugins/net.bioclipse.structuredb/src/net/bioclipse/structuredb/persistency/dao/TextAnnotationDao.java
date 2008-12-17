@@ -10,26 +10,20 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
-
 import java.util.List;
-
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
-
 /**
  * @author jonalv
  *
  */
 public class TextAnnotationDao extends AnnotationDao<TextAnnotation> 
                                implements ITextAnnotationDao {
-
     private ITextPropertyDao textPropertyDao;
-
     public TextAnnotationDao() {
         super( TextAnnotation.class );
     }
-
     @Override
     public void insert(TextAnnotation annotation) {
         super.insert( annotation );
@@ -37,7 +31,6 @@ public class TextAnnotationDao extends AnnotationDao<TextAnnotation>
         getSqlMapClientTemplate().update( "TextAnnotation.insert",
                                           annotation );
     }
-    
     @Override
     public void update(TextAnnotation annotation) {
         super.update( annotation );
@@ -45,7 +38,6 @@ public class TextAnnotationDao extends AnnotationDao<TextAnnotation>
         getSqlMapClientTemplate().update( "TextAnnotation.update", 
                                           annotation );
     }
-    
     private void insertOrUpdateProperty( TextProperty property ) {
         if (property == null) {
             return;
@@ -61,15 +53,12 @@ public class TextAnnotationDao extends AnnotationDao<TextAnnotation>
             }
         }
     }
-
     public void setTextPropertyDao( ITextPropertyDao textPropertyDao ) {
         this.textPropertyDao = textPropertyDao;
     }
-
     public ITextPropertyDao getTextPropertyDao() {
         return textPropertyDao;
     }
-
     @SuppressWarnings("unchecked")
     public List<TextAnnotation> getAllLabels() {
         return getSqlMapClientTemplate()

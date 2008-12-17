@@ -10,17 +10,13 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
-
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.usermanager.IUserManagerListener;
-
 /**
  * @author jonalv
  *
  */
 public interface ILoggedInUserKeeper extends IUserManagerListener {
-
     public User getLoggedInUser();
-
     void setLoggedInUser(User root);
 }

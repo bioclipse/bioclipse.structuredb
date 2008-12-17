@@ -9,21 +9,16 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
-
 import net.bioclipse.structuredb.domain.PropertyChoice;
-
-
 /**
  * @author jonalv
  */
 public class PropertyChoiceDao
        extends GenericDao<PropertyChoice> 
        implements IPropertyChoiceDao {
-
     public PropertyChoiceDao() {
         super( PropertyChoice.class );
     }
- 
     @Override
     public void insert(PropertyChoice propertyChoice) {
         getSqlMapClientTemplate().update( "BaseObject.insert", 
@@ -37,7 +32,6 @@ public class PropertyChoiceDao
                                               propertyChoice );
         }
     }
-
     @Override
     public void update(PropertyChoice propertyChoice) {
         getSqlMapClientTemplate().update( "BaseObject.update", 
