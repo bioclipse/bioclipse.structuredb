@@ -10,23 +10,28 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
+
 /**
  * @author jonalv
  *
  */
 public class StructuredbFactory implements IExecutableExtension,
         IExecutableExtensionFactory {
+
     private Structuredb structuredb;
+    
     public void setInitializationData( IConfigurationElement config,
                                        String propertyName, 
                                        Object data ) 
                 throws CoreException {
         structuredb = new Structuredb();
     }
+
     public Object create() throws CoreException {
         return this.structuredb;
     }

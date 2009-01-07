@@ -10,14 +10,18 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
+
 import org.springframework.aop.support.DefaultIntroductionAdvisor;
+
 /**
  * @author jonalv
  *
  */
 public class FetchIntroductionAdvisor 
              extends DefaultIntroductionAdvisor {
+
     private static final long serialVersionUID = -6956114827617421806L;
+
     public FetchIntroductionAdvisor() {
         super( new FetchIntroductionInterceptor() );
     }

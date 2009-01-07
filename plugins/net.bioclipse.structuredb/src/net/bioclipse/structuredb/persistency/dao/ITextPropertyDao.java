@@ -10,12 +10,17 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
+
 import net.bioclipse.structuredb.domain.TextProperty;
+
+
 /**
  * @author jonalv
  *
  */
 public interface ITextPropertyDao 
        extends IGenericDao<TextProperty> {
+
     public TextProperty getByName( String name );
+
 }

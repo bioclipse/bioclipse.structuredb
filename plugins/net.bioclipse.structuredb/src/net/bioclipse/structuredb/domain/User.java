@@ -9,10 +9,14 @@
  *     Jonathan Alvarsson
  *     
  *******************************************************************************/
+
 package net.bioclipse.structuredb.domain;
+
 import java.util.HashSet;
 import java.util.Set;
+
 import net.bioclipse.encryption.EncryptedPassword;
+
 /**
  * A representation of a User in the database system
  * 
@@ -20,20 +24,25 @@ import net.bioclipse.encryption.EncryptedPassword;
  *
  */
 public class User extends BaseObject {
+
     private String  userName;
     private boolean sudoer;
+    
     private EncryptedPassword encryptedPassword; 
+    
     public User() {
         super();
         userName           = "user" + getId();
         encryptedPassword  = EncryptedPassword.fromPlaintextPassword( "" );
     }
+
     public User(String userName, String password, boolean sudoer) {
         super();
         this.userName      = userName;
         this.sudoer        = sudoer;
         encryptedPassword  = EncryptedPassword.fromPlaintextPassword(password);
     }
+
     /**
      * Creates a new User that is an exact copy of the 
      * given instance including the same id.
@@ -42,12 +51,14 @@ public class User extends BaseObject {
      */
     public User(User user) {
         super(user);
+        
         this.userName = user.getUserName();
         this.encryptedPassword = EncryptedPassword
                                      .fromAlreadyEncryptedPassword( 
                                          user.getPassWordMd5() );
         this.sudoer = user.isSudoer();
     }
+    
     public boolean hasValuesEqualTo( BaseObject object ) {
         if( !super.hasValuesEqualTo(object) ) {
             return false;
@@ -55,11 +66,14 @@ public class User extends BaseObject {
         if( !(object instanceof User) ) {
             return false;
         }
+        
         User user = (User)object;
+        
         return userName.equals( user.getUserName() ) 
             && encryptedPassword.toString().equals( user.getPassWordMd5() )
             && sudoer == user.isSudoer();
     }
+    
     /**
      * Checks whether a password matches the users password
      * 
@@ -69,24 +83,28 @@ public class User extends BaseObject {
     public boolean passWordMatches( String password ) {
         return encryptedPassword.matches( password );
     }
+
     /**
      * @return the user's username
      */
     public String getUserName() {
         return userName;
     }
+
     /**
      * @param userName the username to set
      */
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
     /**
      * @return the md5 encrypted password
      */
     public String getPassWordMd5() {
         return encryptedPassword.toString();
     }
+
     /**
      * @param passWordMd5 md5 encrypted password to set
      */
@@ -94,18 +112,21 @@ public class User extends BaseObject {
         encryptedPassword = EncryptedPassword
                                 .fromAlreadyEncryptedPassword( passWordMd5 );
     }
+
     /**
      * @return whether the user is sudoer 
      */
     public boolean isSudoer() {
         return sudoer;
     }
+
     /**
      * @param sudoer whether the user is sudoer to set
      */
     public void setSudoer(boolean sudoer) {
         this.sudoer = sudoer;
     }
+    
     /**
      * @param password the unencrypted password to be md5 encrypted 
      * and set

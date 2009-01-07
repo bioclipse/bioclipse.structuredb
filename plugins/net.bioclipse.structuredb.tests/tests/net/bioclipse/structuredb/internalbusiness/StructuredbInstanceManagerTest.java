@@ -9,9 +9,11 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
@@ -34,13 +36,18 @@ import net.bioclipse.structuredb.persistency.dao.IRealNumberPropertyDao;
 import net.bioclipse.structuredb.persistency.dao.ITextAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.ITextPropertyDao;
 import net.bioclipse.structuredb.persistency.dao.IUserDao;
+
 import org.openscience.cdk.AtomContainer;
 import org.openscience.cdk.exception.CDKException;
 import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests;
+
 import testData.TestData;
+
 public class StructuredbInstanceManagerTest 
        extends AbstractAnnotationAwareTransactionalTests  {
+    
     protected IStructuredbInstanceManager manager;
+    
     protected IUserDao                 userDao;
     protected IDBMoleculeDao           dBMoleculeDao;
     protected IChoicePropertyDao       choicePropertyDao;
@@ -49,12 +56,15 @@ public class StructuredbInstanceManagerTest
     protected IChoiceAnnotationDao     choiceAnnotationDao;
     protected IRealNumberAnnotationDao realNumberAnnotationDao;
     protected ITextAnnotationDao       textAnnotationDao;
+    
     private TextProperty textProperty;
+
     public StructuredbInstanceManagerTest() {
         super();
         HsqldbTestServerManager.INSTANCE.startServer();
         HsqldbTestServerManager.INSTANCE.setupTestEnvironment();
     }
+    
     static {
         System.setProperty(
            "javax.xml.parsers.SAXParserFactory", 
@@ -65,6 +75,7 @@ public class StructuredbInstanceManagerTest
            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
         );        
     }
+    
     @Override
     protected void onSetUpBeforeTransaction() throws Exception {
         super.onSetUpBeforeTransaction();
@@ -96,6 +107,7 @@ public class StructuredbInstanceManagerTest
                                   applicationContext
                                       .getBean( "textAnnotationDao" );
     }
+    
     @Override
     protected void onSetUpInTransaction() throws Exception {
         super.onSetUpInTransaction();
@@ -108,6 +120,7 @@ public class StructuredbInstanceManagerTest
                                 .getBean("loggedInUserKeeper") )
                                 .setLoggedInUser(testUser);
     }
+    
     private TextAnnotation createAnnotation(String name) {
         if ( textProperty == null ) {
             textProperty = new TextProperty("testProperty");
@@ -117,6 +130,7 @@ public class StructuredbInstanceManagerTest
         manager.insertTextAnnotation(annotation);
         return annotation;
     }
+    
     private DBMolecule createMolecule( String name, 
                                         AtomContainer atomContainer) 
                        throws CDKException {
@@ -129,22 +143,27 @@ public class StructuredbInstanceManagerTest
         System.out.println("Persisting structure took: " + (after - inBetween) + "ms");
         return dBMolecule;
     }
+    
     public void testInsertDBMolecule() throws CDKException {
+        
         DBMolecule dBMolecule = createMolecule( "CycloOctan", 
                                                  TestData.getCycloOctan() );
         List<DBMolecule> allMolecules = dBMoleculeDao.getAll(); 
         assertTrue( allMolecules.contains(dBMolecule) );
     }
+
     private User createUser(String username, String password, boolean sudoer) {
         User user = new User(username, password, sudoer);
         manager.insertUser(user);
         return user;
     }
+    
     public void testInsertUser() {
         User user = createUser("another username", "secrest", false);
         List<User> allUsers = userDao.getAll(); 
         assertTrue( allUsers.contains(user) );
     }
+
     private ChoiceProperty createChoiceProperty( String name ) {
         ChoiceProperty choiceProperty = new ChoiceProperty(name);
         manager.insertChoiceProperty(choiceProperty);
@@ -153,17 +172,20 @@ public class StructuredbInstanceManagerTest
         manager.update( choiceProperty );
         return choiceProperty;
     }
+    
     public void testInsertChoiceProperty() {
         ChoiceProperty choiceProperty = createChoiceProperty("name");
         List<ChoiceProperty> allChoiceProperties = choicePropertyDao.getAll();
         assertTrue( allChoiceProperties.contains( choiceProperty ) );
     }
+
     private RealNumberProperty createRealNumberProperty( String name ) {
         RealNumberProperty realNumberProperty 
             = new RealNumberProperty(name);
         manager.insertRealNumberProperty( realNumberProperty );
         return realNumberProperty;
     }
+
     public void testInsertRealNumberProperty() {
         RealNumberProperty realNumberProperty 
             = createRealNumberProperty( "name" );
@@ -171,23 +193,28 @@ public class StructuredbInstanceManagerTest
             = realNumberPropertyDao.getAll();
         assertTrue( allRealNumberProperties.contains( realNumberProperty ) );
     }
+    
     private TextProperty createTextProperty( String name ) {
         TextProperty textProperty = new TextProperty(name);
         manager.insertTextProperty( textProperty );
         return textProperty;
     }
+    
     public void testInsertTextProperty() {
         TextProperty textProperty = createTextProperty( "name" );
         List<TextProperty> allTextProperties = textPropertyDao.getAll();
         assertTrue( allTextProperties.contains( textProperty ) );
     }
+    
     private ChoiceAnnotation createChoiceAnnotation( 
             String name, ChoiceProperty property ) {
+        
         ChoiceAnnotation choiceAnnotation = new ChoiceAnnotation( name, 
                                                                   property );
         manager.insertChoiceAnnotation(choiceAnnotation);
         return choiceAnnotation; 
     }
+    
     public void testInsertChoiceAnnotation() {
         ChoiceAnnotation choiceAnnotation 
             = createChoiceAnnotation( "name", createChoiceProperty( "name" ) );
@@ -195,13 +222,16 @@ public class StructuredbInstanceManagerTest
             = choiceAnnotationDao.getAll();
         assertTrue( allChoiceAnnotations.contains( choiceAnnotation ) );
     }
+    
     private RealNumberAnnotation createRealNumberAnnotation( 
             double value, RealNumberProperty property ) {
+        
         RealNumberAnnotation realNumberAnnotation 
             = new RealNumberAnnotation(value, property);
         manager.insertRealNumberAnnotation(realNumberAnnotation);
         return realNumberAnnotation;
     }
+    
     public void testInsertRealNumberAnnotation() {
         RealNumberAnnotation realNumberAnnotation 
             = createRealNumberAnnotation( 0, 
@@ -211,6 +241,7 @@ public class StructuredbInstanceManagerTest
         assertTrue( allRealNumberAnnotations
                         .contains( realNumberAnnotation ) );
     }
+    
     private TextAnnotation createTextAnnotation( String value, 
                                                  TextProperty property ) {
         TextAnnotation textAnnotation 
@@ -218,6 +249,7 @@ public class StructuredbInstanceManagerTest
         manager.insertTextAnnotation( textAnnotation );
         return textAnnotation;
     }
+    
     public void testInsertTextAnnotation() {
         TextAnnotation textAnnotation 
             = createTextAnnotation( "name", 
@@ -225,12 +257,14 @@ public class StructuredbInstanceManagerTest
         List<TextAnnotation> allTextAnnotations = textAnnotationDao.getAll();
         assertTrue( allTextAnnotations.contains( textAnnotation ) );
     }
+
     public void testDeleteUser() {
         User user = createUser("another username", "secrest", true);
         assertTrue( userDao.getAll().contains(user) );
         manager.delete(user);
         assertFalse( userDao.getAll().contains(user) );
     }
+
     public void testDeleteStructure() throws CDKException {
         DBMolecule dBMolecule = createMolecule( "CycloOcan", 
                                                TestData.getCycloOctan() );
@@ -238,12 +272,14 @@ public class StructuredbInstanceManagerTest
         manager.delete(dBMolecule);
         assertFalse( dBMoleculeDao.getAll().contains(dBMolecule) );
     }
+    
     public void testDeleteChoiceProperty() {
         ChoiceProperty choiceProperty = createChoiceProperty( "name" );
         assertTrue( choicePropertyDao.getAll().contains( choiceProperty ) );
         manager.delete( choiceProperty );
         assertFalse( choicePropertyDao.getAll().contains( choiceProperty ) );
     }
+    
     public void testDeleteRealNumberProperty() {
         RealNumberProperty realNumberProperty 
             = createRealNumberProperty( "name" );
@@ -253,12 +289,14 @@ public class StructuredbInstanceManagerTest
         assertFalse( realNumberPropertyDao.getAll()
                                           .contains( realNumberProperty ) );
     }
+    
     public void testDeleteTextProperty() {
         TextProperty textProperty = createTextProperty( "name" );
         assertTrue( textPropertyDao.getAll().contains( textProperty ) );
         manager.delete( textProperty );
         assertFalse( textPropertyDao.getAll().contains( textProperty ) );
     }
+    
     public void testDeleteTextAnnotation() {
         TextAnnotation textAnnotation 
             = createTextAnnotation( "value", 
@@ -267,6 +305,7 @@ public class StructuredbInstanceManagerTest
         manager.delete( textAnnotation );
         assertFalse( textAnnotationDao.getAll().contains( textAnnotation ) );
     }
+    
     public void testRealNumberAnnotationDelete() {
         RealNumberAnnotation realNumberAnnotation 
             = createRealNumberAnnotation( 1, 
@@ -277,6 +316,7 @@ public class StructuredbInstanceManagerTest
         assertFalse( realNumberAnnotationDao.getAll()
                                             .contains(realNumberAnnotation) );
     }
+    
     public void testTextAnnotationDelete() {
         TextAnnotation textAnnotation 
             = createTextAnnotation( "value",
@@ -285,26 +325,33 @@ public class StructuredbInstanceManagerTest
         manager.delete( textAnnotation );
         assertFalse( textAnnotationDao.getAll().contains( textAnnotation ) );
     }
+    
     public void testRetrieveAllAnnotations() {
         Annotation annotation1 = createAnnotation("testAnnotation1");
         Annotation annotation2 = createAnnotation("testAnnotation2");
+        
         assertTrue( manager.retrieveAllAnnotations().containsAll( 
                 Arrays.asList(new Annotation[] {annotation1, annotation2}) ) );
     }
+
     public void testRetrieveAllStructures() throws CDKException {
         DBMolecule structure1 = createMolecule( "CycloOctan", 
                                                  TestData.getCycloOctan() );
         DBMolecule structure2 = createMolecule( "CycloPropane", 
                                                  TestData.getCycloPropane() );
+        
         assertTrue( manager.retrieveAllMolecules().containsAll(
                 Arrays.asList(new DBMolecule[] {structure1, structure2}) ) );
     }
+
     public void testRetrieveAllUsers() {
         User user1 = createUser("username1", "secret", false);
         User user2 = createUser("username2", "masterkey", true);
+        
         assertTrue( manager.retrieveAllUsers().containsAll( 
                 Arrays.asList(new User[] {user1, user2}) ) );
     }
+
     public void testRetrieveStructureByName() throws CDKException {
         DBMolecule dBMolecule = createMolecule( "CycloOctan", 
                                                 TestData.getCycloOctan() );
@@ -312,12 +359,16 @@ public class StructuredbInstanceManagerTest
                     .retrieveStructureByName("CycloOctan")
                     .contains(dBMolecule) );
     }
+
     public void testRetrieveUserByName() {
         User user = createUser("another username", "secret", false);
+        
         assertNotNull(user);
+        
         assertTrue( user.hasValuesEqualTo( 
                         manager.retrieveUserByUsername("another username") ) );
     }
+    
     public void testRetrievePropertyByName() {
         final String NAME1 = "1";
         final String NAME2 = "2";
@@ -328,6 +379,7 @@ public class StructuredbInstanceManagerTest
         manager.insertTextProperty(       textProperty       );
         manager.insertRealNumberProperty( realNumberProperty );
         manager.insertChoiceProperty(     choiceProperty     );
+        
         assertTrue( textProperty.hasValuesEqualTo( 
                         manager.retrievePropertyByName(NAME1) ) );
         assertTrue( realNumberProperty.hasValuesEqualTo( 
@@ -335,6 +387,7 @@ public class StructuredbInstanceManagerTest
         assertTrue( choiceProperty.hasValuesEqualTo(
                         manager.retrievePropertyByName(NAME3 ) ) );
     }
+
     public void testUpdateLibrary() {
         TextAnnotation annotation = createAnnotation("testAnnotatin");
         annotation.setValue("edited");
@@ -343,12 +396,14 @@ public class StructuredbInstanceManagerTest
             annotation.hasValuesEqualTo( 
                 textAnnotationDao.getById(annotation.getId()) ) );
     }
+
     public void testUpdateUser() {
         User user = createUser("another username", "secret", false);
         user.setUserName("edited");
         manager.update(user);
         assertTrue( user.hasValuesEqualTo( userDao.getById(user.getId()) ) );
     }
+
     public void testUpdateMolecule() throws CDKException {
         DBMolecule dBMolecule = createMolecule( "CycloOctan", 
                                                 TestData.getCycloOctan() );
@@ -358,6 +413,7 @@ public class StructuredbInstanceManagerTest
             dBMolecule.hasValuesEqualTo( 
                 dBMoleculeDao.getById(dBMolecule.getId()) ) );
     }
+    
     public void testUpdateChoiceProperty() {
         ChoiceProperty choiceProperty = createChoiceProperty( "name" );
         choiceProperty.setName( "edited" );
@@ -366,6 +422,7 @@ public class StructuredbInstanceManagerTest
             choiceProperty.hasValuesEqualTo( 
                 choicePropertyDao.getById( choiceProperty.getId() ) ) );
     }
+    
     public void testUpdateRealNumberProperty() {
         RealNumberProperty realNumberProperty 
             = createRealNumberProperty( "name" );
@@ -376,6 +433,7 @@ public class StructuredbInstanceManagerTest
                 realNumberPropertyDao.getById( 
                     realNumberProperty.getId() ) ) );
     }
+    
     public void testUpdateTextProperty() {
         TextProperty textProperty = createTextProperty( "name" );
         textProperty.setName( "edited" );
@@ -384,6 +442,7 @@ public class StructuredbInstanceManagerTest
             textProperty.hasValuesEqualTo( 
                 textPropertyDao.getById( textProperty.getId() ) ) );
     }
+    
     public void testUpdateChoiceAnnotation() {
         ChoiceAnnotation choiceAnnotation 
             = createChoiceAnnotation( "name", createChoiceProperty( "name" ) );
@@ -393,6 +452,7 @@ public class StructuredbInstanceManagerTest
             choiceAnnotation.hasValuesEqualTo( 
                 choiceAnnotationDao.getById( choiceAnnotation.getId() ) ) );
     }
+    
     public void testUpdateRealNumberAnnotation() {
         RealNumberAnnotation realNumberAnnotation
             = createRealNumberAnnotation( 1, 
@@ -403,6 +463,7 @@ public class StructuredbInstanceManagerTest
                 realNumberAnnotationDao.getById( 
                     realNumberAnnotation.getId() ) ) );
     }
+    
     public void testUpdateTextAnnotation() {
         TextAnnotation textAnnotation 
             = createTextAnnotation( "value", createTextProperty( "name" ) );
@@ -411,12 +472,14 @@ public class StructuredbInstanceManagerTest
             textAnnotation.hasValuesEqualTo( 
                 textAnnotationDao.getById( textAnnotation.getId() ) ) );
     }
+    
     public void testDeleteMoleculeAndStructures() throws CDKException {
         DBMolecule dBMolecule = createMolecule( "CycloOcan", 
                                                TestData.getCycloOctan() );
         TextAnnotation annotation = createAnnotation( "test" );
         dBMolecule.addAnnotation( annotation );
         manager.update( annotation );
+        
         assertTrue( textAnnotationDao.getById( annotation.getId() )
                                      .getDBMolecules()
                                      .contains(dBMolecule) );
@@ -424,6 +487,7 @@ public class StructuredbInstanceManagerTest
         assertFalse( dBMoleculeDao.getAll().contains(dBMolecule) );
         assertFalse( textAnnotationDao.getAll().contains(annotation) );
     }
+    
     public void testAllStructureIterator() throws CDKException {
         testRetrieveAllStructures();
         List<DBMolecule> dBMolecules = manager.retrieveAllMolecules();
@@ -433,6 +497,7 @@ public class StructuredbInstanceManagerTest
             assertTrue( dBMolecules.contains( structureIterator.next() ) );
         }
     }
+    
     public void testAllLabels() {
         TextAnnotation a = new TextAnnotation( "a label", 
                                                new TextProperty("label") );
@@ -440,13 +505,16 @@ public class StructuredbInstanceManagerTest
                                                new TextProperty("not label") );
         manager.insertTextAnnotation( a );
         manager.insertTextAnnotation( b );
+        
         assertTrue( manager.allLabels().contains( a ) );
         assertFalse( manager.allLabels().contains( b ) );
     }
+    
     protected String[] getConfigLocations() {
         String path = Structuredb.class.getClassLoader()
                                  .getResource("applicationContext.xml")
                                  .toString();
+        
         return new String[] { path };
     }
 }

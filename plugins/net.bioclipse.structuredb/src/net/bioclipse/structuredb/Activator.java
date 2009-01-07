@@ -9,42 +9,55 @@
  *      Jonathan Alvarsson 
  *     
  *******************************************************************************/
+
 package net.bioclipse.structuredb;
+
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.structuredb.business.IStructuredbManager;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
+
 /**
  * The activator class controls the plug-in life cycle
  */
 public class Activator extends AbstractUIPlugin {
+
     private Logger logger = Logger.getLogger(Activator.class);
+    
     // The plug-in ID
     public static final String PLUGIN_ID = "net.bioclipse.structuredb";
+
     // The shared instance
     private static Activator plugin;
+    
     private ServiceTracker finderTracker;
+
     /**
      * The constructor
      */
     public Activator() {
     }
+
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+
         finderTracker = new ServiceTracker( context, 
                                             IStructuredbManager.class
                                                 .getName(), 
                                             null );
         finderTracker.open();
     }
+
     public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
     }
+
     /**
      * Returns the shared instance
      *
@@ -53,6 +66,7 @@ public class Activator extends AbstractUIPlugin {
     public static Activator getDefault() {
         return plugin;
     }
+
     /**
      * Returns an image descriptor for the image file at the given
      * plug-in relative path
@@ -63,6 +77,7 @@ public class Activator extends AbstractUIPlugin {
     public static ImageDescriptor getImageDescriptor(String path) {
         return imageDescriptorFromPlugin(PLUGIN_ID, path);
     }
+
     public IStructuredbManager getStructuredbManager() {
         IStructuredbManager manager = null;
         try {

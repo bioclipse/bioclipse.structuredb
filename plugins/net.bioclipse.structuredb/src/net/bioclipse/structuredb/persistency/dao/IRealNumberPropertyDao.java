@@ -10,12 +10,17 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
+
 import net.bioclipse.structuredb.domain.RealNumberProperty;
+
+
 /**
  * @author jonalv
  *
  */
 public interface IRealNumberPropertyDao 
        extends IGenericDao<RealNumberProperty> {
+
     public RealNumberProperty getByName( String name );
+
 }

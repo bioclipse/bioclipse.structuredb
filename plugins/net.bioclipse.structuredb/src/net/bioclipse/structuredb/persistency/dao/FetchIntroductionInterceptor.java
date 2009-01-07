@@ -9,17 +9,23 @@
  *      Jonathan Alvarsson
  *     
  *******************************************************************************/
+
 package net.bioclipse.structuredb.persistency.dao;
+
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.IntroductionInterceptor;
+
 /**
  * @author jonalv
  */
 public class FetchIntroductionInterceptor implements IntroductionInterceptor {
+
     public Object invoke(MethodInvocation invocation) 
                   throws Throwable {
+
         FetchExecutor<?> genericDao 
             = (FetchExecutor<?>) invocation.getThis();
+
         String methodName = invocation.getMethod().getName();
         if ( methodName.startsWith("fetchObject") ) {
             return genericDao
@@ -35,6 +41,7 @@ public class FetchIntroductionInterceptor implements IntroductionInterceptor {
             return invocation.proceed();
         }
     }
+
     @SuppressWarnings("unchecked")
     public boolean implementsInterface(Class intf) {
         return intf.isInterface() 

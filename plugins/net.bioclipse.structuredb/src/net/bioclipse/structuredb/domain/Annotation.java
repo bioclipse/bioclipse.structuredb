@@ -9,25 +9,34 @@
  *     Jonathan Alvarsson
  *     
  *******************************************************************************/
+
 package net.bioclipse.structuredb.domain;
+
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * @author jonalv
  */
 public abstract class Annotation extends BaseObject {
+
     private List<DBMolecule> dBMolecules;
+
     public abstract String getSortOf();
+    
     public Annotation() {
         super();
         dBMolecules = new ArrayList<DBMolecule>();
     }
+
     public Annotation(Annotation annotation) {
         super(annotation);
         this.dBMolecules 
             = new ArrayList<DBMolecule>( annotation.getDBMolecules() );
     }
+
     public boolean hasValuesEqualTo( BaseObject obj ) {
+        
         if( !super.hasValuesEqualTo(obj) ) {
             return false;
         }
@@ -38,18 +47,21 @@ public abstract class Annotation extends BaseObject {
         return objectsInHasSameValues( annotation.getDBMolecules(), 
                                        dBMolecules );
     }
+
     /**
      * @return
      */
     public List<DBMolecule> getDBMolecules() {
         return dBMolecules;
     }
+
     /**
      * @param dBMolecules the dBMolecules to set
      */
     public void setDBMolecules(List<DBMolecule> dBMolecules) {
         this.dBMolecules = dBMolecules;
     }
+
     /**
      * @param dBMolecule
      */
@@ -57,9 +69,11 @@ public abstract class Annotation extends BaseObject {
         dBMolecules.add(dBMolecule);
         if ( dBMolecule != null && 
              !dBMolecule.getAnnotations().contains( this ) ) {
+            
             dBMolecule.addAnnotation(this);
         }
     }
+
     /**
      * Removes this annotation from a molecule
      * 
@@ -71,9 +85,11 @@ public abstract class Annotation extends BaseObject {
             dBMolecule.getAnnotations().remove( this );
         }
     }
+
     /**
      * @return the Annotations property
      */
     public abstract Property getProperty();
+
     public abstract Object getValue();
 }

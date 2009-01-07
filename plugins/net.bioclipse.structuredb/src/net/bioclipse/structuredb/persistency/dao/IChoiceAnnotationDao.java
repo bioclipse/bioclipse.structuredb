@@ -9,7 +9,11 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
+
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
+
+
 public interface IChoiceAnnotationDao 
        extends IGenericDao<ChoiceAnnotation> {
+
 }

@@ -10,9 +10,12 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
+
 import net.bioclipse.structuredb.domain.ChoiceProperty;
 import net.bioclipse.structuredb.domain.PropertyChoice;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
+
+
 /**
  * @author jonalv
  *
@@ -20,10 +23,13 @@ import net.bioclipse.structuredb.domain.RealNumberProperty;
 public class ChoicePropertyDao
        extends GenericDao<ChoiceProperty> 
        implements IChoicePropertyDao {
+
     private IPropertyChoiceDao propertyChoiceDao;
+    
     public ChoicePropertyDao() {
         super( ChoiceProperty.class );
     }
+    
     private void persistRelatedPropertyChoices( ChoiceProperty property ) {
         for ( PropertyChoice p : property.getPropertyChoices() ) {
             PropertyChoice loaded = propertyChoiceDao.getById( p.getId() );
@@ -35,6 +41,7 @@ public class ChoicePropertyDao
             }
         }
     }
+    
     @Override
     public void insert(ChoiceProperty property) {
         getSqlMapClientTemplate().update( "BaseObject.insert", 
@@ -43,6 +50,7 @@ public class ChoicePropertyDao
                                           property );
         persistRelatedPropertyChoices( property );
     }
+    
     @Override
     public void update(ChoiceProperty property) {
         getSqlMapClientTemplate().update( "BaseObject.update", 
@@ -51,13 +59,19 @@ public class ChoicePropertyDao
                                           property );
         persistRelatedPropertyChoices( property );
     }
+
     public void setPropertyChoiceDao( IPropertyChoiceDao propertyChoiceDao ) {
+
         this.propertyChoiceDao = propertyChoiceDao;
     }
+
     public IPropertyChoiceDao getPropertyChoiceDao() {
+
         return propertyChoiceDao;
     }
+
     public ChoiceProperty getByName( String name ) {
+
         return (ChoiceProperty)getSqlMapClientTemplate().queryForObject( 
                "ChoiceProperty.getByName", name );
     }    

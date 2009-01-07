@@ -9,9 +9,12 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+
 @RunWith(value=Suite.class)
 @SuiteClasses( value = { BaseObjectTest.class,
                          LabelTest.class,
@@ -25,4 +28,5 @@ import org.junit.runners.Suite.SuiteClasses;
                          TextPropertyTest.class,
                          PropertyChoiceTest.class } )
 public class AllDomainTestsSuite {
+
 }

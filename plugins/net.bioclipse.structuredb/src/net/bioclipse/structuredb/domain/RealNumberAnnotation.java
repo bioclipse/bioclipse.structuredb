@@ -10,28 +10,36 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
+
+
 /**
  * @author jonalv
  *
  */
 public class RealNumberAnnotation extends Annotation {
+
     private double value;
     private RealNumberProperty property;
+    
     public RealNumberAnnotation() {
         super();
         this.setProperty( new RealNumberProperty() );
     }
+
     public RealNumberAnnotation(double value, RealNumberProperty property) {
         super();
         this.setValue( value );
         this.setProperty( property );
     }
+
     public RealNumberAnnotation( RealNumberAnnotation realNumberAnnotation ) {
         super( realNumberAnnotation );
         this.setValue( realNumberAnnotation.getValue() );
         this.setProperty( realNumberAnnotation.getProperty() );
     }
+
     public boolean hasValuesEqualTo( BaseObject obj ) {
+        
         if ( !super.hasValuesEqualTo(obj) ) {
             return false;
         }
@@ -42,21 +50,26 @@ public class RealNumberAnnotation extends Annotation {
         return Double.compare( getValue(), annotation.getValue() ) == 0 &&
                property.hasValuesEqualTo( annotation.getProperty() );
     }
+
     public Double getValue() {
         return value;
     }
+
     public void setProperty( RealNumberProperty property ) {
         this.property = property;
         if ( !property.getAnnotations().contains( this ) ) {
             property.addAnnotation( this );
         }
     }
+
     public RealNumberProperty getProperty() {
         return property;
     }
+
     public void setValue( double value ) {
         this.value = value;
     }
+
     @Override
     public String getSortOf() {
         return "RealNumber";

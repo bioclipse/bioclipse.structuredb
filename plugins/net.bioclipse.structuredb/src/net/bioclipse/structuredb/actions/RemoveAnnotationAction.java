@@ -10,11 +10,14 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.actions;
+
 import java.util.Iterator;
+
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Database;
 import net.bioclipse.structuredb.Label;
 import net.bioclipse.structuredb.business.IStructuredbManager;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -26,18 +29,24 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
+
+
 /**
  * @author jonalv
  *
  */
 public class RemoveAnnotationAction extends ActionDelegate {
+
     private ISelection selection;
+
     @SuppressWarnings("unchecked")
     @Override
     public void run(IAction action) {
+        
         IStructuredbManager manager = Activator
                                       .getDefault()
                                       .getStructuredbManager();
+        
         if ( selection instanceof IStructuredSelection ) {
             IStructuredSelection ss = (IStructuredSelection) selection;
             Iterator i = ss.iterator();
@@ -45,8 +54,10 @@ public class RemoveAnnotationAction extends ActionDelegate {
                 Object o = i.next();
                 if (o instanceof Label) {
                     Label m = (Label)o;
+                    
                     net.bioclipse.structuredb.domain.Annotation annotation 
                         = m.getAnnotation();
+                        
                     MessageBox messageBox 
                         = new MessageBox( 
                                   PlatformUI.getWorkbench()
@@ -64,6 +75,7 @@ public class RemoveAnnotationAction extends ActionDelegate {
                     int response = messageBox.open();
                     if (response == SWT.CANCEL)
                       return;
+                    
                     if (response == SWT.YES) {
                         deleteWithStructures(m.getParent().getName(), 
                                              annotation);
@@ -77,9 +89,11 @@ public class RemoveAnnotationAction extends ActionDelegate {
             }
         }
     }
+    
     private void deleteWithStructures(
         final String name, 
         final net.bioclipse.structuredb.domain.Annotation annotation ) {
+
         Job job = new Job("Delete Annotation and Structures") {
             @Override
             protected IStatus run( IProgressMonitor monitor ) {
@@ -94,6 +108,7 @@ public class RemoveAnnotationAction extends ActionDelegate {
         job.setUser( true );
         job.schedule();
     }
+        
     @Override
     public void selectionChanged( IAction action, 
                                   ISelection selection ) {

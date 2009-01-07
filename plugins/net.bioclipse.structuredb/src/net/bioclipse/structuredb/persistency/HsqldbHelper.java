@@ -10,10 +10,12 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency;
+
 /**
  * @author jonalv
  */
 public class HsqldbHelper {
+
     public static byte[] bitAnd( byte[] a, byte[] b ) {
         byte[] result = new byte[a.length];
         for ( int i = 0; i < result.length; i++ ) {

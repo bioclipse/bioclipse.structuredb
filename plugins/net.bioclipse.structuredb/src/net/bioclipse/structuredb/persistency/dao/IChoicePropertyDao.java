@@ -10,13 +10,18 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
+
 import net.bioclipse.structuredb.domain.ChoiceProperty;
 import net.bioclipse.structuredb.domain.Property;
+
+
 /**
  * @author jonalv
  *
  */
 public interface IChoicePropertyDao 
        extends IGenericDao<ChoiceProperty> {
+
     public ChoiceProperty getByName( String propertyName );
+
 }

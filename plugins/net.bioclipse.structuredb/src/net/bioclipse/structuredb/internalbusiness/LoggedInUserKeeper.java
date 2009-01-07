@@ -9,19 +9,24 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
+
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.usermanager.UserManagerEvent;
 import net.bioclipse.usermanager.business.IUserManager;
+
 /**
  * @author jonalv
  *
  */
 public class LoggedInUserKeeper implements ILoggedInUserKeeper {
+
     private User         loggedInUser;
     private IUserManager userManager;
+    
     public User getLoggedInUser() {
         return loggedInUser;
     }
+
     public void receiveUserManagerEvent(UserManagerEvent event) {
         //TODO: implement receiveUserManagerEvent (need to do 
         //      the strucutredb 
@@ -40,6 +45,7 @@ public class LoggedInUserKeeper implements ILoggedInUserKeeper {
 //            break;
 //        }
     }
+    
     /**
      * method used for testing purposes
      * 
@@ -48,6 +54,7 @@ public class LoggedInUserKeeper implements ILoggedInUserKeeper {
     public void setLoggedInUser( User loggedInUser ) {
         this.loggedInUser = loggedInUser;
     }
+    
     public void setUserManager( IUserManager userManager ) {
         this.userManager = userManager;
         userManager.addListener(this);

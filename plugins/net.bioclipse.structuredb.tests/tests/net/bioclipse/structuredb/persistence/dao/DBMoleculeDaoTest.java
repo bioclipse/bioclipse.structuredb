@@ -9,10 +9,12 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
 import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.core.business.BioclipseException;
@@ -24,21 +26,28 @@ import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
 import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
 import net.bioclipse.structuredb.persistency.dao.ITextAnnotationDao;
+
 import org.openscience.cdk.exception.CDKException;
+
 import testData.TestData;
+
 /**
  * @author jonalv
  *
  */
 public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
+
     private DBMolecule molecule1;
     private DBMolecule molecule2;
     private List<DBMolecule> dBMolecules;
+
     public DBMoleculeDaoTest() {
         super(DBMolecule.class);
     }
+    
     @Override
     public void onSetUpInTransaction() throws Exception {
+    
         super.onSetUpInTransaction();
         molecule1 = new DBMolecule( "CycloOctan",
                                     TestData
@@ -50,21 +59,26 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         addCreatorAndEditor(molecule2);
         dao.insert(molecule1);
         dao.insert(molecule2);
+        
         dBMolecules = new ArrayList<DBMolecule>() {{
             add(molecule1);
             add(molecule2);
         }};
     }
+    
     public void testPersistDBMoleculeWithAnnotation() {
+        
         TextAnnotation annotation = new TextAnnotation();
         ITextAnnotationDao textAnnotationDao 
             = (ITextAnnotationDao) applicationContext.getBean("textAnnotationDao");
         addCreatorAndEditor(annotation);
         textAnnotationDao.insert(annotation);
+        
         DBMolecule dBMolecule = new DBMolecule();
         dBMolecule.addAnnotation(annotation);
         addCreatorAndEditor(dBMolecule);
         dao.insert(dBMolecule);
+        
         DBMolecule loaded = dao.getById( dBMolecule.getId() );
         assertNotNull("The lodaded object should not be null", loaded);
         assertNotSame(dBMolecule, loaded);
@@ -72,17 +86,22 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         assertTrue( "Should contain the annotation",
                     loaded.getAnnotations().contains(annotation) );
     }
+
     public void testPersistDBMoleculeWithAnnotationId() {
+        
         TextAnnotation annotation = new TextAnnotation();
         ITextAnnotationDao textAnnotationDao 
             = (ITextAnnotationDao) 
               applicationContext.getBean("textAnnotationDao");
         addCreatorAndEditor(annotation);
         textAnnotationDao.insert(annotation);
+        
         DBMolecule dBMolecule = new DBMolecule();
+
         addCreatorAndEditor(dBMolecule);
         ((IDBMoleculeDao)dao).insertWithAnnotation( dBMolecule, 
                                                     annotation.getId() );
+        
         DBMolecule loaded = dao.getById( dBMolecule.getId() );
         assertNotNull("The lodaded object should not be null", loaded);
         assertNotSame(dBMolecule, loaded);
@@ -90,27 +109,35 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         assertTrue( "Should contain the annotation", 
                     loaded.getAnnotations().contains(annotation) );
     }
+    
     @Override
     public void testUpdate() {
         super.testUpdate();
+        
         TextAnnotation annotation = new TextAnnotation();
         ITextAnnotationDao textAnnotationDao 
             = (ITextAnnotationDao) 
               applicationContext.getBean("textAnnotationDao");
         addCreatorAndEditor(annotation);
         textAnnotationDao.insert(annotation);
+        
         DBMolecule dBMolecule = new DBMolecule();
         dBMolecule.addAnnotation(annotation);
         addCreatorAndEditor(dBMolecule);
         dao.insert(dBMolecule);
+        
         DBMolecule loaded = dao.getById( dBMolecule.getId() );
         dBMolecule.setName("edited");
         dao.update(dBMolecule);
         DBMolecule updated = dao.getById( dBMolecule.getId() );
         assertTrue( dBMolecule.hasValuesEqualTo(updated) );
     }
+    
     public void testGetByName() throws CDKException {
+
+        
         assertTrue( dao.getAll().containsAll(dBMolecules) );
+        
         List<DBMolecule> saved = ( (IDBMoleculeDao)dao ).getByName(
                                   molecule1.getName() );
         assertTrue(  saved.contains(molecule1) );
@@ -120,6 +147,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         assertTrue( saved.get(0).getFingerPrint()
                                 .equals( molecule1.getFingerPrint() ) );
     }
+    
     public void testAllStructureIterator() {
         List<DBMolecule> dBMolecules = new ArrayList<DBMolecule>() {
             {
@@ -139,10 +167,13 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         }
         assertEquals( 4, numberof );
     }
+    
     public void testNumberOfStructures() {
         assertEquals( 4, ((IDBMoleculeDao)dao).numberOfStructures() );
     }
+    
     public void testFingerPrintSearch() {
+        
         Iterator<DBMolecule> iterator
             = ( (IDBMoleculeDao)dao ).fingerPrintSubsetSearch( 
               ((DBMolecule)molecule1).getPersistedFingerprint() );
@@ -159,6 +190,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         assertTrue(  foundObject1 );
         assertFalse( foundObject2 );
     }
+    
     public void testGetAnnotations() {
         TextAnnotation annotation       = new TextAnnotation();
         TextAnnotation unusedAnnotation = new TextAnnotation();
@@ -167,12 +199,14 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
               applicationContext.getBean("textAnnotationDao");
         textAnnotationDao.insert( annotation );
         textAnnotationDao.insert( unusedAnnotation );
+        
         molecule1.addAnnotation( annotation );
         dao.update( molecule1 );
         DBMolecule loaded = dao.getById( molecule1.getId() );
         assertEquals( 1, loaded.getAnnotations().size() );
         assertEquals( annotation, molecule1.getAnnotations().get( 0 ) );
     }
+    
     public void testGetMoleculeAtIndexInParamater() throws BioclipseException {
         TextAnnotation annotation 
             = new TextAnnotation( "test", new TextProperty("label") );
@@ -191,6 +225,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
                                                        cdk.fromSMILES( s ) ), 
                                        annotation.getId() );
         }
+
         for ( int i = 0 ; i < SMILES.size() ; i++ ) {
             assertTrue( 
                 SMILES.contains( 
@@ -198,6 +233,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
                                  .getSMILES() ) );
         }
     }
+
     public void testGetNumberOfMoleculesWithLabel() {
         TextAnnotation annotation 
             = new TextAnnotation( "test", new TextProperty("label") );
@@ -211,13 +247,17 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
                           annotation ) );
         object1.addAnnotation( annotation );
         object2.addAnnotation( annotation );
+        
         IStructuredbInstanceManager manager 
             = (IStructuredbInstanceManager) 
               applicationContext.getBean("structuredbInstanceManager");
+        
         manager.update( annotation );
+        
         assertEquals( 2, 
                       textAnnotationDao.getById( annotation.getId() )
                                        .getDBMolecules().size() );
+        
         assertEquals( 2, 
                       dbMoleculeDao.getNumberOfMoleculesWithLabel( 
                           annotation ) );

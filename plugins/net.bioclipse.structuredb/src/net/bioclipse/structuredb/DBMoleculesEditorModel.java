@@ -10,7 +10,9 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb;
+
 import java.util.List;
+
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.cdk.domain.SDFElement;
 import net.bioclipse.cdk.ui.views.IMoleculesEditorModel;
@@ -18,32 +20,38 @@ import net.bioclipse.structuredb.business.IStructuredbManager;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
+
 /*
  * TODO: This implementation loads all molecules from the database 
  * directly and saves all molecules back. There is very much room for 
  * optimisation by only loading the needed molecules and only saving the 
  * edited ones.  
  */
+
 /**
  * @author jonalv
  *
  */
 public class DBMoleculesEditorModel implements IMoleculesEditorModel {
+
     private IStructuredbManager structuredb = Activator
                                               .getDefault()
                                               .getStructuredbManager();
     private TextAnnotation annotation;
     private String databaseName;
+    
     public DBMoleculesEditorModel( String databaseName, 
                                    TextAnnotation annotation ) {
         this.annotation = annotation;
         this.databaseName = databaseName;
     }
+    
     public Object getMoleculeAt( int index ) {
         final DBMolecule mol= structuredb.moleculeAtIndexInLabel( databaseName, 
                                                                   index, 
                                                                   annotation );
         return new SDFElement(null,mol.getName(),-1,index) {
+            
             @Override
             public Object getAdapter( Class adapter ) {
                 if(adapter.equals( ICDKMolecule.class )) {
@@ -56,9 +64,11 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
             }
         };
     }
+
     public int getNumberOfMolecules() {
         return structuredb.numberOfMoleculesInLabel(databaseName, annotation);
     }
+
     public void save() {
         structuredb.save( databaseName, annotation );
     }

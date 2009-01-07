@@ -10,8 +10,10 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
+
 import java.util.Iterator;
 import java.util.List;
+
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.ChoiceProperty;
@@ -23,36 +25,43 @@ import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
 import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
+
 import org.eclipse.core.runtime.IProgressMonitor;
+
 /**
  * @author jonalv
  *
  */
 public interface IStructuredbInstanceManager {
+
     /**
      * Persists changes in a given user retrieved from the database.
      * 
      * @param user
      */
     public void update(User user);
+    
     /**
      * Persists changes in a given user retrieved from the database.
      * 
      * @param dBMolecule
      */
     public void update(DBMolecule dBMolecule);
+    
     /**
      * Insert a user into the database
      * 
      * @param user to be inserted
      */
     public void insertUser( User user );
+    
     /**
      * Insert a structure into the database
      * 
      * @param dBMolecule to be inserted
      */
     public void insertMolecule( DBMolecule dBMolecule ); 
+    
     /**
      * Removes the given library from the database. 
      * Doesn't delete any structures.
@@ -60,30 +69,36 @@ public interface IStructuredbInstanceManager {
      * @param annotation
      */
     public void delete(Annotation annotation);
+    
     /**
      * Removes the given user from the database
      * 
      * @param user
      */
     public void delete(User user);
+    
     /**
      * Removes the given DBMolecule from the database
      * 
      * @param dBMolecule
      */
     public void delete(DBMolecule dBMolecule);
+    
     /**
      * @return all structures
      */
     public List<DBMolecule> retrieveAllMolecules();
+    
     /**
      * @return all libraries
      */
     public List<Annotation> retrieveAllAnnotations();
+    
     /**
      * @return all users
      */
     public List<User> retrieveAllUsers();
+    
     /**
      * Loads the user with the given username from the database
      * 
@@ -91,6 +106,7 @@ public interface IStructuredbInstanceManager {
      * @return a user or null if no such user exists
      */
     public User retrieveUserByUsername(String username);
+    
     /**
      * Loads all structures with a given name from the database
      * 
@@ -98,18 +114,22 @@ public interface IStructuredbInstanceManager {
      * @return all structures with the given name
      */
     public List<DBMolecule> retrieveStructureByName(String name);
+
     /**
      * @return the logged in user
      */
     public User getLoggedInUser();
+    
     /**
      * @param user to set as logged in
      */
     public void setLoggedInUser(User user);
+
     /**
      * @return iterator for all structures in the database
      */
     public Iterator<DBMolecule> allStructuresIterator();
+
     /**
      * Inserts structure in the folder with the given id
      * 
@@ -118,6 +138,7 @@ public interface IStructuredbInstanceManager {
      */
     public void insertMoleculeInAnnotation( DBMolecule s, 
                                              String folderId );
+
     /**
      * Returns an int representing the number of structures 
      * in the database
@@ -125,6 +146,7 @@ public interface IStructuredbInstanceManager {
      * @return
      */
     public int numberOfMolecules();
+
     /**
      * @param s
      * @return an iterator to the structures with a for substructure
@@ -132,12 +154,15 @@ public interface IStructuredbInstanceManager {
      */
     public Iterator<DBMolecule> fingerprintSubstructureSearchIterator(
         DBMolecule s );
+    
     /**
      * @param queryStructure
      * @return the number of structures in the databaes matching a 
      *         fingerprintsubstructure search
      */
     public int numberOfFingerprintMatches( DBMolecule queryStructure );
+
+    
     /**
      * Deletes the given label from the database
      * @param annotation
@@ -145,18 +170,22 @@ public interface IStructuredbInstanceManager {
      */
     public void deleteWithMolecules( Annotation annotation, 
                                       IProgressMonitor monitor );
+    
     /**
      * Insert textproperty into database
      * 
      * @param textProperty
      */
     public void insertTextProperty( TextProperty textProperty );
+
+    
     /**
      * Insert choiceProperty into database
      * 
      * @param choiceProperty
      */
     public void insertChoiceProperty( ChoiceProperty choiceProperty );
+
     /**
      * Insert realNumberProperty into database
      * 
@@ -164,12 +193,14 @@ public interface IStructuredbInstanceManager {
      */
     public void insertRealNumberProperty( 
         RealNumberProperty realNumberProperty );
+
     /**
      * Insert choiceAnnotation into database
      * 
      * @param choiceAnnotation
      */
     public void insertChoiceAnnotation( ChoiceAnnotation choiceAnnotation );
+
     /**
      * Insert realNumberAnnotation into database
      * 
@@ -177,59 +208,74 @@ public interface IStructuredbInstanceManager {
      */
     public void insertRealNumberAnnotation( 
         RealNumberAnnotation realNumberAnnotation );
+
     /**
      * Insert textAnnotation into database
      * 
      * @param textAnnotation
      */
     public void insertTextAnnotation( TextAnnotation textAnnotation );
+
     /**
      * Delete choiceProperty from the database
      * 
      * @param choiceProperty
      */
     public void delete( ChoiceProperty choiceProperty );
+
     /**
      * Delete realNumberProperty from the database
      * 
      * @param realNumberProperty
      */
     public void delete( RealNumberProperty realNumberProperty );
+
     /**
      * Delete textProperty from database
      * 
      * @param textProperty
      */
     public void delete( TextProperty textProperty );
+
     /**
      * Update textProperty in Database
      * 
      * @param choiceProperty
      */
     public void update( ChoiceProperty choiceProperty );
+
     /**
      * Update realNumberProperty in database
      * 
      * @param realNumberProperty
      */
     public void update( RealNumberProperty realNumberProperty );
+
     /**
      * Update textProperty in database
      * 
      * @param textProperty
      */
     public void update( TextProperty textProperty );
+
+    
     /**
      * Update choiceAnnotation in database
      * 
      * @param choiceAnnotation
      */
     public void update( ChoiceAnnotation choiceAnnotation );
+
     public void update( RealNumberAnnotation realNumberAnnotation );
+
     public void update( TextAnnotation textAnnotation );
+
     public Property retrievePropertyByName( String propertyName );
+
     public List<TextAnnotation> allLabels();
+
     public DBMolecule moleculeAtIndexInLabel( int index, 
                                               TextAnnotation annotation );
+
     public int numberOfMoleculesInLabel( TextAnnotation annotation );
 }

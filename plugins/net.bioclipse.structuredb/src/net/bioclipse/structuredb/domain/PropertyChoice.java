@@ -9,21 +9,29 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
+
+
 public class PropertyChoice extends BaseObject {
+
     private String value;
     private ChoiceProperty property;
+    
     public PropertyChoice() {
         this("");
     }
+
     public PropertyChoice(String value) {
         super();
         this.value = value;
     }
+
     public PropertyChoice(PropertyChoice propertyChoice) {
         super(propertyChoice);
         this.value = propertyChoice.value;
     }
+
     public boolean hasValuesEqualTo( BaseObject obj ) {
+        
         if( !super.hasValuesEqualTo(obj) ) {
             return false;
         }
@@ -32,15 +40,19 @@ public class PropertyChoice extends BaseObject {
         }
         return ((PropertyChoice)obj).getValue().equals(value);
     }
+
     public String getValue() {
         return value;
     }
+    
     public void setValue(String value) {
         this.value = value;
     }
+
     public ChoiceProperty getProperty() {
         return this.property;
     }
+
     public void setProperty( ChoiceProperty choiceProperty ) {
         this.property = choiceProperty;
         if ( !choiceProperty.getPropertyChoices().contains( this ) ) {

@@ -8,7 +8,9 @@
  * Contributors:
  *     
  *******************************************************************************/
+
 package net.bioclipse.hsqldb;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,26 +22,33 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import net.bioclipse.core.util.LogUtils;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.hsqldb.Server;
 import org.hsqldb.ServerConstants;
+
 /**
  * @author jonalv
  *
  */
 public class HsqldbUtil {
+
     private static final Logger logger = Logger.getLogger(HsqldbUtil.class);
     private File fileFolder;
     private Set<String> urls = new HashSet<String>();
     private static final HsqldbUtil INSTANCE = new HsqldbUtil();
+    
     private HsqldbUtil() {
+        
         try {
             Class.forName("org.hsqldb.jdbcDriver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+        
         String path;
         try {
              path = ResourcesPlugin.getWorkspace()
@@ -61,9 +70,11 @@ public class HsqldbUtil {
                       + " for storing databasefile");
         fileFolder = f;
     }
+    
     public static HsqldbUtil getInstance() {
         return INSTANCE;
     }
+    
     /**
      * Returns the url to connect to the database identified with the given 
      * name with
@@ -79,15 +90,18 @@ public class HsqldbUtil {
         logger.debug("Connection URL: " + url + " returned");
         return url;
     }
+    
     private String buildUrl( String name ) {
         return "jdbc:hsqldb:file:" + fileFolder + File.separator + name;
     }
+
     /**
      * Stops the Hsqldb-server
      * 
      * @throws ClassNotFoundException
      */
     public void stopAllDatabaseInstances() {
+
         try {
             Class.forName("org.hsqldb.jdbcDriver");
         } catch (ClassNotFoundException e1) {
@@ -97,6 +111,7 @@ public class HsqldbUtil {
         for(String url : urls) {
             try {
                 Connection con = DriverManager.getConnection(url);
+            
                 Statement stmt = con.createStatement();
                 stmt.executeUpdate("SHUTDOWN");
                 stmt.close();
@@ -110,24 +125,30 @@ public class HsqldbUtil {
         }
         urls.clear();
     }
+
     public File getDatabaseFilesDirectory() {
         return fileFolder;
     }
+
     public void remove( String databaseName ) {
+        
         File[] files = fileFolder.listFiles(); 
         if ( files == null ) {
            logger.error( fileFolder + " doesn't seem to be a directory" );
            return;
         }
+        
         try {
             Class.forName("org.hsqldb.jdbcDriver");
         } 
         catch (ClassNotFoundException e1) {
             throw new RuntimeException(e1);
         }
+        
         String url = buildUrl( databaseName );
         try {
             Connection con = DriverManager.getConnection(url);
+        
             Statement stmt = con.createStatement();
             String statement = "SHUTDOWN";
             stmt.executeUpdate( statement );
@@ -140,6 +161,7 @@ public class HsqldbUtil {
                     "Could not perform shutdown statement", e);
         }
         urls.remove( url );
+        
         for ( File f : files ) {
             if( f.getName().contains( databaseName ) ) {
                 f.delete();

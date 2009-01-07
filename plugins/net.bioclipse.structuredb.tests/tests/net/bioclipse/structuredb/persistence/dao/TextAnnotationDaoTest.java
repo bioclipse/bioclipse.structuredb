@@ -10,30 +10,37 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
+
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
 import net.bioclipse.structuredb.persistency.dao.ITextAnnotationDao;
+
+
 /**
  * @author jonalv
  *
  */
 public class TextAnnotationDaoTest 
              extends AnnotationDaoTest<TextAnnotation> {
+
     public TextAnnotationDaoTest() {
         super(TextAnnotation.class);
     }
+
     public void testWithTextProperty() {
         TextProperty property = new TextProperty();
         object1.setProperty( property );
         dao.update( object1 );
         TextAnnotation loaded = dao.getById( object1.getId() );
         assertTrue( object1.hasValuesEqualTo(loaded) );
+        
         TextAnnotation newAnnotation = new TextAnnotation();
         newAnnotation.setProperty( property );
         dao.insert( newAnnotation );
         loaded = dao.getById( newAnnotation.getId() );
         assertTrue( newAnnotation.hasValuesEqualTo( loaded ) );
     }
+    
     public void testGetAllLabels() {
         TextAnnotation a = new TextAnnotation( "label", 
                                                new TextProperty("label") );
@@ -41,6 +48,7 @@ public class TextAnnotationDaoTest
                                                new TextProperty("not label") );
         dao.insert( a );
         dao.insert( b );
+        
         ITextAnnotationDao textAnnotationDao = (ITextAnnotationDao)dao;
         assertTrue( textAnnotationDao.getAllLabels().contains( a ) );
         assertFalse( textAnnotationDao.getAllLabels().contains( b ) );

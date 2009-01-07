@@ -9,12 +9,16 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+
 @RunWith(value=Suite.class)
 @SuiteClasses( value = { StructuredbManagerTest.class,
                          BioclipseManagerTests.class,
                          CoverageTest.class } )
 public class BusinessTestsSuite {
+
 }

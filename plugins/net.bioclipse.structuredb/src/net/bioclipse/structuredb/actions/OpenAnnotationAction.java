@@ -11,7 +11,9 @@
  *     
  *******************************************************************************/
 package net.bioclipse.structuredb.actions;
+
 import net.bioclipse.structuredb.Label;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -20,17 +22,23 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
+
 public class OpenAnnotationAction extends ActionDelegate {
     Logger logger = Logger.getLogger(OpenAnnotationAction.class );
     private ISelection selection;
+
     @Override
     public void run( IAction action ) {   
+
         if ( selection instanceof IStructuredSelection ) {
+
             IWorkbenchPage wPage = PlatformUI.getWorkbench()
                                              .getActiveWorkbenchWindow()
                                              .getActivePage();
+            
             for ( Object element : 
                   ( (IStructuredSelection) selection ).toArray() ) {
+                
                 if (element instanceof Label) {
                     try {
                         wPage.openEditor( 
@@ -45,6 +53,7 @@ public class OpenAnnotationAction extends ActionDelegate {
             }
         }
     }
+    
     @Override
     public void selectionChanged( IAction action, 
                                   ISelection selection ) {
