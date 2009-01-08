@@ -233,6 +233,10 @@ public class BaseObject implements IBioObject, Comparable {
         // TODO Auto-generated method stub
         return null;
     }
+    
+    public void setResource(IResource resource) {
+    	//Do nothing as resource is not used
+	}
 
     public String getUID() {
         return getId();
