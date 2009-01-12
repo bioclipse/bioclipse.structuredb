@@ -236,10 +236,6 @@ public class BaseObject implements IBioObject, Comparable {
     public void setResource( IResource resource ) {
         throw new UnsupportedOperationException();
     }
-    
-    public void setResource(IResource resource) {
-    	//Do nothing as resource is not used
-	}
 
     public String getUID() {
         return getId();
