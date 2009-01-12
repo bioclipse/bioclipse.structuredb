@@ -230,8 +230,11 @@ public class BaseObject implements IBioObject, Comparable {
     }
 
     public IResource getResource() {
-        // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException();
+    }
+    
+    public void setResource( IResource resource ) {
+        throw new UnsupportedOperationException();
     }
     
     public void setResource(IResource resource) {
@@ -259,4 +262,6 @@ public class BaseObject implements IBioObject, Comparable {
         }
         return this.id.compareTo( ( (BaseObject)o ).getId() );
     }
+
+
 }
