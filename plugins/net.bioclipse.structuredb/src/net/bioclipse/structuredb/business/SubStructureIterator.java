@@ -33,17 +33,21 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
     private ICDKMolecule subStructure;
     private IStructuredbManager structuredb;
     private IProgressMonitor monitor;
+    private int ticks;
+    private int currentTick = 0;
 
     public SubStructureIterator( Iterator<DBMolecule> iterator, 
                                  ICDKManager cdk,
                                  ICDKMolecule subStructure,
                                  IStructuredbManager structuredb, 
-                                 IProgressMonitor monitor ) {
+                                 IProgressMonitor monitor,
+                                 int ticks) {
         parent   = iterator;
         this.cdk = cdk;
         this.subStructure = subStructure;
         this.structuredb = structuredb;
         this.monitor = monitor;
+        this.ticks = ticks;
     }
 
     public boolean hasNext() {
@@ -65,7 +69,12 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
         while( parent.hasNext() ) {
             DBMolecule next = parent.next();
             if(monitor != null) {
-                monitor.worked( 1 );
+                
+                monitor.worked( currentTick ++ );
+                String s = "Substructure search " 
+                           + (int)( 100*(currentTick*1.0)/ticks ) + "%";
+                monitor.subTask(s);
+                System.out.println(s);
             }
             if( cdk.subStructureMatches( next, subStructure ) ) {
                 return next;

@@ -54,6 +54,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.openscience.cdk.CDKConstants;
 import org.springframework.context.ApplicationContext;
@@ -429,11 +430,12 @@ public class StructuredbManager implements IStructuredbManager {
         }
         DBMolecule queryStructure 
             = new DBMolecule( "", (ICDKMolecule)queryMolecule );
+        int ticks = internalManagers.get( databaseName )
+                                    .numberOfFingerprintMatches( 
+                                        queryStructure );
         if (monitor != null) {
             monitor.beginTask( "substructure search", 
-                               internalManagers.get( databaseName )
-                                   .numberOfFingerprintMatches(
-                                            queryStructure) );
+                                ticks );
         }
          
         return new SubStructureIterator( 
@@ -443,7 +445,8 @@ public class StructuredbManager implements IStructuredbManager {
             cdk,
             (ICDKMolecule)queryMolecule, 
             this, 
-            monitor );
+            monitor,
+            ticks );
    }
     
     public Iterator<DBMolecule> subStructureSearchIterator(
@@ -476,6 +479,9 @@ public class StructuredbManager implements IStructuredbManager {
                                           monitor );
         while ( iterator.hasNext() ) {
             dBMolecules.add( iterator.next() );
+            if ( monitor.isCanceled() ) {
+                throw new OperationCanceledException();
+            }
         }
         return dBMolecules;
     }

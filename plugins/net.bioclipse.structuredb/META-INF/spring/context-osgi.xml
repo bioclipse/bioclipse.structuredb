@@ -21,6 +21,9 @@
                   
     <osgi:reference id="createJobAdvice"
                     interface="net.bioclipse.ui.jobs.ICreateJobAdvice" />
+                    
+  <osgi:reference id="JSJobCreatorAdvice" 
+                  interface="net.bioclipse.scripting.business.IJSJobCreatorAdvice"/>
 
   <bean id="recordingAdvisor"
         class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
@@ -57,6 +60,7 @@
     <property name="interceptorNames">
         <list>
             <value>fixClassLoaderAdvice</value>
+            <value>JSJobCreatorAdvice</value>
         </list>
     </property>
   </bean>
