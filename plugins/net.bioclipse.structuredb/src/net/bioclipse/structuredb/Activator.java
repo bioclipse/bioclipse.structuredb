@@ -13,6 +13,7 @@
 package net.bioclipse.structuredb;
 
 import net.bioclipse.core.util.LogUtils;
+import net.bioclipse.structuredb.business.IJSStructuredbManager;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 
 import org.apache.log4j.Logger;
@@ -35,6 +36,7 @@ public class Activator extends AbstractUIPlugin {
     private static Activator plugin;
     
     private ServiceTracker finderTracker;
+    private ServiceTracker jsFinderTracker;
 
     /**
      * The constructor
@@ -51,6 +53,11 @@ public class Activator extends AbstractUIPlugin {
                                                 .getName(), 
                                             null );
         finderTracker.open();
+        jsFinderTracker = new ServiceTracker( context,
+                                            IJSStructuredbManager.class
+                                                                 .getName(),
+                                            null );
+        jsFinderTracker.open();
     }
 
     public void stop(BundleContext context) throws Exception {
@@ -86,6 +93,22 @@ public class Activator extends AbstractUIPlugin {
         catch (InterruptedException e) {
             logger.warn("Exception occurred while attempting " +
             		    "to get the StructuredbManager" + e);
+            LogUtils.debugTrace(logger, e);
+        }
+        if (manager == null) {
+            throw new IllegalStateException("Could not get the structuredb manager");
+        }
+        return manager;
+    }
+    
+    public IJSStructuredbManager getJSStructuredbManager() {
+        IJSStructuredbManager manager = null;
+        try {
+            manager = (IJSStructuredbManager) jsFinderTracker.waitForService(1000*30);
+        } 
+        catch (InterruptedException e) {
+            logger.warn("Exception occurred while attempting " +
+                    "to get the JSStructuredbManager");
             LogUtils.debugTrace(logger, e);
         }
         if (manager == null) {

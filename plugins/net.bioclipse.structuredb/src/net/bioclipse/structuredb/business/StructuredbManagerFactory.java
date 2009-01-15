@@ -37,15 +37,12 @@ public class StructuredbManagerFactory
                                        Object data ) 
                 throws CoreException {
     
-        logger.debug("StructuredbManagerFactory.setInitializationData");
-        
         structuredbManager = Activator.getDefault()
-                                      .getStructuredbManager();
+                                      .getJSStructuredbManager();
     }
 
     public Object create() throws CoreException {
         
-        logger.debug("StructuredbManagerFactory.create");
         return structuredbManager;
     }
 }
