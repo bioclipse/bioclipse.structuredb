@@ -53,31 +53,20 @@ public class Database extends AbstractServiceContainer
                 if (selection instanceof IFile) {
                     final IFile file = (IFile)selection;
                     final String dbName = getName();
-                    Job job = new Job("Add structures from SDF") {
-                        @Override
-                        protected IStatus run( IProgressMonitor monitor ) {
-                            try {
-                                Activator.getDefault()
-                                         .getStructuredbManager()
-                                         .addMoleculesFromSDF( dbName, 
-                                                                file,
-                                                                monitor );
-                            } catch ( BioclipseException e ) {
-                                LogUtils.debugTrace( logger, e );
-                                MessageDialog.openError( PlatformUI
-                                                         .getWorkbench()
-                                                         .getActiveWorkbenchWindow()
-                                                         .getShell(),
-                                                         "Could not import moleculs",
-                                                         "More information can be found in the log file" ); 
-                            }
-                            return Status.OK_STATUS;
-                        }
-                    };
-                    job.setUser( true );
-                    job.schedule();
+                    try {
+                        Activator.getDefault().getStructuredbManager()
+                                              .addMoleculesFromSDF( dbName, 
+                                                                    file );
+                    } catch ( BioclipseException e ) {
+                        LogUtils.debugTrace( logger, e );
+                        MessageDialog.openError( PlatformUI
+                            .getWorkbench()
+                            .getActiveWorkbenchWindow()
+                            .getShell(),
+                            "Could not import moleculs",
+                            "More information can be found in the log file" ); 
+                    }
                 }
-                selection.toString();
             }
         }
         return false;
