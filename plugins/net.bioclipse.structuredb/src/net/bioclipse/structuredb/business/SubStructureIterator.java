@@ -74,7 +74,6 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
                 String s = "Substructure search " 
                            + (int)( 100*(currentTick*1.0)/ticks ) + "%";
                 monitor.subTask(s);
-                System.out.println(s);
             }
             if( cdk.subStructureMatches( next, subStructure ) ) {
                 return next;
