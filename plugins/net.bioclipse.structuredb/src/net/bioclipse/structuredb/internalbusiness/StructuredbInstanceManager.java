@@ -138,7 +138,7 @@ public class StructuredbInstanceManager
     }
 
     public void deleteWithMolecules( Annotation annotation, 
-                                      IProgressMonitor monitor ) {
+                                     IProgressMonitor monitor ) {
 
         int ticks = 1000;
         if(monitor == null) {
@@ -156,6 +156,7 @@ public class StructuredbInstanceManager
         for ( DBMolecule s : dBMolecules ) {
             dBMoleculeDao.delete( s.getId() );
             monitor.worked( tick );
+            monitor.subTask( "Deleted molecule:" + tick + "/" + molecules );
         }
         if ( annotation instanceof ChoiceAnnotation) {
             choiceAnnotationDao.delete( annotation.getId() );

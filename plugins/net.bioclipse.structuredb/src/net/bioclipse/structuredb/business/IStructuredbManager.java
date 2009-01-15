@@ -490,7 +490,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "molecules annotated with that " +
                        		           "annotation" )
     public void deleteWithMolecules( String databaseName, 
-                                      Annotation annotation );
+                                     Annotation annotation );
 
     /**
      * @param name
@@ -498,7 +498,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param monitor
      */
     public void deleteWithMolecules( String name, Annotation annotation,
-                                      IProgressMonitor monitor );
+                                     IProgressMonitor monitor );
 
     /**
      * @param databaseName
