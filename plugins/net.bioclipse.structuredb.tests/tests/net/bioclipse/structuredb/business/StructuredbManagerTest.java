@@ -389,7 +389,7 @@ public class StructuredbManagerTest
     public void testImportingSDFFile() throws BioclipseException, 
                                               FileNotFoundException {
         IFile file = new MockIFile( TestData.getTestSDFFilePath() );
-        manager.addStructuresFromSDF( database1, file );
+        manager.addMoleculesFromSDF( database1, file );
         boolean foundAnnotation = false;
         for ( Annotation annotation : manager.allAnnotations( database1 ) ) {
             if ( annotation instanceof TextAnnotation ) {

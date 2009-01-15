@@ -280,8 +280,8 @@ public interface IStructuredbManager extends IBioclipseManager {
                                        "annotated with file_origin" )
     @Job
     @TestMethods("testAddMoleculesFromSDF")
-    public void addMoleculeFromSDF( String databaseName, 
-                                    String filePath ) 
+    public void addMoleculesFromSDF( String databaseName, 
+                                     String filePath ) 
                 throws BioclipseException;
 
     /**
@@ -505,7 +505,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param file
      * @throws BioclipseException 
      */
-    public void addStructuresFromSDF( String databaseName, IFile file ) 
+    public void addMoleculesFromSDF( String databaseName, IFile file ) 
                 throws BioclipseException;
 
     /**

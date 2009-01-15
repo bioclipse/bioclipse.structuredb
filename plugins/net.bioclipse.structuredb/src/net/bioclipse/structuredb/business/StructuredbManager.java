@@ -326,6 +326,8 @@ public class StructuredbManager implements IStructuredbManager {
               / ( entries != 0 ? entries : 1 ); 
          
         monitor.worked( firstTaskTicks );
+        monitor.subTask( "Importing structure: " 
+                         + firstTaskTicks + "/" + entries );
         // now really read the structures
         
         Iterator<ICDKMolecule> iterator;
@@ -411,7 +413,7 @@ public class StructuredbManager implements IStructuredbManager {
         return dBMolecules;
     }
 
-    public void addMoleculeFromSDF( String databaseName, 
+    public void addMoleculesFromSDF( String databaseName, 
                                     String filePath )
                 throws BioclipseException {
 
@@ -610,7 +612,7 @@ public class StructuredbManager implements IStructuredbManager {
         fireAnnotationsChanged();
     }
 
-    public void addStructuresFromSDF( String databaseName, IFile file ) 
+    public void addMoleculesFromSDF( String databaseName, IFile file ) 
                 throws BioclipseException {
 
         addMoleculesFromSDF( databaseName, 
