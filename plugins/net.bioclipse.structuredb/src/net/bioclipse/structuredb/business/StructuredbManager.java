@@ -377,17 +377,6 @@ public class StructuredbManager implements IStructuredbManager {
         monitor.done();
         fireAnnotationsChanged();        
     }
-    
-    public void addMoleculesFromSDF( String databaseName,
-                                     String filePath,
-                                     IProgressMonitor monitor )
-                throws BioclipseException {
-        checkDatabaseName(databaseName);
-        addMoleculesFromSDF( databaseName, 
-                             ResourcePathTransformer.getInstance()
-                                                    .transform( filePath ), 
-                             monitor );
-    }
 
     public List<String> allDatabaseNames() {
         return new ArrayList<String>( internalManagers.keySet() );
@@ -414,11 +403,10 @@ public class StructuredbManager implements IStructuredbManager {
     }
 
     public void addMoleculesFromSDF( String databaseName, 
-                                    String filePath )
+                                     String filePath )
                 throws BioclipseException {
 
-        checkDatabaseName(databaseName);
-        addMoleculesFromSDF( databaseName, filePath, null );
+        throw new IllegalStateException("This manager method should not be called");
     }
 
     public Iterator<DBMolecule> subStructureSearchIterator( 

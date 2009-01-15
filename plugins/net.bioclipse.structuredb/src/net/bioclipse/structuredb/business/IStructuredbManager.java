@@ -295,19 +295,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                                      IProgressMonitor monitor ) 
                 throws BioclipseException;
     
-    /**
-     * Persists all molecules in a sdf file in the specified database annotated
-     * with file_origin using a progressmonitor
-     * 
-     * @param databaseName
-     * @param filePath
-     * @param monitor
-     * @throws BioclipseException
-     */
-    public void addMoleculesFromSDF( String databaseName, 
-                                     String filePath, 
-                                     IProgressMonitor monitor ) 
-                throws BioclipseException;
     
     /**
      * @return a list of the names of all databases
