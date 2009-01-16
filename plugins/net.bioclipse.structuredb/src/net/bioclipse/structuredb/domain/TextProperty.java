@@ -58,4 +58,8 @@ public class TextProperty extends Property {
             annotation.setProperty( this );
         }
     }
+    
+    public String toString() {
+        return "{TextProperty : name = " + getName() + "}"; 
+    }
 }

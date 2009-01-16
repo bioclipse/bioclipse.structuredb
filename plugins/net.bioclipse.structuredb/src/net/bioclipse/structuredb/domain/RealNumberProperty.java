@@ -58,4 +58,8 @@ public class RealNumberProperty extends Property {
             annotation.setProperty( this );
         }
     }
+    
+    public String toString() {
+        return "{RealNumberProperty : name = " + getName() + "}"; 
+    }
 }

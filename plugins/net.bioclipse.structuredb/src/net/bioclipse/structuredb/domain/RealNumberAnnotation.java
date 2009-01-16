@@ -74,4 +74,10 @@ public class RealNumberAnnotation extends Annotation {
     public String getSortOf() {
         return "RealNumber";
     }
+    
+    public String toString() {
+        return "{RealNumberAnnotation : value = " + value + ", " 
+                                      +"property = " + property.getName() 
+                                      + "}"; 
+    }
 }

@@ -59,4 +59,9 @@ public class PropertyChoice extends BaseObject {
            choiceProperty.addPropertyChoice( this ); 
         }
     }
+    
+    public String toString() {
+        return "{PropertyChoice : value = " + value + "," 
+                                +"property = " + property.getName() + "}"; 
+    }
 }

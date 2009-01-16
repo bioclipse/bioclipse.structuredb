@@ -87,4 +87,16 @@ public class ChoiceProperty extends Property {
                                        ( (ChoiceProperty)obj )
                                           .getPropertyChoices() );
     }
+    
+    public String toString() {
+        StringBuffer s = new StringBuffer();
+        for (PropertyChoice p : propertyChoices ) {
+            s.append( p.getValue() );
+            s.append( ',' );
+            s.append( ' ' );
+        }
+        s.delete( s.length()-2, s.length()-1 );
+        return "{ChoiceProperty : name = " + getName() + ", " 
+                               + "choices = [" + s.toString() + "]}"; 
+    }
 }

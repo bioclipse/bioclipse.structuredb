@@ -352,6 +352,7 @@ public class DBMolecule extends BaseObject
     }
     
     public String toString() {
-        return name;
+        return "{DBMolecule : name = " + getName() + ", " 
+                            +"SMILES = " + smiles + "}"; 
     }
 }

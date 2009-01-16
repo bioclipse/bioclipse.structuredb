@@ -90,4 +90,9 @@ public class ChoiceAnnotation extends Annotation {
     public String getSortOf() {
         return "Choice";
     }
+    
+    public String toString() {
+        return "{ChoiceAnnotation : value = " + value + ", " 
+                                  +"property = " + property.getName() + "}"; 
+    }
 }

@@ -84,4 +84,9 @@ public class TextAnnotation extends Annotation {
     public String getSortOf() {
         return "Text";
     }
+    
+    public String toString() {
+        return "{TextAnnotation : value = " + value + ", " 
+                                +"property = " + property.getName() + "}"; 
+    }
 }

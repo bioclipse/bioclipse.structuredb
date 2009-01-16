@@ -134,4 +134,8 @@ public class User extends BaseObject {
     public void setPassWord(String password) {
         encryptedPassword = EncryptedPassword.fromPlaintextPassword(password);
     }
+    
+    public String toString() {
+        return "{User : name = " + userName + "}"; 
+    }
 }
