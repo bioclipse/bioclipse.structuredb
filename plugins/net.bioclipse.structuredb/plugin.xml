@@ -84,4 +84,41 @@
             service="net.bioclipse.structuredb.business.StructuredbManagerFactory">
       </scriptContribution>
    </extension>
+   
+   
+         <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding
+            viewerId="net.bioclipse.services.DatabaseView">
+         <includes>
+            <contentExtension
+	            isRoot="true"
+                pattern="net.bioclipse.structuredb.databaseContent">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+
+<extension  
+  point="org.eclipse.ui.navigator.navigatorContent">
+ <navigatorContent
+            name="DatabaseRoot"
+            priority="normal"
+            icon="icons/db_16.gif"
+            activeByDefault="true"
+            contentProvider="net.bioclipse.structuredb.viewer.DatabaseContentProvider"
+            labelProvider="net.bioclipse.structuredb.viewer.DatabaseLabelProvider"
+            id="net.bioclipse.structuredb.databaseContent">         
+        <possibleChildren>
+              <instanceof 
+                value="net.bioclipse.structuredb.viewer.IDatabaseChild" /> 
+     </possibleChildren>
+	<triggerPoints>
+	</triggerPoints>
+ </navigatorContent>
+</extension>
+
+   
+   
+   
 </plugin>
