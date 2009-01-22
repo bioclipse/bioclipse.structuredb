@@ -21,18 +21,26 @@ import org.eclipse.core.runtime.IExecutableExtensionFactory;
  *
  */
 public class StructuredbFactory implements IExecutableExtension,
-        IExecutableExtensionFactory {
+                                           IExecutableExtensionFactory {
 
-    private Structuredb structuredb;
+    private static Structuredb structuredb;
     
     public void setInitializationData( IConfigurationElement config,
                                        String propertyName, 
                                        Object data ) 
                 throws CoreException {
-        structuredb = new Structuredb();
+        if ( structuredb == null )
+            structuredb = new Structuredb();
     }
 
     public Object create() throws CoreException {
         return this.structuredb;
+    }
+    
+    public static Structuredb getStructuredb() {
+        if ( structuredb == null ) {
+            structuredb = new Structuredb();
+        }
+        return structuredb;
     }
 }

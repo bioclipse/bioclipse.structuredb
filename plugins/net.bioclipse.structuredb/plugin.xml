@@ -111,9 +111,12 @@
             id="net.bioclipse.structuredb.databaseContent">         
         <possibleChildren>
               <instanceof 
-                value="net.bioclipse.structuredb.viewer.IDatabaseChild" /> 
+                value="net.bioclipse.structuredb.Structuredb" /> 
      </possibleChildren>
 	<triggerPoints>
+    <instanceof
+          value="net.bioclipse.structuredb.Structuredb">
+    </instanceof>
 	</triggerPoints>
  </navigatorContent>
 </extension>

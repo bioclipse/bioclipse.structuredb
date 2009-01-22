@@ -116,4 +116,8 @@ public class Database extends AbstractServiceContainer
     public String getIcon() {
         return "icons/db_with_mol_16.png";
     }
+    
+    public String toString() {
+        return getName();
+    }
 }
