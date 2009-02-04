@@ -22,7 +22,6 @@ import net.bioclipse.core.TestMethods;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.business.IBioclipseManager;
 import net.bioclipse.core.domain.IMolecule;
-import net.bioclipse.core.jobs.Job;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
@@ -278,7 +277,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "database with the given " +
                                        "name. The molecules are " +
                                        "annotated with file_origin" )
-    @Job
     @TestMethods("testAddMoleculesFromSDF")
     public void addMoleculesFromSDF( String databaseName, 
                                      String filePath ) 
