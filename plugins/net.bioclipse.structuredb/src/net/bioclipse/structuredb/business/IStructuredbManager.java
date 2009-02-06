@@ -31,7 +31,6 @@ import net.bioclipse.structuredb.domain.User;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.openscience.cdk.annotations.TestMethod;
 
 /**
  * @author jonalv
