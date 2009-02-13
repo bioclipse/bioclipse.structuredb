@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Structuredb Plug-in
 Bundle-SymbolicName: net.bioclipse.structuredb; singleton:=true
-Bundle-Version: 2.0.0.B20090123
+Bundle-Version: 2.0.0.B20090213
 Bundle-Activator: net.bioclipse.structuredb.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -58,3 +58,4 @@ Import-Package: net.sf.cglib.beans,
  net.sf.cglib.reflect,
  org.apache.commons.logging;version="1.0.4",
  org.apache.log4j
+Bundle-Vendor: The Bioclipse Team
