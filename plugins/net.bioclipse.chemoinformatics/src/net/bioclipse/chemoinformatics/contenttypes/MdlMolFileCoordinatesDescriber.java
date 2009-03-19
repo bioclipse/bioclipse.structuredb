@@ -8,10 +8,10 @@
  * Contributors:
  *     Ola Spjuth
  *     Stefan Kuhn
- *     Carl MŠsak
+ *     Carl Mï¿½sak
  *     
  ******************************************************************************/
-package net.bioclipse.ui.contenttypes;
+package net.bioclipse.chemoinformatics.contenttypes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
