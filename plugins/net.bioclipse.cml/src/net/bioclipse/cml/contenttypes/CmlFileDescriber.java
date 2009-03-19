@@ -11,7 +11,7 @@
  *     Carl M�sak
  *     
  ******************************************************************************/
-package net.bioclipse.ui.contenttypes;
+package net.bioclipse.cml.contenttypes;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -8,10 +8,10 @@
  * Contributors:
  *     Ola Spjuth
  *     Stefan Kuhn
- *     Carl MŠsak
+ *     Carl Mï¿½sak
  *     
  ******************************************************************************/
-package net.bioclipse.ui.contenttypes;
+package net.bioclipse.cml.contenttypes;
 
 import java.io.IOException;
 import java.io.InputStream;
