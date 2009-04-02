@@ -46,23 +46,11 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
         this.databaseName = databaseName;
     }
     
-    public Object getMoleculeAt( int index ) {
+    public ICDKMolecule getMoleculeAt( int index ) {
         final DBMolecule mol= structuredb.moleculeAtIndexInLabel( databaseName, 
                                                                   index, 
                                                                   annotation );
-        return new SDFElement(null,mol.getName(),-1,index) {
-            
-            @Override
-            public Object getAdapter( Class adapter ) {
-                if(adapter.equals( ICDKMolecule.class )) {
-                    return mol;
-                }
-                else if(adapter.equals( DBMolecule.class )) {
-                    return mol;
-                }
-                return super.getAdapter( adapter );
-            }
-        };
+        return mol;
     }
 
     public int getNumberOfMolecules() {
