@@ -11,13 +11,9 @@
  *******************************************************************************/
 package net.bioclipse.structuredb;
 
-import java.util.List;
-
 import net.bioclipse.cdk.domain.ICDKMolecule;
-import net.bioclipse.cdk.domain.SDFElement;
 import net.bioclipse.cdk.ui.views.IMoleculesEditorModel;
 import net.bioclipse.structuredb.business.IStructuredbManager;
-import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 
@@ -57,11 +53,12 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
         return structuredb.numberOfMoleculesInLabel(databaseName, annotation);
     }
 
-    public void save( int index, ICDKMolecule moleculeToSave ) {
+    public void markDirty( int index, ICDKMolecule moleculeToSave ) {
 
         // TODO Implement this method
 
     }
+
     public void save() {
         structuredb.save( databaseName, annotation );
     }
