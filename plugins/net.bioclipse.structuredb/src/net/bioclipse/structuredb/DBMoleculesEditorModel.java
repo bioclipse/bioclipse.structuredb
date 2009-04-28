@@ -57,6 +57,11 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
         return structuredb.numberOfMoleculesInLabel(databaseName, annotation);
     }
 
+    public void save( int index, ICDKMolecule moleculeToSave ) {
+
+        // TODO Implement this method
+
+    }
     public void save() {
         structuredb.save( databaseName, annotation );
     }
