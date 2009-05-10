@@ -350,4 +350,12 @@ public class DBMolecule extends BaseObject
     
         this.name = name;
     }
+
+    public String getInChI(boolean force) throws BioclipseException {
+        throw new BioclipseException("Function is not yet implemented.");
+    }
+
+    public String getInChIKey(boolean force) throws BioclipseException {
+        throw new BioclipseException("Function is not yet implemented.");
+    }
 }
