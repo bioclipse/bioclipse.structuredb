@@ -102,7 +102,10 @@ public class DBMolecule extends BaseObject
         super();
         this.name = name;
         try {
-            fingerPrint = cdkMolecule.getFingerprint(false);
+            fingerPrint = cdkMolecule.getFingerprint(
+                net.bioclipse.core.domain.IMolecule
+                    .Property.USE_CACHED_OR_CALCULATED
+            );
         }
         catch ( BioclipseException e ) {
             logger.error( "Could not create fingerprint for molecule", e );
@@ -334,10 +337,13 @@ public class DBMolecule extends BaseObject
         return result;
     }
 
-    public BitSet getFingerprint( boolean force ) 
+    public BitSet getFingerprint(net.bioclipse.core.domain.IMolecule.Property 
+            urgency) 
                   throws BioclipseException {
-
-        if (force) {
+        if (urgency == net.bioclipse.core.domain.IMolecule.Property.USE_CACHED)
+            return fingerPrint;
+        
+        if (urgency == net.bioclipse.core.domain.IMolecule.Property.USE_CALCULATED) {
             Fingerprinter fp = new Fingerprinter();
             try {
                 fingerPrint = fp.getFingerprint( getAtomContainer() );
@@ -360,11 +366,13 @@ public class DBMolecule extends BaseObject
         this.name = name;
     }
 
-    public String getInChI(boolean force) throws BioclipseException {
+    public String getInChI(net.bioclipse.core.domain.IMolecule.Property 
+            urgency) throws BioclipseException {
         throw new BioclipseException("Function is not yet implemented.");
     }
 
-    public String getInChIKey(boolean force) throws BioclipseException {
+    public String getInChIKey(net.bioclipse.core.domain.IMolecule.Property 
+            urgency) throws BioclipseException {
         throw new BioclipseException("Function is not yet implemented.");
     }
 }
