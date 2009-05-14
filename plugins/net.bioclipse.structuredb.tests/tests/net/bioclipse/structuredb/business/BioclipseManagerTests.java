@@ -10,8 +10,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.business;
 
-import net.bioclipse.core.business.IBioclipseManager;
 import net.bioclipse.core.tests.AbstractManagerTest;
+import net.bioclipse.managers.business.IBioclipseManager;
 
 
 public class BioclipseManagerTests extends AbstractManagerTest {

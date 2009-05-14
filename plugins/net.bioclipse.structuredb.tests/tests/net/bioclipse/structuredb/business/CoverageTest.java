@@ -10,8 +10,8 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.business;
 
-import net.bioclipse.core.business.IBioclipseManager;
 import net.bioclipse.core.tests.coverage.AbstractCoverageTest;
+import net.bioclipse.managers.business.IBioclipseManager;
 
 /**
  * JUnit tests for checking if the tested Manager is properly tested.
