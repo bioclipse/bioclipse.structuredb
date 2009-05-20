@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.bioclipse.cdk.business.Activator;
 import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.CDKMolecule;
@@ -78,7 +79,7 @@ public class StructuredbManager implements IStructuredbManager {
      * needed and this instance would need to come from the OSGI service 
      * container
      */
-    private ICDKManager cdk = new CDKManager();
+    private CDKManager cdk = new CDKManager();
 
     //Package protected for testing purposes
     Map<String, IStructuredbInstanceManager> internalManagers
@@ -334,7 +335,9 @@ public class StructuredbManager implements IStructuredbManager {
         int moleculesRead = 0;
         monitor.subTask("reading " + moleculesRead + "/" + entries);
         try {
-            iterator = cdk.createMoleculeIterator( file ); 
+            iterator = cdk.createMoleculeIterator( 
+                           file, 
+                           new SubProgressMonitor(monitor, 0) ); 
         } 
         catch ( CoreException e ) {
             throw new IllegalArgumentException( "Could not open file:" + 

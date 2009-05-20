@@ -222,7 +222,12 @@ public class DBMolecule extends BaseObject
     /**
      * @return the structure's smiles representation
      */
-    public String getSMILES(net.bioclipse.core.domain.IMolecule.Property urgency) {
+    public String getSMILES(
+                      net.bioclipse.core.domain.IMolecule.Property urgency) {
+        return smiles;
+    }
+    
+    public String getSMILES() {
         return smiles;
     }
 

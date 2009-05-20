@@ -15,6 +15,7 @@ import java.util.Iterator;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
@@ -29,14 +30,14 @@ public class SmartsQueryIterator implements Iterator<DBMolecule> {
 
     private DBMolecule next = null;
     private Iterator<DBMolecule> parent;
-    private ICDKManager cdk;
+    private CDKManager cdk;
     private String smarts;
     private IStructuredbManager structuredb;
     private IProgressMonitor monitor;
     
     public SmartsQueryIterator( Iterator<DBMolecule> 
                                     allStructuresIterator,
-                                ICDKManager cdk, 
+                                CDKManager cdk, 
                                 String smarts,
                                 StructuredbManager structuredbManager, 
                                 IProgressMonitor monitor) {

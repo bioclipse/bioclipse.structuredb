@@ -13,6 +13,7 @@ package net.bioclipse.structuredb.business;
 
 import java.util.Iterator;
 
+import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
@@ -29,7 +30,7 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
 
     private DBMolecule next = null;
     private Iterator<DBMolecule> parent;
-    private ICDKManager cdk;
+    private CDKManager cdk;
     private ICDKMolecule subStructure;
     private IStructuredbManager structuredb;
     private IProgressMonitor monitor;
@@ -37,7 +38,7 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
     private int currentTick = 0;
 
     public SubStructureIterator( Iterator<DBMolecule> iterator, 
-                                 ICDKManager cdk,
+                                 CDKManager cdk,
                                  ICDKMolecule subStructure,
                                  IStructuredbManager structuredb, 
                                  IProgressMonitor monitor,

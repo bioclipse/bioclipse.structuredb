@@ -215,7 +215,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
               applicationContext.getBean("textAnnotationDao");
         textAnnotationDao.insert( annotation );
         IDBMoleculeDao dbMoleculeDao = (IDBMoleculeDao)dao;
-        ICDKManager cdk = new CDKManager();
+        CDKManager cdk = new CDKManager();
         List<String> SMILES = Arrays.asList( new String[] { "CC", 
                                                             "CCC", 
                                                             "CCCC" } );

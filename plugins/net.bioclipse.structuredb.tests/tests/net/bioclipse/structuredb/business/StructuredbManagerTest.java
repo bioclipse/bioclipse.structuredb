@@ -51,7 +51,7 @@ public class StructuredbManagerTest
 
     private static boolean setUpWasRun = false;
 
-    private ICDKManager cdk = new CDKManager();
+    private CDKManager cdk = new CDKManager();
     
     static {
         // workaround for bug in java 1.5 on OS X
@@ -140,13 +140,14 @@ public class StructuredbManagerTest
     }
 
     public void testListSubstructureSearchResults() throws Exception {
-        ICDKManager cdk = new CDKManager();
+        CDKManager cdk = new CDKManager();
 
         ICDKMolecule mol1 = cdk.loadMolecule( 
             new MockIFile( TestData.class
                                    .getClassLoader()
                                    .getResourceAsStream("testData/0037.cml")
-                         ) );
+                         ),
+            null );
         assertNotNull(mol1);
 
         DBMolecule structure1 = manager.createMolecule( database1,
@@ -163,7 +164,8 @@ public class StructuredbManagerTest
                                                       .getClassLoader()
                                                       .getResourceAsStream(
                                                           "testData/0106.cml") 
-                                     ) ) );
+                                     ),
+                                     null ) );
 
         assertNotNull(structure2);
 
@@ -201,13 +203,14 @@ public class StructuredbManagerTest
     
     public void testSubstructureSearch() throws Exception {
 
-        ICDKManager cdk = new CDKManager();
+        CDKManager cdk = new CDKManager();
 
         ICDKMolecule mol1 = cdk.loadMolecule( 
               new MockIFile ( TestData.class
                                       .getClassLoader()
                                       .getResourceAsStream(
-                                          "testData/0037.cml") ) );
+                                          "testData/0037.cml") ),
+              null );
         assertNotNull(mol1);
 
         DBMolecule structure1 = manager.createMolecule( database1,
@@ -224,7 +227,9 @@ public class StructuredbManagerTest
                         TestData.class
                                 .getClassLoader()
                                 .getResourceAsStream(
-                                    "testData/0106.cml") ) ) );
+                                    "testData/0106.cml") ),
+                    null )
+                    );
 
         assertNotNull(structure2);
 
@@ -267,13 +272,14 @@ public class StructuredbManagerTest
     }
     
     public void testCreatingAndRetrievingStructures() throws Exception {
-        ICDKManager cdk = new CDKManager();
+        CDKManager cdk = new CDKManager();
 
         ICDKMolecule mol1 = cdk.loadMolecule( 
             new MockIFile( TestData.class
                                    .getClassLoader()
                                    .getResourceAsStream(
-                                       "testData/0037.cml") ) );
+                                       "testData/0037.cml") ),
+            null );
         assertNotNull(mol1);
 
         DBMolecule structure1 = manager
@@ -291,7 +297,9 @@ public class StructuredbManagerTest
                                    .class
                                    .getClassLoader()
                                    .getResourceAsStream(
-                                       "testData/0106.cml") ) ) );
+                                       "testData/0106.cml") ),
+                    null ) 
+        );
 
         assertNotNull(structure2);
 
@@ -432,7 +440,7 @@ public class StructuredbManagerTest
     }
     
     public void testDeleteStructure() throws BioclipseException {
-        ICDKManager cdk = new CDKManager();
+        CDKManager cdk = new CDKManager();
         DBMolecule dBMolecule 
             = manager.createMolecule( database1, 
                                        "test", 
