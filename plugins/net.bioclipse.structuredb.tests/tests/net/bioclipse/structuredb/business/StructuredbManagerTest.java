@@ -113,8 +113,9 @@ public class StructuredbManagerTest
     @Override
     protected String[] getConfigLocations() {
         String loc = new File(".").getAbsolutePath();
-        loc = loc.substring(0, loc.lastIndexOf(".tests"));
-        loc += File.separator
+        loc = loc.substring(0, loc.lastIndexOf("net.bioclipse."));
+        loc += "net.bioclipse.structuredb"
+            + File.separator
             + "META-INF"
             + File.separator
             + "spring"
