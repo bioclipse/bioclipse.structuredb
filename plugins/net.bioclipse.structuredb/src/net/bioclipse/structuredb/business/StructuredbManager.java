@@ -231,7 +231,7 @@ public class StructuredbManager implements IStructuredbManager {
         if ( !internalManagers.containsKey(databaseName) ) {
             throw new IllegalArgumentException(
                 "There is no database " + "named: '" + databaseName 
-                + "'.\n" + "Use `" + getNamespace() 
+                + "'.\n" + "Use `" + getManagerName() 
                 + ".allDatabaseNames` to show all available names." );
         }
     }
@@ -297,7 +297,7 @@ public class StructuredbManager implements IStructuredbManager {
                                .retrieveUserByUsername(username);
     }
 
-    public String getNamespace() {
+    public String getManagerName() {
         return "structuredb";
     }
 
