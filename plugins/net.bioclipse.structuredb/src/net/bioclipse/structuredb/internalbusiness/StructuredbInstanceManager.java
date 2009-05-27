@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 
-import net.bioclipse.core.domain.BioList;
+import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.ChoiceProperty;
@@ -70,7 +70,7 @@ public class StructuredbInstanceManager
     }
 
     public List<Annotation> retrieveAllAnnotations() {
-        BioList<Annotation> result = new BioList<Annotation>();
+        RecordableList<Annotation> result = new RecordableList<Annotation>();
         result.addAll( textAnnotationDao.getAll()       );
         result.addAll( realNumberAnnotationDao.getAll() );
         result.addAll( choiceAnnotationDao.getAll()     );
@@ -78,11 +78,11 @@ public class StructuredbInstanceManager
     }
 
     public List<DBMolecule> retrieveAllMolecules() {
-        return new BioList<DBMolecule>( dBMoleculeDao.getAll() );
+        return new RecordableList<DBMolecule>( dBMoleculeDao.getAll() );
     }
 
     public List<User> retrieveAllUsers() {
-        return new BioList<User>( userDao.getAll() );
+        return new RecordableList<User>( userDao.getAll() );
     }
 
     public List<DBMolecule> retrieveStructureByName(String name) {

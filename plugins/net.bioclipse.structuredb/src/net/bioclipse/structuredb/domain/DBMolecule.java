@@ -21,7 +21,7 @@ import java.util.List;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.BioList;
+import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.core.util.LogUtils;
 
 import org.apache.log4j.Logger;
@@ -337,7 +337,7 @@ public class DBMolecule extends BaseObject
 
     public List<net.bioclipse.core.domain.IMolecule> getConformers() {
         List<net.bioclipse.core.domain.IMolecule> result 
-            = new BioList<net.bioclipse.core.domain.IMolecule>();
+            = new RecordableList<net.bioclipse.core.domain.IMolecule>();
         result.add( this );
         return result;
     }

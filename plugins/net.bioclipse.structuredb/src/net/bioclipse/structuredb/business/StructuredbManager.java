@@ -30,7 +30,7 @@ import net.bioclipse.cdk.domain.CDKMolecule;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.ResourcePathTransformer;
 import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.BioList;
+import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
@@ -393,7 +393,7 @@ public class StructuredbManager implements IStructuredbManager {
                             throws BioclipseException {
         
         checkDatabaseName(databaseName);
-        List<DBMolecule> dBMolecules = new BioList<DBMolecule>();
+        List<DBMolecule> dBMolecules = new RecordableList<DBMolecule>();
         Iterator<DBMolecule> iterator 
             = internalManagers.get( databaseName )
                               .allStructuresIterator();
@@ -471,7 +471,7 @@ public class StructuredbManager implements IStructuredbManager {
                            throws BioclipseException {
         
         checkDatabaseName(databaseName);
-        List<DBMolecule> dBMolecules = new BioList<DBMolecule>();
+        List<DBMolecule> dBMolecules = new RecordableList<DBMolecule>();
         Iterator<DBMolecule> iterator 
             = subStructureSearchIterator( databaseName, 
                                           molecule, 
@@ -541,7 +541,7 @@ public class StructuredbManager implements IStructuredbManager {
                                          IProgressMonitor monitor ) {
     
         checkDatabaseName(databaseName);
-        List<DBMolecule> hits = new BioList<DBMolecule>();
+        List<DBMolecule> hits = new RecordableList<DBMolecule>();
         Iterator<DBMolecule> iterator = smartsQueryIterator( databaseName, 
                                                              smarts, 
                                                              monitor );
