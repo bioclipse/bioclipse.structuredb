@@ -380,4 +380,9 @@ public class DBMolecule extends BaseObject
             urgency) throws BioclipseException {
         throw new BioclipseException("Function is not yet implemented.");
     }
+
+    public Object getProperty( String propertyKey, Property urgency ) {
+
+        throw new UnsupportedOperationException();
+    }
 }
