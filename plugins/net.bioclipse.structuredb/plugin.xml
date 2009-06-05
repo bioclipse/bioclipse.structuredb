@@ -1,127 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-    <extension
-        point="net.bioclipse.usermanager.accountType">
-        <AccountType
-            name="net.bioclipse.structuredb.AccountType">
-            <property
-                name="net.bioclipse.structuredb.url"
-                required="true">
+    <extension point="net.bioclipse.usermanager.accountType">
+        <AccountType name="net.bioclipse.structuredb.AccountType">
+            <property name="net.bioclipse.structuredb.url"
+                      required="true">
             </property>
-            <property
-                name="net.bioclipse.structuredb.type"
-                required="true">
+            <property name="net.bioclipse.structuredb.type"
+                      required="true">
             </property>
-            <property
-                name="net.bioclipse.structuredb.name"
-                required="true">
+            <property name="net.bioclipse.structuredb.name"
+                      required="true">
             </property>
         </AccountType>
     </extension>
     
-    <extension
-      point="net.bioclipse.services">
-        <databaseType
-            id="net.bioclipse.structuredb"
-            icon="icons/db_16.gif"
-            class="net.bioclipse.structuredb.StructuredbFactory"
-            name="StructureDB"
-            category="net.bioclipse.services.databases.local">
-        </databaseType>
+    <extension point="net.bioclipse.scripting.contribution">
+        <scriptContribution id="net.bioclipse.structuredb.StructuredbManager"
+                            service="net.bioclipse.structuredb.business.StructuredbManagerFactory">
+        </scriptContribution>
     </extension>
     
     <extension point="org.eclipse.ui.popupMenus">
+        
         <objectContribution
             adaptable="false"
             id="net.bioclipse.structuredb.createNewAction"
             objectClass="net.bioclipse.structuredb.Structuredb">
-            <action
-                class="net.bioclipse.structuredb.actions.CreateStructuredbAction"
-                enablesFor="1"
-                id="net.bioclipse.structuredb.actions.CreateStructuredbAction"
-                label="Create new local Structure Database..."
-                menubarPath="additions"
-                tooltip="Open a dialog for creating a new Structure Database"/>
+            <action class="net.bioclipse.structuredb.actions.CreateStructuredbAction"
+                    enablesFor="1"
+                    id="net.bioclipse.structuredb.actions.CreateStructuredbAction"
+                    label="Create new local Structure Database..."
+                    menubarPath="additions"
+                    tooltip="Open a dialog for creating a new Structure Database"/>
         </objectContribution>
-        <objectContribution
-            adaptable="false"
-            id="net.bioclipse.structuredb.removeDatabaseAction"
-            objectClass="net.bioclipse.structuredb.Database">
+        
+        <objectContribution adaptable="false"
+                            id="net.bioclipse.structuredb.removeDatabaseAction"
+                            objectClass="net.bioclipse.structuredb.Database">
+            <action class="net.bioclipse.structuredb.actions.RemoveDatabaseAction"
+                    enablesFor="+"
+                    id="net.bioclipse.structuredb.actions.RemoveDatabaseAction"
+                    label="Delete"
+                    menubarPath="additions"
+                    tooltip="Deletes the database and everything in it"/>
+        </objectContribution>
+        
+        <objectContribution adaptable="false"
+                            id="net.bioclipse.structuredb.removeLabel"
+                            objectClass="net.bioclipse.structuredb.Label">
             <action
-                class="net.bioclipse.structuredb.actions.RemoveDatabaseAction"
+                class="net.bioclipse.structuredb.actions.OpenAnnotationAction"
                 enablesFor="+"
-                id="net.bioclipse.structuredb.actions.RemoveDatabaseAction"
-                label="Delete"
-                menubarPath="additions"
-                tooltip="Deletes the database and everything in it"/>
-        </objectContribution>
-        <objectContribution
-            adaptable="false"
-            id="net.bioclipse.structuredb.removeLabel"
-            objectClass="net.bioclipse.structuredb.Label">
-           <action
-                 class="net.bioclipse.structuredb.actions.OpenAnnotationAction"
-                 enablesFor="+"
-                 id="net.bioclipse.structuredb.action.OpenAnnotation"
-                 label="Open"
-                 menubarPath="additions">
+                id="net.bioclipse.structuredb.action.OpenAnnotation"
+                label="Open"
+                menubarPath="additions">
            </action>
-            <action
-                class="net.bioclipse.structuredb.actions.RemoveAnnotationAction"
-                enablesFor="+"
-                id="net.bioclipse.structuredb.actions.RemoveLabelAction"
-                label="Delete"
-                menubarPath="additions"
-                tooltip="Deletes the Label"/>
+           <action
+               class="net.bioclipse.structuredb.actions.RemoveAnnotationAction"
+               enablesFor="+"
+               id="net.bioclipse.structuredb.actions.RemoveLabelAction"
+               label="Delete"
+               menubarPath="additions"
+               tooltip="Deletes the Label"/>
         </objectContribution>
     </extension>
-    
-    <extension
-         point="net.bioclipse.scripting.contribution">
-      <scriptContribution
-            id="net.bioclipse.structuredb.StructuredbManager"
-            service="net.bioclipse.structuredb.business.StructuredbManagerFactory">
-      </scriptContribution>
-   </extension>
    
-   
-         <extension
-         point="org.eclipse.ui.navigator.viewer">
-      <viewerContentBinding
-            viewerId="net.bioclipse.services.DatabaseView">
-         <includes>
-            <contentExtension
-	            isRoot="true"
-                pattern="net.bioclipse.structuredb.databaseContent">
-            </contentExtension>
-         </includes>
-      </viewerContentBinding>
-   </extension>
+    <extension point="org.eclipse.ui.navigator.viewer">
+        <viewerContentBinding viewerId="net.bioclipse.databases.DatabaseView">
+            <includes>
+                <contentExtension isRoot="true"
+                                  pattern="net.bioclipse.structuredb.databaseContent">
+                </contentExtension>
+            </includes>
+        </viewerContentBinding>
+       </extension>
 
-<extension  
-  point="org.eclipse.ui.navigator.navigatorContent">
- <navigatorContent
-            name="DatabaseRoot"
-            priority="normal"
-            icon="icons/db_16.gif"
-            activeByDefault="true"
-            contentProvider="net.bioclipse.structuredb.viewer.DatabaseContentProvider"
-            labelProvider="net.bioclipse.structuredb.viewer.DatabaseLabelProvider"
-            id="net.bioclipse.structuredb.databaseContent">         
-        <possibleChildren>
-              <instanceof 
-                value="net.bioclipse.structuredb.Structuredb" /> 
-     </possibleChildren>
-	<triggerPoints>
-    <instanceof
-          value="net.bioclipse.structuredb.Structuredb">
-    </instanceof>
-	</triggerPoints>
- </navigatorContent>
-</extension>
-
-   
-   
-   
+    <extension point="org.eclipse.ui.navigator.navigatorContent">
+        <navigatorContent name="DatabaseRoot"
+                          priority="normal"
+                          icon="icons/db_16.gif"
+                          activeByDefault="true"
+                          contentProvider="net.bioclipse.structuredb.viewer.DatabaseContentProvider"
+                          labelProvider="net.bioclipse.structuredb.viewer.DatabaseLabelProvider"
+                          id="net.bioclipse.structuredb.databaseContent">         
+            <possibleChildren>
+                <instanceof value="net.bioclipse.structuredb.Structuredb" /> 
+            </possibleChildren>
+    	    <triggerPoints>
+               <instanceof value="net.bioclipse.structuredb.Structuredb">
+               </instanceof>
+       	    </triggerPoints>
+        </navigatorContent>
+    </extension>
 </plugin>

@@ -43,13 +43,6 @@ http://www.eclipse.org/legal/epl-v10.html
          unpack="false"/>
 
    <plugin
-         id="net.bioclipse.services"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="net.bioclipse.hsqldb"
          download-size="0"
          install-size="0"
@@ -58,6 +51,13 @@ http://www.eclipse.org/legal/epl-v10.html
 
    <plugin
          id="org.apache.commons.codec"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.bioclipse.databases"
          download-size="0"
          install-size="0"
          version="0.0.0"
