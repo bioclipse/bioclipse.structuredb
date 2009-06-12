@@ -113,7 +113,7 @@ public class DBMolecule extends BaseObject
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         atomContainer        = cdkMolecule.getAtomContainer();
         try {
-            smiles = cdkMolecule.getSMILES(
+            smiles = cdkMolecule.toSMILES(
             );
         }
         catch (BioclipseException e) {
@@ -139,7 +139,7 @@ public class DBMolecule extends BaseObject
         fingerPrint          = (BitSet)dBMolecule.getFingerPrint()
                                                 .clone();
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
-        smiles               = dBMolecule.getSMILES(
+        smiles               = dBMolecule.toSMILES(
         );
         annotations          = new ArrayList<Annotation>( 
                                    dBMolecule.getAnnotations() );
@@ -157,7 +157,7 @@ public class DBMolecule extends BaseObject
         DBMolecule dBMolecule = (DBMolecule)object;
 
         return fingerPrint.equals( dBMolecule.getFingerPrint() )
-               &&   smiles.equals( dBMolecule.getSMILES(
+               &&   smiles.equals( dBMolecule.toSMILES(
                ));
 // TODO: can give false positives without?
 //             && atomContainer.equals( structure.getMolecule()    ); 
@@ -213,7 +213,7 @@ public class DBMolecule extends BaseObject
         return fingerPrint;
     }
 
-    public String getSMILES() {
+    public String toSMILES() {
         return smiles;
     }
 

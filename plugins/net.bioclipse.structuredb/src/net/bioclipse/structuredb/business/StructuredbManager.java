@@ -366,7 +366,7 @@ public class StructuredbManager implements IStructuredbManager {
                                            molecule );
 
             if ( "".equals( s.getName() ) ) {
-                s.setName( "\"" + s.getSMILES(
+                s.setName( "\"" + s.toSMILES(
                 ) + "\"" );
             }
 
@@ -420,7 +420,7 @@ public class StructuredbManager implements IStructuredbManager {
 
         checkDatabaseName(databaseName);
         if ( !(queryMolecule instanceof ICDKMolecule) ) {
-            queryMolecule = cdk.fromSMILES( queryMolecule.getSMILES(
+            queryMolecule = cdk.fromSMILES( queryMolecule.toSMILES(
             ));
         }
         DBMolecule queryStructure 

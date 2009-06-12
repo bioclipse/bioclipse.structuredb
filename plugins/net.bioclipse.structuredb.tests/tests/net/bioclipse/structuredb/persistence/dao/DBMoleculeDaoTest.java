@@ -230,7 +230,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
             assertTrue( 
                 SMILES.contains( 
                     dbMoleculeDao.getMoleculeAtIndexInLabel( annotation, i )
-                                 .getSMILES(
+                                 .toSMILES(
                                  ) ) );
         }
     }
