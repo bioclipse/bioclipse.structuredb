@@ -262,7 +262,7 @@ public class DBMolecule extends BaseObject
         this.fingerPrint = makeFingerPrint(persistedFingerPrint);
     }
 
-    public String getCML() {
+    public String toCML() {
         StringWriter stringWriter = new StringWriter();
         CMLWriter cmlWriter       = new CMLWriter(stringWriter);
         try {
