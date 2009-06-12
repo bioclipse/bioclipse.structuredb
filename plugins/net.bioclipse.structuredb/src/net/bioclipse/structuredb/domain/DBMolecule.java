@@ -114,8 +114,6 @@ public class DBMolecule extends BaseObject
         atomContainer        = cdkMolecule.getAtomContainer();
         try {
             smiles = cdkMolecule.getSMILES(
-                net.bioclipse.core.domain.IMolecule
-                    .Property.USE_CACHED_OR_CALCULATED
             );
         }
         catch (BioclipseException e) {
@@ -142,8 +140,6 @@ public class DBMolecule extends BaseObject
                                                 .clone();
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         smiles               = dBMolecule.getSMILES(
-            net.bioclipse.core.domain.IMolecule
-                .Property.USE_CACHED_OR_CALCULATED
         );
         annotations          = new ArrayList<Annotation>( 
                                    dBMolecule.getAnnotations() );
@@ -162,8 +158,6 @@ public class DBMolecule extends BaseObject
 
         return fingerPrint.equals( dBMolecule.getFingerPrint() )
                &&   smiles.equals( dBMolecule.getSMILES(
-                   net.bioclipse.core.domain.IMolecule
-                       .Property.USE_CACHED_OR_CALCULATED
                ));
 // TODO: can give false positives without?
 //             && atomContainer.equals( structure.getMolecule()    ); 
@@ -219,14 +213,6 @@ public class DBMolecule extends BaseObject
         return fingerPrint;
     }
 
-    /**
-     * @return the structure's smiles representation
-     */
-    public String getSMILES(
-                      net.bioclipse.core.domain.IMolecule.Property urgency) {
-        return smiles;
-    }
-    
     public String getSMILES() {
         return smiles;
     }

@@ -367,8 +367,6 @@ public class StructuredbManager implements IStructuredbManager {
 
             if ( "".equals( s.getName() ) ) {
                 s.setName( "\"" + s.getSMILES(
-                    net.bioclipse.core.domain.IMolecule
-                        .Property.USE_CACHED_OR_CALCULATED
                 ) + "\"" );
             }
 
@@ -423,8 +421,6 @@ public class StructuredbManager implements IStructuredbManager {
         checkDatabaseName(databaseName);
         if ( !(queryMolecule instanceof ICDKMolecule) ) {
             queryMolecule = cdk.fromSMILES( queryMolecule.getSMILES(
-                net.bioclipse.core.domain.IMolecule
-                    .Property.USE_CACHED_OR_CALCULATED
             ));
         }
         DBMolecule queryStructure 

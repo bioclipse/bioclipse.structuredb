@@ -231,8 +231,6 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
                 SMILES.contains( 
                     dbMoleculeDao.getMoleculeAtIndexInLabel( annotation, i )
                                  .getSMILES(
-                                     net.bioclipse.core.domain.IMolecule
-                                         .Property.USE_CACHED_OR_CALCULATED
                                  ) ) );
         }
     }
