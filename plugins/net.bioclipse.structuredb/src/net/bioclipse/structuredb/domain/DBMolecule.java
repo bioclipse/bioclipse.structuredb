@@ -216,6 +216,14 @@ public class DBMolecule extends BaseObject
     public String toSMILES() {
         return smiles;
     }
+    
+    String getSMILES() {
+        return toSMILES();
+    }
+    
+    String getCML() {
+        return toCML();
+    }
 
     /**
      * @param smiles the smiles representation to set
