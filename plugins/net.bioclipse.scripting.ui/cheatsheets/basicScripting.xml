@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cheatsheet
-      title="Using the Javscript Console">
+      title="Using the Javascript Console">
    <intro
          href="/net.bioclipse.doc/html/scriptingBioclipse.html">
       <description>
-         This CheatSheet is a tutotial for using the Javscript Console in Bioclipse.
+         This CheatSheet is a tutotial for using the Javascript Console in Bioclipse.
       </description>
    </intro>
 
