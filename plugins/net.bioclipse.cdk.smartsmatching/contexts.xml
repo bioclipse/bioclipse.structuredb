@@ -1,8 +1,0 @@
-<contexts>
-	<context id="viewer" title="SMARTS Matching View">
-		<description>The SMARTS View allows for adding/editing/execution of SMARTS. Click on hits to highlight them in the chemical structure.
-		</description>
-		<topic href="/PLUGINS_ROOT/net.bioclipse.cdk.smartsmatching/html/smartsmatchingview.html" label="SMARTS Matching View" />
-		<topic href="/PLUGINS_ROOT/net.bioclipse.cdk.smartsmatching/html/toc.html" label="SMARTS Matching" />
-	</context>
-</contexts>
