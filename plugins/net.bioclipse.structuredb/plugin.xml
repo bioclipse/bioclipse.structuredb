@@ -83,13 +83,15 @@
                           activeByDefault="true"
                           contentProvider="net.bioclipse.structuredb.viewer.DatabaseContentProvider"
                           labelProvider="net.bioclipse.structuredb.viewer.DatabaseLabelProvider"
-                          id="net.bioclipse.structuredb.databaseContent">         
+                          id="net.bioclipse.databases.content">         
             <possibleChildren>
-                <instanceof value="net.bioclipse.structuredb.Structuredb" /> 
+                <instanceof value="net.bioclipse.structuredb.StructureDBInstance" /> 
             </possibleChildren>
     	    <triggerPoints>
-               <instanceof value="net.bioclipse.structuredb.Structuredb">
-               </instanceof>
+    	       <or>
+                 <instanceof value="net.bioclipse.structuredb.Structuredb" />
+                 <instanceof value="net.bioclipse.databases.DatabasesRoot" />
+               </or>
        	    </triggerPoints>
         </navigatorContent>
     </extension>
