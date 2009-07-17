@@ -37,7 +37,7 @@
         
         <objectContribution adaptable="false"
                             id="net.bioclipse.structuredb.removeDatabaseAction"
-                            objectClass="net.bioclipse.structuredb.Database">
+                            objectClass="net.bioclipse.structuredb.StructureDBInstance">
             <action class="net.bioclipse.structuredb.actions.RemoveDatabaseAction"
                     enablesFor="+"
                     id="net.bioclipse.structuredb.actions.RemoveDatabaseAction"

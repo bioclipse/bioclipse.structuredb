@@ -13,11 +13,8 @@ package net.bioclipse.structuredb;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.bioclipse.services.views.model.AbstractServiceContainer;
-import net.bioclipse.services.views.model.IDatabase;
-import net.bioclipse.services.views.model.IDatabaseType;
-import net.bioclipse.services.views.model.IServiceObject;
 import net.bioclipse.structuredb.business.IDatabaseListener;
+import net.bioclipse.structuredb.internalbusiness.StructuredbInstanceManager;
 
 import org.apache.log4j.Logger;
 
@@ -26,12 +23,13 @@ import org.apache.log4j.Logger;
  * @author jonalv
  *
  */
-public class Structuredb extends AbstractServiceContainer
-                         implements IDatabaseType, IDatabaseListener {
+public class Structuredb implements IDatabaseListener {
 
     private final Logger logger = Logger.getLogger( this.getClass() );
 
     private final String name = "StructureDB";
+    
+    private List<StructureDBInstance> cachedChildren;
 
     public Structuredb() {
         Activator.getDefault().getStructuredbManager().addListener(this);
@@ -44,33 +42,34 @@ public class Structuredb extends AbstractServiceContainer
     public String toString() {
         return name;
     }
-
-    @Override
-    public void createChildren() {
-        
-        // remove all children from listening 
-        // (otherwise the garbage collector won't have a chance...)
-        if ( children != null ) {
-            for ( IServiceObject db : children ) {
-                if( db instanceof IDatabaseListener)
+    
+    public List<StructureDBInstance> getChildren() {
+        if ( cachedChildren != null ) {
+            return cachedChildren;
+        }
+        List<StructureDBInstance> children 
+            = new ArrayList<StructureDBInstance>();
+        for ( String s : Activator.getDefault()
+                        .getStructuredbManager()
+                        .allDatabaseNames() ) {
+            StructureDBInstance instance = new StructureDBInstance(s);
+            children.add( instance );
+        }
+        cachedChildren = children;
+        return cachedChildren;
+    }
+    
+    private void clearChildren() {
+        if ( cachedChildren != null ) {
+            for ( StructureDBInstance instance : cachedChildren ) {
                 Activator.getDefault()
                          .getStructuredbManager()
-                         .removeListener( (IDatabaseListener)db );
+                         .removeListener( (IDatabaseListener)instance );
             }
         }
-        
-        List<IDatabase> children 
-            = new ArrayList<IDatabase>();
-        
-        for ( String s : Activator.getDefault()
-                                  .getStructuredbManager()
-                                  .allDatabaseNames() ) {
-            Database database = new Database(s);
-            database.addListener( this.listener );
-            children.add( database );
-        }
-        setChildren( children );
+        cachedChildren = null;
     }
+    
 
     @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter) {
@@ -80,8 +79,7 @@ public class Structuredb extends AbstractServiceContainer
 
     public void onDataBaseUpdate( DatabaseUpdateType updateType ) {
         if ( updateType == DatabaseUpdateType.DATABASES_CHANGED ) {
-            createChildren();
-            fireChanged( this );
+            clearChildren();
         }
     }
 }

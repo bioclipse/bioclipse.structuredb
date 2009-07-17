@@ -13,7 +13,7 @@ package net.bioclipse.structuredb.actions;
 import java.util.Iterator;
 
 import net.bioclipse.structuredb.Activator;
-import net.bioclipse.structuredb.Database;
+import net.bioclipse.structuredb.StructureDBInstance;
 import net.bioclipse.structuredb.Label;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 

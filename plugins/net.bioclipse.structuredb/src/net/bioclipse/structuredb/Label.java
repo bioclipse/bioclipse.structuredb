@@ -11,6 +11,7 @@
 package net.bioclipse.structuredb;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
@@ -19,25 +20,20 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import net.bioclipse.cdk.ui.views.IMoleculesEditorModel;
-import net.bioclipse.services.views.model.AbstractServiceObject;
-import net.bioclipse.services.views.model.IDatabase;
-import net.bioclipse.services.views.model.IServiceContainer;
-import net.bioclipse.structuredb.actions.OpenAnnotationAction;
 import net.bioclipse.structuredb.domain.TextAnnotation;
-
 
 /**
  * @author jonalv
  */
-public class Label extends AbstractServiceObject 
-                   implements IDatabase, IEditorInput {
+public class Label implements IEditorInput {
 
-    private Database parent;
+    private StructureDBInstance parent;
     private Logger logger;
     private TextAnnotation annotation;
+    private String name;
 
-    public Label(TextAnnotation textAnnotation, Database parent) {
-        setName( textAnnotation.getValue() );
+    public Label(TextAnnotation textAnnotation, StructureDBInstance parent) {
+        this.name       = textAnnotation.getValue();
         this.parent     = parent;
         this.annotation = textAnnotation;
     }
@@ -46,7 +42,7 @@ public class Label extends AbstractServiceObject
         return false;
     }
     
-    public IServiceContainer getParent() {
+    public StructureDBInstance getParent() {
         return parent;
     }
 
@@ -67,14 +63,13 @@ public class Label extends AbstractServiceObject
     }
     
     @SuppressWarnings("unchecked")
-    @Override
     public Object getAdapter( Class adapter ) {
         
         if ( adapter.isAssignableFrom( IMoleculesEditorModel.class ) ) {
             return new DBMoleculesEditorModel( parent.getName(), 
                                                getAnnotation() );
         }
-        return super.getAdapter( adapter );
+        return Platform.getAdapterManager().getAdapter(this, adapter);
     }
 
     public void doubleClick() {
@@ -89,13 +84,12 @@ public class Label extends AbstractServiceObject
         }
     }
     
-    @Override
-    public String getIcon() {
-        return "icons/many_molecules.png";
-    }
-
     public TextAnnotation getAnnotation() {
 
         return annotation;
+    }
+
+    public String getName() {
+        return name;
     }
 }

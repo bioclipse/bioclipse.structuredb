@@ -13,7 +13,7 @@ package net.bioclipse.structuredb.actions;
 import java.util.Iterator;
 
 import net.bioclipse.structuredb.Activator;
-import net.bioclipse.structuredb.Database;
+import net.bioclipse.structuredb.StructureDBInstance;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 
 import org.eclipse.jface.action.IAction;
@@ -44,8 +44,8 @@ public class RemoveDatabaseAction extends ActionDelegate {
             Iterator i = ss.iterator();
             while ( i.hasNext() ) {
                 Object o = i.next();
-                if (o instanceof Database) {
-                    manager.deleteDatabase( ((Database)o).getName() );
+                if (o instanceof StructureDBInstance) {
+                    manager.deleteDatabase( ((StructureDBInstance)o).getName() );
                 }
             }
         }

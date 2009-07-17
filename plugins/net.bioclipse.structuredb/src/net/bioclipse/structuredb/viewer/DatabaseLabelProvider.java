@@ -13,15 +13,12 @@ package net.bioclipse.structuredb.viewer;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.bioclipse.structuredb.DBMoleculesEditorModel;
-import net.bioclipse.structuredb.Database;
-import net.bioclipse.structuredb.IStructuredbInstance;
 import net.bioclipse.structuredb.Label;
+import net.bioclipse.structuredb.StructureDBInstance;
 import net.bioclipse.structuredb.Structuredb;
 
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
@@ -63,7 +60,7 @@ public class DatabaseLabelProvider extends LabelProvider
     public Image getImage(Object obj) {
         if ( obj instanceof Structuredb )
             return images.get( "db_16" );
-        if ( obj instanceof Database ) {
+        if ( obj instanceof StructureDBInstance ) {
             return images.get( "db_mol" );
         }
         if ( obj instanceof Label ) {
