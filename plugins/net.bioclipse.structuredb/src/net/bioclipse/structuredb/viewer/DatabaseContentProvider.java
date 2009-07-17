@@ -10,6 +10,7 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.viewer;
 
+import net.bioclipse.databases.DatabasesRoot;
 import net.bioclipse.structuredb.StructureDBInstance;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.StructuredbFactory;
@@ -29,11 +30,15 @@ public class DatabaseContentProvider implements ITreeContentProvider {
     public void dispose() {
     }
 
-    public Object[] getElements(Object parent) {
-        return new Object[] { StructuredbFactory.getStructuredb() };
+    public Object[] getElements(Object parentElement) {
+        return getChildren( parentElement );
     }
 
     public Object[] getChildren(Object parentElement) {
+        
+        if (parentElement instanceof DatabasesRoot ) {
+            return new Object[] { StructuredbFactory.getStructuredb() };
+        }
         
         if (parentElement instanceof Structuredb) {
             Structuredb structuredb = (Structuredb)parentElement;
