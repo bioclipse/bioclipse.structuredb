@@ -42,34 +42,6 @@ public class StructureDBInstance implements IStructureDBChangeListener {
         Activator.getDefault().getStructuredbManager().addListener(this);
     }
     
-//DRAG AND DROP SHOULD PROBABLY MADE SOMEWHERE ELSE
-//    public boolean drop( Object data ) {
-//        
-//        if ( data instanceof ITreeSelection ) {
-//            ITreeSelection selections = (ITreeSelection)data;
-//            for ( Object selection : selections.toArray() ) {
-//                if (selection instanceof IFile) {
-//                    final IFile file = (IFile)selection;
-//                    final String dbName = getName();
-//                    try {
-//                        Activator.getDefault().getStructuredbManager()
-//                                              .addMoleculesFromSDF( dbName, 
-//                                                                    file );
-//                    } catch ( BioclipseException e ) {
-//                        LogUtils.debugTrace( logger, e );
-//                        MessageDialog.openError( PlatformUI
-//                            .getWorkbench()
-//                            .getActiveWorkbenchWindow()
-//                            .getShell(),
-//                            "Could not import moleculs",
-//                            "More information can be found in the log file" ); 
-//                    }
-//                }
-//            }
-//        }
-//        return false;
-//    }
-
     public List<Label> getChildren() {
         if ( cachedChildren != null ) {
             return cachedChildren;

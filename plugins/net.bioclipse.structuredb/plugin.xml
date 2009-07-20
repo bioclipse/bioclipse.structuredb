@@ -85,14 +85,26 @@
                           labelProvider="net.bioclipse.structuredb.viewer.DatabaseLabelProvider"
                           id="net.bioclipse.databases.content">         
             <possibleChildren>
-                <instanceof value="net.bioclipse.structuredb.StructureDBInstance" /> 
+                <or>
+                    <instanceof value="net.bioclipse.structuredb.StructureDBInstance" />
+                    <instanceof value="org.eclipse.core.resources.IResource" />
+                </or>
             </possibleChildren>
     	    <triggerPoints>
-    	       <or>
-                 <instanceof value="net.bioclipse.structuredb.Structuredb" />
-                 <instanceof value="net.bioclipse.databases.DatabasesRoot" />
-               </or>
+    	        <or>
+                    <instanceof value="net.bioclipse.structuredb.Structuredb" />
+                    <instanceof value="net.bioclipse.databases.DatabasesRoot" />
+                </or>
        	    </triggerPoints>
+       	    <dropAssistant
+                  class="net.bioclipse.structuredb.viewer.StructureDBDropAdapterAssistant"
+                  id="net.bioclipse.structuredb.viewer.StructureDBDropAdapterAssistant">
+               <possibleDropTargets>
+                    <instanceof
+                        value="java.lang.Object">
+                    </instanceof>
+               </possibleDropTargets>
+       	    </dropAssistant>
         </navigatorContent>
     </extension>
 </plugin>
