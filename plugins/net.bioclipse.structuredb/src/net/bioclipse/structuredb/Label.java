@@ -38,10 +38,6 @@ public class Label implements IEditorInput {
         this.annotation = textAnnotation;
     }
 
-    public boolean drop( Object data ) {
-        return false;
-    }
-    
     public StructureDBInstance getParent() {
         return parent;
     }
