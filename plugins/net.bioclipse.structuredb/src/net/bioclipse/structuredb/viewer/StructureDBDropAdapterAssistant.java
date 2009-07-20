@@ -10,6 +10,9 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.viewer;
 
+import java.io.IOException;
+
+import net.bioclipse.chemoinformatics.util.ChemoinformaticUtils;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.structuredb.Activator;
@@ -17,6 +20,7 @@ import net.bioclipse.structuredb.StructureDBInstance;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -50,24 +54,36 @@ public class StructureDBDropAdapterAssistant
           if ( dropTargetEvent.data instanceof ITreeSelection ) {
               ITreeSelection selections = (ITreeSelection)dropTargetEvent.data;
               for ( Object selection : selections.toArray() ) {
-                  if (selection instanceof IFile) {
-                      final IFile file = (IFile)selection;
-                      final String dbName = structureDBInstance.getName();
-                      try {
-                          Activator.getDefault().getStructuredbManager()
-                                                .addMoleculesFromSDF( dbName, 
-                                                                      file );
-                          return Status.OK_STATUS;
-                      } catch ( BioclipseException e ) {
-                          LogUtils.debugTrace( logger, e );
-                          MessageDialog.openError( PlatformUI
-                              .getWorkbench()
-                              .getActiveWorkbenchWindow()
-                              .getShell(),
-                              "Could not import moleculs",
-                              "More information can be found in the log file" ); 
+                  try {
+                    if ( selection instanceof IFile && 
+                         ChemoinformaticUtils.isMultipleMolecule( 
+                             (IFile) selection ) ) {
+                          final IFile file = (IFile)selection;
+                          final String dbName = structureDBInstance.getName();
+                          try {
+                              Activator.getDefault()
+                                       .getStructuredbManager()
+                                       .addMoleculesFromSDF( dbName, 
+                                                             file );
+                              return Status.OK_STATUS;
+                          } catch ( BioclipseException e ) {
+                              LogUtils.debugTrace( logger, e );
+                              MessageDialog.openError( 
+                                  PlatformUI.getWorkbench()
+                                            .getActiveWorkbenchWindow()
+                                            .getShell(),
+                                  "Could not import moleculs",
+                                  "More information can be found " +
+                                      "in the log file" ); 
+                          }
                       }
-                  }
+                }
+                catch ( CoreException e ) {
+                    e.printStackTrace();
+                }
+                catch ( IOException e ) {
+                    e.printStackTrace();
+                }
               }
           }
       }
