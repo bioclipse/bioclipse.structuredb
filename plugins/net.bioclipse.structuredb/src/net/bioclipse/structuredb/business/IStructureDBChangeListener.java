@@ -14,7 +14,7 @@ package net.bioclipse.structuredb.business;
 /**
  * @author jonalv
  */
-public interface IDatabaseListener {
+public interface IStructureDBChangeListener {
 
     public void onDataBaseUpdate(DatabaseUpdateType updateType);
 

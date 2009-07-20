@@ -13,7 +13,7 @@ package net.bioclipse.structuredb;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.bioclipse.structuredb.business.IDatabaseListener;
+import net.bioclipse.structuredb.business.IStructureDBChangeListener;
 import net.bioclipse.structuredb.internalbusiness.StructuredbInstanceManager;
 
 import org.apache.log4j.Logger;
@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author jonalv
  *
  */
-public class Structuredb implements IDatabaseListener {
+public class Structuredb implements IStructureDBChangeListener {
 
     private final Logger logger = Logger.getLogger( this.getClass() );
 
@@ -64,7 +64,7 @@ public class Structuredb implements IDatabaseListener {
             for ( StructureDBInstance instance : cachedChildren ) {
                 Activator.getDefault()
                          .getStructuredbManager()
-                         .removeListener( (IDatabaseListener)instance );
+                         .removeListener( (IStructureDBChangeListener)instance );
             }
         }
         cachedChildren = null;

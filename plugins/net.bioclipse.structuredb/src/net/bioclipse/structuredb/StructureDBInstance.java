@@ -15,7 +15,7 @@ import java.util.List;
 
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.util.LogUtils;
-import net.bioclipse.structuredb.business.IDatabaseListener;
+import net.bioclipse.structuredb.business.IStructureDBChangeListener;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
@@ -31,7 +31,7 @@ import org.eclipse.ui.PlatformUI;
  * @author jonalv
  *
  */
-public class StructureDBInstance implements IDatabaseListener {
+public class StructureDBInstance implements IStructureDBChangeListener {
 
     private Logger logger = Logger.getLogger( this.getClass() );
     private String name;

@@ -12,6 +12,8 @@
 package net.bioclipse.structuredb;
 
 import net.bioclipse.core.util.LogUtils;
+import net.bioclipse.databases.IDatabasehangeListener;
+import net.bioclipse.structuredb.business.IStructureDBChangeListener;
 import net.bioclipse.structuredb.business.IJSStructuredbManager;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 
@@ -24,7 +26,8 @@ import org.osgi.util.tracker.ServiceTracker;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends AbstractUIPlugin 
+                       implements IStructureDBChangeListener {
 
     private Logger logger = Logger.getLogger(Activator.class);
     
@@ -36,6 +39,7 @@ public class Activator extends AbstractUIPlugin {
     
     private ServiceTracker finderTracker;
     private ServiceTracker jsFinderTracker;
+    private ServiceTracker dbChangeListenersTracker;
 
     /**
      * The constructor
@@ -57,6 +61,11 @@ public class Activator extends AbstractUIPlugin {
                                                                  .getName(),
                                             null );
         jsFinderTracker.open();
+        dbChangeListenersTracker 
+            = new ServiceTracker( context,
+                                  IDatabasehangeListener.class.getName(),
+                                  null );
+        dbChangeListenersTracker.open();
     }
 
     public void stop(BundleContext context) throws Exception {
@@ -97,6 +106,7 @@ public class Activator extends AbstractUIPlugin {
         if (manager == null) {
             throw new IllegalStateException("Could not get the structuredb manager");
         }
+        manager.addListener( this );
         return manager;
     }
     
@@ -114,5 +124,17 @@ public class Activator extends AbstractUIPlugin {
             throw new IllegalStateException("Could not get the structuredb manager");
         }
         return manager;
+    }
+
+    /* (non-Javadoc)
+     * @see net.bioclipse.structuredb.business.IDatabaseListener#onDataBaseUpdate(net.bioclipse.structuredb.business.IDatabaseListener.DatabaseUpdateType)
+     */
+    public void onDataBaseUpdate( DatabaseUpdateType updateType ) {
+
+        for ( Object o : dbChangeListenersTracker.getServices() ) {
+            if ( o instanceof IDatabasehangeListener ) {
+                ( (IDatabasehangeListener)o ).fireRefresh();
+            }
+        }
     }
 }

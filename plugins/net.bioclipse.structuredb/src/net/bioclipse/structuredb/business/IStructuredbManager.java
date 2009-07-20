@@ -454,12 +454,12 @@ public interface IStructuredbManager extends IBioclipseManager {
     /**
      * @param listener
      */
-    public void addListener( IDatabaseListener listener );
+    public void addListener( IStructureDBChangeListener listener );
     
     /**
      * @param listener
      */
-    public void removeListener( IDatabaseListener listener );
+    public void removeListener( IStructureDBChangeListener listener );
    
     /**
      * Deletes an annotation and all molecules having that annotation

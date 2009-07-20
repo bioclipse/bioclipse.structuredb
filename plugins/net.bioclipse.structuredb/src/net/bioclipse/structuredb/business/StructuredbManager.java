@@ -33,7 +33,7 @@ import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Structuredb;
-import net.bioclipse.structuredb.business.IDatabaseListener.DatabaseUpdateType;
+import net.bioclipse.structuredb.business.IStructureDBChangeListener.DatabaseUpdateType;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.ChoiceProperty;
@@ -88,8 +88,8 @@ public class StructuredbManager implements IStructuredbManager {
     Map<String, ApplicationContext> applicationContexts
         = new HashMap<String, ApplicationContext>();
 
-    private Collection<IDatabaseListener> listeners 
-        = new HashSet<IDatabaseListener>();;
+    private Collection<IStructureDBChangeListener> listeners 
+        = new HashSet<IStructureDBChangeListener>();;
 
     public StructuredbManager() {
         File[] files = HsqldbUtil.getInstance()
@@ -565,26 +565,26 @@ public class StructuredbManager implements IStructuredbManager {
                                         monitor );
     }
 
-    public void addListener( IDatabaseListener listener ) {
+    public void addListener( IStructureDBChangeListener listener ) {
         listeners.add( listener );
     }
 
-    public void removeListener( IDatabaseListener listener ) {
+    public void removeListener( IStructureDBChangeListener listener ) {
         listeners.remove( listener );
     }
     
     public void fireDatabasesChanged() {
         //the original listeners collection gets edited during the loop
-        for ( IDatabaseListener l 
-              : new ArrayList<IDatabaseListener>(listeners) ) {
+        for ( IStructureDBChangeListener l 
+              : new ArrayList<IStructureDBChangeListener>(listeners) ) {
             l.onDataBaseUpdate( DatabaseUpdateType.DATABASES_CHANGED );
         }
     }
     
     public void fireAnnotationsChanged() {
         //the original listeners collection gets edited during the loop
-        for ( IDatabaseListener l 
-              : new ArrayList<IDatabaseListener>(listeners) ) {
+        for ( IStructureDBChangeListener l 
+              : new ArrayList<IStructureDBChangeListener>(listeners) ) {
             l.onDataBaseUpdate( DatabaseUpdateType.LABELS_CHANGED );
         }
     }
