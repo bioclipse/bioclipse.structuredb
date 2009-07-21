@@ -12,6 +12,7 @@ package net.bioclipse.structuredb.viewer;
 
 import java.io.IOException;
 
+import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.chemoinformatics.util.ChemoinformaticUtils;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.util.LogUtils;
@@ -23,11 +24,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TransferData;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonDropAdapter;
 import org.eclipse.ui.navigator.CommonDropAdapterAssistant;
 
@@ -45,48 +44,54 @@ public class StructureDBDropAdapterAssistant
     public IStatus handleDrop( CommonDropAdapter dropAdapter,
                                DropTargetEvent dropTargetEvent,
                                Object target ) {
-        
+
         if ( target instanceof StructureDBInstance) {
-            
-          StructureDBInstance structureDBInstance = (StructureDBInstance) 
-                                                    target;
-            
-          if ( dropTargetEvent.data instanceof ITreeSelection ) {
-              ITreeSelection selections = (ITreeSelection)dropTargetEvent.data;
-              for ( Object selection : selections.toArray() ) {
-                  try {
-                    if ( selection instanceof IFile && 
-                         ChemoinformaticUtils.isMultipleMolecule( 
-                             (IFile) selection ) ) {
-                          final IFile file = (IFile)selection;
-                          final String dbName = structureDBInstance.getName();
-                          try {
-                              Activator.getDefault()
-                                       .getStructuredbManager()
-                                       .addMoleculesFromSDF( dbName, 
-                                                             file );
-                              return Status.OK_STATUS;
-                          } catch ( BioclipseException e ) {
-                              LogUtils.debugTrace( logger, e );
-                              MessageDialog.openError( 
-                                  PlatformUI.getWorkbench()
-                                            .getActiveWorkbenchWindow()
-                                            .getShell(),
-                                  "Could not import moleculs",
-                                  "More information can be found " +
-                                      "in the log file" ); 
-                          }
-                      }
+
+            StructureDBInstance structureDBInstance = (StructureDBInstance) 
+            target;
+
+            if ( dropTargetEvent.data instanceof ITreeSelection ) {
+                ITreeSelection selections = (ITreeSelection)dropTargetEvent.data;
+                for ( Object selection : selections.toArray() ) {
+                    try {
+                        if ( selection instanceof IFile ) {
+                            final IFile file = (IFile)selection;
+                            final String dbName = structureDBInstance.getName();
+                            if ( ChemoinformaticUtils.isMultipleMolecule( 
+                                     (IFile) selection ) ) {
+                                Activator.getDefault()
+                                         .getStructuredbManager()
+                                         .addMoleculesFromSDF( dbName, 
+                                                               file );
+                                return Status.OK_STATUS;
+                            }
+                            if ( ChemoinformaticUtils.isMolecule( file ) ) {
+                                ICDKMolecule m 
+                                    = net.bioclipse.cdk.business.Activator
+                                         .getDefault().getJavaCDKManager()
+                                         .loadMolecule( file );
+                                Activator.getDefault().getStructuredbManager()
+                                         .createMolecule( dbName, 
+                                                          m.getName(), 
+                                                          m );
+                                return Status.OK_STATUS;
+                            }
+                        }
+                    }
+                    catch ( CoreException e ) {
+                        e.printStackTrace();
+                    }
+                    catch ( IOException e ) {
+                        e.printStackTrace();
+                    }
+                    catch ( BioclipseException e ) {
+                        LogUtils.handleException( e, 
+                                                  logger,
+                                                  "net.bioclipse.structuredb" );
+                    }
                 }
-                catch ( CoreException e ) {
-                    e.printStackTrace();
-                }
-                catch ( IOException e ) {
-                    e.printStackTrace();
-                }
-              }
-          }
-      }
+            }
+        }
         return Status.CANCEL_STATUS;
     }
 
@@ -100,5 +105,4 @@ public class StructureDBDropAdapterAssistant
         }
         return Status.CANCEL_STATUS;
     }
-
 }

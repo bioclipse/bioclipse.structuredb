@@ -109,6 +109,7 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @param moleculeName
      * @param cdkMolecule
      * @return the structure
+     * @throws BioclipseException 
      * @throws BioclipseException
      */
     @TestMethods("testListSubstructureSearchResults")
@@ -122,7 +123,7 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "name" )
     public DBMolecule createMolecule( String databaseName,
                                       String moleculeName,
-                                      ICDKMolecule cdkMolecule )
+                                      ICDKMolecule cdkMolecule ) 
                       throws BioclipseException;
 
     /**
@@ -486,6 +487,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     /**
      * @param databaseName
      * @param file
+     * @throws BioclipseException 
      * @throws BioclipseException 
      */
     public void addMoleculesFromSDF( String databaseName, IFile file ) 
