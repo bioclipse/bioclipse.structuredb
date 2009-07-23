@@ -107,4 +107,20 @@
        	    </dropAssistant>
         </navigatorContent>
     </extension>
+    
+    <extension point="org.eclipse.ui.decorators">
+        <decorator id="net.bioclipse.structuredb.viewer.StructureDBLightweightLabelDecorator"
+                   label="label"
+                   state="false"
+                   lightweight="true"
+                   class="net.bioclipse.structuredb.viewer.StructureDBLightweightLabelDecorator"
+                   adaptable="true" >
+                   <enablement>
+                       <objectClass name="net.bioclipse.structuredb.StructureDBInstance"/>
+                   </enablement>
+            <description>
+                Structuredb decorator
+            </description>
+        </decorator>
+   </extension>
 </plugin>

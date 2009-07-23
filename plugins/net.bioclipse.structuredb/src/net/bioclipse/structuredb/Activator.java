@@ -16,6 +16,8 @@ import net.bioclipse.databases.IDatabasehangeListener;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener;
 import net.bioclipse.structuredb.business.IJSStructuredbManager;
 import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.viewer.IStructureDBLabelDecoratorChangeListener;
+import net.bioclipse.structuredb.viewer.StructureDBLightweightLabelDecorator;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -40,6 +42,9 @@ public class Activator extends AbstractUIPlugin
     private ServiceTracker finderTracker;
     private ServiceTracker jsFinderTracker;
     private ServiceTracker dbChangeListenersTracker;
+    private ServiceTracker dbDecoratorChangeTracker;
+
+    private BundleContext bundleContext;
 
     /**
      * The constructor
@@ -66,6 +71,13 @@ public class Activator extends AbstractUIPlugin
                                   IDatabasehangeListener.class.getName(),
                                   null );
         dbChangeListenersTracker.open();
+        this.bundleContext = context;
+        dbDecoratorChangeTracker
+            = new ServiceTracker( 
+                context,
+                IStructureDBLabelDecoratorChangeListener.class.getName(),
+                null );
+        dbDecoratorChangeTracker.open();
     }
 
     public void stop(BundleContext context) throws Exception {
@@ -136,5 +148,26 @@ public class Activator extends AbstractUIPlugin
                 ( (IDatabasehangeListener)o ).fireRefresh();
             }
         }
+    }
+    
+    public void triggerDatabaseDecoratorsUpdate() {
+        for ( Object o : dbDecoratorChangeTracker.getServices() ) {
+            if ( o instanceof IStructureDBLabelDecoratorChangeListener ) {
+                ( (IStructureDBLabelDecoratorChangeListener) o ).fireRefresh();
+            }
+        }
+    }
+    
+    /**
+     * @param structureDBLightweightLabelDecorator
+     */
+    public void publishStructureDBDecoratorChangeListener( 
+                    IStructureDBLabelDecoratorChangeListener l ) {
+
+        bundleContext.registerService( 
+                          IStructureDBLabelDecoratorChangeListener.class
+                                                                  .getName(), 
+                          l, 
+                          null );
     }
 }

@@ -16,6 +16,7 @@ import java.util.List;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener;
+import net.bioclipse.structuredb.business.IStructuredbManager;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
@@ -43,13 +44,14 @@ public class StructureDBInstance implements IStructureDBChangeListener {
     }
     
     public List<Label> getChildren() {
+        IStructuredbManager structureDB = Activator.getDefault()
+                                                   .getStructuredbManager();
         if ( cachedChildren != null ) {
             return cachedChildren;
         }
         List<Label> children = new ArrayList<Label>();
         for ( net.bioclipse.structuredb.domain.TextAnnotation a : 
-              Activator.getDefault().getStructuredbManager()
-                                    .allLabels( name ) ) {
+              structureDB.allLabels( name ) ) {
             children.add( new Label( a, this ) );
         }
         cachedChildren = children;
@@ -72,5 +74,11 @@ public class StructureDBInstance implements IStructureDBChangeListener {
 
     public String getName() {
         return name;
+    }
+
+    public int getNumberOfMolecules() {
+
+        return Activator.getDefault().getStructuredbManager()
+                                     .numberOfMoleculesInDatabaseInstance(name);
     }
 }

@@ -22,16 +22,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.bioclipse.cdk.business.Activator;
 import net.bioclipse.cdk.business.CDKManager;
-import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.CDKMolecule;
 import net.bioclipse.cdk.domain.ICDKMolecule;
-import net.bioclipse.core.ResourcePathTransformer;
 import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.core.domain.IMolecule;
+import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.hsqldb.HsqldbUtil;
+import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener.DatabaseUpdateType;
 import net.bioclipse.structuredb.domain.Annotation;
@@ -172,6 +170,7 @@ public class StructuredbManager implements IStructuredbManager {
         logger.info( "A new local instance of Structuredb named"
                       + databaseName + " has been created" );
         fireDatabasesChanged();
+        updateDatabaseDecorators();
     }
 
     /**
@@ -245,6 +244,7 @@ public class StructuredbManager implements IStructuredbManager {
         internalManagers.get(databaseName).insertMolecule(m);
         logger.debug( "DBMolecule " + moleculeName
                       + " inserted in " + databaseName );
+        updateDatabaseDecorators();
         return m;
     }
 
@@ -257,6 +257,7 @@ public class StructuredbManager implements IStructuredbManager {
         checkDatabaseName(databaseName);
         User user = new User(username, password, sudoer);
         internalManagers.get(databaseName).insertUser(user);
+        updateDatabaseDecorators();
         return user;
     }
 
@@ -266,6 +267,7 @@ public class StructuredbManager implements IStructuredbManager {
         applicationContexts.remove( databaseName );
         HsqldbUtil.getInstance().remove( databaseName + ".sdb" );
         fireDatabasesChanged();
+        updateDatabaseDecorators();
     }
 
     public List<Annotation> allAnnotations(String databaseName) {
@@ -378,7 +380,8 @@ public class StructuredbManager implements IStructuredbManager {
         System.out.println("Time consumed: " + (end - start)/1000);
         iterator = null;
         monitor.done();
-        fireAnnotationsChanged();        
+        fireAnnotationsChanged(); 
+        updateDatabaseDecorators();
     }
 
     public List<String> allDatabaseNames() {
@@ -486,6 +489,7 @@ public class StructuredbManager implements IStructuredbManager {
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName ).delete( annotation );
         fireAnnotationsChanged();
+        updateDatabaseDecorators();
     }
 
     public void deleteStructure( String databaseName, 
@@ -493,12 +497,14 @@ public class StructuredbManager implements IStructuredbManager {
      
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName ).delete( dBMolecule );
+        updateDatabaseDecorators();
     }
 
     public void save( String databaseName, DBMolecule dBMolecule ) {
 
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName ).update( dBMolecule );
+        updateDatabaseDecorators();
     }
 
     public void save( String databaseName, Annotation annotation ) {
@@ -516,6 +522,7 @@ public class StructuredbManager implements IStructuredbManager {
             internalManagers.get( databaseName )
                             .update( (ChoiceAnnotation)annotation );
         }
+        updateDatabaseDecorators();
     }
 
     public List<DBMolecule> smartsQuery( String databaseName, 
@@ -593,6 +600,7 @@ public class StructuredbManager implements IStructuredbManager {
                                      Annotation annotation ) {
         checkDatabaseName(databaseName);
         deleteWithMolecules( databaseName, annotation, null );
+        updateDatabaseDecorators();
     }
 
     public void deleteWithMolecules( String databaseName, 
@@ -602,6 +610,7 @@ public class StructuredbManager implements IStructuredbManager {
         internalManagers.get( databaseName )
                         .deleteWithMolecules( annotation, monitor );
         fireAnnotationsChanged();
+        updateDatabaseDecorators();
     }
 
     public void addMoleculesFromSDF( String databaseName, IFile file ) 
@@ -610,6 +619,7 @@ public class StructuredbManager implements IStructuredbManager {
         addMoleculesFromSDF( databaseName, 
                              file, 
                              new NullProgressMonitor() );
+        updateDatabaseDecorators();
     }
 
     public ChoiceAnnotation createChoiceAnnotation( String databaseName,
@@ -631,6 +641,7 @@ public class StructuredbManager implements IStructuredbManager {
                                                             property );
         internalManagers.get( databaseName )
                         .insertChoiceAnnotation( annotation );
+        updateDatabaseDecorators();
         return annotation;
     }
 
@@ -654,6 +665,7 @@ public class StructuredbManager implements IStructuredbManager {
                                                                     property );
         internalManagers.get( databaseName )
                         .insertRealNumberAnnotation( annotation );
+        updateDatabaseDecorators();
         return annotation;
     }
 
@@ -676,6 +688,7 @@ public class StructuredbManager implements IStructuredbManager {
                                                         property );
         internalManagers.get( databaseName )
                         .insertTextAnnotation( annotation );
+        updateDatabaseDecorators();
         return annotation;
     }
 
@@ -698,5 +711,17 @@ public class StructuredbManager implements IStructuredbManager {
 
         return internalManagers.get( databaseName )
                                .numberOfMoleculesInLabel(annotation);
+    }
+
+    public int numberOfMoleculesInDatabaseInstance( String databaseName ) {
+
+        return internalManagers.get( databaseName )
+                               .numberOfMolecules();
+    }
+    
+    private void updateDatabaseDecorators() {
+        if ( Activator.getDefault() != null ) {
+            Activator.getDefault().triggerDatabaseDecoratorsUpdate();
+        }
     }
 }

@@ -515,5 +515,7 @@ public interface IStructuredbManager extends IBioclipseManager {
     public DBMolecule moleculeAtIndexInLabel( String databaseName, 
                                               int index, 
                                               TextAnnotation annotation );
+
+    public int numberOfMoleculesInDatabaseInstance( String databaseName );
     
 }
