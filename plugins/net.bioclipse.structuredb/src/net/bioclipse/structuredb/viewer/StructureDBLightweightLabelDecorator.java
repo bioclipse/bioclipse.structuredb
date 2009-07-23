@@ -11,6 +11,7 @@
 package net.bioclipse.structuredb.viewer;
 
 import net.bioclipse.structuredb.Activator;
+import net.bioclipse.structuredb.Label;
 import net.bioclipse.structuredb.StructureDBInstance;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener;
 
@@ -39,6 +40,10 @@ public class StructureDBLightweightLabelDecorator
 
         if ( element instanceof StructureDBInstance ) {
             int n = ( (StructureDBInstance) element ).getNumberOfMolecules();
+            decoration.addSuffix( " [" + n + "]" );
+        }
+        if ( element instanceof Label ) {
+            int n = ( (Label) element ).getNumberOfMolecules();
             decoration.addSuffix( " [" + n + "]" );
         }
     }

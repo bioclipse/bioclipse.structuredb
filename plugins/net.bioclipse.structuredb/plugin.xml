@@ -116,7 +116,7 @@
                    class="net.bioclipse.structuredb.viewer.StructureDBLightweightLabelDecorator"
                    adaptable="true" >
                    <enablement>
-                       <objectClass name="net.bioclipse.structuredb.StructureDBInstance"/>
+                       <objectClass name="net.bioclipse.structuredb.IDatabasesElement"/>
                    </enablement>
             <description>
                 Structuredb decorator

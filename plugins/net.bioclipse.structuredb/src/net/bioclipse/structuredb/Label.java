@@ -25,7 +25,7 @@ import net.bioclipse.structuredb.domain.TextAnnotation;
 /**
  * @author jonalv
  */
-public class Label implements IEditorInput {
+public class Label implements IEditorInput, IDatabasesElement {
 
     private StructureDBInstance parent;
     private Logger logger;
@@ -91,5 +91,15 @@ public class Label implements IEditorInput {
     
     public String toString() {
         return name;
+    }
+
+    /**
+     * @return
+     */
+    public int getNumberOfMolecules() {
+
+        return Activator.getDefault().getStructuredbManager()
+                        .numberOfMoleculesInLabel( parent.getName(), 
+                                                   annotation );
     }
 }
