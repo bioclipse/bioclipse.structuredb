@@ -88,4 +88,8 @@ public class Label implements IEditorInput {
     public String getName() {
         return name;
     }
+    
+    public String toString() {
+        return name;
+    }
 }
