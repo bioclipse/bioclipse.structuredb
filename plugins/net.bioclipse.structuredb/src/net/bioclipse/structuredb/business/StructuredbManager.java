@@ -377,7 +377,7 @@ public class StructuredbManager implements IStructuredbManager {
             monitor.worked( maintTaskTick );
         }
         long end = System.currentTimeMillis();
-        System.out.println("Time consumed: " + (end - start)/1000);
+        logger.debug("addMoleculesFromSDF took " + (end - start) + " ms");
         iterator = null;
         monitor.done();
         fireAnnotationsChanged(); 
