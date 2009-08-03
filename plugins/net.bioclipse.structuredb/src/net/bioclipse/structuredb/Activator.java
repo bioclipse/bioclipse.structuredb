@@ -151,7 +151,11 @@ public class Activator extends AbstractUIPlugin
     }
     
     public void triggerDatabaseDecoratorsUpdate() {
-        for ( Object o : dbDecoratorChangeTracker.getServices() ) {
+        Object[] services = dbDecoratorChangeTracker.getServices();
+        if ( services == null ) {
+            return;
+        }
+        for ( Object o : services ) {
             if ( o instanceof IStructureDBLabelDecoratorChangeListener ) {
                 ( (IStructureDBLabelDecoratorChangeListener) o ).fireRefresh();
             }
