@@ -13,6 +13,7 @@ package net.bioclipse.structuredb.persistency.dao;
 import java.util.Iterator;
 import java.util.List;
 
+import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 
@@ -57,5 +58,5 @@ public interface IDBMoleculeDao extends IGenericDao<DBMolecule> {
     public DBMolecule getMoleculeAtIndexInLabel( TextAnnotation label, 
                                                  int index );
 
-    public int getNumberOfMoleculesWithLabel( TextAnnotation label );
+    public int getNumberOfMoleculesWithAnnotation( Annotation label );
 }

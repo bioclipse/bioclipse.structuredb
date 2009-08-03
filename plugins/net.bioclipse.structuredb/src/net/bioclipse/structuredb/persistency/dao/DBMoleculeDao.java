@@ -235,10 +235,10 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
         return label.getProperty().getName() + index;
     }
 
-    public int getNumberOfMoleculesWithLabel( TextAnnotation label ) {
+    public int getNumberOfMoleculesWithAnnotation( Annotation annotation ) {
         return (Integer) getSqlMapClientTemplate()
                          .queryForObject( 
                              "DBMolecule.numberOfMoleculesWithLabel", 
-                             label.getId() );
+                             annotation.getId() );
     }
 }

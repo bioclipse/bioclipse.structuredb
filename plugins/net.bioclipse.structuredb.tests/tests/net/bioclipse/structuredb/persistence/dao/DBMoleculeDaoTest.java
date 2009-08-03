@@ -244,7 +244,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         textAnnotationDao.insert( annotation );
         IDBMoleculeDao dbMoleculeDao = (IDBMoleculeDao)dao;
         assertEquals( 0, 
-                      dbMoleculeDao.getNumberOfMoleculesWithLabel( 
+                      dbMoleculeDao.getNumberOfMoleculesWithAnnotation( 
                           annotation ) );
         object1.addAnnotation( annotation );
         object2.addAnnotation( annotation );
@@ -260,7 +260,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
                                        .getDBMolecules().size() );
         
         assertEquals( 2, 
-                      dbMoleculeDao.getNumberOfMoleculesWithLabel( 
+                      dbMoleculeDao.getNumberOfMoleculesWithAnnotation( 
                           annotation ) );
     }
 }

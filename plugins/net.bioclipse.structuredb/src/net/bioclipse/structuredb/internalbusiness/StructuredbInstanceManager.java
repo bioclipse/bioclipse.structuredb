@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubProgressMonitor;
 
 import net.bioclipse.core.domain.RecordableList;
@@ -148,7 +149,8 @@ public class StructuredbInstanceManager
             = new SubProgressMonitor(monitor, (int) (0.1 * ticks));
         sub.beginTask( "Preparing to delete", 1 );
         List<DBMolecule> dBMolecules = annotation.getDBMolecules();
-        int molecules = annotation.getDBMolecules().size();
+        int molecules = dBMoleculeDao
+                            .getNumberOfMoleculesWithAnnotation( annotation );
         int tick = molecules <= 0 ? 0 : ticks / molecules;
         sub.worked( 1 );
         sub.done();
@@ -156,6 +158,9 @@ public class StructuredbInstanceManager
             dBMoleculeDao.delete( s.getId() );
             monitor.worked( tick );
             monitor.subTask( "Deleted molecule:" + tick + "/" + molecules );
+            if ( monitor.isCanceled() ) {
+                throw new OperationCanceledException();
+            }
         }
         if ( annotation instanceof ChoiceAnnotation) {
             choiceAnnotationDao.delete( annotation.getId() );
@@ -268,6 +273,6 @@ public class StructuredbInstanceManager
 
     public int numberOfMoleculesInLabel( TextAnnotation annotation ) {
 
-        return dBMoleculeDao.getNumberOfMoleculesWithLabel( annotation );
+        return dBMoleculeDao.getNumberOfMoleculesWithAnnotation( annotation );
     }
 }
