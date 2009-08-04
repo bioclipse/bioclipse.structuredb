@@ -690,8 +690,23 @@ public class StructuredbManagerTest
         assertFalse( manager.allLabels( database1 ).contains( b ) );
     }
     
-    public void testAddMoleculesFromSDF() {
-        fail("Not yet implemented");
+    public void testAddMoleculesFromSDF() throws BioclipseException, 
+                                                 FileNotFoundException {
+        fail( "Can not test this without pluign test" );
+        manager.addMoleculesFromSDF( database1, 
+                                     new MockIFile( 
+                                         TestData.getTestSDFFilePath() ) );
+        boolean foundAnnotation = false;
+        Annotation annotation = null;
+        for ( Annotation a :  manager.allAnnotations( database1 ) ) {
+            if ( a.getValue().equals( TestData.getTestSDFFilePath()
+                             .replaceAll("\\..*?$", "") ) ) {
+                foundAnnotation = true;
+                annotation = a;
+            }
+        }
+        assertTrue( foundAnnotation );
+        assertEquals( 2, annotation.getDBMolecules().size() );
     }
     
 }
