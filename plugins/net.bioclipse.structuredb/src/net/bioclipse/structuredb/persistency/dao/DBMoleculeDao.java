@@ -229,7 +229,7 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
             return result;
         }
         
-        final int CACHESIZE = 200;
+        final int CACHESIZE = 10;
         
         List<DBMolecule> results 
             = getSqlMapClientTemplate()
