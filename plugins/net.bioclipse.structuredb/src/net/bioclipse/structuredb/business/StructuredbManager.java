@@ -14,11 +14,13 @@ import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +30,7 @@ import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.domain.RecordableList;
+import net.bioclipse.core.util.TimeCalculater;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Structuredb;
@@ -354,7 +357,21 @@ public class StructuredbManager implements IStructuredbManager {
 
         long start = System.currentTimeMillis();
         while ( iterator.hasNext() && !monitor.isCanceled()) {
-            monitor.subTask("reading " + moleculesRead + "/" + entries);
+            String timeEstimation = "";
+            long now = System.currentTimeMillis();
+            long elapsed = now - start;
+            if ( elapsed > 5000 ) {
+                long timeForOneEntry 
+                    = (elapsed) / moleculesRead;
+                long timeRemaining 
+                    = timeForOneEntry * (entries - moleculesRead);
+                timeEstimation 
+                    = " (estimating about: " 
+                      + TimeCalculater.millisecsToString(timeRemaining)
+                      + " remaining)";
+            }
+            monitor.subTask( "reading " + moleculesRead + "/" + entries 
+                             + timeEstimation );
 
             ICDKMolecule molecule = iterator.next();
             moleculesRead++;
