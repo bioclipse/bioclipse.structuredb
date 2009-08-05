@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
+import net.bioclipse.cdk.business.Activator;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.RecordableList;
@@ -111,15 +112,15 @@ public class DBMolecule extends BaseObject
         }
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         atomContainer        = cdkMolecule.getAtomContainer();
-        try {
-            smiles = cdkMolecule.toSMILES(
-            );
-        }
-        catch (BioclipseException e) {
+//        try {
+//            smiles = cdkMolecule.toSMILES(
+//            );
+//        }
+//        catch (BioclipseException e) {
+//            smiles = "";
+//        } catch (NullPointerException e) {
             smiles = "";
-        } catch (NullPointerException e) {
-            smiles = "";
-        }
+//        }
         
         annotations = new ArrayList<Annotation>();
     }
@@ -377,5 +378,19 @@ public class DBMolecule extends BaseObject
     public Object getProperty( String propertyKey, Property urgency ) {
 
         throw new UnsupportedOperationException();
+    }
+    
+    public String toString() {
+        if ( getName() != null && !getName().equals( "\"\"" ) )
+            return getClass().getSimpleName() + ":" + getName();
+        if (this.getAtomContainer().getAtomCount() == 0) {
+            return getClass().getSimpleName() + ": no atoms";
+        }
+        if (Activator.getDefault() == null)
+            return getClass().getSimpleName() + ":" + hashCode();
+
+        return getClass().getSimpleName() + ":" 
+               + Activator.getDefault().getJavaCDKManager()
+                                       .molecularFormula(this);
     }
 }
