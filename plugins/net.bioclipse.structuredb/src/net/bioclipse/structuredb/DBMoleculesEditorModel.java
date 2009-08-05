@@ -16,35 +16,27 @@ import net.bioclipse.structuredb.business.IStructuredbManager;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 
-/*
- * TODO: This implementation loads all molecules from the database 
- * directly and saves all molecules back. There is very much room for 
- * optimisation by only loading the needed molecules and only saving the 
- * edited ones.  
- */
-
 /**
  * @author jonalv
  *
  */
 public class DBMoleculesEditorModel implements IMoleculesEditorModel {
 
-    private IStructuredbManager structuredb = Activator
-                                              .getDefault()
-                                              .getStructuredbManager();
+    private IStructuredbManager structuredb 
+        = Activator.getDefault().getStructuredbManager();
     private TextAnnotation annotation;
     private String databaseName;
     
-    public DBMoleculesEditorModel( String databaseName, 
+    public DBMoleculesEditorModel( String databaseName,
                                    TextAnnotation annotation ) {
         this.annotation = annotation;
         this.databaseName = databaseName;
     }
     
     public ICDKMolecule getMoleculeAt( int index ) {
-        final DBMolecule mol= structuredb.moleculeAtIndexInLabel( databaseName, 
-                                                                  index, 
-                                                                  annotation );
+        final DBMolecule mol = structuredb.moleculeAtIndexInLabel( databaseName,
+                                                                   index,
+                                                                   annotation );
         return mol;
     }
 
