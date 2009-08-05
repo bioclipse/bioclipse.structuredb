@@ -24,14 +24,18 @@ import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 
 /**
- * The DBMoleculeDao persists and loads structures
+ * The DBMoleculeDao persists and loads structures and does some fancy caching
  * 
  * @author jonalv
  *
  */
-public class DBMoleculeDao extends GenericDao<DBMolecule> 
+public class DBMoleculeDao extends GenericDao<DBMolecule>
                            implements IDBMoleculeDao {
 
+    private int numberofMoleculesInDataBase = -1;
+    private Map<Annotation, Integer> numberOfMolecules
+        = new WeakHashMap<Annotation, Integer>();
+    
     public DBMoleculeDao() {
         super(DBMolecule.class);
     }
@@ -42,18 +46,26 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
     @Override
     public void insert( final DBMolecule dBMolecule ) {
         
-        getSqlMapClientTemplate().update( "BaseObject.insert", 
+        getSqlMapClientTemplate().update( "BaseObject.insert",
                                           dBMolecule );
         getSqlMapClientTemplate()
-            .update( type.getSimpleName() + ".insert", 
+            .update( type.getSimpleName() + ".insert",
                      dBMolecule );
         fixStructureAnnotation(dBMolecule);
+        resetNumberOfMolculesCaches(dBMolecule);
     }
     
+    private void resetNumberOfMolculesCaches(DBMolecule molecule) {
+        for ( Annotation a : molecule.getAnnotations() ) {
+            numberOfMolecules.remove( a );
+        }
+        numberofMoleculesInDataBase = -1;
+    }
+
     private void fixStructureAnnotation( final DBMolecule dBMolecule ) {
 
         getSqlMapClientTemplate()
-            .delete( "DBMolecule.deleteAnnotationCoupling", 
+            .delete( "DBMolecule.deleteAnnotationCoupling",
                      dBMolecule );
         for ( final Annotation a : dBMolecule.getAnnotations() ) {
             Map<String, String> params = new HashMap<String, String>() {
@@ -64,13 +76,13 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
                     put( "dBMoleculeId", dBMolecule.getId() );
                 }
             };
-            if ( (Integer) getSqlMapClientTemplate().queryForObject( 
-                     "DBMoleculeAnnotation.hasConnection", 
-                      params ) 
+            if ( (Integer) getSqlMapClientTemplate().queryForObject(
+                     "DBMoleculeAnnotation.hasConnection",
+                      params )
                  == 0 ) {
                 
                 getSqlMapClientTemplate()
-                    .update( "DBMoleculeAnnotation.connect", 
+                    .update( "DBMoleculeAnnotation.connect",
                              params );
             }
         }
@@ -78,11 +90,12 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
 
     @Override
     public void update(DBMolecule dBMolecule) {
-        getSqlMapClientTemplate().update( "DBMolecule.update",  
+        getSqlMapClientTemplate().update( "DBMolecule.update",
                                           dBMolecule );
-        getSqlMapClientTemplate().update( "BaseObject.update", 
+        getSqlMapClientTemplate().update( "BaseObject.update",
                                           dBMolecule );
         fixStructureAnnotation( dBMolecule );
+        resetNumberOfMolculesCaches( dBMolecule );
     }
 
     @SuppressWarnings("unchecked")
@@ -111,7 +124,7 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
             this.sqlMapId = sqlMapId;
         }
         
-        public StructureIterator( SqlMapClient sqlMapClient, 
+        public StructureIterator( SqlMapClient sqlMapClient,
                                   String sqlMapId,
                                   Object queryParam ) {
             this.sqlMapClient = sqlMapClient;
@@ -124,9 +137,9 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
 
             try {
                 List<DBMolecule> result = (List<DBMolecule>)sqlMapClient
-                                         .queryForList( sqlMapId, 
-                                                        queryParam, 
-                                                        skip, 
+                                         .queryForList( sqlMapId,
+                                                        queryParam,
+                                                        skip,
                                                         1 );
                 if(result.size() != 1) {
                     nextStructure = null;
@@ -151,62 +164,66 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
                 skip++;
                 return nextStructure;
             }
-            throw new IllegalStateException( 
+            throw new IllegalStateException(
                 "There is no next structure" );
         }
 
         public void remove() {
-            throw new UnsupportedOperationException();            
+            throw new UnsupportedOperationException();
         }
     }
 
-    public void insertWithAnnotation( DBMolecule dBMolecule, 
+    public void insertWithAnnotation( DBMolecule dBMolecule,
                                       String annotationId ) {
 
-        getSqlMapClientTemplate().update( "BaseObject.insert", 
+        getSqlMapClientTemplate().update( "BaseObject.insert",
                                           dBMolecule );
-        getSqlMapClientTemplate().update( "DBMolecule.insert",  
+        getSqlMapClientTemplate().update( "DBMolecule.insert",
                                           dBMolecule );
 
         Map<String, String> params = new HashMap<String, String>();
         params.put( "dBMoleculeId",  dBMolecule.getId() );
         params.put( "annotationId", annotationId );
-        getSqlMapClientTemplate().update( "DBMoleculeAnnotation.connect", 
+        getSqlMapClientTemplate().update( "DBMoleculeAnnotation.connect",
                                           params );
+        resetNumberOfMolculesCaches( dBMolecule );
     }
 
     public int numberOfStructures() {
-        
-        return (Integer) getSqlMapClientTemplate()
-                         .queryForObject( "DBMolecule.numberOf" );
+        if ( numberofMoleculesInDataBase == -1 ) {
+            numberofMoleculesInDataBase 
+                = ( (Integer)getSqlMapClientTemplate()
+                    .queryForObject( "DBMolecule.numberOf" ) ).intValue();
+        }
+        return numberofMoleculesInDataBase;
     }
 
-    public Iterator<DBMolecule> fingerPrintSubsetSearch( 
+    public Iterator<DBMolecule> fingerPrintSubsetSearch(
                                    byte[] fingerPrint ) {
 
         Map<String, byte[]> paramaterMap = new HashMap<String, byte[]>();
         paramaterMap.put( "param", fingerPrint );
         return 
-            new StructureIterator( getSqlMapClient(), 
-                                   "DBMolecule.fingerPrintSubsetSearch", 
+            new StructureIterator( getSqlMapClient(),
+                                   "DBMolecule.fingerPrintSubsetSearch",
                                    paramaterMap );
     }
 
-    public int numberOfFingerprintSubstructureMatches( 
+    public int numberOfFingerprintSubstructureMatches(
                    byte[] fingerPrint ) {
         
         Map<String, byte[]> paramaterMap = new HashMap<String, byte[]>();
         paramaterMap.put( "param", fingerPrint );
-        return (Integer) getSqlMapClientTemplate().queryForObject( 
-            "DBMolecule.numberOfFingerprintSubstructureMatches", 
+        return (Integer) getSqlMapClientTemplate().queryForObject(
+            "DBMolecule.numberOfFingerprintSubstructureMatches",
             paramaterMap );
     };
     
     @SuppressWarnings("unchecked")
-    public DBMolecule getMoleculeAtIndexInLabel( TextAnnotation label, 
+    public DBMolecule getMoleculeAtIndexInLabel( TextAnnotation label,
                                                  int index ) {
         
-        DBMolecule result = cache.get( getKey(label, index) ); 
+        DBMolecule result = cache.get( getKey(label, index) );
         
         if ( result != null ) {
             return result;
@@ -216,18 +233,18 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
         
         List<DBMolecule> results 
             = getSqlMapClientTemplate()
-                  .queryForList( "DBMolecule.atIndexInLabel", 
-                                 label.getId(), 
-                                 index > CACHESIZE/2 ? index -CACHESIZE/2 
-                                                     : 0, 
+                  .queryForList( "DBMolecule.atIndexInLabel",
+                                 label.getId(),
+                                 index > CACHESIZE/2 ? index -CACHESIZE/2
+                                                     : 0,
                                  CACHESIZE );
-        int i = index > CACHESIZE/2 ? -CACHESIZE/2 
+        int i = index > CACHESIZE/2 ? -CACHESIZE/2
                                     : -index ;
         cache.clear();
         for (DBMolecule m  : results ) {
             cache.put( getKey( label, index + i++), m );
         }
-        return results.size() != 0 ? cache.get( getKey( label, index ) ) 
+        return results.size() != 0 ? cache.get( getKey( label, index ) )
                                    : null;
     }
 
@@ -236,9 +253,14 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
     }
 
     public int getNumberOfMoleculesWithAnnotation( Annotation annotation ) {
-        return (Integer) getSqlMapClientTemplate()
-                         .queryForObject( 
-                             "DBMolecule.numberOfMoleculesWithLabel", 
-                             annotation.getId() );
+        Integer numOfMolecules = numberOfMolecules.get( annotation );
+        if ( numOfMolecules == null ) {
+            numOfMolecules = (Integer) 
+                             getSqlMapClientTemplate().queryForObject(
+                                 "DBMolecule.numberOfMoleculesWithLabel",
+                                  annotation.getId() );
+            numberOfMolecules.put( annotation, numOfMolecules );
+        }
+        return numOfMolecules;
     }
 }
