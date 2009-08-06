@@ -44,6 +44,12 @@
                     label="Delete"
                     menubarPath="additions"
                     tooltip="Deletes the database and everything in it"/>
+            <action class="net.bioclipse.structuredb.actions.SubStructureSearchAction"
+                    enablesFor="1"
+                    id="net.bioclipse.structuredb.actions.SubStructureSearchAction"
+                    label="Sub Structure Search..."
+                    menubarPath="additions"
+                    tooltip="Open a dialog to select molecule to search for sub structures in this database"/>
         </objectContribution>
         
         <objectContribution adaptable="false"
