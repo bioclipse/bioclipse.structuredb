@@ -112,15 +112,15 @@ public class DBMolecule extends BaseObject
         }
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         atomContainer        = cdkMolecule.getAtomContainer();
-//        try {
-//            smiles = cdkMolecule.toSMILES(
-//            );
-//        }
-//        catch (BioclipseException e) {
-//            smiles = "";
-//        } catch (NullPointerException e) {
+        try {
+            smiles = cdkMolecule.toSMILES(
+            );
+        }
+        catch (BioclipseException e) {
             smiles = "";
-//        }
+        } catch (NullPointerException e) {
+            smiles = "";
+        }
         
         annotations = new ArrayList<Annotation>();
     }
