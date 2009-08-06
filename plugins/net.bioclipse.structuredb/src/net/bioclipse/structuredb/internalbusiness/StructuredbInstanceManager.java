@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 
 import net.bioclipse.core.domain.RecordableList;
@@ -139,39 +140,9 @@ public class StructuredbInstanceManager
 
     public void deleteWithMolecules( Annotation annotation, 
                                      IProgressMonitor monitor ) {
-
-        int ticks = 1000;
-        if(monitor == null) {
-            monitor = new NullProgressMonitor();
-        }
-        monitor.beginTask( "Deleting Structures", ticks); 
-        IProgressMonitor sub 
-            = new SubProgressMonitor(monitor, (int) (0.1 * ticks));
-        sub.beginTask( "Preparing to delete", 1 );
-        List<DBMolecule> dBMolecules = annotation.getDBMolecules();
-        int molecules = dBMoleculeDao
-                            .getNumberOfMoleculesWithAnnotation( annotation );
-        int tick = molecules <= 0 ? 0 : ticks / molecules;
-        sub.worked( 1 );
-        sub.done();
-        for ( DBMolecule s : dBMolecules ) {
-            dBMoleculeDao.delete( s.getId() );
-            monitor.worked( tick );
-            monitor.subTask( "Deleted molecule:" + tick + "/" + molecules );
-            if ( monitor.isCanceled() ) {
-                throw new OperationCanceledException();
-            }
-        }
-        if ( annotation instanceof ChoiceAnnotation) {
-            choiceAnnotationDao.delete( annotation.getId() );
-        }
-        else if ( annotation instanceof RealNumberAnnotation ) {
-            realNumberAnnotationDao.delete( annotation.getId() );
-        }
-        else if ( annotation instanceof TextAnnotation ) {
-            textAnnotationDao.delete( annotation.getId() );
-        }
-        monitor.done();
+        throw new RuntimeException(
+            "This feature is not implemented yet. " +
+            "You can only remove entire databases for the moment" );
     }
 
     public void insertChoiceAnnotation( ChoiceAnnotation choiceAnnotation ) {
