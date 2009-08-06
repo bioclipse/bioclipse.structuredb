@@ -621,8 +621,8 @@ public class StructuredbManager implements IStructuredbManager {
     }
 
     public void deleteWithMolecules( String databaseName, 
-                                      Annotation annotation,
-                                      IProgressMonitor monitor ) {
+                                     Annotation annotation,
+                                     IProgressMonitor monitor ) {
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName )
                         .deleteWithMolecules( annotation, monitor );
