@@ -485,6 +485,10 @@ public class StructuredbManager implements IStructuredbManager {
                                                 IProgressMonitor monitor )
                            throws BioclipseException {
         
+        if ( monitor == null ) {
+            monitor = new NullProgressMonitor();
+        }
+        
         checkDatabaseName(databaseName);
         List<DBMolecule> dBMolecules = new RecordableList<DBMolecule>();
         Iterator<DBMolecule> iterator 
