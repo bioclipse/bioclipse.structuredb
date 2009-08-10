@@ -10,29 +10,21 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.actions;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.chemoinformatics.dialogs.PickMoleculeDialog;
-import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IBioObject;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.util.LogUtils;
-import net.bioclipse.structuredb.Label;
 import net.bioclipse.structuredb.StructureDBInstance;
-import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 import net.bioclipse.ui.business.IUIManager;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionDelegate;
 
