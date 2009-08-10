@@ -76,8 +76,8 @@ public class SubStructureSearchAction extends ActionDelegate {
         ICDKManager cdk 
             = net.bioclipse.cdk.business.Activator.getDefault()
                                                   .getJavaCDKManager();
-        IMolecule molecule = cdk.loadMolecule( selectedFile );
         try {
+            IMolecule molecule = cdk.loadMolecule( selectedFile );
             ui.open( (IBioObject)structuredb.subStructureSearch( dbName, 
                                                                  molecule ) );
         }
