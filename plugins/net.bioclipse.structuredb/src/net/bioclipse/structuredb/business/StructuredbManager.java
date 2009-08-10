@@ -25,8 +25,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.bioclipse.cdk.business.CDKManager;
+import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.CDKMolecule;
 import net.bioclipse.cdk.domain.ICDKMolecule;
+import net.bioclipse.core.ResourcePathTransformer;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.domain.RecordableList;
@@ -366,9 +368,10 @@ public class StructuredbManager implements IStructuredbManager {
                 long timeRemaining 
                     = timeForOneEntry * (entries - moleculesRead);
                 timeEstimation 
-                    = " (estimating about: " 
+                    = " (Estimating about: " 
                       + TimeCalculater.millisecsToString(timeRemaining)
-                      + " remaining)";
+                      + " remaining for file: " 
+                      + file.getName() + " )";
             }
             monitor.subTask( "reading " + moleculesRead + "/" + entries 
                              + timeEstimation );
@@ -743,6 +746,65 @@ public class StructuredbManager implements IStructuredbManager {
     private void updateDatabaseDecorators() {
         if ( Activator.getDefault() != null ) {
             Activator.getDefault().triggerDatabaseDecoratorsUpdate();
+        }
+    }
+
+    public void addMoleculesFromFiles( String dbName, 
+                                       List<?> selectedFiles ) {
+        throw new IllegalStateException(
+            "This method should not have been called. " +
+            "Something is probably wrong in CreateJobAdvice.java" );
+    }
+
+    public void addMoleculesFromFiles( String dbName,
+                                       List<?> files,
+                                       IProgressMonitor monitor ) {
+        
+        int ticks = 1000000;
+        monitor.beginTask( "Importing from files", ticks );
+        List<IFile> fileList = new ArrayList<IFile>();
+        for ( Object o : files ) {
+            if ( o instanceof IFile ) {
+                fileList.add( (IFile) o );
+            }
+            else if ( o instanceof String ) {
+                fileList.add( 
+                    ResourcePathTransformer.getInstance()
+                                           .transform( (String) o ) );
+            }
+            else {
+                throw new IllegalArgumentException( 
+                    o.toString() + " is not a String nor an IFile " );
+            }
+        }
+        
+        ICDKManager cdk = net.bioclipse.cdk.business.Activator
+                             .getDefault().getJavaCDKManager();
+        
+        for ( IFile f : fileList ) {
+            try {
+                String id = f.getContentDescription().getContentType().getId();
+                if ( id.equals( "net.bioclipse.contenttypes.sdf" )   ||
+                     id.equals( "net.bioclipse.contenttypes.sdf2d" ) ||
+                     id.equals( "net.bioclipse.contenttypes.sdf3d" ) ||
+                     id.equals( "net.bioclipse.contenttypes.sdf0d" ) ) { 
+                    
+                
+                    addMoleculesFromSDF( 
+                        dbName, 
+                        f, 
+                        new SubProgressMonitor( monitor, 
+                                                ticks/fileList.size() ) );
+                }
+                else {
+                    for ( ICDKMolecule m : cdk.loadMolecules( f ) ) {
+                        createMolecule( dbName, "", m );
+                    }
+                }
+            }
+            catch ( Exception e ) {
+                throw new RuntimeException("Ooops", e);
+            }
         }
     }
 }

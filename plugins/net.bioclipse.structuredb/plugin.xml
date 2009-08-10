@@ -50,6 +50,12 @@
                     label="Sub Structure Search..."
                     menubarPath="additions"
                     tooltip="Open a dialog to select molecule to search for sub structures in this database"/>
+            <action class="net.bioclipse.structuredb.actions.ImportMoleculesAction"
+                    enablesFor="1"
+                    id="net.bioclipse.structuredb.actions.ImportMoleculesAction"
+                    label="Import..."
+                    menubarPath="additions"
+                    tooltip="Open a dialog to select molecules to add to this database"/>
         </objectContribution>
         
         <objectContribution adaptable="false"

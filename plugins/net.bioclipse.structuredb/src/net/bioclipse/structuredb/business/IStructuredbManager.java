@@ -517,5 +517,24 @@ public interface IStructuredbManager extends IBioclipseManager {
                                               TextAnnotation annotation );
 
     public int numberOfMoleculesInDatabaseInstance( String databaseName );
+
     
+    @PublishedMethod( params = "String databaseName, java.util.List files",
+                      methodSummary = "Imports molecules from a list of " +
+                      		          "files containing molecules." )
+    /**
+     * @param dbName
+     * @param files a list containing <code>String</code> or <code>IFile</code>
+     */
+    public void addMoleculesFromFiles( String dbName, 
+                                       List<?> files );
+    
+    /**
+     * @param dbName
+     * @param files
+     * @param monitor
+     */
+    public void addMoleculesFromFiles( String dbName, 
+                                       List<?> files,
+                                       IProgressMonitor monitor );
 }
