@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import net.bioclipse.cdk.business.ICDKManager;
-import net.bioclipse.chemoinformatics.PickMoleculeDialog;
+import net.bioclipse.chemoinformatics.dialogs.PickMoleculeDialog;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IBioObject;
 import net.bioclipse.core.domain.IMolecule;
