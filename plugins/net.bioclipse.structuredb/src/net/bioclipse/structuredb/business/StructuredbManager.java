@@ -480,8 +480,7 @@ public class StructuredbManager implements IStructuredbManager {
     public List<DBMolecule> subStructureSearch( String databaseName,
                                                 IMolecule molecule ) 
                            throws BioclipseException {
-        checkDatabaseName(databaseName);
-        return subStructureSearch( databaseName, molecule, null );
+        throw new IllegalStateException("This method should never be called");
     }
 
     public List<DBMolecule> subStructureSearch( String databaseName,
@@ -814,6 +813,12 @@ public class StructuredbManager implements IStructuredbManager {
     public void smartsQuery( String dbName,
                              String smarts,
                              BioclipseUIJob<List<?>> uiJob ) {
+        throw new IllegalStateException("This method should never be called");
+    }
+
+    public void subStructureSearch( String dbName,
+                                    IMolecule molecule,
+                                    BioclipseUIJob<List<?>> uijob ) {
         throw new IllegalStateException("This method should never be called");
     }
 }

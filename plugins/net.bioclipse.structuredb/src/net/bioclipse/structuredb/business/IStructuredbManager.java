@@ -548,4 +548,13 @@ public interface IStructuredbManager extends IBioclipseManager {
     public void smartsQuery( String dbName,
                              String smarts,
                              BioclipseUIJob<List<?>> uiJob );
+
+    /**
+     * @param dbName
+     * @param molecule
+     * @param uijob
+     */
+    public void subStructureSearch( String dbName,
+                                    IMolecule molecule,
+                                    BioclipseUIJob<List<?>> uijob );
 }

@@ -10,17 +10,23 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.actions;
 
+import java.io.IOException;
+import java.util.List;
+
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.chemoinformatics.dialogs.PickMoleculeDialog;
+import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IBioObject;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.util.LogUtils;
+import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.structuredb.StructureDBInstance;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 import net.bioclipse.ui.business.IUIManager;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -68,7 +74,7 @@ public class SubStructureSearchAction extends ActionDelegate {
     private void performSubstructureSearch( String dbName,
                                             IFile selectedFile ) {
 
-        IUIManager ui 
+        final IUIManager ui 
             = net.bioclipse.ui.business.Activator.getDefault().getUIManager();
         IStructuredbManager structuredb 
             = net.bioclipse.structuredb.Activator.getDefault()
@@ -78,8 +84,21 @@ public class SubStructureSearchAction extends ActionDelegate {
                                                   .getJavaCDKManager();
         try {
             IMolecule molecule = cdk.loadMolecule( selectedFile );
-            ui.open( (IBioObject)structuredb.subStructureSearch( dbName, 
-                                                                 molecule ) );
+            BioclipseUIJob<List<?>> uijob = new BioclipseUIJob<List<?>>() {
+
+                @Override
+                public void runInUI() {
+                    try {
+                        ui.open( (IBioObject)getReturnValue() );
+                    }
+                    catch ( Exception e ) {
+                        LogUtils.handleException( e, logger );
+                    }
+                }
+            };
+            structuredb.subStructureSearch( dbName, 
+                                            molecule,
+                                            uijob );
         }
         catch ( Exception e ) {
             LogUtils.handleException( e, 
