@@ -20,6 +20,7 @@ import net.bioclipse.core.TestClasses;
 import net.bioclipse.core.TestMethods;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IMolecule;
+import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.managers.business.IBioclipseManager;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
@@ -537,4 +538,14 @@ public interface IStructuredbManager extends IBioclipseManager {
     public void addMoleculesFromFiles( String dbName, 
                                        List<?> files,
                                        IProgressMonitor monitor );
+
+    /**
+     * @param dbName
+     * @param smarts
+     * @param uiJob
+     * @return
+     */
+    public void smartsQuery( String dbName,
+                             String smarts,
+                             BioclipseUIJob<List<?>> uiJob );
 }

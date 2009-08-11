@@ -34,6 +34,7 @@ import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.core.util.TimeCalculater;
 import net.bioclipse.hsqldb.HsqldbUtil;
+import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener.DatabaseUpdateType;
@@ -551,9 +552,9 @@ public class StructuredbManager implements IStructuredbManager {
 
     public List<DBMolecule> smartsQuery( String databaseName, 
                                          String smarts ) {
-
-        checkDatabaseName(databaseName);
-        return smartsQuery( databaseName, smarts, null );
+        throw new IllegalStateException( 
+                      "Oops something is wrong, " +
+        		      "this method shouldn't have been called" );
     }
 
     public Iterator<DBMolecule> smartsQueryIterator( String databaseName,
@@ -808,5 +809,11 @@ public class StructuredbManager implements IStructuredbManager {
                 throw new RuntimeException("Ooops", e);
             }
         }
+    }
+
+    public void smartsQuery( String dbName,
+                             String smarts,
+                             BioclipseUIJob<List<?>> uiJob ) {
+        throw new IllegalStateException("This method should never be called");
     }
 }

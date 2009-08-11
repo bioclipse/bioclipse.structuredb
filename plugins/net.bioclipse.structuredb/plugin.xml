@@ -50,6 +50,12 @@
                     label="Sub Structure Search..."
                     menubarPath="additions"
                     tooltip="Open a dialog to select molecule to search for sub structures in this database"/>
+            <action class="net.bioclipse.structuredb.actions.SMARTSSearchAction"
+                    enablesFor="1"
+                    id="net.bioclipse.structuredb.actions.SMARTSSearchAction"
+                    label="SMARTS Query..."
+                    menubarPath="additions"
+                    tooltip="Open a dialog to to a SMART query for ask this database"/>        
             <action class="net.bioclipse.structuredb.actions.ImportMoleculesAction"
                     enablesFor="1"
                     id="net.bioclipse.structuredb.actions.ImportMoleculesAction"
