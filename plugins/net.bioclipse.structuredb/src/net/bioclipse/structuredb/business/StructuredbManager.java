@@ -581,10 +581,11 @@ public class StructuredbManager implements IStructuredbManager {
         String databaseName, String smarts, IProgressMonitor monitor) {
 
         checkDatabaseName(databaseName);
+        int numOfMolecules = internalManagers.get( databaseName )
+                                             .numberOfMolecules();
         if (monitor != null) {
             monitor.beginTask( "substructure search", 
-                               internalManagers.get( databaseName )
-                                               .numberOfMolecules() );
+                               numOfMolecules );
         }
         
         return new SmartsQueryIterator( internalManagers
@@ -592,7 +593,8 @@ public class StructuredbManager implements IStructuredbManager {
                                             .allStructuresIterator(),
                                         cdk,
                                         smarts, 
-                                        this, 
+                                        this,
+                                        numOfMolecules,
                                         monitor );
     }
 

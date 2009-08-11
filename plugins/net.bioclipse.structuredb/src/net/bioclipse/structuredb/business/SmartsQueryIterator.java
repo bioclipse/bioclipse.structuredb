@@ -13,6 +13,7 @@ package net.bioclipse.structuredb.business;
 import java.util.Iterator;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 
 import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
@@ -33,19 +34,22 @@ public class SmartsQueryIterator implements Iterator<DBMolecule> {
     private String smarts;
     private IStructuredbManager structuredb;
     private IProgressMonitor monitor;
+    private int numOfMolecules;
+    private int current = 1;
     
-    public SmartsQueryIterator( Iterator<DBMolecule> 
-                                    allStructuresIterator,
+    public SmartsQueryIterator( Iterator<DBMolecule> allStructuresIterator,
                                 CDKManager cdk, 
                                 String smarts,
                                 StructuredbManager structuredbManager, 
-                                IProgressMonitor monitor) {
+                                int numOfMolecules, 
+                                IProgressMonitor monitor ) {
 
         parent = allStructuresIterator;
         this.cdk = cdk;
         this.smarts = smarts;
         this.structuredb = structuredbManager;
         this.monitor = monitor;
+        this.numOfMolecules = numOfMolecules;
     }
 
     public boolean hasNext() {
@@ -64,16 +68,21 @@ public class SmartsQueryIterator implements Iterator<DBMolecule> {
 
     private DBMolecule findNext() throws BioclipseException {
 
-        while( parent.hasNext() ) {
+        while ( parent.hasNext() ) {
             DBMolecule next = parent.next();
-            if(monitor != null) {
+            if ( monitor != null ) {
                 monitor.worked( 1 );
+                monitor.subTask( current++ + "/" + numOfMolecules 
+                                 + " processed." );
+                if ( monitor.isCanceled() ) {
+                    throw new OperationCanceledException();
+                }
             }
-            if( cdk.smartsMatches( next, smarts ) ) {
+            if ( cdk.smartsMatches( next, smarts ) ) {
                 return next;
             }
         }
-        if( monitor != null ) {
+        if ( monitor != null ) {
             monitor.done();
         }
         return null;
