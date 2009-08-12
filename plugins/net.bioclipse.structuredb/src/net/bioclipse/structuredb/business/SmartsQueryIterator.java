@@ -10,7 +10,9 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.business;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -18,7 +20,9 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
+import net.bioclipse.cdk.exceptions.CDKTimedOutException;
 import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.util.TimeCalculater;
 import net.bioclipse.structuredb.domain.DBMolecule;
 
 
@@ -36,6 +40,8 @@ public class SmartsQueryIterator implements Iterator<DBMolecule> {
     private IProgressMonitor monitor;
     private int numOfMolecules;
     private int current = 1;
+    private List<DBMolecule> failedMolecules = new ArrayList<DBMolecule>();
+    private long startTime;
     
     public SmartsQueryIterator( Iterator<DBMolecule> allStructuresIterator,
                                 CDKManager cdk, 
@@ -50,18 +56,22 @@ public class SmartsQueryIterator implements Iterator<DBMolecule> {
         this.structuredb = structuredbManager;
         this.monitor = monitor;
         this.numOfMolecules = numOfMolecules;
+        this.startTime = System.currentTimeMillis();
     }
 
     public boolean hasNext() {
 
-        if( next != null ) {
+        if ( next != null ) {
             return true;
         }
-        try {
-            next = findNext();
-        } 
-        catch ( BioclipseException e ) {
-            throw new RuntimeException(e);
+        while (true) {
+            try {
+                next = findNext();
+            }
+            catch ( BioclipseException e ) {
+                throw new RuntimeException(e);
+            }
+            break;
         }
         return next != null;
     }
@@ -72,14 +82,24 @@ public class SmartsQueryIterator implements Iterator<DBMolecule> {
             DBMolecule next = parent.next();
             if ( monitor != null ) {
                 monitor.worked( 1 );
-                monitor.subTask( current++ + "/" + numOfMolecules 
-                                 + " processed." );
+                monitor.subTask( 
+                    current++ + "/" + numOfMolecules + " processed. (" 
+                    + TimeCalculater.generateTimeRemainEst( startTime, 
+                                                            current, 
+                                                            numOfMolecules )
+                    + ")" );
                 if ( monitor.isCanceled() ) {
                     throw new OperationCanceledException();
                 }
             }
-            if ( cdk.smartsMatches( next, smarts ) ) {
-                return next;
+            try {
+                if ( cdk.smartsMatches( next, smarts ) ) {
+                    return next;
+                }
+            }
+            catch ( CDKTimedOutException e ) {
+                failedMolecules.add(next);
+                continue;
             }
         }
         if ( monitor != null ) {
@@ -90,7 +110,7 @@ public class SmartsQueryIterator implements Iterator<DBMolecule> {
 
     public DBMolecule next() {
 
-        if( !hasNext() ) {
+        if ( !hasNext() ) {
             throw new IllegalStateException( "there are no more " +
                                              "such structures" );
         }
@@ -101,5 +121,13 @@ public class SmartsQueryIterator implements Iterator<DBMolecule> {
 
     public void remove() {
         throw new UnsupportedOperationException();
+    }
+    
+    public boolean hasFailedMolecules() {
+        return failedMolecules.size() != 0;
+    }
+    
+    public List<DBMolecule> getFailedMolecules() {
+        return new ArrayList<DBMolecule>(failedMolecules);
     }
 }

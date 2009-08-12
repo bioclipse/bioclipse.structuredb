@@ -556,29 +556,50 @@ public class StructuredbManager implements IStructuredbManager {
         return smartsQueryIterator( databaseName, smarts, null );
     }
     
+    public static class SMARTSQueryResultList 
+                  extends RecordableList<DBMolecule> {
+        
+        private List<DBMolecule> failedMolecules = new ArrayList<DBMolecule>();
+        
+        public void addFailedMolecules( List<DBMolecule> failedMolecules ) {
+            this.failedMolecules.addAll( failedMolecules );
+        }
+        
+        public boolean hasFailedMolecules() {
+            return failedMolecules.size() > 0;
+        }
+        
+        public List<DBMolecule> getFailedMolecules() {
+            return failedMolecules;
+        }
+    }
+    
     public List<DBMolecule> smartsQuery( String databaseName, 
                                          String smarts,
                                          IProgressMonitor monitor ) {
     
         checkDatabaseName(databaseName);
-        List<DBMolecule> hits = new RecordableList<DBMolecule>();
-        Iterator<DBMolecule> iterator = smartsQueryIterator( databaseName, 
+        SMARTSQueryResultList hits = new SMARTSQueryResultList();
+        SmartsQueryIterator iterator = smartsQueryIterator( databaseName, 
                                                              smarts, 
                                                              monitor );
         while ( iterator.hasNext() ) {
             hits.add( iterator.next() );
         }
+        
+        hits.addFailedMolecules( iterator.getFailedMolecules() );
+        
         return hits;
     }
 
-    public Iterator<DBMolecule> smartsQueryIterator( 
+    public SmartsQueryIterator smartsQueryIterator( 
         String databaseName, String smarts, IProgressMonitor monitor) {
 
         checkDatabaseName(databaseName);
         int numOfMolecules = internalManagers.get( databaseName )
                                              .numberOfMolecules();
         if (monitor != null) {
-            monitor.beginTask( "substructure search", 
+            monitor.beginTask( "SMARTS querying", 
                                numOfMolecules );
         }
         

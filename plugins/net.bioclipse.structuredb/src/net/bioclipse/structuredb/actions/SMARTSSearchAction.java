@@ -11,6 +11,7 @@
 package net.bioclipse.structuredb.actions;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import net.bioclipse.core.business.BioclipseException;
@@ -19,6 +20,8 @@ import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.structuredb.StructureDBInstance;
 import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.business.StructuredbManager;
+import net.bioclipse.structuredb.business.StructuredbManager.SMARTSQueryResultList;
 import net.bioclipse.structuredb.dialogs.SMARTSQueryPromptDialog;
 import net.bioclipse.ui.business.IUIManager;
 
@@ -82,20 +85,40 @@ public class SMARTSSearchAction extends ActionDelegate {
                 @Override
                 public void runInUI() {
                     if ( getReturnValue().isEmpty() ) {
-                        MessageDialog.openInformation( 
-                            PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                                                     .getShell(), 
-                            "No hits", 
-                            "SMARTS Query: \"" + SMARTS 
-                                + "\" did not result in any hits." );
+                        openInformation( "No hits",
+                                         "SMARTS Query: \"" + SMARTS 
+                                         + "\" did not result in any hits." );
+
                     } else {
                         try {
+                            StructuredbManager.SMARTSQueryResultList result 
+                                = (SMARTSQueryResultList) getReturnValue();
+                            if ( result.hasFailedMolecules() ) {
+                                openInformation( 
+                                    "Could not query all molecules", 
+                                    "The following molecules could not be " +
+                                    "queried because of timeouts in the " +
+                                    "CDK AllRingsFinder: \n " + 
+                                    Arrays.deepToString( 
+                                        result.getFailedMolecules().toArray() )
+                                    );
+                            }
                             ui.open( (IBioObject)getReturnValue() );
                         }
                         catch ( Exception e ) {
                             throw new RuntimeException(e);
                         }
                     }
+                }
+
+                private void openInformation( String title, String message ) {
+
+                    MessageDialog.openInformation( 
+                        PlatformUI.getWorkbench()
+                                  .getActiveWorkbenchWindow()
+                                  .getShell(), 
+                        title, 
+                        message );
                 }
             };
             
