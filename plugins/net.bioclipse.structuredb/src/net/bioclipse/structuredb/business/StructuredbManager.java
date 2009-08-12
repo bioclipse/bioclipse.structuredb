@@ -361,18 +361,12 @@ public class StructuredbManager implements IStructuredbManager {
         long start = System.currentTimeMillis();
         while ( iterator.hasNext() && !monitor.isCanceled()) {
             String timeEstimation = "";
-            long now = System.currentTimeMillis();
-            long elapsed = now - start;
-            if ( elapsed > 5000 ) {
-                long timeForOneEntry 
-                    = (elapsed) / moleculesRead;
-                long timeRemaining 
-                    = timeForOneEntry * (entries - moleculesRead);
+            if ( System.currentTimeMillis() - start > 5000 ) {
                 timeEstimation 
-                    = " (Estimating about: " 
-                      + TimeCalculater.millisecsToString(timeRemaining)
-                      + " remaining for file: " 
-                      + file.getName() + " )";
+                    = " (" + TimeCalculater.generateTimeRemainEst( start, 
+                                                                  moleculesRead, 
+                                                                  entries )
+                      + " for file: " + file.getName() + ")";
             }
             monitor.subTask( "reading " + moleculesRead + "/" + entries 
                              + timeEstimation );
