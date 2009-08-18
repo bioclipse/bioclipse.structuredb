@@ -112,16 +112,16 @@ public class DBMolecule extends BaseObject
         }
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         atomContainer        = cdkMolecule.getAtomContainer();
-        try {
-            smiles = cdkMolecule.toSMILES(
-            );
-        }
-        catch (BioclipseException e) {
-            smiles = "";
-        } catch (NullPointerException e) {
-            smiles = "";
-        }
-        
+//        try {
+//            smiles = cdkMolecule.toSMILES(
+//            );
+//        }
+//        catch (BioclipseException e) {
+//            smiles = "";
+//        } catch (NullPointerException e) {
+//            smiles = "";
+//        }
+        smiles = "";
         annotations = new ArrayList<Annotation>();
     }
 
@@ -392,5 +392,13 @@ public class DBMolecule extends BaseObject
         return getClass().getSimpleName() + ":" 
                + Activator.getDefault().getJavaCDKManager()
                                        .molecularFormula(this);
+    }
+
+    /* (non-Javadoc)
+     * @see net.bioclipse.cdk.domain.ICDKMolecule#setProperty(java.lang.String, java.lang.Object)
+     */
+    public void setProperty( String propertyKey, Object value ) {
+
+        throw new UnsupportedOperationException();
     }
 }
