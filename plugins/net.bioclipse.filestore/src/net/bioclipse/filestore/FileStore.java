@@ -10,7 +10,15 @@
  ******************************************************************************/
 package net.bioclipse.filestore;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.CharBuffer;
 import java.util.UUID;
 
@@ -21,6 +29,8 @@ import java.util.UUID;
  */
 public class FileStore {
 
+    private File root;
+    
     /**
      * Create a <code>FileStore</code> using the given directory as root for 
      * saving given fileContents
@@ -32,6 +42,7 @@ public class FileStore {
             throw new IllegalArgumentException( 
                           directory + " is not a directory" );
         }
+        root = directory;
     }
     
     /**
@@ -44,17 +55,61 @@ public class FileStore {
         if ( fileContent == null ) {
             throw new IllegalArgumentException("fileContent can not be null");
         }
-        return UUID.randomUUID();
+        UUID key = UUID.randomUUID();
+        String keyString = key.toString();
+        
+        String directoryString = keyString.charAt( 0 ) + "";
+        File directory = new File( root.getPath() + File.separatorChar 
+                                   + directoryString );
+        if ( !directory.exists() ) {
+            directory.mkdir();
+        }
+        File file = new File( root.getPath() + File.separatorChar
+                              + directoryString + File.separatorChar
+                              + keyString + ".txt" );
+        
+        BufferedWriter writer = null;
+        try {
+            file.createNewFile();
+            writer = new BufferedWriter( new FileWriter(file) );
+            writer.append(fileContent);
+        }
+        catch ( IOException e ) {
+            throw new IllegalStateException("Could not write to file", e);
+        }
+        finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                }
+                catch ( IOException e ) {
+                    throw new IllegalStateException("Could not close file");
+                }
+            }
+        }
+        return key;
     }
 
     /**
      * @param key
      * @return a <code>CharBuffer</code> equal to the <code>CharSequence</code> 
-     * that was connected to the given key using the <code>store</code> method.
+     * that was associated with the given key using the <code>store</code> 
+     * method.
      */
-    public CharBuffer retrieve( UUID key ) {
-
-
-        return null;
+    public InputStream retrieve( UUID key ) {
+        String keyString = key.toString();
+        String directoryString = keyString.charAt( 0 ) + "";
+        File file = new File( root.getPath() + File.separatorChar
+                              + directoryString + File.separatorChar
+                              + keyString + ".txt" );
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file);
+        }
+        catch ( FileNotFoundException e ) {
+            throw new IllegalArgumentException( 
+                "No file content is associated with the given key", e );
+        }
+        return inputStream;
     }
 }

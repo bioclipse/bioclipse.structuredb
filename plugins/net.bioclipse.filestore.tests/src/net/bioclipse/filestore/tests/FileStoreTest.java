@@ -12,11 +12,16 @@ package net.bioclipse.filestore.tests;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.CharBuffer;
 import java.util.UUID;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import net.bioclipse.filestore.FileStore;
@@ -31,6 +36,33 @@ public class FileStoreTest {
     private UUID key;
     
     public static final String EXAMPLE_STRING = "example String";
+    
+    @BeforeClass
+    public static void cleanAwayFiles() throws URISyntaxException {
+        File file = new File( FileStoreTest.class
+                                           .getClassLoader()
+                                           .getResource( "./testFolder" )
+                                           .toURI() );
+        for ( File child : file.listFiles() ) {
+            if ( child.isDirectory() ) {
+                deleteDirectory( child );
+            }
+        }
+    }
+    
+    public static boolean deleteDirectory(File path) {
+        if ( path.exists() ) {
+            for ( File file : path.listFiles() ) {
+                if ( file.isDirectory() ) {
+                    deleteDirectory(file);
+                }
+                else {
+                    file.delete();
+                }
+            }
+        }
+        return ( path.delete() );
+    }
     
     @Test( expected = IllegalArgumentException.class )
     public void dontInitializeWithFile() throws URISyntaxException {
@@ -65,10 +97,21 @@ public class FileStoreTest {
     }
     
     @Test
-    public void doRetrieveStored() throws URISyntaxException {
+    public void doRetrieveStored() throws URISyntaxException, IOException {
         doStoreExampleString();
-        CharBuffer retrieved = fs.retrieve(key);
-        assertEquals( EXAMPLE_STRING, retrieved.toString() );
+        assertEquals( EXAMPLE_STRING, readInputStream( fs.retrieve( key ) ) );
+    }
+    
+    private String readInputStream(InputStream in) throws IOException {
+
+        StringBuilder result = new StringBuilder();
+        BufferedInputStream bis = new BufferedInputStream(in);
+        int read = bis.read();
+        while ( read != -1 ) {
+          result.append( (char)read );
+          read = bis.read();
+        }        
+        return result.toString();
     }
     
     @Test( expected = IllegalArgumentException.class )
