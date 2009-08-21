@@ -23,5 +23,9 @@ public class FileStore {
      * @param directory
      */
     public FileStore(File directory) {
+        if ( !directory.isDirectory() ) {
+            throw new IllegalArgumentException( 
+                          directory + " is not a directory" );
+        }
     }
 }
