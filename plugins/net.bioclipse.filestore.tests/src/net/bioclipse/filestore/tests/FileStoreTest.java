@@ -12,6 +12,12 @@ package net.bioclipse.filestore.tests;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.net.URISyntaxException;
+
+import org.junit.Test;
+
+import net.bioclipse.filestore.FileStore;
 
 /**
  * @author jonalv
@@ -19,4 +25,22 @@ import static org.junit.Assert.*;
  */
 public class FileStoreTest {
 
+    @Test( expected = IllegalArgumentException.class )
+    public void dontInitializeWithFile() throws URISyntaxException {
+        new FileStore( 
+            new File( this.getClass()
+                          .getClassLoader()
+                          .getResource( "./testFolder/testfile.txt" )
+                          .toURI() ) );
+    }
+    
+    @Test
+    public void doInializeWithDirectory() throws URISyntaxException {
+        FileStore fs = new FileStore( 
+                           new File( this.getClass()
+                                         .getClassLoader()
+                                         .getResource( "./testFolder" )
+                                         .toURI() ) );
+        assertNotNull(fs);
+    }
 }

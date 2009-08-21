@@ -10,6 +10,8 @@
  ******************************************************************************/
 package net.bioclipse.filestore;
 
+import java.io.File;
+
 
 /**
  * @author jonalv
@@ -17,7 +19,9 @@ package net.bioclipse.filestore;
  */
 public class FileStore {
 
-    public FileStore() {
-        
+    /**
+     * @param directory
+     */
+    public FileStore(File directory) {
     }
 }

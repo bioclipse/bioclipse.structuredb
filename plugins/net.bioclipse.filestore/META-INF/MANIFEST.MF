@@ -7,3 +7,4 @@ Bundle-Activator: net.bioclipse.filestore.Activator
 Require-Bundle: org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: net.bioclipse.filestore
