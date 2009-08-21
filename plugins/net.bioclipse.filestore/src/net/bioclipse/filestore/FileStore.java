@@ -22,6 +22,9 @@ import java.util.UUID;
 public class FileStore {
 
     /**
+     * Create a <code>FileStore</code> using the given directory as root for 
+     * saving given fileContents
+     * 
      * @param directory
      */
     public FileStore(File directory) {
@@ -31,10 +34,27 @@ public class FileStore {
         }
     }
     
+    /**
+     * Store a <code>CharSequence</code> as a file using the store
+     * 
+     * @param fileContent
+     * @return an unique key used for retrieving again
+     */
     public UUID store(CharSequence fileContent) {
         if ( fileContent == null ) {
             throw new IllegalArgumentException("fileContent can not be null");
         }
         return UUID.randomUUID();
+    }
+
+    /**
+     * @param key
+     * @return a <code>CharBuffer</code> equal to the <code>CharSequence</code> 
+     * that was connected to the given key using the <code>store</code> method.
+     */
+    public CharBuffer retrieve( UUID key ) {
+
+
+        return null;
     }
 }

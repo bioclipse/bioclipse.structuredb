@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.nio.CharBuffer;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -27,6 +28,9 @@ import net.bioclipse.filestore.FileStore;
 public class FileStoreTest {
 
     private FileStore fs;
+    private UUID key;
+    
+    public static final String EXAMPLE_STRING = "example String";
     
     @Test( expected = IllegalArgumentException.class )
     public void dontInitializeWithFile() throws URISyntaxException {
@@ -54,9 +58,23 @@ public class FileStoreTest {
     }
     
     @Test
-    public void doStoreString() throws URISyntaxException {
+    public void doStoreExampleString() throws URISyntaxException {
         doInializeWithDirectory();
-        UUID key = fs.store( "example String" );
+        key = fs.store( EXAMPLE_STRING );
         assertNotNull( key );
+    }
+    
+    @Test
+    public void doRetrieveStored() throws URISyntaxException {
+        doStoreExampleString();
+        CharBuffer retrieved = fs.retrieve(key);
+        assertEquals( EXAMPLE_STRING, retrieved.toString() );
+    }
+    
+    @Test( expected = IllegalArgumentException.class )
+    public void dontRetrieveNotStored() throws URISyntaxException {
+        doStoreExampleString();
+        UUID unstoredKey = UUID.randomUUID();
+        fs.retrieve( unstoredKey );
     }
 }
