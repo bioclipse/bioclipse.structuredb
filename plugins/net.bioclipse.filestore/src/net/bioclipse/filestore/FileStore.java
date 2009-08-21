@@ -11,6 +11,8 @@
 package net.bioclipse.filestore;
 
 import java.io.File;
+import java.nio.CharBuffer;
+import java.util.UUID;
 
 
 /**
@@ -27,5 +29,12 @@ public class FileStore {
             throw new IllegalArgumentException( 
                           directory + " is not a directory" );
         }
+    }
+    
+    public UUID store(CharSequence fileContent) {
+        if ( fileContent == null ) {
+            throw new IllegalArgumentException("fileContent can not be null");
+        }
+        return UUID.randomUUID();
     }
 }
