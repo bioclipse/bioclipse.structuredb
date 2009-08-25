@@ -11,8 +11,12 @@
 
 package net.bioclipse.structuredb;
 
+import java.io.File;
+
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.databases.IDatabasehangeListener;
+import net.bioclipse.filestore.FileStore;
+import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener;
 import net.bioclipse.structuredb.business.IJSStructuredbManager;
 import net.bioclipse.structuredb.business.IStructuredbManager;
@@ -50,6 +54,7 @@ public class Activator extends AbstractUIPlugin
      * The constructor
      */
     public Activator() {
+
     }
 
     public void start(BundleContext context) throws Exception {

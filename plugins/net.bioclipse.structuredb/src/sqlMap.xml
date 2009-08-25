@@ -18,13 +18,13 @@
         <parameter property="id"                                     />    
         <parameter property="SMILES"                                 />   
         <parameter property="persistedFingerprint" jdbcType="binary" />     
-        <parameter property="CML"                                    /> 
+        <parameter property="fileStoreKey"                           /> 
     </parameterMap>
 
     <parameterMap class="DBMolecule" id="DBMolecule.update">
         <parameter property="SMILES"                                 />
         <parameter property="persistedFingerprint" jdbcType="binary" />
-        <parameter property="CML"                                    />
+        <parameter property="fileStoreKey"                                    />
         <parameter property="name"                                   />    
     </parameterMap>
     
@@ -52,7 +52,7 @@
 		<result property="annotations"          column="id" select="DBMolecule.getAnnotations" />
 		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
 		<result property="SMILES"               column="SMILES"                         />
-		<result property="CML"                  column="molecule"                       />
+		<result property="fileStoreKey"         column="fileStoreKey"                   />
 		<result property="name"                 column="name"                           />
 	</resultMap>
 
@@ -108,7 +108,7 @@
 	<sql id="DBMolecule-fields">
 		s.persistedFingerprint AS persistedFingerprint,
 		s.SMILES               AS SMILES,
-		s.molecule             AS molecule,
+		s.fileStoreKey         AS fileStoreKey,
 		s.name                 AS name	
 	</sql>
 	
@@ -172,7 +172,7 @@
 	</insert>
 	
 	<insert id="DBMolecule.insert" parameterMap="DBMolecule.insert">
-		INSERT INTO DBMolecule ( id, name, baseObject, SMILES, persistedFingerprint, molecule )
+		INSERT INTO DBMolecule ( id, name, baseObject, SMILES, persistedFingerprint, fileStoreKey )
 		               VALUES ( ?, ?, ?, ?, ?, ? ); 
 	</insert>
 	
@@ -769,7 +769,7 @@
     	SET 
 	    	SMILES               = ?,
 	    	persistedFingerprint = ?,
-	    	molecule             = ?,
+	    	fileStoreKey         = ?,
 	    	name                 = ?
 		WHERE
 			id = '$id$'

@@ -19,6 +19,8 @@ import java.util.WeakHashMap;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import net.bioclipse.structuredb.Activator;
+import net.bioclipse.structuredb.FileStoreKeeper;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
@@ -45,7 +47,8 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
 
     @Override
     public void insert( final DBMolecule dBMolecule ) {
-        
+        dBMolecule.setFileStoreKey( 
+            FileStoreKeeper.FILE_STORE.store( dBMolecule.toCML() ) );
         getSqlMapClientTemplate().update( "BaseObject.insert",
                                           dBMolecule );
         getSqlMapClientTemplate()
@@ -176,6 +179,8 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
     public void insertWithAnnotation( DBMolecule dBMolecule,
                                       String annotationId ) {
 
+        dBMolecule.setFileStoreKey( 
+            FileStoreKeeper.FILE_STORE.store( dBMolecule.toCML() ) );
         getSqlMapClientTemplate().update( "BaseObject.insert",
                                           dBMolecule );
         getSqlMapClientTemplate().update( "DBMolecule.insert",

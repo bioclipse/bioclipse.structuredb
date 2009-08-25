@@ -17,12 +17,14 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+import java.util.UUID;
 
 import net.bioclipse.cdk.business.Activator;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.core.util.LogUtils;
+import net.bioclipse.structuredb.FileStoreKeeper;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
@@ -54,13 +56,13 @@ public class DBMolecule extends BaseObject
     private String           smiles;
     private List<Annotation> annotations;
     private String           name;
+    private UUID             fileStoreKey;
 
     public DBMolecule() {
         super();
         fingerPrint = new BitSet();
         this.persistedFingerPrint 
             = makePersistedFingerPrint(fingerPrint);
-        atomContainer = new AtomContainer();
         smiles = "";
         annotations = new ArrayList<Annotation>();
         name = "DBMolecule" + getId();
@@ -68,7 +70,7 @@ public class DBMolecule extends BaseObject
 
     public DBMolecule( String name, AtomContainer molecule ) {
         super();
-        this.atomContainer = molecule;
+        this.setAtomContainer( molecule );
         this.name = name;
 
         Fingerprinter fingerprinter = new Fingerprinter();
@@ -111,7 +113,7 @@ public class DBMolecule extends BaseObject
             logger.error( "Could not create fingerprint for molecule", e );
         }
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
-        atomContainer        = cdkMolecule.getAtomContainer();
+        setAtomContainer( cdkMolecule.getAtomContainer() );
 //        try {
 //            smiles = cdkMolecule.toSMILES(
 //            );
@@ -135,7 +137,7 @@ public class DBMolecule extends BaseObject
 
         super(dBMolecule);
 
-        atomContainer        = dBMolecule.getMolecule();
+        setAtomContainer( dBMolecule.getMolecule() );
         fingerPrint          = (BitSet)dBMolecule.getFingerPrint()
                                                 .clone();
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
@@ -167,14 +169,14 @@ public class DBMolecule extends BaseObject
      * @return the CDK AtomContainer
      */
     public IAtomContainer getMolecule() {
-        return atomContainer;
+        return getAtomContainer();
     }
 
     /**
      * @param atomContainer the CDK atomContainer to set
      */
     public void setMolecule(IAtomContainer molecule) {
-        this.atomContainer = molecule;
+        this.setAtomContainer( molecule );
     }
 
     /**
@@ -274,7 +276,7 @@ public class DBMolecule extends BaseObject
         StringWriter stringWriter = new StringWriter();
         CMLWriter cmlWriter       = new CMLWriter(stringWriter);
         try {
-            cmlWriter.write(atomContainer);
+            cmlWriter.write(getAtomContainer());
         } catch (Exception e) {
             // TODO Auto-generated catch block
             LogUtils.debugTrace(logger, e);
@@ -295,8 +297,8 @@ public class DBMolecule extends BaseObject
         try {
             IChemFile readFile 
                 = (IChemFile)cmlReader.read( new ChemFile() );
-            atomContainer = (AtomContainer)ChemFileManipulator
-                                .getAllAtomContainers(readFile).get(0);
+            setAtomContainer( (AtomContainer)ChemFileManipulator
+                                .getAllAtomContainers(readFile).get(0) );
         } 
         catch (CDKException e) {
             throw new RuntimeException( "failed to read atomContainer", 
@@ -319,6 +321,21 @@ public class DBMolecule extends BaseObject
     }
     
     public IAtomContainer getAtomContainer() {
+        if ( atomContainer == null ) {
+            InputStream in = FileStoreKeeper.FILE_STORE
+                                            .retrieve( fileStoreKey );
+            CMLReader cmlReader = new CMLReader(in);
+            try {
+                IChemFile readFile 
+                    = (IChemFile)cmlReader.read( new ChemFile() );
+                setAtomContainer( (AtomContainer)ChemFileManipulator
+                                    .getAllAtomContainers(readFile).get(0) );
+            } 
+            catch (CDKException e) {
+                throw new RuntimeException( "failed to read atomContainer", 
+                                            e);
+            }
+        }
         return atomContainer;
     }
 
@@ -400,5 +417,23 @@ public class DBMolecule extends BaseObject
     public void setProperty( String propertyKey, Object value ) {
 
         throw new UnsupportedOperationException();
+    }
+
+    public void setFileStoreKey( String fileStoreKey ) {
+
+        this.fileStoreKey = UUID.fromString( fileStoreKey );
+    }
+
+    public String getFileStoreKey() {
+
+        return fileStoreKey.toString();
+    }
+    
+    public void setFileStoreKey( UUID fileStoreKey ) {
+        this.fileStoreKey = fileStoreKey;
+    }
+
+    public void setAtomContainer( IAtomContainer atomContainer ) {
+        this.atomContainer = atomContainer;
     }
 }

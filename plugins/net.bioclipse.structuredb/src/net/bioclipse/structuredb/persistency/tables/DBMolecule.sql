@@ -4,7 +4,7 @@ CREATE CACHED TABLE DBMolecule (
     name                 VARCHAR(50) NOT NULL,
     persistedFingerprint BINARY,
     SMILES               VARCHAR(5000),
-    molecule             VARCHAR,
+    fileStoreKey         VARCHAR(36),
 
     PRIMARY KEY (id)
 );
