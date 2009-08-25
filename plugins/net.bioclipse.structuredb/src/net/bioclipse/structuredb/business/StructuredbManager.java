@@ -579,6 +579,7 @@ public class StructuredbManager implements IStructuredbManager {
                                          IProgressMonitor monitor ) {
     
         checkDatabaseName(databaseName);
+        long start = System.currentTimeMillis();
         SMARTSQueryResultList hits = new SMARTSQueryResultList();
         SmartsQueryIterator iterator = smartsQueryIterator( databaseName, 
                                                              smarts, 
@@ -589,6 +590,9 @@ public class StructuredbManager implements IStructuredbManager {
         
         hits.addFailedMolecules( iterator.getFailedMolecules() );
         
+        logger.debug( "Time to perform smartQuery: " 
+                      + (System.currentTimeMillis() - start)
+                      + " ms." );
         return hits;
     }
 
