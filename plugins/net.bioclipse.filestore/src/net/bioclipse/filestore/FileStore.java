@@ -97,11 +97,7 @@ public class FileStore {
      * method.
      */
     public InputStream retrieve( UUID key ) {
-        String keyString = key.toString();
-        String directoryString = keyString.charAt( 0 ) + "";
-        File file = new File( root.getPath() + File.separatorChar
-                              + directoryString + File.separatorChar
-                              + keyString + ".txt" );
+        File file = locateFile( key );
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
@@ -111,6 +107,18 @@ public class FileStore {
                 "No file content is associated with the given key", e );
         }
         return inputStream;
+    }
+
+    /**
+     * @param key
+     * @return
+     */
+    private File locateFile( UUID key ) {
+        String keyString = key.toString();
+        String directoryString = keyString.charAt( 0 ) + "";
+        return new File( root.getPath() + File.separatorChar
+                         + directoryString + File.separatorChar
+                         + keyString + ".txt" );
     }
 
     /**
@@ -125,8 +133,8 @@ public class FileStore {
      */
     public void delete( UUID key ) {
 
-        // TODO Auto-generated method stub
-        
+        File file = locateFile( key );
+        file.delete();
     }
 
     /**
