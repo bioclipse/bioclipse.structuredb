@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.CharBuffer;
+import java.util.Scanner;
 import java.util.UUID;
 
 import org.junit.BeforeClass;
@@ -146,8 +147,10 @@ public class FileStoreTest {
     @Test
     public void doStoreAndUpdateFile() throws URISyntaxException {
         doStoreAFileAtCorrectPlace();
-        assertEquals( EXAMPLE_STRING, fs.retrieve( key ) );
+        assertEquals( EXAMPLE_STRING, 
+                      new Scanner( fs.retrieve( key ) ).nextLine() );
         fs.update( key, UPDATED_EXAMPLE_STRING );
-        assertEquals( UPDATED_EXAMPLE_STRING, fs.retrieve( key ) );
+        assertEquals( UPDATED_EXAMPLE_STRING, 
+                      new Scanner( fs.retrieve( key ) ).nextLine() );
     }
 }

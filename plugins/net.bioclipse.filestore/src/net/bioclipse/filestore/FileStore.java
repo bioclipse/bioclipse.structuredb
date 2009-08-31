@@ -56,6 +56,18 @@ public class FileStore {
             throw new IllegalArgumentException("fileContent can not be null");
         }
         UUID key = UUID.randomUUID();
+        
+        store(key, fileContent);
+ 
+        return key;
+    }
+
+    /**
+     * @param key
+     * @param fileContent
+     */
+    private void store( UUID key, CharSequence fileContent ) {
+
         String keyString = key.toString();
         
         String directoryString = keyString.charAt( 0 ) + "";
@@ -86,8 +98,7 @@ public class FileStore {
                     throw new IllegalStateException("Could not close file");
                 }
             }
-        }
-        return key;
+        }        
     }
 
     /**
@@ -138,12 +149,13 @@ public class FileStore {
     }
 
     /**
+     * Does a delete followed by a store using the old key.
+     * 
      * @param key
      * @param string
      */
     public void update( UUID key, CharSequence newContent ) {
-
-        // TODO Auto-generated method stub
-        
+        delete(key);
+        store(key, newContent);
     }
 }
