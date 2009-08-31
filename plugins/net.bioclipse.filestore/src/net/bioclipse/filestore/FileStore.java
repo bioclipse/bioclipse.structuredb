@@ -112,4 +112,30 @@ public class FileStore {
         }
         return inputStream;
     }
+
+    /**
+     * @return
+     */
+    public File getRootFolder() {
+        return root;
+    }
+
+    /**
+     * @param key
+     */
+    public void delete( UUID key ) {
+
+        // TODO Auto-generated method stub
+        
+    }
+
+    /**
+     * @param key
+     * @param string
+     */
+    public void update( UUID key, CharSequence newContent ) {
+
+        // TODO Auto-generated method stub
+        
+    }
 }

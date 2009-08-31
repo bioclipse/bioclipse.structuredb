@@ -36,6 +36,7 @@ public class FileStoreTest {
     private UUID key;
     
     public static final String EXAMPLE_STRING = "example String";
+    public static final String UPDATED_EXAMPLE_STRING = "updated String";
     
     @BeforeClass
     public static void cleanAwayFiles() throws URISyntaxException {
@@ -119,5 +120,34 @@ public class FileStoreTest {
         doStoreExampleString();
         UUID unstoredKey = UUID.randomUUID();
         fs.retrieve( unstoredKey );
+    }
+    
+    @Test
+    public void doStoreAFileAtCorrectPlace() throws URISyntaxException {
+        doStoreExampleString();
+        File root = fs.getRootFolder();
+        File f = new File( root.getAbsolutePath() + File.separator 
+                           + key.toString().charAt( 0 ) + File.separator 
+                           + key.toString() + ".txt" );
+        assertTrue( f.exists() );
+    }
+    
+    @Test
+    public void doStoreAndDeleteFile() throws URISyntaxException {
+        doStoreAFileAtCorrectPlace();
+        fs.delete(key);
+        File root = fs.getRootFolder();
+        File f = new File( root.getAbsolutePath() + File.separator 
+                           + key.toString().charAt( 0 ) + File.separator 
+                           + key.toString() + ".txt" );
+        assertFalse( f.exists() );
+    }
+    
+    @Test
+    public void doStoreAndUpdateFile() throws URISyntaxException {
+        doStoreAFileAtCorrectPlace();
+        assertEquals( EXAMPLE_STRING, fs.retrieve( key ) );
+        fs.update( key, UPDATED_EXAMPLE_STRING );
+        assertEquals( UPDATED_EXAMPLE_STRING, fs.retrieve( key ) );
     }
 }
