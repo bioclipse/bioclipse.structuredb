@@ -149,8 +149,9 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
     /**
      * tests deleting of an instance of the domain type handled by the 
      * tested dao 
+     * @throws Exception 
      */
-    public void testDelete() {
+    public void testDelete() throws Exception {
         
         String sqlDomainObject 
             = "SELECT COUNT(*) FROM " + domainClass.getSimpleName() 

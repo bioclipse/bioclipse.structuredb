@@ -10,6 +10,9 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
+import org.openscience.cdk.exception.CDKException;
+
+import testData.TestData;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
@@ -29,12 +32,14 @@ public abstract class AnnotationDaoTest<T extends Annotation>
     }
 
     @Override
-    public void testDelete() {
+    public void testDelete() throws Exception {
         
         IDBMoleculeDao dBMoleculeDao 
             = (IDBMoleculeDao) applicationContext.getBean("dBMoleculeDao");
         
-        DBMolecule dBMolecule = new DBMolecule();
+        DBMolecule dBMolecule = new DBMolecule( "CycloOctan",
+                                                TestData.getCycloOctan() );
+        
         dBMolecule.setCreator(testUser);
         dBMolecule.setLastEditor(testUser);
         dBMoleculeDao.insert(dBMolecule);
@@ -47,9 +52,11 @@ public abstract class AnnotationDaoTest<T extends Annotation>
         assertFalse( dBMolecule.getAnnotations().contains( object1 ) );
     }
     
-    public void testGetDBMolecules() {
-        DBMolecule dBMolecule      = new DBMolecule();
-        DBMolecule unusedStructure = new DBMolecule();
+    public void testGetDBMolecules() throws Exception {
+        DBMolecule dBMolecule      = new DBMolecule( "CycloOctan",
+                                                     TestData.getCycloOctan() );
+        DBMolecule unusedStructure = new DBMolecule( "CycloOctan",
+                                                     TestData.getCycloOctan() );
         IDBMoleculeDao dBMoleculeDao 
             = (IDBMoleculeDao) applicationContext.getBean("dBMoleculeDao");
         dBMoleculeDao.insert( dBMolecule );

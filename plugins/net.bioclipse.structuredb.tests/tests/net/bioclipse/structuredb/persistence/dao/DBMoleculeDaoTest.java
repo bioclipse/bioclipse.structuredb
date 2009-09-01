@@ -81,7 +81,8 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         addCreatorAndEditor(annotation);
         textAnnotationDao.insert(annotation);
         
-        DBMolecule dBMolecule = new DBMolecule(object1);
+        DBMolecule dBMolecule = new DBMolecule();
+        dBMolecule.setAtomContainer( object1.getAtomContainer() );
         dBMolecule.addAnnotation(annotation);
         addCreatorAndEditor(dBMolecule);
         dao.insert(dBMolecule);
@@ -103,7 +104,8 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         addCreatorAndEditor(annotation);
         textAnnotationDao.insert(annotation);
         
-        DBMolecule dBMolecule = new DBMolecule(object1);
+        DBMolecule dBMolecule = new DBMolecule();
+        dBMolecule.setAtomContainer( object1.getAtomContainer() );
 
         addCreatorAndEditor(dBMolecule);
         ((IDBMoleculeDao)dao).insertWithAnnotation( dBMolecule, 
@@ -128,7 +130,8 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         addCreatorAndEditor(annotation);
         textAnnotationDao.insert(annotation);
         
-        DBMolecule dBMolecule = new DBMolecule(object1);
+        DBMolecule dBMolecule = new DBMolecule();
+        dBMolecule.setAtomContainer( object1.getAtomContainer() );
         dBMolecule.addAnnotation(annotation);
         addCreatorAndEditor(dBMolecule);
         dao.insert(dBMolecule);
@@ -144,11 +147,15 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
 
         assertTrue( dao.getAll().containsAll(dBMolecules) );
         
+        DBMolecule other = new DBMolecule( "CycloPropan", 
+                                           TestData.getCycloPropane() );
+        addCreatorAndEditor( other );
+        dao.insert( other );
+        
         List<DBMolecule> saved = ( (IDBMoleculeDao)dao ).getByName(
                                   molecule1.getName() );
         assertTrue(  saved.contains(molecule1) );
-        assertFalse( saved.contains(object1)       );
-        assertFalse( saved.contains(object2)       );
+        assertFalse( saved.contains(other)     );
         assertTrue( saved.size() == 1);
         assertTrue( saved.get(0).getFingerPrint()
                                 .equals( molecule1.getFingerPrint() ) );
@@ -157,8 +164,6 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
     public void testAllStructureIterator() {
         List<DBMolecule> dBMolecules = new ArrayList<DBMolecule>() {
             {
-                add( object1 );
-                add( object2 );
                 add( molecule1 );
                 add( molecule2 );
             }
@@ -171,11 +176,11 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
             assertTrue( dBMolecules.contains( iterator.next() ) );
             numberof++;
         }
-        assertEquals( 4, numberof );
+        assertEquals( 2, numberof );
     }
     
     public void testNumberOfStructures() {
-        assertEquals( 4, ((IDBMoleculeDao)dao).numberOfStructures() );
+        assertEquals( 2, ((IDBMoleculeDao)dao).numberOfStructures() );
     }
     
     public void testFingerPrintSearch() {
