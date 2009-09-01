@@ -14,6 +14,7 @@ package net.bioclipse.structuredb.domain;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -24,15 +25,24 @@ import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.core.util.LogUtils;
+import net.bioclipse.inchi.InChI;
+import net.bioclipse.inchi.business.IInChIManager;
 import net.bioclipse.structuredb.FileStoreKeeper;
+import net.sf.jniinchi.INCHI_RET;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.openscience.cdk.AtomContainer;
+import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.ChemFile;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.fingerprint.Fingerprinter;
+import org.openscience.cdk.inchi.InChIGenerator;
+import org.openscience.cdk.inchi.InChIGeneratorFactory;
+import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IBond;
 import org.openscience.cdk.interfaces.IChemFile;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.io.CMLReader;
@@ -49,6 +59,7 @@ public class DBMolecule extends BaseObject
 
     private static final Logger logger 
         = Logger.getLogger(DBMolecule.class);
+    private static InChIGeneratorFactory factory;
 
     private IAtomContainer   atomContainer;
     private BitSet           fingerPrint;
@@ -57,6 +68,7 @@ public class DBMolecule extends BaseObject
     private List<Annotation> annotations;
     private String           name;
     private UUID             fileStoreKey;
+    private InChI            cachedInchi;
 
     public DBMolecule() {
         super();
@@ -158,11 +170,15 @@ public class DBMolecule extends BaseObject
 
         DBMolecule dBMolecule = (DBMolecule)object;
 
-        return fingerPrint.equals( dBMolecule.getFingerPrint() )
-               &&   smiles.equals( dBMolecule.toSMILES(
-               ));
-// TODO: can give false positives without?
-//             && atomContainer.equals( structure.getMolecule()    ); 
+        try {
+            return fingerPrint.equals( dBMolecule.getFingerPrint() )
+                   &&   smiles.equals( dBMolecule.toSMILES() )
+                   && getInChIKey( Property.USE_CALCULATED ).equals( 
+                          dBMolecule.getInChIKey( Property.USE_CALCULATED ) );
+        }
+        catch ( BioclipseException e ) {
+            throw new RuntimeException(e);
+        } 
     }
 
     /**
@@ -279,7 +295,7 @@ public class DBMolecule extends BaseObject
             cmlWriter.write(getAtomContainer());
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            LogUtils.debugTrace(logger, e);
+            throw new IllegalStateException("Could not create CML", e);
         }
         return stringWriter.toString();
     }
@@ -382,14 +398,75 @@ public class DBMolecule extends BaseObject
         this.name = name;
     }
 
-    public String getInChI(net.bioclipse.core.domain.IMolecule.Property 
-            urgency) throws BioclipseException {
-        throw new BioclipseException("Function is not yet implemented.");
+    public String getInChI( net.bioclipse.core.domain.IMolecule.Property 
+                            urgency  ) throws BioclipseException {
+        switch ( urgency ) {
+            case USE_CACHED:
+                return cachedInchi == null ? "" : cachedInchi.getValue();
+            case USE_CACHED_OR_CALCULATED:
+                if (cachedInchi != null) {
+                    return cachedInchi.getValue();
+                }
+            case USE_CALCULATED:
+                calculateInchi();
+                return cachedInchi.getValue();
+            default:
+                throw new IllegalArgumentException(
+                              "Unrecognized Property:" + urgency );
+        }
     }
 
-    public String getInChIKey(net.bioclipse.core.domain.IMolecule.Property 
-            urgency) throws BioclipseException {
-        throw new BioclipseException("Function is not yet implemented.");
+    /**
+     * @throws BioclipseException 
+     * 
+     */
+    private void calculateInchi() throws BioclipseException {
+        try {
+            IAtomContainer clone = (IAtomContainer)getAtomContainer().clone();
+            // remove aromaticity flags
+            for (IAtom atom : clone.atoms())
+                atom.setFlag(CDKConstants.ISAROMATIC, false);
+            for (IBond bond : clone.bonds())
+                bond.setFlag(CDKConstants.ISAROMATIC, false);
+            if ( factory == null ) {
+                factory = new InChIGeneratorFactory();
+            }
+            InChIGenerator gen = factory.getInChIGenerator(clone);
+            INCHI_RET status = gen.getReturnStatus();
+            if ( status == INCHI_RET.OKAY ||
+                 status == INCHI_RET.WARNING ) {
+                InChI inchi = new InChI();
+                inchi.setValue( gen.getInchi()  );
+                inchi.setKey( gen.getInchiKey() );
+                cachedInchi = inchi;
+            } else {
+                throw new InvalidParameterException(
+                    "Error while generating InChI (" + status + "): " +
+                    gen.getMessage()
+                );
+            }
+        } catch (Exception e) {
+            throw new BioclipseException("Could not create InChI: "
+                                         + e.getMessage(), e);
+        }
+    }
+
+    public String getInChIKey( net.bioclipse.core.domain.IMolecule.Property 
+                               urgency ) throws BioclipseException {
+        switch ( urgency ) {
+            case USE_CACHED:
+                return cachedInchi == null ? "" : cachedInchi.getKey();
+            case USE_CACHED_OR_CALCULATED:
+                if (cachedInchi != null) {
+                    return cachedInchi.getKey();
+                }
+            case USE_CALCULATED:
+                calculateInchi();
+                return cachedInchi.getKey();
+            default:
+                throw new IllegalArgumentException(
+                              "Unrecognized Property:" + urgency );
+        }
     }
 
     public Object getProperty( String propertyKey, Property urgency ) {
