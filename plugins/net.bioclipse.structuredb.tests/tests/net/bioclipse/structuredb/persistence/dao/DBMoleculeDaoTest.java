@@ -47,8 +47,13 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
     
     @Override
     public void onSetUpInTransaction() throws Exception {
-    
-        super.onSetUpInTransaction();
+        
+        try {
+            super.onSetUpInTransaction();
+        } catch (Exception e) {
+            // Okey we expected this exception but we needed the things done 
+            // before it was thrown to be done. A bit ugly... FIXME
+        }
         molecule1 = new DBMolecule( "CycloOctan",
                                     TestData
                                     .getCycloOctan() );
@@ -64,6 +69,8 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
             add(molecule1);
             add(molecule2);
         }};
+        this.object1 = molecule1;
+        this.object2 = molecule2;
     }
     
     public void testPersistDBMoleculeWithAnnotation() {
@@ -74,7 +81,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         addCreatorAndEditor(annotation);
         textAnnotationDao.insert(annotation);
         
-        DBMolecule dBMolecule = new DBMolecule();
+        DBMolecule dBMolecule = new DBMolecule(object1);
         dBMolecule.addAnnotation(annotation);
         addCreatorAndEditor(dBMolecule);
         dao.insert(dBMolecule);
@@ -96,7 +103,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         addCreatorAndEditor(annotation);
         textAnnotationDao.insert(annotation);
         
-        DBMolecule dBMolecule = new DBMolecule();
+        DBMolecule dBMolecule = new DBMolecule(object1);
 
         addCreatorAndEditor(dBMolecule);
         ((IDBMoleculeDao)dao).insertWithAnnotation( dBMolecule, 
@@ -121,7 +128,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         addCreatorAndEditor(annotation);
         textAnnotationDao.insert(annotation);
         
-        DBMolecule dBMolecule = new DBMolecule();
+        DBMolecule dBMolecule = new DBMolecule(object1);
         dBMolecule.addAnnotation(annotation);
         addCreatorAndEditor(dBMolecule);
         dao.insert(dBMolecule);
@@ -135,7 +142,6 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
     
     public void testGetByName() throws CDKException {
 
-        
         assertTrue( dao.getAll().containsAll(dBMolecules) );
         
         List<DBMolecule> saved = ( (IDBMoleculeDao)dao ).getByName(
