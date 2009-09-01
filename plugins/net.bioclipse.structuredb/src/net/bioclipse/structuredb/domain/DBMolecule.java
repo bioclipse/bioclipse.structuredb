@@ -95,18 +95,7 @@ public class DBMolecule extends BaseObject
                     "could not create fingerPrint for Atomcontainer:" 
                     + name );
         }
-
-        SmilesGenerator sg = new SmilesGenerator();
-        //If atomContainer often isn't an instance of IMolecule
-        //maybe something else is needed
-        if(molecule.getAtomCount() > 100) {
-            smiles = "";
-            logger.debug( "Not generating SMILES. " +
-            		      "DBMolecule " + name + " has too many atoms." );
-        }
-        else {
-            smiles = sg.createSMILES( (IMolecule) molecule );
-        }
+        smiles = "";
         annotations = new ArrayList<Annotation>();
     }
 
@@ -126,15 +115,6 @@ public class DBMolecule extends BaseObject
         }
         persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         setAtomContainer( cdkMolecule.getAtomContainer() );
-//        try {
-//            smiles = cdkMolecule.toSMILES(
-//            );
-//        }
-//        catch (BioclipseException e) {
-//            smiles = "";
-//        } catch (NullPointerException e) {
-//            smiles = "";
-//        }
         smiles = "";
         annotations = new ArrayList<Annotation>();
     }
@@ -232,6 +212,16 @@ public class DBMolecule extends BaseObject
     }
 
     public String toSMILES() {
+        if ( "".equals( smiles ) && atomContainer instanceof IMolecule ) {
+            if (atomContainer.getAtomCount() < 100) {
+                SmilesGenerator sg = new SmilesGenerator();
+                smiles = sg.createSMILES( (IMolecule)atomContainer );
+            }
+            else {
+                logger.warn( "Not generating SMILES. " +
+                             "DBMolecule " + name + " has too many atoms." );
+            }
+        }
         return smiles;
     }
     
