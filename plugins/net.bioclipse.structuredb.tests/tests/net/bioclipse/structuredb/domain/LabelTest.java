@@ -14,6 +14,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.openscience.cdk.exception.CDKException;
+
+import testData.TestData;
 
 /**
  * @author jonalv
@@ -22,10 +25,12 @@ import org.junit.Test;
 public class LabelTest {
 
     @Test
-    public void testHasValuesEqualsTo() {
+    public void testHasValuesEqualsTo() throws CDKException {
 
-        DBMolecule s1 = new DBMolecule();
-        DBMolecule s2 = new DBMolecule();
+        DBMolecule s1 = new DBMolecule( "CycloOctan",
+                                        TestData.getCycloOctan() );        
+        DBMolecule s2 = new DBMolecule( "CycloPropan", 
+                                        TestData.getCycloPropane() );
         s2.setName("s2");
         
         TextAnnotation annotation1 = new TextAnnotation();
@@ -33,7 +38,6 @@ public class LabelTest {
         TextAnnotation annotation2 = new TextAnnotation(annotation1);
         TextAnnotation annotation3 = new TextAnnotation();
         annotation3.addDBMolecule(s2);
-        
         assertTrue(  annotation1.hasValuesEqualTo(annotation2) );
         assertFalse( annotation1.hasValuesEqualTo(annotation3) );
     }
