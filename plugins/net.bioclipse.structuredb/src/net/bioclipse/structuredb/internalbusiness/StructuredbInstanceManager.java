@@ -12,6 +12,7 @@ package net.bioclipse.structuredb.internalbusiness;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -20,6 +21,8 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 
 import net.bioclipse.core.domain.RecordableList;
+import net.bioclipse.filestore.FileStore;
+import net.bioclipse.structuredb.FileStoreKeeper;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.ChoiceProperty;
@@ -68,6 +71,9 @@ public class StructuredbInstanceManager
 
     public void delete(DBMolecule dBMolecule) {
         dBMoleculeDao.delete( dBMolecule.getId() );
+        FileStoreKeeper.FILE_STORE
+                       .delete( UUID.fromString( 
+                                         dBMolecule.getFileStoreKey() ) );
     }
 
     public List<Annotation> retrieveAllAnnotations() {
@@ -245,5 +251,16 @@ public class StructuredbInstanceManager
     public int numberOfMoleculesInLabel( TextAnnotation annotation ) {
 
         return dBMoleculeDao.getNumberOfMoleculesWithAnnotation( annotation );
+    }
+
+    public void dropDataBase( IProgressMonitor monitor ) {
+
+        Iterator<DBMolecule> iterator = dBMoleculeDao.allStructuresIterator();
+        int ticks = dBMoleculeDao.numberOfStructures();
+        monitor.beginTask( "Dropping database", ticks );
+        while ( iterator.hasNext() ) {
+            delete( iterator.next() );
+            monitor.worked( 1 );
+        }
     }
 }

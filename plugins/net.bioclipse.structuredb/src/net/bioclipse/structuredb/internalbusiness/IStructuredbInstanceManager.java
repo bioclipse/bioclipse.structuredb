@@ -277,4 +277,10 @@ public interface IStructuredbInstanceManager {
                                               TextAnnotation annotation );
 
     public int numberOfMoleculesInLabel( TextAnnotation annotation );
+
+    /**
+     * @param monitor 
+     * 
+     */
+    public void dropDataBase(IProgressMonitor monitor);
 }

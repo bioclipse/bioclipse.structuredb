@@ -267,13 +267,15 @@ public class StructuredbManager implements IStructuredbManager {
         return user;
     }
 
-    public void deleteDatabase(String databaseName) {
+    public void deleteDatabase(String databaseName, IProgressMonitor monitor) {
+        internalManagers.get( databaseName ).dropDataBase(monitor);
         checkDatabaseName(databaseName);
         internalManagers.remove( databaseName );
         applicationContexts.remove( databaseName );
         HsqldbUtil.getInstance().remove( databaseName + ".sdb" );
         fireDatabasesChanged();
         updateDatabaseDecorators();
+        monitor.done();
     }
 
     public List<Annotation> allAnnotations(String databaseName) {
@@ -838,6 +840,10 @@ public class StructuredbManager implements IStructuredbManager {
     public void subStructureSearch( String dbName,
                                     IMolecule molecule,
                                     BioclipseUIJob<List<?>> uijob ) {
+        throw new IllegalStateException("This method should never be called");
+    }
+
+    public void deleteDatabase( String databaseName ) {
         throw new IllegalStateException("This method should never be called");
     }
 }

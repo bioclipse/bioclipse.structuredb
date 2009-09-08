@@ -557,4 +557,6 @@ public interface IStructuredbManager extends IBioclipseManager {
     public void subStructureSearch( String dbName,
                                     IMolecule molecule,
                                     BioclipseUIJob<List<?>> uijob );
+    
+    public void deleteDatabase(String databaseName, IProgressMonitor monitor);
 }
