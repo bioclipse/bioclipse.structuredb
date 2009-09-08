@@ -35,8 +35,6 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
                            implements IDBMoleculeDao {
 
     private int numberofMoleculesInDataBase = -1;
-    private Map<Annotation, Integer> numberOfMolecules
-        = new WeakHashMap<Annotation, Integer>();
     
     public DBMoleculeDao() {
         super(DBMolecule.class);
@@ -59,9 +57,6 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
     }
     
     private void resetNumberOfMolculesCaches(DBMolecule molecule) {
-        for ( Annotation a : molecule.getAnnotations() ) {
-            numberOfMolecules.remove( a );
-        }
         numberofMoleculesInDataBase = -1;
     }
 
@@ -258,14 +253,8 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
     }
 
     public int getNumberOfMoleculesWithAnnotation( Annotation annotation ) {
-        Integer numOfMolecules = numberOfMolecules.get( annotation );
-        if ( numOfMolecules == null ) {
-            numOfMolecules = (Integer) 
-                             getSqlMapClientTemplate().queryForObject(
-                                 "DBMolecule.numberOfMoleculesWithLabel",
-                                  annotation.getId() );
-            numberOfMolecules.put( annotation, numOfMolecules );
-        }
-        return numOfMolecules;
+        return (Integer) getSqlMapClientTemplate().queryForObject(
+                             "DBMolecule.numberOfMoleculesWithLabel",
+                             annotation.getId() );
     }
 }
