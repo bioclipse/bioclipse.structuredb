@@ -126,21 +126,36 @@ public class FileStoreTest {
     @Test
     public void doStoreAFileAtCorrectPlace() throws URISyntaxException {
         doStoreExampleString();
-        File root = fs.getRootFolder();
-        File f = new File( root.getAbsolutePath() + File.separator 
-                           + key.toString().charAt( 0 ) + File.separator 
-                           + key.toString() + ".txt" );
+
+        File f = locateFile(key); 
         assertTrue( f.exists() );
     }
     
+    /**
+     * @param key
+     * @return
+     */
+    private File locateFile( UUID key ) {
+
+        File root = fs.getRootFolder();
+        
+        String keyString = key.toString();
+
+        StringBuffer directoryString = new StringBuffer();
+        directoryString.append( root.getAbsolutePath() );
+        for ( int i = 0 ; i < FileStore.RECURSION_DEPTH ; i++ ) {
+            directoryString.append( File.separatorChar  );
+            directoryString.append( keyString.charAt(i) );
+        }
+        return new File( directoryString.toString() + File.separatorChar
+                         + keyString + ".txt" );
+    }
+
     @Test
     public void doStoreAndDeleteFile() throws URISyntaxException {
         doStoreAFileAtCorrectPlace();
         fs.delete(key);
-        File root = fs.getRootFolder();
-        File f = new File( root.getAbsolutePath() + File.separator 
-                           + key.toString().charAt( 0 ) + File.separator 
-                           + key.toString() + ".txt" );
+        File f = locateFile( key );
         assertFalse( f.exists() );
     }
     

@@ -30,6 +30,7 @@ import java.util.UUID;
 public class FileStore {
 
     private File root;
+    public final static int RECURSION_DEPTH = 8;
     
     /**
      * Create a <code>FileStore</code> using the given directory as root for 
@@ -70,14 +71,19 @@ public class FileStore {
 
         String keyString = key.toString();
         
-        String directoryString = keyString.charAt( 0 ) + "";
-        File directory = new File( root.getPath() + File.separatorChar 
-                                   + directoryString );
-        if ( !directory.exists() ) {
-            directory.mkdir();
+        StringBuffer directoryString = new StringBuffer();
+        directoryString.append( root.getPath() );
+        for ( int i = 0 ; i < RECURSION_DEPTH ; i++ ) {
+            directoryString.append( File.separatorChar  );
+            directoryString.append( keyString.charAt(i) );
+            
+            File directory = new File( directoryString.toString() );
+            if ( !directory.exists() ) {
+                directory.mkdir();
+            }
         }
-        File file = new File( root.getPath() + File.separatorChar
-                              + directoryString + File.separatorChar
+        
+        File file = new File( directoryString.toString() + File.separatorChar
                               + keyString + ".txt" );
         
         BufferedWriter writer = null;
@@ -125,10 +131,17 @@ public class FileStore {
      * @return
      */
     private File locateFile( UUID key ) {
+
         String keyString = key.toString();
-        String directoryString = keyString.charAt( 0 ) + "";
-        return new File( root.getPath() + File.separatorChar
-                         + directoryString + File.separatorChar
+
+        StringBuffer directoryString = new StringBuffer();
+        directoryString.append( root.getPath() );
+        for ( int i = 0 ; i < RECURSION_DEPTH ; i++ ) {
+            directoryString.append( File.separatorChar  );
+            directoryString.append( keyString.charAt(i) );
+        }
+
+        return new File( directoryString.toString() + File.separatorChar
                          + keyString + ".txt" );
     }
 
