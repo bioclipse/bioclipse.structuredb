@@ -19,6 +19,8 @@ import java.util.WeakHashMap;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import net.bioclipse.structuredb.Activator;
+import net.bioclipse.structuredb.FileStoreKeeper;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
@@ -33,8 +35,6 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
                            implements IDBMoleculeDao {
 
     private int numberofMoleculesInDataBase = -1;
-    private Map<Annotation, Integer> numberOfMolecules
-        = new WeakHashMap<Annotation, Integer>();
     
     public DBMoleculeDao() {
         super(DBMolecule.class);
@@ -45,7 +45,8 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
 
     @Override
     public void insert( final DBMolecule dBMolecule ) {
-        
+        dBMolecule.setFileStoreKey( 
+            FileStoreKeeper.FILE_STORE.store( dBMolecule.toCML() ) );
         getSqlMapClientTemplate().update( "BaseObject.insert",
                                           dBMolecule );
         getSqlMapClientTemplate()
@@ -56,9 +57,6 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
     }
     
     private void resetNumberOfMolculesCaches(DBMolecule molecule) {
-        for ( Annotation a : molecule.getAnnotations() ) {
-            numberOfMolecules.remove( a );
-        }
         numberofMoleculesInDataBase = -1;
     }
 
@@ -176,6 +174,8 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
     public void insertWithAnnotation( DBMolecule dBMolecule,
                                       String annotationId ) {
 
+        dBMolecule.setFileStoreKey( 
+            FileStoreKeeper.FILE_STORE.store( dBMolecule.toCML() ) );
         getSqlMapClientTemplate().update( "BaseObject.insert",
                                           dBMolecule );
         getSqlMapClientTemplate().update( "DBMolecule.insert",
@@ -253,14 +253,8 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
     }
 
     public int getNumberOfMoleculesWithAnnotation( Annotation annotation ) {
-        Integer numOfMolecules = numberOfMolecules.get( annotation );
-        if ( numOfMolecules == null ) {
-            numOfMolecules = (Integer) 
-                             getSqlMapClientTemplate().queryForObject(
-                                 "DBMolecule.numberOfMoleculesWithLabel",
-                                  annotation.getId() );
-            numberOfMolecules.put( annotation, numOfMolecules );
-        }
-        return numOfMolecules;
+        return (Integer) getSqlMapClientTemplate().queryForObject(
+                             "DBMolecule.numberOfMoleculesWithLabel",
+                             annotation.getId() );
     }
 }

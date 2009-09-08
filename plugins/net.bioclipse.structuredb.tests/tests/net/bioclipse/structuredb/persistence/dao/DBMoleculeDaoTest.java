@@ -47,8 +47,13 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
     
     @Override
     public void onSetUpInTransaction() throws Exception {
-    
-        super.onSetUpInTransaction();
+        
+        try {
+            super.onSetUpInTransaction();
+        } catch (Exception e) {
+            // Okey we expected this exception but we needed the things done 
+            // before it was thrown to be done. A bit ugly... FIXME
+        }
         molecule1 = new DBMolecule( "CycloOctan",
                                     TestData
                                     .getCycloOctan() );
@@ -64,6 +69,8 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
             add(molecule1);
             add(molecule2);
         }};
+        this.object1 = molecule1;
+        this.object2 = molecule2;
     }
     
     public void testPersistDBMoleculeWithAnnotation() {
@@ -75,6 +82,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         textAnnotationDao.insert(annotation);
         
         DBMolecule dBMolecule = new DBMolecule();
+        dBMolecule.setAtomContainer( object1.getAtomContainer() );
         dBMolecule.addAnnotation(annotation);
         addCreatorAndEditor(dBMolecule);
         dao.insert(dBMolecule);
@@ -97,6 +105,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         textAnnotationDao.insert(annotation);
         
         DBMolecule dBMolecule = new DBMolecule();
+        dBMolecule.setAtomContainer( object1.getAtomContainer() );
 
         addCreatorAndEditor(dBMolecule);
         ((IDBMoleculeDao)dao).insertWithAnnotation( dBMolecule, 
@@ -122,6 +131,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         textAnnotationDao.insert(annotation);
         
         DBMolecule dBMolecule = new DBMolecule();
+        dBMolecule.setAtomContainer( object1.getAtomContainer() );
         dBMolecule.addAnnotation(annotation);
         addCreatorAndEditor(dBMolecule);
         dao.insert(dBMolecule);
@@ -135,14 +145,17 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
     
     public void testGetByName() throws CDKException {
 
-        
         assertTrue( dao.getAll().containsAll(dBMolecules) );
+        
+        DBMolecule other = new DBMolecule( "CycloPropan", 
+                                           TestData.getCycloPropane() );
+        addCreatorAndEditor( other );
+        dao.insert( other );
         
         List<DBMolecule> saved = ( (IDBMoleculeDao)dao ).getByName(
                                   molecule1.getName() );
         assertTrue(  saved.contains(molecule1) );
-        assertFalse( saved.contains(object1)       );
-        assertFalse( saved.contains(object2)       );
+        assertFalse( saved.contains(other)     );
         assertTrue( saved.size() == 1);
         assertTrue( saved.get(0).getFingerPrint()
                                 .equals( molecule1.getFingerPrint() ) );
@@ -151,8 +164,6 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
     public void testAllStructureIterator() {
         List<DBMolecule> dBMolecules = new ArrayList<DBMolecule>() {
             {
-                add( object1 );
-                add( object2 );
                 add( molecule1 );
                 add( molecule2 );
             }
@@ -165,11 +176,11 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
             assertTrue( dBMolecules.contains( iterator.next() ) );
             numberof++;
         }
-        assertEquals( 4, numberof );
+        assertEquals( 2, numberof );
     }
     
     public void testNumberOfStructures() {
-        assertEquals( 4, ((IDBMoleculeDao)dao).numberOfStructures() );
+        assertEquals( 2, ((IDBMoleculeDao)dao).numberOfStructures() );
     }
     
     public void testFingerPrintSearch() {
@@ -230,8 +241,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
             assertTrue( 
                 SMILES.contains( 
                     dbMoleculeDao.getMoleculeAtIndexInLabel( annotation, i )
-                                 .toSMILES(
-                                 ) ) );
+                                 .toSMILES() ) );
         }
     }
 

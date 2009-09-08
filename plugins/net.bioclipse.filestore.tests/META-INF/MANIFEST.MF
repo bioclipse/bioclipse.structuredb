@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests Plug-in
+Bundle-SymbolicName: net.bioclipse.filestore.tests
+Bundle-Version: 0.1.0
+Bundle-Activator: net.bioclipse.filestore.tests.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.junit4,
+ net.bioclipse.filestore;bundle-version="0.1.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
