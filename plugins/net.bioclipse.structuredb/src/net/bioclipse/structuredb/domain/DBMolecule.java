@@ -152,7 +152,6 @@ public class DBMolecule extends BaseObject
 
         try {
             return fingerPrint.equals( dBMolecule.getFingerPrint() )
-                   &&   smiles.equals( dBMolecule.toSMILES() )
                    && getInChIKey( Property.USE_CALCULATED ).equals( 
                           dBMolecule.getInChIKey( Property.USE_CALCULATED ) );
         }
