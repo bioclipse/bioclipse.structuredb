@@ -11,8 +11,10 @@
 
 package net.bioclipse.structuredb.domain;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.domain.IMolecule.Property;
+
 import org.junit.Test;
 import org.openscience.cdk.AtomContainer;
 import org.openscience.cdk.exception.CDKException;
@@ -70,5 +72,15 @@ public class DBMoleculeTest {
         dBMolecule.removeAnnotation( annotation );
         assertFalse( dBMolecule.getAnnotations().contains(annotation) );
         assertFalse( annotation.getDBMolecules().contains(dBMolecule) );        
+    }
+    
+    @Test
+    public void testInchi() throws CDKException, BioclipseException {
+        DBMolecule m = new DBMolecule("", TestData.getCycloOctan() );
+        String s = m.getInChI( Property.USE_CALCULATED );
+        assertEquals( s, m.getInChI( Property.USE_CALCULATED ) );
+        
+        DBMolecule m2 = new DBMolecule("", TestData.getCycloOctan() );
+        assertTrue( m2.hasValuesEqualTo( m2 ) );
     }
 }
