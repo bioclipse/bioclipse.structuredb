@@ -473,7 +473,7 @@ public class StructuredbInstanceManagerTest
                 textAnnotationDao.getById( textAnnotation.getId() ) ) );
     }
     
-    public void testDeleteMoleculeAndStructures() throws CDKException {
+    public void testDeleteAnnotationAndStructures() throws CDKException {
         DBMolecule dBMolecule = createMolecule( "CycloOcan", 
                                                TestData.getCycloOctan() );
         TextAnnotation annotation = createAnnotation( "test" );

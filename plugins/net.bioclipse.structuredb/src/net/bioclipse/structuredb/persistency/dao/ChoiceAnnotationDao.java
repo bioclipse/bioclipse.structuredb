@@ -66,13 +66,4 @@ public class ChoiceAnnotationDao
     public IChoicePropertyDao getChoicePropertyDao() {
         return choicePropertyDao;
     }
-
-    /* (non-Javadoc)
-     * @see net.bioclipse.structuredb.persistency.dao.IAnnotationDao#deleteWithStructures(java.lang.String, org.eclipse.core.runtime.IProgressMonitor)
-     */
-    public void deleteWithStructures( String id, IProgressMonitor monitor ) {
-
-        // TODO Auto-generated method stub
-        
-    }
 }

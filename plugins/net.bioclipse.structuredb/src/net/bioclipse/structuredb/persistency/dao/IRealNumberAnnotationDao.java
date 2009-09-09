@@ -18,6 +18,6 @@ import net.bioclipse.structuredb.domain.RealNumberAnnotation;
  *
  */
 public interface IRealNumberAnnotationDao 
-       extends IGenericDao<RealNumberAnnotation> {
+       extends IAnnotationDao<RealNumberAnnotation> {
 
 }

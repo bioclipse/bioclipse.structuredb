@@ -146,10 +146,10 @@ public class StructuredbInstanceManager
 
     public void deleteWithMolecules( Annotation annotation, 
                                      IProgressMonitor monitor ) {
-        throw new RuntimeException(
-            "This feature is not implemented yet. " +
-            "You can only remove entire databases for the moment" );
+        // any annotaion dao would do so just picked one...
+        realNumberAnnotationDao.deleteWithStructures( annotation, monitor );
     }
+    
 
     public void insertChoiceAnnotation( ChoiceAnnotation choiceAnnotation ) {
         choiceAnnotationDao.insert( choiceAnnotation );

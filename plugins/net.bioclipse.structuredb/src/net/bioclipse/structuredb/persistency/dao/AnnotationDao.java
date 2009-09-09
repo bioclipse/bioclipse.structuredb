@@ -11,8 +11,16 @@
 package net.bioclipse.structuredb.persistency.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.SubMonitor;
+
+import net.bioclipse.core.util.TimeCalculater;
+import net.bioclipse.structuredb.FileStoreKeeper;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 
@@ -74,4 +82,59 @@ public abstract class AnnotationDao<T extends Annotation> extends GenericDao<T>
         return (Annotation)getSqlMapClientTemplate()
                .queryForObject( "Annotation.getByName", name);
     }
+    
+    public void deleteWithStructures( Annotation annotation, 
+                                      IProgressMonitor monitor ) {
+        try {
+            int ticks = (int) 1E6;
+            monitor.beginTask( "Deleting Annotation", ticks );
+            
+            int molecules 
+                = (Integer) getSqlMapClientTemplate().queryForObject(
+                                "DBMolecule.numberOfMoleculesWithLabel",
+                                annotation.getId() );
+            monitor.worked( (int) (ticks * 0.01) );
+            
+            List<String> fileStoreKeys = getSqlMapClientTemplate().queryForList(
+                                             "Annotation.fileStoreKeys",
+                                             annotation.getId() );
+            List<String> dbMoleculeIds = getSqlMapClientTemplate().queryForList(
+                                             "Annotation.moleculeIds",
+                                             annotation.getId() );
+            monitor.worked( (int) (ticks * 0.04) );
+            
+            int tick = (int) ( (ticks - ticks * 0.05) / dbMoleculeIds.size() );
+            assert fileStoreKeys.size() == dbMoleculeIds.size();
+            int size = dbMoleculeIds.size();
+            long startTime = System.currentTimeMillis();
+            for ( int i = 0; i < fileStoreKeys.size(); i++ ) {
+                String key        = fileStoreKeys.get( i );
+                String moleculeId = dbMoleculeIds.get( i );
+                
+                FileStoreKeeper.FILE_STORE.delete( UUID.fromString( key ) );
+                getSqlMapClientTemplate().delete( "BaseObject.delete", 
+                                                  moleculeId );
+                monitor.worked( tick );
+                if ( (i+1) % 50 == 0 ) {
+                    monitor.subTask( "Molecules deleted: " + (i+1) + "/" 
+                                     + dbMoleculeIds.size() + " ( " 
+                                     + TimeCalculater.generateTimeRemainEst( 
+                                         startTime, 
+                                         i+1, 
+                                         size ) + ")" );
+                }
+                if ( monitor.isCanceled() ) {
+                    throw new OperationCanceledException();
+                }
+            }
+            getSqlMapClientTemplate().delete( 
+                "Annotation.deleteDBMoleculeCoupling", 
+                annotation );
+            getSqlMapClientTemplate().delete( "BaseObject.delete", 
+                                              annotation.getId() );
+        }
+        finally {
+            monitor.done();
+        }
+    }   
 }

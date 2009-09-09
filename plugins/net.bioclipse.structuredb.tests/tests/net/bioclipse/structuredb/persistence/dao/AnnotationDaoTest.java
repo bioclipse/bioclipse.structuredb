@@ -68,7 +68,7 @@ public abstract class AnnotationDaoTest<T extends Annotation>
         dao.update(object1);
         assertTrue( dBMolecule.getAnnotations().contains( object1 ) );
         ( (IAnnotationDao<Annotation>)dao )
-            .deleteWithStructures( object1.getId(), new NullProgressMonitor() );
+            .deleteWithStructures( object1, new NullProgressMonitor() );
         
         assertNull( dBMoleculeDao.getById( dBMolecule.getId() ) );
         assertNull( dao.getById( object1.getId() ) );

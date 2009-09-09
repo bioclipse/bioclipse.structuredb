@@ -34,8 +34,6 @@ import net.bioclipse.structuredb.domain.TextAnnotation;
 public class DBMoleculeDao extends GenericDao<DBMolecule>
                            implements IDBMoleculeDao {
 
-    private int numberofMoleculesInDataBase = -1;
-    
     public DBMoleculeDao() {
         super(DBMolecule.class);
     }
@@ -53,13 +51,8 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
             .update( type.getSimpleName() + ".insert",
                      dBMolecule );
         fixStructureAnnotation(dBMolecule);
-        resetNumberOfMolculesCaches(dBMolecule);
     }
     
-    private void resetNumberOfMolculesCaches(DBMolecule molecule) {
-        numberofMoleculesInDataBase = -1;
-    }
-
     private void fixStructureAnnotation( final DBMolecule dBMolecule ) {
 
         getSqlMapClientTemplate()
@@ -93,7 +86,6 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
         getSqlMapClientTemplate().update( "BaseObject.update",
                                           dBMolecule );
         fixStructureAnnotation( dBMolecule );
-        resetNumberOfMolculesCaches( dBMolecule );
     }
 
     @SuppressWarnings("unchecked")
@@ -186,16 +178,11 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
         params.put( "annotationId", annotationId );
         getSqlMapClientTemplate().update( "DBMoleculeAnnotation.connect",
                                           params );
-        resetNumberOfMolculesCaches( dBMolecule );
     }
 
     public int numberOfStructures() {
-        if ( numberofMoleculesInDataBase == -1 ) {
-            numberofMoleculesInDataBase 
-                = ( (Integer)getSqlMapClientTemplate()
-                    .queryForObject( "DBMolecule.numberOf" ) ).intValue();
-        }
-        return numberofMoleculesInDataBase;
+        return ( (Integer)getSqlMapClientTemplate()
+                          .queryForObject( "DBMolecule.numberOf" ) ).intValue();
     }
 
     public Iterator<DBMolecule> fingerPrintSubsetSearch(

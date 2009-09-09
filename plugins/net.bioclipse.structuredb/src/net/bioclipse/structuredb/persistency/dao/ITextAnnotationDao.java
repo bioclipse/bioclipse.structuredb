@@ -20,7 +20,7 @@ import net.bioclipse.structuredb.domain.TextAnnotation;
  *
  */
 public interface ITextAnnotationDao 
-       extends IGenericDao<TextAnnotation> {
+       extends IAnnotationDao<TextAnnotation> {
 
     List<TextAnnotation> getAllLabels();
 

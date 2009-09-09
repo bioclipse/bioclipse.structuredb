@@ -24,7 +24,7 @@
     <parameterMap class="DBMolecule" id="DBMolecule.update">
         <parameter property="SMILES"                                 />
         <parameter property="persistedFingerprint" jdbcType="binary" />
-        <parameter property="fileStoreKey"                                    />
+        <parameter property="fileStoreKey"                           />
         <parameter property="name"                                   />    
     </parameterMap>
     
@@ -286,6 +286,28 @@
 		WHERE 
 			sl.annotationId = #value# AND sl.dBMoleculeId = s.id
 	</select>
+	
+	<select id="Annotation.fileStoreKeys" 
+	        parameterClass="String" 
+	        resultClass="String">
+	   SELECT 
+	       m.fileStoreKey AS fileStoreKey
+	   FROM
+	       DBMolecule m, DBMoleculeAnnotation ma
+	   WHERE
+	       ma.annotationId = #value# AND ma.dBMoleculeId = m.id
+	</select>
+	
+	<select id="Annotation.moleculeIds" 
+	        parameterClass="String" 
+	        resultClass="String">
+       SELECT 
+           m.id AS id
+       FROM
+           DBMolecule m, DBMoleculeAnnotation ma
+       WHERE
+           ma.annotationId = #value# AND ma.dBMoleculeId = m.id
+    </select>
 	
 	<select id="DBMolecule.getAll" resultMap="DBMolecule">
 		SELECT
@@ -657,6 +679,7 @@
 	   WHERE 
 	       annotationId = '$id$'
 	</delete>
+	
 <!--+
     | UPDATE STATEMENTS
     +-->

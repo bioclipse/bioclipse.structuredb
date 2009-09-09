@@ -20,7 +20,7 @@ public interface IAnnotationDao<T extends Annotation> extends IGenericDao<T> {
      * @param id
      * @param nullProgressMonitor
      */
-    public void deleteWithStructures( String id,
+    public void deleteWithStructures( Annotation annotation,
                                       IProgressMonitor monitor );
 
 }

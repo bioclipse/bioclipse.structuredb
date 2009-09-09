@@ -14,6 +14,6 @@ import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 
 
 public interface IChoiceAnnotationDao 
-       extends IGenericDao<ChoiceAnnotation> {
+       extends IAnnotationDao<ChoiceAnnotation> {
 
 }

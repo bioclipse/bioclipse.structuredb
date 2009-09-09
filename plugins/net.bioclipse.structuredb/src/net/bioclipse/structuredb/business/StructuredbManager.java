@@ -361,17 +361,23 @@ public class StructuredbManager implements IStructuredbManager {
                                     .replaceAll("\\..*?$", "") ).getId();
 
         long start = System.currentTimeMillis();
+        int current = 0;
         while ( iterator.hasNext() && !monitor.isCanceled()) {
             String timeEstimation = "";
-            if ( System.currentTimeMillis() - start > 5000 ) {
-                timeEstimation 
-                    = " (" + TimeCalculater.generateTimeRemainEst( start, 
-                                                                  moleculesRead, 
-                                                                  entries )
-                      + " for file: " + file.getName() + ")";
+            
+            if ( current++ % 50 == 0 ) {
+                if ( System.currentTimeMillis() - start > 5000 ) {
+                    timeEstimation 
+                        = " (" + TimeCalculater
+                                     .generateTimeRemainEst( start, 
+                                                             moleculesRead, 
+                                                             entries )
+                          + " for file: " + file.getName() + ")";
+                }
+                monitor.subTask( "Read: " + moleculesRead + "/" + entries 
+                                 + timeEstimation );
             }
-            monitor.subTask( "reading " + moleculesRead + "/" + entries 
-                             + timeEstimation );
+
 
             ICDKMolecule molecule = iterator.next();
             moleculesRead++;

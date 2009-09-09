@@ -11,9 +11,12 @@
 package net.bioclipse.structuredb.persistency.dao;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
+import net.bioclipse.structuredb.FileStoreKeeper;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
@@ -77,12 +80,5 @@ public class TextAnnotationDao extends AnnotationDao<TextAnnotation>
                    .queryForList( "TextAnnotation.getAllLabels" );
     }
 
-    /* (non-Javadoc)
-     * @see net.bioclipse.structuredb.persistency.dao.IAnnotationDao#deleteWithStructures(java.lang.String, org.eclipse.core.runtime.IProgressMonitor)
-     */
-    public void deleteWithStructures( String id, IProgressMonitor monitor ) {
 
-        // TODO Auto-generated method stub
-        
-    }   
 }
