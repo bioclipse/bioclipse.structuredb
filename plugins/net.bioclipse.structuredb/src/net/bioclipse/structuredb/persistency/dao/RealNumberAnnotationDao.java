@@ -10,6 +10,8 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 
@@ -63,5 +65,14 @@ public class RealNumberAnnotationDao
 
     public IRealNumberPropertyDao getRealNumberPropertyDao() {
         return realNumberPropertyDao;
+    }
+
+    /* (non-Javadoc)
+     * @see net.bioclipse.structuredb.persistency.dao.IAnnotationDao#deleteWithStructures(java.lang.String, org.eclipse.core.runtime.IProgressMonitor)
+     */
+    public void deleteWithStructures( String id, IProgressMonitor monitor ) {
+
+        // TODO Auto-generated method stub
+        
     }
 }

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.openscience.cdk.exception.CDKException;
 
 import testData.TestData;
@@ -50,6 +51,27 @@ public abstract class AnnotationDaoTest<T extends Annotation>
         
         dBMolecule = dBMoleculeDao.getById( dBMolecule.getId() );
         assertFalse( dBMolecule.getAnnotations().contains( object1 ) );
+    }
+    
+    public void testDeleteWithStructures() throws Exception {
+        
+        IDBMoleculeDao dBMoleculeDao 
+            = (IDBMoleculeDao) applicationContext.getBean("dBMoleculeDao");
+        
+        DBMolecule dBMolecule = new DBMolecule( "CycloOctan",
+                                                TestData.getCycloOctan() );
+        
+        dBMolecule.setCreator(testUser);
+        dBMolecule.setLastEditor(testUser);
+        dBMoleculeDao.insert(dBMolecule);
+        object1.addDBMolecule(dBMolecule);
+        dao.update(object1);
+        assertTrue( dBMolecule.getAnnotations().contains( object1 ) );
+        ( (IAnnotationDao<Annotation>)dao )
+            .deleteWithStructures( object1.getId(), new NullProgressMonitor() );
+        
+        assertNull( dBMoleculeDao.getById( dBMolecule.getId() ) );
+        assertNull( dao.getById( object1.getId() ) );
     }
     
     public void testGetDBMolecules() throws Exception {

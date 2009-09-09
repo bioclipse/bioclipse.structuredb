@@ -10,8 +10,17 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 import net.bioclipse.structuredb.domain.Annotation;
 
 public interface IAnnotationDao<T extends Annotation> extends IGenericDao<T> {
+
+    /**
+     * @param id
+     * @param nullProgressMonitor
+     */
+    public void deleteWithStructures( String id,
+                                      IProgressMonitor monitor );
 
 }
