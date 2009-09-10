@@ -16,9 +16,11 @@ import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.util.TimeCalculater;
 import net.bioclipse.structuredb.domain.DBMolecule;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 
 
 /**
@@ -35,6 +37,7 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
     private IProgressMonitor monitor;
     private int ticks;
     private int currentTick = 0;
+    private long startTime;
 
     public SubStructureIterator( Iterator<DBMolecule> iterator, 
                                  CDKManager cdk,
@@ -48,6 +51,7 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
         this.structuredb = structuredb;
         this.monitor = monitor;
         this.ticks = ticks;
+        this.startTime = System.currentTimeMillis();
     }
 
     public boolean hasNext() {
@@ -70,16 +74,26 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
             DBMolecule next = parent.next();
             if(monitor != null) {
                 
-                monitor.worked( currentTick ++ );
-                String s = "Substructure search " 
-                           + (int)( 100*(currentTick*1.0)/ticks ) + "%";
+                monitor.worked(1);
+                String s = "Finger print search hits processed: " 
+                           + ++currentTick +"/" + ticks;
+                if ( System.currentTimeMillis() - startTime > 5000 ) {
+                    s += " (" 
+                      + TimeCalculater.generateTimeRemainEst( startTime, 
+                                                              currentTick, 
+                                                              ticks )
+                      + ")"; 
+                }
                 monitor.subTask(s);
+                if (monitor.isCanceled()) {
+                    throw new OperationCanceledException();
+                }
             }
             if( cdk.subStructureMatches( next, subStructure ) ) {
                 return next;
             }
         }
-        if( monitor != null ) {
+        if ( monitor != null ) {
             monitor.done();
         }
         return null;
