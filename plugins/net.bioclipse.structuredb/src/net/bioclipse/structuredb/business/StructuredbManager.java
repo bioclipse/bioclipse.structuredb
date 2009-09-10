@@ -365,7 +365,7 @@ public class StructuredbManager implements IStructuredbManager {
         while ( iterator.hasNext() && !monitor.isCanceled()) {
             String timeEstimation = "";
             
-            if ( current++ % 50 == 0 ) {
+            if ( entries < 500 || current++ % 50 == 0 ) {
                 if ( System.currentTimeMillis() - start > 5000 ) {
                     timeEstimation 
                         = " (" + TimeCalculater
@@ -454,7 +454,7 @@ public class StructuredbManager implements IStructuredbManager {
                                     .numberOfFingerprintMatches( 
                                         queryStructure );
         if (monitor != null) {
-            monitor.beginTask( "substructure search", 
+            monitor.beginTask( "Sub Structure Search", 
                                 ticks );
         }
          
