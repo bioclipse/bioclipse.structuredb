@@ -37,7 +37,7 @@ public class StructuredbManagerFactory
                 throws CoreException {
     
         structuredbManager = Activator.getDefault()
-                                      .getJSStructuredbManager();
+                                      .getJavaScriptStructuredbManager();
     }
 
     public Object create() throws CoreException {

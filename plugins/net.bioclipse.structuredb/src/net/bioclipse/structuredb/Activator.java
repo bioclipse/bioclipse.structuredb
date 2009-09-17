@@ -127,7 +127,7 @@ public class Activator extends AbstractUIPlugin
         return manager;
     }
     
-    public IJSStructuredbManager getJSStructuredbManager() {
+    public IJSStructuredbManager getJavaScriptStructuredbManager() {
         IJSStructuredbManager manager = null;
         try {
             manager = (IJSStructuredbManager) jsFinderTracker.waitForService(1000*30);
