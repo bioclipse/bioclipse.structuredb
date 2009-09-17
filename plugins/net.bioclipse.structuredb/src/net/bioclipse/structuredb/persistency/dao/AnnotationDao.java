@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 
@@ -85,6 +86,9 @@ public abstract class AnnotationDao<T extends Annotation> extends GenericDao<T>
     
     public void deleteWithStructures( Annotation annotation, 
                                       IProgressMonitor monitor ) {
+        if ( monitor == null ) {
+            monitor = new NullProgressMonitor();
+        }
         try {
             int ticks = (int) 1E6;
             monitor.beginTask( "Deleting Annotation", ticks );
