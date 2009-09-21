@@ -41,7 +41,7 @@ public interface IStructuredbInstanceManager {
     public void update(User user);
     
     /**
-     * Persists changes in a given user retrieved from the database.
+     * Persists changes in a given molecule from the database.
      * 
      * @param dBMolecule
      */
