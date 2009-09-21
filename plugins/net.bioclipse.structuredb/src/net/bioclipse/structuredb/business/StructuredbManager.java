@@ -42,6 +42,7 @@ import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.ChoiceProperty;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.Property;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextAnnotation;
@@ -315,6 +316,9 @@ public class StructuredbManager implements IStructuredbManager {
                                      IProgressMonitor monitor )
                 throws BioclipseException {
         
+        IStructuredbInstanceManager manager 
+            = internalManagers.get(databaseName);
+        
         checkDatabaseName(databaseName);
         if (monitor == null) {
             monitor = new NullProgressMonitor();
@@ -352,13 +356,13 @@ public class StructuredbManager implements IStructuredbManager {
             throw new IllegalArgumentException( "Could not open file:" + 
                                                 file );
         } 
-        String annotationId 
+        TextAnnotation label 
             = createTextAnnotation( databaseName,
                                     "label",
                                     file.getName()
                                      //extracts a name for our 
                                      //new annotation
-                                    .replaceAll("\\..*?$", "") ).getId();
+                                    .replaceAll("\\..*?$", "") );
 
         long start = System.currentTimeMillis();
         int current = 0;
@@ -393,10 +397,33 @@ public class StructuredbManager implements IStructuredbManager {
                 s.setName( "\"" + s.toSMILES(
                 ) + "\"" );
             }
-
-            internalManagers.get(databaseName)
-                            .insertMoleculeInAnnotation( s, 
-                                                         annotationId );
+            
+            manager.insertMoleculeInAnnotation( s, label.getId() );
+            s.addAnnotation( label );
+            
+            Map<?, ?> properties = molecule.getAtomContainer().getProperties();
+            
+            for ( Object o : properties.keySet() ) {
+                String key = o.toString();
+                
+                Property p = manager.retrievePropertyByName( key );
+                if ( p == null ) {
+                    p = new TextProperty(key);
+                    manager.insertTextProperty( (TextProperty) p );
+                }
+                if ( !(p instanceof TextProperty) ) {
+                    p = new TextProperty( "Stringified:" + key );
+                    manager.insertTextProperty( (TextProperty) p );
+                }
+                Annotation a = new TextAnnotation( properties.get( key )
+                                                             .toString(), 
+                                                   (TextProperty)p );
+                manager.insertTextAnnotation( (TextAnnotation) a );
+                s.addAnnotation( a );
+            }
+            
+            manager.update( s );
+            
             monitor.worked( maintTaskTick );
         }
         long end = System.currentTimeMillis();
