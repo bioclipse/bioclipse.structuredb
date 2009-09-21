@@ -10,6 +10,9 @@
  ******************************************************************************/
 package net.bioclipse.structuredb;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.cdk.ui.views.IMoleculesEditorModel;
 import net.bioclipse.structuredb.business.IStructuredbManager;
@@ -52,5 +55,9 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
 
     public void save() {
         structuredb.save( databaseName, annotation );
+    }
+
+    public Collection<Object> getAvailableProperties() {
+        return new ArrayList();
     }
 }
