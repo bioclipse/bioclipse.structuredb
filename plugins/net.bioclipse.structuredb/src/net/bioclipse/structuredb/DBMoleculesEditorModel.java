@@ -58,6 +58,6 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
     }
 
     public Collection<Object> getAvailableProperties() {
-        return new ArrayList();
+        return new ArrayList(){ {add( annotation.getProperty().getName() );} };
     }
 }
