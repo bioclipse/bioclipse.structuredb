@@ -879,4 +879,8 @@ public class StructuredbManager implements IStructuredbManager {
     public void deleteDatabase( String databaseName ) {
         throw new IllegalStateException("This method should never be called");
     }
+
+    public Iterator<DBMolecule> allStructuresIterator( String databaseName ) {
+        return internalManagers.get( databaseName ).allStructuresIterator();
+    }
 }

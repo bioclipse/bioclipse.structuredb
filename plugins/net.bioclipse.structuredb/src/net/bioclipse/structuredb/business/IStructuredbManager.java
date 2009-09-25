@@ -559,4 +559,14 @@ public interface IStructuredbManager extends IBioclipseManager {
                                     BioclipseUIJob<List<?>> uijob );
     
     public void deleteDatabase(String databaseName, IProgressMonitor monitor);
+ 
+    @PublishedMethod( params = "String databaseName",
+                      methodSummary = "returns an iterator to all molecules " +
+                      		          "in the database" )
+    /**
+     * @param dbName
+     * 
+     * @return an iterator for all molecules in the database
+     */
+    public Iterator<DBMolecule> allStructuresIterator( String databaseName );
 }
