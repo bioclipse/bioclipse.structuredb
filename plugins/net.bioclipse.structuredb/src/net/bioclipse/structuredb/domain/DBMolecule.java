@@ -459,8 +459,12 @@ public class DBMolecule extends BaseObject
     }
 
     public Object getProperty( String propertyKey, Property urgency ) {
-
-        throw new UnsupportedOperationException();
+        for ( Annotation a : this.annotations ) {
+            if ( a.getProperty().getName().equals( propertyKey ) ) {
+                return a.getValue();
+            }
+        }
+        return null;
     }
     
     public String toString() {
