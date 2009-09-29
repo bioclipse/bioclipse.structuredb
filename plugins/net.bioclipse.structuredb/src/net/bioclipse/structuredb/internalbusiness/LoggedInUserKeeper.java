@@ -20,8 +20,7 @@ import net.bioclipse.usermanager.business.IUserManager;
  */
 public class LoggedInUserKeeper implements ILoggedInUserKeeper {
 
-    private User         loggedInUser;
-    private IUserManager userManager;
+    private volatile User loggedInUser;
     
     public User getLoggedInUser() {
         return loggedInUser;
@@ -56,7 +55,6 @@ public class LoggedInUserKeeper implements ILoggedInUserKeeper {
     }
     
     public void setUserManager( IUserManager userManager ) {
-        this.userManager = userManager;
         userManager.addListener(this);
     }
 }
