@@ -569,4 +569,13 @@ public interface IStructuredbManager extends IBioclipseManager {
      * @return an iterator for all molecules in the database
      */
     public Iterator<DBMolecule> allStructuresIterator( String databaseName );
+    
+    /**
+     * @param dbName
+     * @param molecule
+     */
+    @PublishedMethod( params = "String dbName, DBMolecule molecule",
+                      methodSummary = "Persists changes on a molecule in the " +
+                      		          "database" )
+    public void updateMolecule(String dbName, DBMolecule molecule);
 }

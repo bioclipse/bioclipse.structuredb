@@ -881,6 +881,13 @@ public class StructuredbManager implements IStructuredbManager {
     }
 
     public Iterator<DBMolecule> allStructuresIterator( String databaseName ) {
+        checkDatabaseName( databaseName );
         return internalManagers.get( databaseName ).allStructuresIterator();
+    }
+
+    public void updateMolecule( String dbName, DBMolecule molecule ) {
+        checkDatabaseName( dbName );
+        internalManagers.get( dbName ).update( molecule );
+        updateDatabaseDecorators();
     }
 }
