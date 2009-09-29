@@ -888,6 +888,7 @@ public class StructuredbManager implements IStructuredbManager {
     public void updateMolecule( String dbName, DBMolecule molecule ) {
         checkDatabaseName( dbName );
         internalManagers.get( dbName ).update( molecule );
+        fireAnnotationsChanged();
         updateDatabaseDecorators();
     }
 }
