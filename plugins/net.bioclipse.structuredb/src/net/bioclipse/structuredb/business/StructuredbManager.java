@@ -401,26 +401,26 @@ public class StructuredbManager implements IStructuredbManager {
             manager.insertMoleculeInAnnotation( s, label.getId() );
             s.addAnnotation( label );
             
-            Map<?, ?> properties = molecule.getAtomContainer().getProperties();
-            
-            for ( Object o : properties.keySet() ) {
-                String key = o.toString();
-                
-                Property p = manager.retrievePropertyByName( key );
-                if ( p == null ) {
-                    p = new TextProperty(key);
-                    manager.insertTextProperty( (TextProperty) p );
-                }
-                if ( !(p instanceof TextProperty) ) {
-                    p = new TextProperty( "Stringified:" + key );
-                    manager.insertTextProperty( (TextProperty) p );
-                }
-                Annotation a = new TextAnnotation( properties.get( key )
-                                                             .toString(), 
-                                                   (TextProperty)p );
-                manager.insertTextAnnotation( (TextAnnotation) a );
-                s.addAnnotation( a );
-            }
+//            Map<?, ?> properties = molecule.getAtomContainer().getProperties();
+//            
+//            for ( Object o : properties.keySet() ) {
+//                String key = o.toString();
+//                
+//                Property p = manager.retrievePropertyByName( key );
+//                if ( p == null ) {
+//                    p = new TextProperty(key);
+//                    manager.insertTextProperty( (TextProperty) p );
+//                }
+//                if ( !(p instanceof TextProperty) ) {
+//                    p = new TextProperty( "Stringified:" + key );
+//                    manager.insertTextProperty( (TextProperty) p );
+//                }
+//                Annotation a = new TextAnnotation( properties.get( key )
+//                                                             .toString(), 
+//                                                   (TextProperty)p );
+//                manager.insertTextAnnotation( (TextAnnotation) a );
+//                s.addAnnotation( a );
+//            }
             
             manager.update( s );
             
