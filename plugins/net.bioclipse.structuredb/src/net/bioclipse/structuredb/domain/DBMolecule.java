@@ -418,7 +418,7 @@ public class DBMolecule extends BaseObject
             for (IBond bond : clone.bonds())
                 bond.setFlag(CDKConstants.ISAROMATIC, false);
             if ( factory == null ) {
-                factory = new InChIGeneratorFactory();
+                factory = InChIGeneratorFactory.getInstance();
             }
             InChIGenerator gen = factory.getInChIGenerator(clone);
             INCHI_RET status = gen.getReturnStatus();
