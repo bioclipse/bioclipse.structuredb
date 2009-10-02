@@ -60,4 +60,13 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
     public Collection<Object> getAvailableProperties() {
         return new ArrayList(){ {add( annotation.getProperty().getName() );} };
     }
+
+    /* (non-Javadoc)
+     * @see net.bioclipse.cdk.ui.views.IMoleculesEditorModel#setPropertyFor(int, java.lang.String, java.lang.Object)
+     */
+    public <T> void setPropertyFor( int index, String property, T value ) {
+
+        // TODO Auto-generated method stub
+
+    }
 }
