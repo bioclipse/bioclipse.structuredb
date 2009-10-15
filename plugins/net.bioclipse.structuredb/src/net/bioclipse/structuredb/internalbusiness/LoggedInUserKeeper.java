@@ -22,7 +22,10 @@ public class LoggedInUserKeeper implements ILoggedInUserKeeper {
 
     private volatile User loggedInUser;
     
-    public User getLoggedInUser() {
+    public synchronized User getLoggedInUser() {
+        if ( loggedInUser == null ) {
+            throw new IllegalStateException( "No user is logged in" );
+        }
         return loggedInUser;
     }
 
@@ -50,7 +53,7 @@ public class LoggedInUserKeeper implements ILoggedInUserKeeper {
      * 
      * @param loggedInUser
      */
-    public void setLoggedInUser( User loggedInUser ) {
+    public synchronized void setLoggedInUser( User loggedInUser ) {
         this.loggedInUser = loggedInUser;
     }
     
