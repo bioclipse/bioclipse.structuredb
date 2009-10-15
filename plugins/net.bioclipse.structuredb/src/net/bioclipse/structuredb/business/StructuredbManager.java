@@ -721,6 +721,7 @@ public class StructuredbManager implements IStructuredbManager {
                                                             property );
         internalManagers.get( databaseName )
                         .insertChoiceAnnotation( annotation );
+        fireAnnotationsChanged();
         updateDatabaseDecorators();
         return annotation;
     }
@@ -745,6 +746,7 @@ public class StructuredbManager implements IStructuredbManager {
                                                                     property );
         internalManagers.get( databaseName )
                         .insertRealNumberAnnotation( annotation );
+        fireAnnotationsChanged();
         updateDatabaseDecorators();
         return annotation;
     }
@@ -768,6 +770,7 @@ public class StructuredbManager implements IStructuredbManager {
                                                         property );
         internalManagers.get( databaseName )
                         .insertTextAnnotation( annotation );
+        fireAnnotationsChanged();
         updateDatabaseDecorators();
         return annotation;
     }
