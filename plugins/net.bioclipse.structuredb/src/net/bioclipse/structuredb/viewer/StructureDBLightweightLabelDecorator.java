@@ -10,11 +10,13 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.viewer;
 
+import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Label;
 import net.bioclipse.structuredb.StructureDBInstance;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -31,6 +33,8 @@ public class StructureDBLightweightLabelDecorator
        implements ILightweightLabelDecorator, 
                   IStructureDBLabelDecoratorChangeListener {
 
+    private Logger logger = Logger.getLogger( this.getClass() );
+    
     public StructureDBLightweightLabelDecorator() {
         Activator.getDefault()
                  .publishStructureDBDecoratorChangeListener( this );
@@ -38,13 +42,20 @@ public class StructureDBLightweightLabelDecorator
     
     public void decorate( Object element, IDecoration decoration ) {
 
-        if ( element instanceof StructureDBInstance ) {
-            int n = ( (StructureDBInstance) element ).getNumberOfMolecules();
-            decoration.addSuffix( " [" + n + "]" );
+        try {
+            if ( element instanceof StructureDBInstance ) {
+                int n = ( (StructureDBInstance) element ).getNumberOfMolecules();
+                decoration.addSuffix( " [" + n + "]" );
+            }
+            if ( element instanceof Label ) {
+                int n = ( (Label) element ).getNumberOfMolecules();
+                decoration.addSuffix( " [" + n + "]" );
+            }
         }
-        if ( element instanceof Label ) {
-            int n = ( (Label) element ).getNumberOfMolecules();
-            decoration.addSuffix( " [" + n + "]" );
+        catch (Exception e) {
+            logger.debug( "Exception when trying to decorate StructureDB " +
+            		       "part of databaseview" );
+            LogUtils.debugTrace( logger, e );
         }
     }
 
