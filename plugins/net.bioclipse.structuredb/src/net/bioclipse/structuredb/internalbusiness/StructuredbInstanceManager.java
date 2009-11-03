@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 
 import net.bioclipse.core.domain.RecordableList;
+import net.bioclipse.core.util.TimeCalculater;
 import net.bioclipse.filestore.FileStore;
 import net.bioclipse.structuredb.FileStoreKeeper;
 import net.bioclipse.structuredb.domain.Annotation;
@@ -258,9 +259,18 @@ public class StructuredbInstanceManager
         Iterator<DBMolecule> iterator = dBMoleculeDao.allStructuresIterator();
         int ticks = dBMoleculeDao.numberOfStructures();
         monitor.beginTask( "Dropping database", ticks );
+        long startTime = System.currentTimeMillis();
+        int i = 0;
         while ( iterator.hasNext() ) {
-            delete( iterator.next() );
+            FileStoreKeeper.FILE_STORE
+                           .delete( UUID.fromString( 
+                                        iterator.next().getFileStoreKey() ) );
             monitor.worked( 1 );
+            monitor.subTask( "(Estimating " + 
+                TimeCalculater.generateTimeRemainEst( startTime, 
+                                                      i++, 
+                                                      ticks ) + " remaining" );
         }
+        monitor.subTask( "Almost done" );
     }
 }

@@ -65,7 +65,7 @@
         </objectContribution>
         
         <objectContribution adaptable="false"
-                            id="net.bioclipse.structuredb.removeLabel"
+                            id="net.bioclipse.structuredb.label"
                             objectClass="net.bioclipse.structuredb.Label">
             <action
                 class="net.bioclipse.structuredb.actions.OpenAnnotationAction"
@@ -80,8 +80,16 @@
                id="net.bioclipse.structuredb.actions.RemoveLabelAction"
                label="Delete"
                menubarPath="additions"
-               tooltip="Deletes the Label"/>
+               tooltip="Deletes the Label" />
+           <action
+                class="net.bioclipse.structuredb.actions.RenameAnnotationAction"
+                enablesFor="1"
+                id="net.bioclipse.structuredb.actions.RenameAnnotationAction"
+                label="Rename"
+                menubarPath="additions"
+                tooltip="Rename the Label" />
         </objectContribution>
+        
     </extension>
    
     <extension point="org.eclipse.ui.navigator.viewer">

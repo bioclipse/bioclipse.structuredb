@@ -269,8 +269,8 @@ public class StructuredbManager implements IStructuredbManager {
     }
 
     public void deleteDatabase(String databaseName, IProgressMonitor monitor) {
-        internalManagers.get( databaseName ).dropDataBase(monitor);
         checkDatabaseName(databaseName);
+        internalManagers.get( databaseName ).dropDataBase(monitor);
         internalManagers.remove( databaseName );
         applicationContexts.remove( databaseName );
         HsqldbUtil.getInstance().remove( databaseName + ".sdb" );
@@ -575,6 +575,7 @@ public class StructuredbManager implements IStructuredbManager {
             internalManagers.get( databaseName )
                             .update( (ChoiceAnnotation)annotation );
         }
+        fireAnnotationsChanged();
         updateDatabaseDecorators();
     }
 
@@ -721,6 +722,7 @@ public class StructuredbManager implements IStructuredbManager {
                                                             property );
         internalManagers.get( databaseName )
                         .insertChoiceAnnotation( annotation );
+        fireAnnotationsChanged();
         updateDatabaseDecorators();
         return annotation;
     }
@@ -745,6 +747,7 @@ public class StructuredbManager implements IStructuredbManager {
                                                                     property );
         internalManagers.get( databaseName )
                         .insertRealNumberAnnotation( annotation );
+        fireAnnotationsChanged();
         updateDatabaseDecorators();
         return annotation;
     }
@@ -768,6 +771,7 @@ public class StructuredbManager implements IStructuredbManager {
                                                         property );
         internalManagers.get( databaseName )
                         .insertTextAnnotation( annotation );
+        fireAnnotationsChanged();
         updateDatabaseDecorators();
         return annotation;
     }
