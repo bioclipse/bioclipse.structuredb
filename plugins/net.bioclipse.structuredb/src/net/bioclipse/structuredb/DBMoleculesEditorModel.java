@@ -61,12 +61,16 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
         return new ArrayList(){ {add( annotation.getProperty().getName() );} };
     }
 
-    /* (non-Javadoc)
-     * @see net.bioclipse.cdk.ui.views.IMoleculesEditorModel#setPropertyFor(int, java.lang.String, java.lang.Object)
-     */
     public <T> void setPropertyFor( int index, String property, T value ) {
+        throw new UnsupportedOperationException();
 
-        // TODO Auto-generated method stub
+    }
 
+    public void delete( int index ) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void instert( ICDKMolecule... molecules ) {
+        throw new UnsupportedOperationException();
     }
 }
