@@ -11,16 +11,13 @@
 package net.bioclipse.structuredb.business;
 
 import java.io.File;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,18 +36,12 @@ import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener.DatabaseUpdateType;
 import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.ChoiceAnnotation;
-import net.bioclipse.structuredb.domain.ChoiceProperty;
 import net.bioclipse.structuredb.domain.DBMolecule;
-import net.bioclipse.structuredb.domain.Property;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
-import net.bioclipse.structuredb.domain.User;
 import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
-import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
-import net.bioclipse.structuredb.persistency.dao.IUserDao;
 import net.bioclipse.structuredb.persistency.tables.TableCreator;
 
 import org.apache.commons.dbcp.BasicDataSource;
@@ -124,10 +115,6 @@ public class StructuredbManager implements IStructuredbManager {
             internalManagers
                 .put( name, (IStructuredbInstanceManager) context
                             .getBean("structuredbInstanceManager") );
-            LoggedInUserKeeper keeper 
-                = (LoggedInUserKeeper)context.getBean( "loggedInUserKeeper" );
-            IUserDao userDao = (IUserDao) context.getBean( "userDao" );
-            keeper.setLoggedInUser( userDao.getByUserName( "local" ) );
         }
     }
 
@@ -173,30 +160,10 @@ public class StructuredbManager implements IStructuredbManager {
                 (IStructuredbInstanceManager)
                 applicationContexts.get( databaseName)
                                    .getBean("structuredbInstanceManager") );
-        createLocalUser( applicationContexts.get(databaseName) );
         logger.info( "A new local instance of Structuredb named"
                       + databaseName + " has been created" );
         fireDatabasesChanged();
         updateDatabaseDecorators();
-    }
-
-    /**
-     * Creates the standard user for a local database.
-     * 
-     * @param context
-     */
-    private void createLocalUser(ApplicationContext context) {
-        IUserDao userDao = (IUserDao) context.getBean("userDao");
-        User localUser = new User("local", "", true );
-        localUser.setCreator(localUser);
-        Timestamp now = new Timestamp( System.currentTimeMillis() );
-        localUser.setCreated(now);
-        localUser.setEdited(now);
-        userDao.insert(localUser);
-        LoggedInUserKeeper keeper = (LoggedInUserKeeper)
-                                     context
-                                     .getBean( "loggedInUserKeeper" );
-        keeper.setLoggedInUser( localUser );
     }
 
     private ApplicationContext createApplicationcontext( String databaseName, 
@@ -255,19 +222,6 @@ public class StructuredbManager implements IStructuredbManager {
         return m;
     }
 
-    public User createUser( String databaseName,
-                            String username,
-                            String password,
-                            boolean sudoer) 
-                throws IllegalArgumentException {
-
-        checkDatabaseName(databaseName);
-        User user = new User(username, password, sudoer);
-        internalManagers.get(databaseName).insertUser(user);
-        updateDatabaseDecorators();
-        return user;
-    }
-
     public void deleteDatabase(String databaseName, IProgressMonitor monitor) {
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName ).dropDataBase(monitor);
@@ -289,22 +243,11 @@ public class StructuredbManager implements IStructuredbManager {
         return internalManagers.get(databaseName).retrieveAllMolecules();
     }
 
-    public List<User> allUsers(String databaseName) {
-        checkDatabaseName(databaseName);
-        return internalManagers.get(databaseName).retrieveAllUsers();
-    }
-
     public List<DBMolecule> allMoleculesByName( String databaseName,
                                                 String structureName ) {
         checkDatabaseName(databaseName);
         return internalManagers.get(databaseName)
                                .retrieveStructureByName(structureName);
-    }
-
-    public User userByName(String databaseName, String username) {
-        checkDatabaseName(databaseName);
-        return internalManagers.get(databaseName)
-                               .retrieveUserByUsername(username);
     }
 
     public String getManagerName() {
@@ -571,10 +514,6 @@ public class StructuredbManager implements IStructuredbManager {
             internalManagers.get( databaseName )
                             .update( (RealNumberAnnotation)annotation );
         }
-        else if ( annotation instanceof ChoiceAnnotation ) {
-            internalManagers.get( databaseName )
-                            .update( (ChoiceAnnotation)annotation );
-        }
         fireAnnotationsChanged();
         updateDatabaseDecorators();
     }
@@ -701,30 +640,6 @@ public class StructuredbManager implements IStructuredbManager {
                              file, 
                              new NullProgressMonitor() );
         updateDatabaseDecorators();
-    }
-
-    public ChoiceAnnotation createChoiceAnnotation( String databaseName,
-                                                    String propertyName,
-                                                    String value )
-                            throws IllegalArgumentException {
-
-        checkDatabaseName( databaseName );
-        ChoiceProperty property = (ChoiceProperty) 
-                                   internalManagers.get( databaseName )
-                                                   .retrievePropertyByName(
-                                                       propertyName );
-        if ( property == null ) {
-            property = new ChoiceProperty(propertyName);
-            internalManagers.get( databaseName )
-                            .insertChoiceProperty( property );
-        }
-        ChoiceAnnotation annotation = new ChoiceAnnotation( value,
-                                                            property );
-        internalManagers.get( databaseName )
-                        .insertChoiceAnnotation( annotation );
-        fireAnnotationsChanged();
-        updateDatabaseDecorators();
-        return annotation;
     }
 
     public RealNumberAnnotation createRealNumberAnnotation( 

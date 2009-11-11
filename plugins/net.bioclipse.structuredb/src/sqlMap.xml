@@ -35,8 +35,6 @@
 		<result property="id"         column="id"                               />
 		<result property="created"    column="created"                          />
 		<result property="edited"     column="edited"                           />
-		<result property="creator"    column="creator"    select="User.getById" />
-		<result property="lastEditor" column="lastEditor" select="User.getById" />
 	</resultMap>
 
 	<resultMap class="Annotation" id="Annotation" extends="BaseObject">
@@ -44,7 +42,6 @@
 		<discriminator column="sortOf" javaType="String">
 			<subMap value="Text"       resultMap="TextAnnotation"/>
 			<subMap value="RealNumber" resultMap="RealNumberAnnotation"/>
-			<subMap value="Choice"     resultMap="ChoiceAnnotation"/>
 		</discriminator>
 	</resultMap>
 	
@@ -56,12 +53,6 @@
 		<result property="name"                 column="name"                           />
 	</resultMap>
 
-	<resultMap class="User" id="User" extends="BaseObject">
-		<result property="userName"      column="userName" />
-		<result property="passWordMd5"   column="passWord" />
-		<result property="sudoer"        column="sudoer"   />
-	</resultMap>
-	
 	<resultMap class="TextAnnotation" id="TextAnnotation" extends="Annotation">
 		<result property="value" column="value" />
 		<result property="property" column="property" select="TextProperty.getById" /> 
@@ -72,11 +63,6 @@
 		<result property="property" column="property" select="RealNumberProperty.getById" />
 	</resultMap>
 	
-	<resultMap class="ChoiceAnnotation" id="ChoiceAnnotation" extends="Annotation">
-		<result property="value" column="value" />
-		<result property="property" column="property" select="ChoiceProperty.getById" />
-	</resultMap>
-	
 	<resultMap class="TextProperty" id="TextProperty" extends="BaseObject">
 		<result property="name" column="name" />
 	</resultMap>
@@ -85,24 +71,13 @@
 		<result property="name" column="name" />
 	</resultMap>
 	
-	<resultMap class="ChoiceProperty" id="ChoiceProperty" extends="BaseObject">
-		<result property="name" column="name" />
-		<result property="propertyChoices" column="id" select="ChoiceProperty.getPropertyChoices" />
-	</resultMap>
-	
-	<resultMap class="PropertyChoice" id="PropertyChoice" extends="BaseObject">
-		<result property="value" column="value" />
-	</resultMap>
-
 <!--+
     | SQL FRAGMENTS
     +-->
 	<sql id="BaseObject-fields">
 		b.id         AS id,
 		b.created    AS created,
-		b.edited     AS edited,
-		b.creator    AS creator,
-		b.lastEditor AS lastEditor	
+		b.edited     AS edited
 	</sql>
 	
 	<sql id="DBMolecule-fields">
@@ -110,12 +85,6 @@
 		s.SMILES               AS SMILES,
 		s.fileStoreKey         AS fileStoreKey,
 		s.name                 AS name	
-	</sql>
-	
-	<sql id="User-fields">
-		u.userName AS userName,
-		u.passWord AS passWord,
-		u.sudoer   AS sudoer
 	</sql>
 	
 	<sql id="Annotation-fields">
@@ -132,25 +101,12 @@
 		r.realNumberProperty AS property
 	</sql>
 	
-	<sql id="ChoiceAnnotation-fields">
-		c.val AS value,
-		c.choiceProperty as property
-	</sql>
-	
 	<sql id="TextProperty-fields">
 		t.name AS name
 	</sql>
 	
 	<sql id="RealNumberProperty-fields">
 		r.name AS name
-	</sql>
-	
-	<sql id="ChoiceProperty-fields">
-		c.name AS name
-	</sql>
-	
-	<sql id="PropertyChoice-fields">
-		p.val AS value
 	</sql>
 	
 <!--+
@@ -165,11 +121,6 @@
         INSERT INTO BaseObject (  id   )
                         VALUES ('$id$' )
     </insert>
-	
-	<insert id="User.insert">
-		INSERT INTO User (   id,     userName,     passWord,        sudoer,     baseObject )
-			      VALUES ( '$id$', '$userName$', '$passWordMd5$', '$sudoer$', '$id$'       );
-	</insert>
 	
 	<insert id="DBMolecule.insert" parameterMap="DBMolecule.insert">
 		INSERT INTO DBMolecule ( id, name, baseObject, SMILES, persistedFingerprint, fileStoreKey )
@@ -191,11 +142,6 @@
 		                         VALUES ( '$id$', '$id$',     '$value$', '$property.id$' );
 	</insert>
 	
-	<insert id="ChoiceAnnotation.insert">
-		INSERT INTO ChoiceAnnotation (   id,     annotation, val,       choiceProperty   )
-		                      VALUES ( '$id$', '$id$',     '$value$', '$property.id$' );
-	</insert>
-	
 	<insert id="TextProperty.insert">
 		INSERT INTO TextProperty (   id,     baseObject, name   )
 		                  VALUES ( '$id$', '$id$',     '$name$' );
@@ -204,21 +150,6 @@
 	<insert id="RealNumberProperty.insert">
 		INSERT INTO RealNumberProperty (   id,     baseObject, name   )
 		                        VALUES ( '$id$', '$id$',     '$name$' );
-	</insert>
-	
-	<insert id="ChoiceProperty.insert">
-		INSERT INTO ChoiceProperty (   id,     baseObject, name   )
-		                    VALUES ( '$id$', '$id$',     '$name$' );
-	</insert>
-	
-	<insert id="PropertyChoice.insert">
-		INSERT INTO PropertyChoice (   id,     baseObject, val     )
-		                    VALUES ( '$id$', '$id$',     '$value$' );
-	</insert>
-	
-	<insert id="PropertyChoice.insertWithChoiceProperty">
-		INSERT INTO PropertyChoice (   id,     baseObject, val,       choicePropertyId )
-		                    VALUES ( '$id$', '$id$',     '$value$', '$property.id$'    );
 	</insert>
 	
 <!--+
@@ -242,28 +173,6 @@
 		WHERE 
 			s.id = #value#
 	</select>
-	
-	<select id="User.getById" parameterClass="String" resultMap="User">
-		SELECT 
-			<include refid="BaseObject-fields" />,
-			<include refid="User-fields"       />
-		FROM
-			User u INNER JOIN BaseObject b ON
-			u.baseObject = b.id
-		WHERE 
-			u.id = #value#
-	</select>
-	
-	<select id="User.getByUsername" parameterClass="String" resultMap="User">
-        SELECT 
-            <include refid="BaseObject-fields" />,
-            <include refid="User-fields"       />
-        FROM
-            User u INNER JOIN BaseObject b ON
-            u.baseObject = b.id
-        WHERE 
-            u.username = #value#
-    </select>
 	
 	<select id="Annotation.getById" resultMap="Annotation" parameterClass="String">
 		SELECT 
@@ -348,12 +257,10 @@
             <include refid="BaseObject-fields" />,
 			<include refid="Annotation-fields" />,
 			<include refid="TextAnnotation-fields" />,
-			<include refid="ChoiceAnnotation-fields" />,
 			<include refid="RealNumberAnnotation-fields" />
         FROM
             Annotation a INNER JOIN BaseObject b           ON a.baseObject = b.id
                          LEFT OUTER JOIN TextAnnotation t       ON t.annotation = a.id
-                         LEFT OUTER JOIN ChoiceAnnotation c     ON c.annotation = a.id
                          LEFT OUTER JOIN RealNumberAnnotation r ON r.annotation = a.id, 
             DBMoleculeAnnotation sl
         WHERE 
@@ -373,43 +280,6 @@
 		
 	</select>
 
-	<select id="User.getAll" resultMap="User">
-		SELECT 
-			<include refid="BaseObject-fields" />,
-			<include refid="User-fields"       />
-		FROM
-			User u INNER JOIN BaseObject b ON
-			u.baseObject = b.id
-	</select>
-	
-	<select id="ChoiceAnnotation.getAll" resultMap="ChoiceAnnotation">
-		SELECT 
-			<include refid="BaseObject-fields" />,
-			<include refid="Annotation-fields" />,
-			<include refid="ChoiceAnnotation-fields" />
-		FROM
-			ChoiceAnnotation c 
-			INNER JOIN Annotation a ON
-			c.annotation = a.id
-			INNER JOIN BaseObject b ON
-			a.baseObject = b.id
-	</select>
-	
-	<select id="ChoiceAnnotation.getById" resultMap="ChoiceAnnotation" parameterClass="String">
-		SELECT 
-			<include refid="BaseObject-fields" />,
-			<include refid="Annotation-fields" />,
-			<include refid="ChoiceAnnotation-fields" />
-		FROM
-			ChoiceAnnotation c 
-			INNER JOIN Annotation a ON
-			c.annotation = a.id
-			INNER JOIN BaseObject b ON
-			a.baseObject = b.id
-		WHERE 
-			c.id = #value#
-	</select>
-	
 	<select id="TextAnnotation.getAll" resultMap="TextAnnotation">
 		SELECT 
 			<include refid="BaseObject-fields" />,
@@ -552,52 +422,6 @@
 			r.name = #value#
 	</select>
 	
-	<select id="ChoiceProperty.getAll" resultMap="ChoiceProperty">
-		SELECT 
-			<include refid="BaseObject-fields" />,
-			<include refid="ChoiceProperty-fields" />
-		FROM
-			ChoiceProperty c 
-			INNER JOIN BaseObject b ON
-			c.baseObject = b.id
-	</select>
-	
-	<select id="ChoiceProperty.getById" resultMap="ChoiceProperty" parameterClass="String">
-		SELECT 
-			<include refid="BaseObject-fields" />,
-			<include refid="ChoiceProperty-fields" />
-		FROM
-			ChoiceProperty c 
-			INNER JOIN BaseObject b ON
-			c.baseObject = b.id
-		WHERE 
-			c.id = #value#
-	</select>
-
-	<select id="ChoiceProperty.getByName" resultMap="ChoiceProperty" parameterClass="String">
-		SELECT 
-			<include refid="BaseObject-fields" />,
-			<include refid="ChoiceProperty-fields" />
-		FROM
-			ChoiceProperty c 
-			INNER JOIN BaseObject b ON
-			c.baseObject = b.id
-		WHERE 
-			c.name = #value#
-	</select>
-	
-	<select id="ChoiceProperty.getPropertyChoices" resultMap="PropertyChoice" parameterClass="String">
-		SELECT 
-			<include refid="BaseObject-fields" />,
-		    <include refid="PropertyChoice-fields" />
-		FROM 
-		    PropertyChoice p 
-		    INNER JOIN BaseObject b ON
-		    p.baseObject = b.id
-		WHERE
-		    p.id = b.id AND p.choicePropertyId = #value#
-	</select>
-	
 	<select id="DBMolecule.fingerPrintSubsetSearch" 
 	        resultMap="DBMolecule"
 	        parameterClass="java.util.Map">
@@ -634,28 +458,6 @@
             AND sl.AnnotationId = #annotationId#
     </select>
     
-   	<select id="PropertyChoice.getAll" resultMap="PropertyChoice">
-		SELECT 
-			<include refid="BaseObject-fields" />,
-			<include refid="PropertyChoice-fields" />
-		FROM
-			PropertyChoice p 
-			INNER JOIN BaseObject b ON
-			p.baseObject = b.id
-	</select>
-    
-   	<select id="PropertyChoice.getById" resultMap="PropertyChoice" parameterClass="String">
-		SELECT 
-			<include refid="BaseObject-fields" />,
-			<include refid="PropertyChoice-fields" />
-		FROM
-			PropertyChoice p 
-			INNER JOIN BaseObject b ON
-			p.baseObject = b.id
-		WHERE 
-			p.id = #value#
-	</select>
-    
 <!--+
     | DELETE STATEMENTS
     +-->	
@@ -689,35 +491,12 @@
     	SET 
 			created    = '$created$',
 			edited     = '$edited$',
-			creator    = '$creator.id$',
-			lastEditor = '$lastEditor.id$'	
-		WHERE
-			id = '$id$'
-    </update>
-    
-    <update id="User.update" parameterClass="User">
-    	UPDATE 
-    		User
-    	SET 
-	    	userName = '$userName$',
-			passWord = '$passWordMd5$',
-			sudoer   = '$sudoer$'
 		WHERE
 			id = '$id$'
     </update>
     
     <update id="Annotation.update" parameterClass="Annotation">
 
-    </update>
-    
-    <update id="ChoiceAnnotation.update" parameterClass="ChoiceAnnotation">
-        UPDATE
-            ChoiceAnnotation
-        SET
-            val = '$value$',
-            choiceProperty = '$property.id$'
-        WHERE
-            id = '$id$'    	
     </update>
     
     <update id="TextAnnotation.update" parameterClass="TextAnnotation">
@@ -758,34 +537,6 @@
             id = '$id$'
     </update>
 
-    <update id="ChoiceProperty.update" parameterClass="ChoiceProperty">
-        UPDATE
-            ChoiceProperty
-        SET
-            name = '$name$'
-        WHERE
-            id = '$id$'
-    </update>
-
-    <update id="PropertyChoice.update" parameterClass="PropertyChoice">
-        UPDATE
-            PropertyChoice
-        SET
-            val = '$value$'
-        WHERE
-            id = '$id$'
-    </update>
-    
-    <update id="PropertyChoice.updateWithChoiceProperty" parameterClass="PropertyChoice">
-        UPDATE
-            PropertyChoice
-        SET
-            val = '$value$'
-            choicePropertyId = '$property.id$'
-        WHERE
-            id = '$id$'
-    </update>
-    
     <update id="DBMolecule.update" parameterMap="DBMolecule.update">
     	UPDATE 
     		DBMolecule

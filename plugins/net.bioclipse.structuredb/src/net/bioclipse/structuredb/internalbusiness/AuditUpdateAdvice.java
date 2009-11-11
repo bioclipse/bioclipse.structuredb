@@ -22,20 +22,11 @@ import net.bioclipse.structuredb.domain.BaseObject;
  */
 public class AuditUpdateAdvice implements IAuditAdvice {
 
-    private ILoggedInUserKeeper loggedInUserKeeper;
-
     public void before(Method method, Object[] args, Object target)
                 throws Throwable {
 
         BaseObject baseObject = (BaseObject)args[0];
         long now = System.currentTimeMillis();
         baseObject.setEdited(  new Timestamp(now) );
-        baseObject.setLastEditor( loggedInUserKeeper.getLoggedInUser() );
-       
     }
-
-    public void setLoggedInUserKeeper( ILoggedInUserKeeper keeper) {
-        this.loggedInUserKeeper = keeper;
-    }
-
 }

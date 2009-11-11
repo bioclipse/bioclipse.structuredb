@@ -41,8 +41,6 @@ public abstract class AnnotationDaoTest<T extends Annotation>
         DBMolecule dBMolecule = new DBMolecule( "CycloOctan",
                                                 TestData.getCycloOctan() );
         
-        dBMolecule.setCreator(testUser);
-        dBMolecule.setLastEditor(testUser);
         dBMoleculeDao.insert(dBMolecule);
         object1.addDBMolecule(dBMolecule);
         dao.update(object1);
@@ -61,8 +59,6 @@ public abstract class AnnotationDaoTest<T extends Annotation>
         DBMolecule dBMolecule = new DBMolecule( "CycloOctan",
                                                 TestData.getCycloOctan() );
         
-        dBMolecule.setCreator(testUser);
-        dBMolecule.setLastEditor(testUser);
         dBMoleculeDao.insert(dBMolecule);
         object1.addDBMolecule(dBMolecule);
         dao.update(object1);
