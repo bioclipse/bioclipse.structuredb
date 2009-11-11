@@ -37,9 +37,6 @@ public class BaseObject implements IBioObject, Comparable {
 
     private String id; //36 chars long unique id 
     
-    private User creator;
-    private User lastEditor;
-    
     private Timestamp created;
     private Timestamp edited;
     
@@ -57,8 +54,6 @@ public class BaseObject implements IBioObject, Comparable {
     public BaseObject( BaseObject obj ) {
         super();
         this.id         = obj.id;
-        this.creator    = obj.getCreator();
-        this.lastEditor = obj.getLastEditor();
     }
 
     /**
@@ -114,17 +109,6 @@ public class BaseObject implements IBioObject, Comparable {
     public boolean hasValuesEqualTo( BaseObject obj ) {
         if ( obj == null ) {
             return false;
-        }
-        if ( this.creator != null) {
-            if ( !this.creator.hasValuesEqualTo(obj.getCreator()) ) {
-                return false;
-            }
-        }
-        if ( this.lastEditor != null ) {
-            if ( !this.lastEditor.hasValuesEqualTo(
-                    obj.getLastEditor()) ) {
-                return false;
-            }
         }
         return id.equals( obj.getId() );
     }
@@ -196,22 +180,6 @@ public class BaseObject implements IBioObject, Comparable {
         return true;
     }
 
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
-
-    public void setLastEditor(User editor) {
-        this.lastEditor = editor;
-    }
-
-    public User getCreator() {
-        return creator;
-    }
-
-    public User getLastEditor() {
-        return lastEditor;
-    }
-
     public Timestamp getCreated() {
         return created;
     }
@@ -257,6 +225,4 @@ public class BaseObject implements IBioObject, Comparable {
         }
         return this.id.compareTo( ( (BaseObject)o ).getId() );
     }
-
-
 }
