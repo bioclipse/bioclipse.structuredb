@@ -12,14 +12,13 @@ import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.List;
 
+import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.BaseObject;
-import net.bioclipse.structuredb.domain.User;
-import net.bioclipse.structuredb.internalbusiness.ILoggedInUserKeeper;
 import net.bioclipse.structuredb.persistence.HsqldbTestServerManager;
 import net.bioclipse.structuredb.persistency.dao.IGenericDao;
-import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
+import org.apache.log4j.Logger;
 import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +49,8 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
         );
     }
     
+    private static Logger logger = Logger.getLogger( GenericDaoTest.class );
+    
     protected IGenericDao<DomainType> dao;
     
     private Class<DomainType> domainClass;
@@ -57,8 +58,6 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
     protected DomainType object1;
     protected DomainType object2;
     
-    protected User testUser;
-
     /**
      * @param c Class for the domain type to be tested
      */
@@ -71,27 +70,17 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
     public void onSetUpInTransaction() throws Exception {
         super.onSetUpInTransaction();
         
-        testUser = new User("username", "password", true);
-        
-        ((ILoggedInUserKeeper)applicationContext.getBean("loggedInUserKeeper"))
-            .setLoggedInUser(null);
-        
-        IUserDao userDao = (IUserDao) applicationContext.getBean("userDao");
-        userDao.insert(testUser);
-        
-        ((ILoggedInUserKeeper)applicationContext.getBean("loggedInUserKeeper"))
-            .setLoggedInUser(testUser);
-        
         String daoName = domainClass.getSimpleName() + "Dao";
         daoName = firstToLowerCase(daoName);
-        dao = (IGenericDao<DomainType>) applicationContext.getBean(daoName);
         try {
+            dao = (IGenericDao<DomainType>) applicationContext.getBean(daoName);
             object1 = domainClass.newInstance();
             object2 = domainClass.newInstance();
-            addCreatorAndEditor(object1);
-            addCreatorAndEditor(object2);
+            addAuditInformation(object1);
+            addAuditInformation(object2);
         } 
         catch (Exception e) {
+            LogUtils.debugTrace( logger, e );
             throw new RuntimeException(e);
         }
         try {
@@ -112,12 +101,10 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
                + daoName.substring(1);
     }
 
-    protected void addCreatorAndEditor(BaseObject object) {
+    protected void addAuditInformation(BaseObject object) {
         Timestamp now = new Timestamp( System.currentTimeMillis() );
         object.setCreated(now);
         object.setEdited(now);
-        object.setCreator(testUser);
-        object.setLastEditor(testUser);
     }
 
     /**

@@ -90,31 +90,6 @@
         </property>
 	</bean>
 	
-	<bean id="userDaoTarget"
-          class="net.bioclipse.structuredb.persistency.dao.UserDao" abstract="true">
-        <property name="dataSource">
-			<ref local="dataSource" />
-		</property>
-		<property name="sqlMapClient">
-			<ref local="sqlMapClient" />
-		</property>
-	</bean>
-	
-	<bean id="userDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
-		<property name="proxyInterfaces">
-			<value>net.bioclipse.structuredb.persistency.dao.IUserDao</value>
-		</property>
-		<property name="target">
-			<bean parent="userDaoTarget" />
-		</property>
-		<property name="interceptorNames">
-            <list>
-                <value>auditCreationAdvisor</value>
-                <value>auditUpdateAdvisor</value>
-            </list>
-        </property>
-	</bean>
-	
 	<bean id="annotationDaoTarget"
           class="net.bioclipse.structuredb.persistency.dao.AnnotationDao" abstract="true">
         <property name="dataSource">
@@ -131,63 +106,6 @@
 		</property>
 		<property name="target">
 			<bean parent="annotationDaoTarget" />
-		</property>
-		<property name="interceptorNames">
-            <list>
-                <value>auditCreationAdvisor</value>
-                <value>auditUpdateAdvisor</value>
-            </list>
-        </property>
-	</bean>
-	
-	<bean id="choiceAnnotationDaoTarget"
-          class="net.bioclipse.structuredb.persistency.dao.ChoiceAnnotationDao" abstract="true">
-        <property name="dataSource">
-			<ref local="dataSource" />
-		</property>
-		<property name="sqlMapClient">
-			<ref local="sqlMapClient" />
-		</property>
-		<property name="choicePropertyDao">
-			<ref local="choicePropertyDao" />
-		</property>
-	</bean>
-	
-	<bean id="choiceAnnotationDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
-		<property name="proxyInterfaces">
-			<value>net.bioclipse.structuredb.persistency.dao.IChoiceAnnotationDao</value>
-		</property>
-		<property name="target">
-			<bean parent="choiceAnnotationDaoTarget" />
-		</property>
-		<property name="interceptorNames">
-            <list>
-                <value>auditCreationAdvisor</value>
-                <value>auditUpdateAdvisor</value>
-            </list>
-        </property>
-	
-	</bean>
-	
-	<bean id="choicePropertyDaoTarget"
-          class="net.bioclipse.structuredb.persistency.dao.ChoicePropertyDao" abstract="true">
-        <property name="dataSource">
-			<ref local="dataSource" />
-		</property>
-		<property name="sqlMapClient">
-			<ref local="sqlMapClient" />
-		</property>
-		<property name="propertyChoiceDao">
-			<ref local="propertyChoiceDao" />
-		</property>
-	</bean>
-	
-	<bean id="choicePropertyDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
-		<property name="proxyInterfaces">
-			<value>net.bioclipse.structuredb.persistency.dao.IChoicePropertyDao</value>
-		</property>
-		<property name="target">
-			<bean parent="choicePropertyDaoTarget" />
 		</property>
 		<property name="interceptorNames">
             <list>
@@ -302,31 +220,6 @@
             </list>
         </property>
 	</bean>	
-
-	<bean id="propertyChoiceDaoTarget"
-          class="net.bioclipse.structuredb.persistency.dao.PropertyChoiceDao" abstract="true">
-        <property name="dataSource">
-			<ref local="dataSource" />
-		</property>
-		<property name="sqlMapClient">
-			<ref local="sqlMapClient" />
-		</property>
-	</bean>
-	
-	<bean id="propertyChoiceDao" parent="abstractDAO" class="org.springframework.aop.framework.ProxyFactoryBean" >
-		<property name="proxyInterfaces">
-			<value>net.bioclipse.structuredb.persistency.dao.IPropertyChoiceDao</value>
-		</property>
-		<property name="target">
-			<bean parent="propertyChoiceDaoTarget" />
-		</property>
-		<property name="interceptorNames">
-            <list>
-                <value>auditCreationAdvisor</value>
-                <value>auditUpdateAdvisor</value>
-            </list>
-        </property>
-	</bean>	
 	
 <!--+
     |
@@ -336,23 +229,14 @@
 	
 	<bean id="structuredbInstanceManagerTarget"
 	      class="net.bioclipse.structuredb.internalbusiness.StructuredbInstanceManager">
-	   <property name="userDao">
-	       <ref local="userDao" />
-	   </property>
 	   <property name="DBMoleculeDao">
            <ref local="dBMoleculeDao" />
        </property>
-       <property name="choiceAnnotationDao">
-		   <ref local="choiceAnnotationDao" />
-       </property>   
        <property name="realNumberAnnotationDao">
            <ref local="realNumberAnnotationDao" />
        </property>
        <property name="textAnnotationDao">
            <ref local="textAnnotationDao" />
-       </property>
-       <property name="choicePropertyDao">
-           <ref local="choicePropertyDao" />
        </property>
        <property name="realNumberPropertyDao">
            <ref local="realNumberPropertyDao" />
@@ -360,9 +244,6 @@
        <property name="textPropertyDao">
            <ref local="textPropertyDao" />
        </property>
-       <property name="propertyChoiceDao">
-       	   <ref local="propertyChoiceDao" />
-       </property>  
 	</bean>
 	
 	<bean id="structuredbInstanceManager"
@@ -390,9 +271,6 @@
 	
 	<bean id="auditCreationAdvice"
         class="net.bioclipse.structuredb.internalbusiness.AuditCreationAdvice">
-        <property name="loggedInUserKeeper">
-            <ref local="loggedInUserKeeper"/>
-        </property>
     </bean>
     
     <bean id="auditUpdateAdvisor"
@@ -403,12 +281,5 @@
 	
 	<bean id="auditUpdateAdvice"
         class="net.bioclipse.structuredb.internalbusiness.AuditCreationAdvice">
-        <property name="loggedInUserKeeper">
-            <ref local="loggedInUserKeeper"/>
-        </property>
     </bean>
-    
-    <bean id="loggedInUserKeeper"
-          class="net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper">
-    </bean>      
 </beans>

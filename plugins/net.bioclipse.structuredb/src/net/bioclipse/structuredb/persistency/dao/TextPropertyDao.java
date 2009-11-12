@@ -10,7 +10,6 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
-import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextProperty;
 

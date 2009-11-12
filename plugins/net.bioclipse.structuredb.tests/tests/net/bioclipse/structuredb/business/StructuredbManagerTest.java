@@ -17,21 +17,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.bioclipse.cdk.business.CDKManager;
-import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.MockIFile;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.hsqldb.HsqldbUtil;
-import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.TextAnnotation;
-import net.bioclipse.structuredb.domain.User;
-import net.bioclipse.structuredb.internalbusiness.IStructuredbInstanceManager;
-import net.bioclipse.structuredb.internalbusiness.LoggedInUserKeeper;
-import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
 
 import org.eclipse.core.resources.IFile;
 import org.openscience.cdk.smiles.SmilesGenerator;
@@ -84,12 +77,6 @@ public class StructuredbManagerTest
 
         manager.createDatabase(database1);
         manager.createDatabase(database2);
-
-        for ( ApplicationContext context :
-             ((StructuredbManager)manager).applicationContexts.values() ) {
-
-            setALoggedInUser(context);
-        }
     }
     
     @Override
@@ -361,46 +348,13 @@ public class StructuredbManagerTest
                                    annotation3.getProperty() ) );
     }
     
-    public void testCreatingChoiceAnnotation() {
-        ChoiceAnnotation annotation1 = 
-            manager.createChoiceAnnotation( database1, 
-                                            "testChoiceProperty", 
-                                            "annotation1" );
-        ChoiceAnnotation annotation2 = 
-            manager.createChoiceAnnotation( database1, 
-                                            "testChoiceProperty", 
-                                            "annotation2" );
-        ChoiceAnnotation annotation3 =
-            manager.createChoiceAnnotation( database1, 
-                                            "testChoiceProperty2", 
-                                            "annotation3" );
-        assertNotNull( annotation1 );
-        assertNotNull( annotation2 );
-        assertNotNull( annotation3 );
-        assertTrue( annotation1.getProperty()
-                               .hasValuesEqualTo( 
-                                   annotation2.getProperty() ) );
-        assertFalse( annotation1.getProperty()
-                                .hasValuesEqualTo( 
-                                   annotation3.getProperty() ) );
-    }
-
-    private void setALoggedInUser(ApplicationContext context) {
-        LoggedInUserKeeper keeper = (LoggedInUserKeeper)
-        context.getBean("loggedInUserKeeper");
-        IStructuredbInstanceManager internalManager
-            = (IStructuredbInstanceManager)
-        context.getBean("structuredbInstanceManager");
-        keeper.setLoggedInUser( internalManager
-                                .retrieveUserByUsername("local") );
-    }
-
     public void testImportingSDFFile() throws BioclipseException, 
                                               FileNotFoundException {
         IFile file = new MockIFile( TestData.getTestSDFFilePath() );
         manager.addMoleculesFromSDF( database1, file );
         boolean foundAnnotation = false;
-        for ( Annotation annotation : manager.allAnnotations( database1 ) ) {
+        List<Annotation> l = manager.allAnnotations( database1 );
+        for ( Annotation annotation : l ) {
             if ( annotation instanceof TextAnnotation ) {
                 if ( ( (TextAnnotation)annotation )
                                        .getValue()
@@ -449,18 +403,6 @@ public class StructuredbManagerTest
         assertTrue( manager.allMolecules( database1 )
                            .contains( dBMolecule ) );
         manager.deleteStructure( database1, dBMolecule );
-    }
-    
-    public void testCreatingAndRetrievingUsers() {
-        User user1 = manager.createUser(database1, "user1", "", true);
-        User user2 = manager.createUser(database1, "user2", "", true);
-        assertNotNull(user1);
-        assertNotNull(user2);
-        assertEquals( user1,
-                      manager.userByName(database1, user1.getUserName()) );
-        List<User> users = manager.allUsers(database1);
-        assertTrue( users.contains(user1) );
-        assertTrue( users.contains(user2) );
     }
     
     public void testDatabasesFilesAreLoaded() {
@@ -557,15 +499,14 @@ public class StructuredbManagerTest
     
     private Annotation annotationByValue( Object value ) {
 
-        for ( Annotation a : manager.allAnnotations( database1 ) ) {
+        List<Annotation> l = manager.allAnnotations( database1 );
+        for ( Annotation a : l ) {
             if ( a instanceof TextAnnotation && 
                      value.equals( ((TextAnnotation)a).getValue() ) ||
                  a instanceof RealNumberAnnotation && 
                      Double.compare( (Double)value, 
                                      ( (RealNumberAnnotation)a )
-                                         .getValue() ) == 0 ||
-                 a instanceof ChoiceAnnotation && 
-                     value.equals( ((ChoiceAnnotation)a ).getValue() ) ) {
+                                         .getValue() ) == 0 ) {
                 return a;
             }
         }
@@ -593,31 +534,6 @@ public class StructuredbManagerTest
         annotation.removeDBMolecule( s );
         manager.save( database1, annotation );
         loaded = annotationByValue( annotation.getValue() );
-
-        assertEquals( 0, loaded.getDBMolecules().size() );
-    }
-    
-    public void testEditChoiceAnnotation() throws BioclipseException {
-        DBMolecule s = manager.createMolecule( database1, 
-                                               "test", 
-                                               cdk.fromSMILES( "CCC" ) );
-        ChoiceAnnotation annotation 
-            = manager.createChoiceAnnotation( database1, 
-                                              "testChoiceProperty",
-                                              "annotation" );
-        annotation.setValue( "edited" );
-        annotation.addDBMolecule( s );
-        manager.save( database1, annotation );
-        Annotation loaded = annotationByValue( annotation.getValue() );
-        
-        List<DBMolecule> dBMolecules = loaded.getDBMolecules();
-        assertEquals( 1, dBMolecules.size() );
-        
-        assertEquals( s, dBMolecules.get( 0 ) );
-        
-        annotation.removeDBMolecule( s );
-        manager.save( database1, annotation );
-        loaded = annotationByValue( annotation.getId() );
 
         assertEquals( 0, loaded.getDBMolecules().size() );
     }
@@ -698,7 +614,8 @@ public class StructuredbManagerTest
                                          TestData.getTestSDFFilePath() ) );
         boolean foundAnnotation = false;
         Annotation annotation = null;
-        for ( Annotation a :  manager.allAnnotations( database1 ) ) {
+        List<Annotation> l = manager.allAnnotations( database1 );
+        for ( Annotation a : l ) {
             if ( a.getValue().equals( TestData.getTestSDFFilePath()
                              .replaceAll("\\..*?$", "") ) ) {
                 foundAnnotation = true;

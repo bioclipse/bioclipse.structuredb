@@ -60,8 +60,8 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         molecule2 = new DBMolecule( "CycloPropan", 
                                     TestData
                                     .getCycloPropane() );
-        addCreatorAndEditor(molecule1);
-        addCreatorAndEditor(molecule2);
+        addAuditInformation(molecule1);
+        addAuditInformation(molecule2);
         dao.insert(molecule1);
         dao.insert(molecule2);
         
@@ -78,13 +78,13 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         TextAnnotation annotation = new TextAnnotation();
         ITextAnnotationDao textAnnotationDao 
             = (ITextAnnotationDao) applicationContext.getBean("textAnnotationDao");
-        addCreatorAndEditor(annotation);
+        addAuditInformation(annotation);
         textAnnotationDao.insert(annotation);
         
         DBMolecule dBMolecule = new DBMolecule();
         dBMolecule.setAtomContainer( object1.getAtomContainer() );
         dBMolecule.addAnnotation(annotation);
-        addCreatorAndEditor(dBMolecule);
+        addAuditInformation(dBMolecule);
         dao.insert(dBMolecule);
         
         DBMolecule loaded = dao.getById( dBMolecule.getId() );
@@ -101,13 +101,13 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         ITextAnnotationDao textAnnotationDao 
             = (ITextAnnotationDao) 
               applicationContext.getBean("textAnnotationDao");
-        addCreatorAndEditor(annotation);
+        addAuditInformation(annotation);
         textAnnotationDao.insert(annotation);
         
         DBMolecule dBMolecule = new DBMolecule();
         dBMolecule.setAtomContainer( object1.getAtomContainer() );
 
-        addCreatorAndEditor(dBMolecule);
+        addAuditInformation(dBMolecule);
         ((IDBMoleculeDao)dao).insertWithAnnotation( dBMolecule, 
                                                     annotation.getId() );
         
@@ -127,13 +127,13 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         ITextAnnotationDao textAnnotationDao 
             = (ITextAnnotationDao) 
               applicationContext.getBean("textAnnotationDao");
-        addCreatorAndEditor(annotation);
+        addAuditInformation(annotation);
         textAnnotationDao.insert(annotation);
         
         DBMolecule dBMolecule = new DBMolecule();
         dBMolecule.setAtomContainer( object1.getAtomContainer() );
         dBMolecule.addAnnotation(annotation);
-        addCreatorAndEditor(dBMolecule);
+        addAuditInformation(dBMolecule);
         dao.insert(dBMolecule);
         
         DBMolecule loaded = dao.getById( dBMolecule.getId() );
@@ -149,7 +149,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         
         DBMolecule other = new DBMolecule( "CycloPropan", 
                                            TestData.getCycloPropane() );
-        addCreatorAndEditor( other );
+        addAuditInformation( other );
         dao.insert( other );
         
         List<DBMolecule> saved = ( (IDBMoleculeDao)dao ).getByName(

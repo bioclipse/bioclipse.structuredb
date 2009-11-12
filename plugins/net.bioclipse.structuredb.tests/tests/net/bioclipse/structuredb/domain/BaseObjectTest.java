@@ -20,18 +20,10 @@ public class BaseObjectTest {
     @Test
     public void testHasValuesEqualTo() {
 
-        User creator1 = new User();
-        User creator2 = new User();
-        
         BaseObject baseObject1 = new BaseObject();
-        baseObject1.setCreator(creator1);
-        baseObject1.setLastEditor(creator1);
         BaseObject baseObject2 = new BaseObject(baseObject1);
         
         BaseObject baseObject3 = new BaseObject();
-        baseObject3.setCreator(creator2);
-        baseObject3.setCreator(creator2);
-        
         
         assertTrue(  baseObject1.hasValuesEqualTo(baseObject2) );
         assertFalse( baseObject1.hasValuesEqualTo(baseObject3) );

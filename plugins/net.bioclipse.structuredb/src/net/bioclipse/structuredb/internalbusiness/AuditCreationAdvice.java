@@ -14,15 +14,12 @@ import java.lang.reflect.Method;
 import java.sql.Timestamp;
 
 import net.bioclipse.structuredb.domain.BaseObject;
-import net.bioclipse.structuredb.persistency.dao.IUserDao;
 
 /**
  * @author jonalv
  *
  */
 public class AuditCreationAdvice implements IAuditAdvice {
-
-    private ILoggedInUserKeeper loggedInUserKeeper;
 
     public void before(Method method, Object[] args, Object target)
             throws Throwable {
@@ -31,12 +28,5 @@ public class AuditCreationAdvice implements IAuditAdvice {
         long now = System.currentTimeMillis();
         baseObject.setCreated( new Timestamp(now) );
         baseObject.setEdited(  new Timestamp(now) );
-
-        baseObject.setCreator(    loggedInUserKeeper.getLoggedInUser() );
-        baseObject.setLastEditor( loggedInUserKeeper.getLoggedInUser() );
-    }
-
-    public void setLoggedInUserKeeper( ILoggedInUserKeeper keeper) {
-        this.loggedInUserKeeper = keeper;
     }
 }

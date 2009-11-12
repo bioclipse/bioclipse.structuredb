@@ -23,11 +23,9 @@ import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.managers.business.IBioclipseManager;
 import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.ChoiceAnnotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.TextAnnotation;
-import net.bioclipse.structuredb.domain.User;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -87,22 +85,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                                                 String structureName );
 
     /**
-     * Retrieves a user with a given username from a database 
-     * with a given name.
-     *
-     * @param databaseName
-     * @param username
-     * @return
-     */
-    @TestMethods("testCreatingAndRetrievingUsers")
-    @PublishedMethod ( params = "String databaseName, String username",
-                       methodSummary = "Fetches a user with a given " +
-                       		           "username from a database " +
-                       		           "with a given name")
-    public User userByName( String databaseName,
-                            String username );
-
-    /**
      * Creates a structure with the given name from the given 
      * cdkmolecule and persists it in the database with the given name
      *
@@ -126,30 +108,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                                       String moleculeName,
                                       ICDKMolecule cdkMolecule ) 
                       throws BioclipseException;
-
-    /**
-     * Creates a ChoiceAnnotation with the given property and name and 
-     * persists it in the database with the given name.
-     *
-     * @param databaseName
-     * @param propertyName must be a ChoiceProperty
-     * @param value
-     * @return the folder
-     * @throws IllegalArgumentException
-     */
-    @TestMethods("testCreatingChoiceAnnotation")
-    @PublishedMethod ( params = "String databaseName, " +
-                                "String propertyName, " +
-    		                    "String value",
-                       methodSummary = "Creates a ChoiceAnnotation with " +
-                       		           "the given property (which must be a " +
-                       		           "ChoiceProperty), " +
-                       		           "name and saves it in the database" +
-                       		           " with the given name" )
-    public ChoiceAnnotation createChoiceAnnotation( String databaseName,
-                                                    String propertyName,
-                                                    String value )
-                            throws IllegalArgumentException;
 
     /**
      * Creates a RealNumberAnnotation with the given property and name and 
@@ -201,33 +159,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                  throws IllegalArgumentException;
     
     /**
-     * Creates a user with the given username, password and sudoer flag 
-     * and persists it in the database with the given name.
-     *
-     * @param databaseName
-     * @param username
-     * @param password
-     * @param sudoer
-     * @return the user
-     * @throws IllegalArgumentException
-     */
-    @TestMethods("testCreatingAndRetrievingUsers")
-    @PublishedMethod ( params = "String databaseName, " +
-    		                    "String username, " +
-                                "String password, " +
-                                "boolean administrator",
-                       methodSummary = "Creates a user with the " +
-                       		           "given username and password " +
-                       		           "and with administrator " +
-                       		           "rights if that variable is " +
-                       		           "true" )
-    public User createUser( String databaseName,
-                            String username,
-                            String password,
-                            boolean sudoer ) 
-                throws IllegalArgumentException;
-
-    /**
      * Retrieves all molecules from a database with a given name.
      *
      * @param databaseName
@@ -250,18 +181,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                        methodSummary = "Fetches all annotations from a " +
                        		           "database with a given name" )
     public List<Annotation> allAnnotations( String databaseName );
-
-    /**
-     * Retrieves all users from a database with a given name.
-     *
-     * @param databaseName
-     * @return
-     */
-    @TestMethods("testCreatingAndRetrievingUsers")
-    @PublishedMethod ( params = "String databaseName",
-                       methodSummary = "Fetches all users from a " +
-                       		           "database with a given name" )
-    public List<User> allUsers( String databaseName );
 
     /**
      * Persists all molecules in an sdf file in the specified database in

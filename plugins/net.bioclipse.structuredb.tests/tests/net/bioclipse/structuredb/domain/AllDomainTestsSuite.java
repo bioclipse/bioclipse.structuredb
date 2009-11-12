@@ -19,14 +19,10 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses( value = { BaseObjectTest.class,
                          LabelTest.class,
                          DBMoleculeTest.class,
-                         UserTest.class,
-                         ChoiceAnnotationTest.class,
                          RealNumberAnnotationTest.class,
                          TextAnnotationTest.class,
-                         ChoicePropertyTest.class,
                          RealNumberPropertyTest.class,
-                         TextPropertyTest.class,
-                         PropertyChoiceTest.class } )
+                         TextPropertyTest.class } )
 public class AllDomainTestsSuite {
 
 }
