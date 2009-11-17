@@ -27,6 +27,7 @@ import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.templates.MoleculeFactory;
 import org.springframework.context.ApplicationContext;
@@ -183,8 +184,10 @@ public class StructuredbManagerTest
                                                              "indole", 
                                                              indole );
         
-        List<DBMolecule> list = manager.subStructureSearch( database1, 
-                                                            pyrrole );
+        List<DBMolecule> list 
+            = manager.subStructureSearch( database1, 
+                                          pyrrole,
+                                          new NullProgressMonitor() );
         
         assertTrue( list.contains( indoleStructure ));
     }
