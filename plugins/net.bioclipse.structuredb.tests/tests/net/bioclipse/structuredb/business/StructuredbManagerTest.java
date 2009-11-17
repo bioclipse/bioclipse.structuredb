@@ -422,18 +422,18 @@ public class StructuredbManagerTest
 
     @DirtiesContext
     public void testRemovingDatabaseInstance() {
-    	try {
-	        assertTrue( manager.allDatabaseNames().contains(database1) );
-	        manager.deleteDatabase( database1 );
-	        assertFalse( manager.allDatabaseNames().contains(database1) );
-	        
-	        StructuredbManager anotherManager = new StructuredbManager();
-	        assertFalse( anotherManager.allDatabaseNames()
-	                                   .contains(database1) );
-    	}
-    	finally {
-    		manager.createDatabase( database1 ); // restore order
-    	}
+        
+    	
+        assertTrue( manager.allDatabaseNames().contains(database1) );
+        
+        manager.deleteDatabase( database1, new NullProgressMonitor() );
+        
+        assertFalse( manager.allDatabaseNames().contains(database1) );
+        
+		manager.createDatabase( database1 ); // restore order
+        StructuredbManager anotherManager = new StructuredbManager();
+        assertFalse( anotherManager.allDatabaseNames()
+                                   .contains(database1) );
     	assertTrue( manager.allDatabaseNames().contains( database1 ) );
     }
     
