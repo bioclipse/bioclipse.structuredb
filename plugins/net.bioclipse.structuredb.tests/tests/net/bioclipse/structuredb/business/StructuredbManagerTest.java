@@ -353,6 +353,8 @@ public class StructuredbManagerTest
     
     public void testImportingSDFFile() throws BioclipseException, 
                                               FileNotFoundException {
+        
+        fail( "Can not test this without pluign test" );
         IFile file = new MockIFile( TestData.getTestSDFFilePath() );
         manager.addMoleculesFromSDF( database1, file );
         boolean foundAnnotation = false;
