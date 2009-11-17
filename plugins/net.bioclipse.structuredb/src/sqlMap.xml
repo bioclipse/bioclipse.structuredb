@@ -113,8 +113,8 @@
     | INSERT STATEMENTS
     +-->
 	<insert  id="BaseObject.insert">
-		INSERT INTO BaseObject (  id,     created,     edited,     creator,        lastEditor )
-			            VALUES ('$id$', '$created$', '$edited$', '$creator.id$', '$lastEditor.id$')
+		INSERT INTO BaseObject (  id,     created,     edited  )
+		                VALUES ('$id$', '$created$', '$edited$')
 	</insert>
 	
 	<insert id="BaseObject.insertWithoutAuditInfo">
@@ -124,7 +124,7 @@
 	
 	<insert id="DBMolecule.insert" parameterMap="DBMolecule.insert">
 		INSERT INTO DBMolecule ( id, name, baseObject, SMILES, persistedFingerprint, fileStoreKey )
-		               VALUES ( ?, ?, ?, ?, ?, ? ); 
+		                VALUES ( ?, ?, ?, ?, ?, ? ); 
 	</insert>
 	
 	<insert id="Annotation.insert">
@@ -490,7 +490,7 @@
     		BaseObject
     	SET 
 			created    = '$created$',
-			edited     = '$edited$',
+			edited     = '$edited$'
 		WHERE
 			id = '$id$'
     </update>
