@@ -13,6 +13,7 @@ package net.bioclipse.structuredb.business;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -78,14 +79,17 @@ public class StructuredbManager implements IStructuredbManager {
 
     //Package protected for testing purposes
     Map<String, IStructuredbInstanceManager> internalManagers
-        = new HashMap<String, IStructuredbInstanceManager>();
+        = Collections.synchronizedMap( 
+              new HashMap<String, IStructuredbInstanceManager>() );
 
     //Package protected for testing purposes
     Map<String, ApplicationContext> applicationContexts
-        = new HashMap<String, ApplicationContext>();
+        = Collections.synchronizedMap( 
+              new HashMap<String, ApplicationContext>() );
 
     private Collection<IStructureDBChangeListener> listeners 
-        = new HashSet<IStructureDBChangeListener>();;
+        = Collections.synchronizedSet( 
+              new HashSet<IStructureDBChangeListener>() );
 
     public StructuredbManager() {
         File[] files = HsqldbUtil.getInstance()

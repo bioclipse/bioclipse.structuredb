@@ -8,19 +8,17 @@
  *
  * Contact: Bioclipse Project <http://www.bioclipse.net>
  ******************************************************************************/
-package net.bioclipse.structuredb.plugintests;
+package net.bioclipse.structuredb;
 
-import net.bioclipse.core.tests.AbstractManagerTest;
+import net.bioclipse.core.tests.coverage.AbstractCoverageTest;
 import net.bioclipse.managers.business.IBioclipseManager;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 import net.bioclipse.structuredb.business.StructuredbManager;
 
 /**
  * JUnit tests for checking if the tested Manager is properly tested.
- * 
- * @author egonw
  */
-public class APITest extends AbstractManagerTest {
+public class CoverageTest extends AbstractCoverageTest {
     
     private static StructuredbManager manager = new StructuredbManager();
 

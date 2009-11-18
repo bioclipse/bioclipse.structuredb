@@ -8,7 +8,7 @@
  * 
  * Contact: http://www.bioclipse.net/    
  ******************************************************************************/
-package net.bioclipse.structuredb.plugintests;
+package net.bioclipse.structuredb;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -16,9 +16,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	APITest.class,
-	CoverageTest.class
+	JavaScriptStructuredbManagerPluginTest.class,
+	JavaStructuredbManagerPluginTest.class,
 })
-public class AllStructuredbManagerTests {
+public class AllStructuredbManagerPluginTests {
 
 }

@@ -8,17 +8,19 @@
  * 
  * Contact: http://www.bioclipse.net/    
  ******************************************************************************/
-package net.bioclipse.structuredb.plugintests;
+package net.bioclipse.structuredb;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.BeforeClass;
 
-@RunWith(Suite.class)
-@SuiteClasses({
-	JavaStructuredbManagerPluginTest.class,
-	JavaScriptStructuredbManagerPluginTest.class
-})
-public class AllStructuredbManagerPluginTests {
+public class JavaStructuredbManagerPluginTest
+    extends AbstractStructuredbManagerPluginTest {
+
+    @BeforeClass public static void setup() {
+        structuredb = net.bioclipse.structuredb.Activator.getDefault()
+            .getStructuredbManager();
+        cdk = net.bioclipse.cdk.business.Activator.getDefault()
+                 .getJavaCDKManager();
+        ui = net.bioclipse.ui.business.Activator.getDefault().getUIManager();
+    }
 
 }
