@@ -39,7 +39,7 @@ import testData.TestData;
 public class StructuredbManagerTest
        extends AbstractDependencyInjectionSpringContextTests {
 
-    private IStructuredbManager manager;
+    private IJavaStructuredbManager manager;
     private String database1 = "database1";
     private String database2 = "database2";
 
@@ -67,7 +67,7 @@ public class StructuredbManagerTest
     protected void onSetUp() throws Exception {
         super.onSetUp();
 
-        manager = (IStructuredbManager) applicationContext
+        manager = (IJavaStructuredbManager) applicationContext
                                         .getBean("structuredbManagerTarget");
         assertNotNull(manager);
 

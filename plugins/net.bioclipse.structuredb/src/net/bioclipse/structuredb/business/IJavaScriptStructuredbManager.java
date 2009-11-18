@@ -13,7 +13,7 @@ package net.bioclipse.structuredb.business;
 import net.bioclipse.managers.business.IBioclipseJSManager;
 
 
-public interface IJSStructuredbManager extends IStructuredbManager, 
+public interface IJavaScriptStructuredbManager extends IJavaStructuredbManager, 
                                                IBioclipseJSManager {
 
 }

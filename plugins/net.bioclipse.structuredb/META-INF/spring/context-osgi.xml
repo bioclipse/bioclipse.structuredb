@@ -5,25 +5,25 @@
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
-  <osgi:service id="structuredbManagerOSGI" 
-                ref="structuredbManager"
-                interface="net.bioclipse.structuredb.business.IStructuredbManager" />
+  <osgi:service id="javaStructuredbManagerOSGI" 
+                ref="javaStructuredbManager"
+                interface="net.bioclipse.structuredb.business.IJavaStructuredbManager" />
 
-  <osgi:service id="jsStructuredbManagerOSGI"
-                ref="jsStructuredbManager"
-                interface="net.bioclipse.structuredb.business.IJSStructuredbManager" />
+  <osgi:service id="javaScriptStructuredbManagerOSGI"
+                ref="javaScriptStructuredbManager"
+                interface="net.bioclipse.structuredb.business.IJavaScriptStructuredbManager" />
 
   <osgi:reference id="recordingAdvice" 
                   interface="net.bioclipse.recording.IRecordingAdvice" />
 
+  <osgi:reference id="javaManagerDispatcherAdvisor"
+                  interface="net.bioclipse.managers.business.IJavaManagerDispatcherAdvisor" />
+
+  <osgi:reference id="javaScriptManagerDispatcherAdvisor" 
+                  interface="net.bioclipse.managers.business.IJavaScriptManagerDispatcherAdvisor"/>
+
   <osgi:reference id="wrapInProxyAdvice"
                   interface="net.bioclipse.recording.IWrapInProxyAdvice" />
-                  
-  <osgi:reference id="createJobAdvice"
-                  interface="net.bioclipse.ui.jobs.ICreateJobAdvice" />
-                    
-  <osgi:reference id="JSJobCreatorAdvice" 
-                  interface="net.bioclipse.scripting.business.IJSJobCreatorAdvice"/>
 
   <bean id="recordingAdvisor"
         class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
@@ -35,34 +35,37 @@
         class="net.bioclipse.structuredb.business.FixClassLoaderAdvice">
   </bean>
   
-  <bean id="structuredbManager"
+  <bean id="structuredbManagerTarget" 
+        class="net.bioclipse.structuredb.business.StructuredbManager">
+  </bean>
+  
+  <bean id="javaScriptStructuredbManager"
         class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="target" 
               ref="structuredbManagerTarget" />
     <property name="proxyInterfaces" 
-              value="net.bioclipse.structuredb.business.IStructuredbManager" />
+              value="net.bioclipse.structuredb.business.IJavaScriptStructuredbManager" />
     <property name="interceptorNames">
         <list>
-            <value>recordingAdvisor</value>
-            <value>wrapInProxyAdvice</value>
-            <value>fixClassLoaderAdvice</value>
-            <value>createJobAdvice</value>
+            <value>recordingAdvisor</value>  
+            <value>wrapInProxyAdvice</value> 
+            <value>javaScriptManagerDispatcherAdvisor</value>
         </list>
     </property>
   </bean>
   
-    <bean id="jsStructuredbManager"
+    <bean id="javaStructuredbManager"
           class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="target" 
               ref="structuredbManagerTarget" />
     <property name="proxyInterfaces" 
-              value="net.bioclipse.structuredb.business.IJSStructuredbManager" />
+              value="net.bioclipse.structuredb.business.IJavaStructuredbManager" />
     <property name="interceptorNames">
         <list>
-            <value>fixClassLoaderAdvice</value>
-            <value>JSJobCreatorAdvice</value>
+            <value>recordingAdvisor</value>  
+            <value>wrapInProxyAdvice</value> 
+            <value>javaManagerDispatcherAdvisor</value>
         </list>
     </property>
   </bean>
-
 </beans>

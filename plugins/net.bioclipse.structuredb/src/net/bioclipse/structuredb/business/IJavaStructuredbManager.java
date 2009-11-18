@@ -37,7 +37,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 @TestClasses("net.bioclipse.structuredb.business.StructuredbManagerTest," + 
              "net.bioclipse.structuredb.business.CoverageTest," + 
              "net.bioclipse.structuredb.business.BioclipseManagerTests")
-public interface IStructuredbManager extends IBioclipseManager {
+public interface IJavaStructuredbManager extends IBioclipseManager {
 
     /**
      * Creates a local database instance.

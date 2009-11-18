@@ -18,8 +18,8 @@ import net.bioclipse.databases.IDatabasehangeListener;
 import net.bioclipse.filestore.FileStore;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener;
-import net.bioclipse.structuredb.business.IJSStructuredbManager;
-import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.business.IJavaScriptStructuredbManager;
+import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 import net.bioclipse.structuredb.viewer.IStructureDBLabelDecoratorChangeListener;
 import net.bioclipse.structuredb.viewer.StructureDBLightweightLabelDecorator;
 
@@ -62,12 +62,12 @@ public class Activator extends AbstractUIPlugin
         plugin = this;
 
         finderTracker = new ServiceTracker( context, 
-                                            IStructuredbManager.class
+                                            IJavaStructuredbManager.class
                                                 .getName(), 
                                             null );
         finderTracker.open();
         jsFinderTracker = new ServiceTracker( context,
-                                            IJSStructuredbManager.class
+                                            IJavaScriptStructuredbManager.class
                                                                  .getName(),
                                             null );
         jsFinderTracker.open();
@@ -110,10 +110,10 @@ public class Activator extends AbstractUIPlugin
         return imageDescriptorFromPlugin(PLUGIN_ID, path);
     }
 
-    public IStructuredbManager getStructuredbManager() {
-        IStructuredbManager manager = null;
+    public IJavaStructuredbManager getStructuredbManager() {
+        IJavaStructuredbManager manager = null;
         try {
-            manager = (IStructuredbManager) finderTracker.waitForService(1000*30);
+            manager = (IJavaStructuredbManager) finderTracker.waitForService(1000*30);
         } 
         catch (InterruptedException e) {
             logger.warn("Exception occurred while attempting " +
@@ -127,10 +127,10 @@ public class Activator extends AbstractUIPlugin
         return manager;
     }
     
-    public IJSStructuredbManager getJavaScriptStructuredbManager() {
-        IJSStructuredbManager manager = null;
+    public IJavaScriptStructuredbManager getJavaScriptStructuredbManager() {
+        IJavaScriptStructuredbManager manager = null;
         try {
-            manager = (IJSStructuredbManager) jsFinderTracker.waitForService(1000*30);
+            manager = (IJavaScriptStructuredbManager) jsFinderTracker.waitForService(1000*30);
         } 
         catch (InterruptedException e) {
             logger.warn("Exception occurred while attempting " +

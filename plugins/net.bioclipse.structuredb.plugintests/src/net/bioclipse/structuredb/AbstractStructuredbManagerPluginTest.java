@@ -28,7 +28,7 @@ import net.bioclipse.core.MockIFile;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.hsqldb.HsqldbUtil;
-import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 import net.bioclipse.structuredb.business.StructuredbManager;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
@@ -42,7 +42,7 @@ import org.junit.Test;
 
 public abstract class AbstractStructuredbManagerPluginTest {
 
-    protected static IStructuredbManager structuredb;
+    protected static IJavaStructuredbManager structuredb;
     protected static ICDKManager cdk;
     protected static IUIManager ui;
     

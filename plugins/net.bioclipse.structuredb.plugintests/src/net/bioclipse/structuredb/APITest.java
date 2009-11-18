@@ -12,7 +12,7 @@ package net.bioclipse.structuredb;
 
 import net.bioclipse.core.tests.AbstractManagerTest;
 import net.bioclipse.managers.business.IBioclipseManager;
-import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 import net.bioclipse.structuredb.business.StructuredbManager;
 
 /**
@@ -31,7 +31,7 @@ public class APITest extends AbstractManagerTest {
 
     @Override
     public Class<? extends IBioclipseManager> getManagerInterface() {
-        return IStructuredbManager.class;
+        return IJavaStructuredbManager.class;
     }
 
 }

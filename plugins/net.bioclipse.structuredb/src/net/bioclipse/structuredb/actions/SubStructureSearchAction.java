@@ -21,7 +21,7 @@ import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.structuredb.StructureDBInstance;
-import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 import net.bioclipse.ui.business.IUIManager;
 
 import org.apache.log4j.Logger;
@@ -76,7 +76,7 @@ public class SubStructureSearchAction extends ActionDelegate {
 
         final IUIManager ui 
             = net.bioclipse.ui.business.Activator.getDefault().getUIManager();
-        IStructuredbManager structuredb 
+        IJavaStructuredbManager structuredb 
             = net.bioclipse.structuredb.Activator.getDefault()
                                                  .getStructuredbManager();
         ICDKManager cdk 

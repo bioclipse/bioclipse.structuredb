@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.bioclipse.structuredb.business.IStructureDBChangeListener;
-import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 
 import org.apache.log4j.Logger;
 
@@ -35,7 +35,7 @@ public class StructureDBInstance implements IStructureDBChangeListener,
     }
     
     public List<Label> getChildren() {
-        IStructuredbManager structureDB = Activator.getDefault()
+        IJavaStructuredbManager structureDB = Activator.getDefault()
                                                    .getStructuredbManager();
         if ( cachedChildren != null ) {
             return cachedChildren;

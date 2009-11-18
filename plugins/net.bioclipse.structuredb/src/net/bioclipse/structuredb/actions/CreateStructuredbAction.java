@@ -11,7 +11,7 @@
 package net.bioclipse.structuredb.actions;
 
 import net.bioclipse.structuredb.Activator;
-import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 import net.bioclipse.structuredb.dialogs.CreateNewStructureDBDialog;
 
 import org.eclipse.jface.action.IAction;
@@ -34,7 +34,7 @@ public class CreateStructuredbAction extends ActionDelegate {
         dialog.open();
         String name = dialog.getName();
         if ( name != null ) {
-        	IStructuredbManager manager = Activator
+        	IJavaStructuredbManager manager = Activator
         	                              .getDefault()
         	                              .getStructuredbManager();
         	manager.createDatabase( name );
