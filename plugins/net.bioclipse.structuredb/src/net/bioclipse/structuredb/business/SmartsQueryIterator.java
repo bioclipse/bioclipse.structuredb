@@ -36,7 +36,7 @@ public class SmartsQueryIterator implements Iterator<DBMolecule> {
     private Iterator<DBMolecule> parent;
     private ICDKManager cdk;
     private String smarts;
-    private IJavaStructuredbManager structuredb;
+    private StructuredbManager structuredb;
     private IProgressMonitor monitor;
     private int numOfMolecules;
     private int current = 1;
@@ -46,7 +46,7 @@ public class SmartsQueryIterator implements Iterator<DBMolecule> {
     public SmartsQueryIterator( Iterator<DBMolecule> allStructuresIterator,
                                 ICDKManager cdk, 
                                 String smarts,
-                                IJavaStructuredbManager structuredbManager, 
+                                StructuredbManager structuredbManager, 
                                 int numOfMolecules, 
                                 IProgressMonitor monitor ) {
 

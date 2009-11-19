@@ -398,13 +398,6 @@ public class StructuredbManager implements IBioclipseManager {
         return dBMolecules;
     }
 
-    public void addMoleculesFromSDF( String databaseName, 
-                                     String filePath )
-                throws BioclipseException {
-
-        throw new IllegalStateException("This manager method should not be called");
-    }
-
     public Iterator<DBMolecule> subStructureSearchIterator( 
             String databaseName,
             IMolecule queryMolecule,
@@ -571,7 +564,7 @@ public class StructuredbManager implements IBioclipseManager {
                                             .allStructuresIterator(),
                                         cdk,
                                         smarts, 
-                                        (IJavaStructuredbManager) this,
+                                        this,
                                         numOfMolecules,
                                         monitor );
     }
