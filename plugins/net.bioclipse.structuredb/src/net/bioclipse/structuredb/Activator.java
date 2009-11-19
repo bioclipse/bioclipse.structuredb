@@ -148,7 +148,12 @@ public class Activator extends AbstractUIPlugin
      */
     public void onDataBaseUpdate( DatabaseUpdateType updateType ) {
 
-        for ( Object o : dbChangeListenersTracker.getServices() ) {
+        
+        Object[] services = dbChangeListenersTracker.getServices();
+        if (services == null) {
+            return;
+        }
+        for ( Object o : services ) {
             if ( o instanceof IDatabasehangeListener ) {
                 ( (IDatabasehangeListener)o ).fireRefresh();
             }
