@@ -49,16 +49,7 @@ public abstract class AbstractStructuredbManagerPluginTest {
     private final String database1 = "database1";
     private final String database2 = "database2";
     private String sdfile = "/Virtual/test.sdf"; 
-    
-    @Test 
-    public void testCreateDataBases() {
-        
-        List<String> allDatabaseNames = structuredb.allDatabaseNames();
-        assertEquals( 2, allDatabaseNames.size() );
-        assertTrue( allDatabaseNames.contains( database1 ) );
-        assertFalse( allDatabaseNames.contains( "OH HAI" ) );
-    }
-    
+
     @Before
     public void createDatabases() throws Exception {
         structuredb.createDatabase( database1 );
@@ -70,13 +61,47 @@ public abstract class AbstractStructuredbManagerPluginTest {
         cdk.saveSDFile( sdfile, molecules );
     }
     
-    
     @After
     public void dropDatabases() {
 
         structuredb.deleteDatabase( database1 );
         structuredb.deleteDatabase( database2 );
         ui.remove( sdfile );
+    }
+    
+    @Test 
+    public void testCreateDataBases() {
+        
+        List<String> allDatabaseNames = structuredb.allDatabaseNames();
+        assertEquals( 2, allDatabaseNames.size() );
+        assertTrue( allDatabaseNames.contains( database1 ) );
+        assertFalse( allDatabaseNames.contains( "OH HAI" ) );
+    }
+    
+    @Test
+    public void testRemovingDatabaseInstance() {
+        
+        assertTrue( structuredb.allDatabaseNames().contains(database1) );
+        
+        structuredb.deleteDatabase( database1 );
+        
+        assertFalse( structuredb.allDatabaseNames().contains(database1) );
+        
+        structuredb.createDatabase( database1 ); // restore order
+        assertTrue( structuredb.allDatabaseNames().contains( database1 ) );
+    }
+    
+    @Test
+    public void testDeleteStructure() throws Exception {
+        DBMolecule dBMolecule 
+            = structuredb.createMolecule( database1, 
+                                          "test", 
+                                          cdk.fromSMILES( "CC" ) );
+        assertTrue( structuredb.allMolecules( database1 )
+                               .contains( dBMolecule ) );
+        structuredb.deleteStructure( database1, dBMolecule );
+        assertFalse( structuredb.allMolecules( database1 )
+                                .contains( dBMolecule ) );
     }
 
     @Test
@@ -273,19 +298,6 @@ public abstract class AbstractStructuredbManagerPluginTest {
     }
     
     @Test
-    public void testDeleteStructure() throws Exception {
-        DBMolecule dBMolecule 
-            = structuredb.createMolecule( database1, 
-                                          "test", 
-                                          cdk.fromSMILES( "CC" ) );
-        assertTrue( structuredb.allMolecules( database1 )
-                               .contains( dBMolecule ) );
-        structuredb.deleteStructure( database1, dBMolecule );
-        assertFalse( structuredb.allMolecules( database1 )
-                                .contains( dBMolecule ) );
-    }
-    
-    @Test
     public void testDatabasesFilesAreLoaded() {
         HsqldbUtil.getInstance().stopAllDatabaseInstances();
         StructuredbManager anotherManager = new StructuredbManager();
@@ -294,19 +306,6 @@ public abstract class AbstractStructuredbManagerPluginTest {
         assertTrue( anotherManager.allDatabaseNames()
                                   .contains(database2) );
         assertEquals( 2, anotherManager.allDatabaseNames().size() );
-    }
-    
-    @Test
-    public void testRemovingDatabaseInstance() {
-        
-        assertTrue( structuredb.allDatabaseNames().contains(database1) );
-        
-        structuredb.deleteDatabase( database1 );
-        
-        assertFalse( structuredb.allDatabaseNames().contains(database1) );
-        
-        structuredb.createDatabase( database1 ); // restore order
-    	assertTrue( structuredb.allDatabaseNames().contains( database1 ) );
     }
     
     public void testUsingUnknownDatabase() {
