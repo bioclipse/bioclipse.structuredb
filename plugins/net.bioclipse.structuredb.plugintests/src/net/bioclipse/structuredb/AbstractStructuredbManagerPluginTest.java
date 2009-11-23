@@ -27,6 +27,7 @@ import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.MockIFile;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IMolecule;
+import net.bioclipse.core.domain.IMolecule.Property;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 import net.bioclipse.structuredb.business.StructuredbManager;
@@ -36,8 +37,8 @@ import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.ui.business.IUIManager;
 
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public abstract class AbstractStructuredbManagerPluginTest {
@@ -46,27 +47,25 @@ public abstract class AbstractStructuredbManagerPluginTest {
     protected static ICDKManager cdk;
     protected static IUIManager ui;
     
-    private final String database1 = "database1";
-    private final String database2 = "database2";
-    private String sdfile = "/Virtual/test.sdf"; 
+    protected final String database1 = "database1";
+    protected final String database2 = "database2";
+    protected String sdfile = "/Virtual/test.sdf";
 
+    private static boolean fileCreated = false;
+    
+    
     @Before
     public void createDatabases() throws Exception {
         structuredb.createDatabase( database1 );
         structuredb.createDatabase( database2 );
         
-        List<IMolecule> molecules = new ArrayList<IMolecule>();
-        molecules.add( cdk.fromSMILES( "C" ) );
-        molecules.add( cdk.fromSMILES( "CC" ) );
-        cdk.saveSDFile( sdfile, molecules );
-    }
-    
-    @After
-    public void dropDatabases() {
-
-        structuredb.deleteDatabase( database1 );
-        structuredb.deleteDatabase( database2 );
-        ui.remove( sdfile );
+        if (!fileCreated) {
+            List<IMolecule> molecules = new ArrayList<IMolecule>();
+            molecules.add( cdk.fromSMILES( "C" ) );
+            molecules.add( cdk.fromSMILES( "CC" ) );
+            cdk.saveSDFile( sdfile, molecules );
+            fileCreated = true;
+        }
     }
     
     @Test 
@@ -79,17 +78,14 @@ public abstract class AbstractStructuredbManagerPluginTest {
     }
     
     @Test
-    public void testRemovingDatabaseInstance() {
-        
-        assertTrue( structuredb.allDatabaseNames().contains(database1) );
-        
-        structuredb.deleteDatabase( database1 );
-        
-        assertFalse( structuredb.allDatabaseNames().contains(database1) );
-        
-        structuredb.createDatabase( database1 ); // restore order
-        assertTrue( structuredb.allDatabaseNames().contains( database1 ) );
+    public void testDoingInchiCalculation() throws BioclipseException {
+        DBMolecule m = structuredb.createMolecule( database1, 
+                                                   "a molecule", 
+                                                   cdk.fromSMILES( "CCCC" ) );
+        assertEquals( "InChI=1/C4H10/c1-3-4-2/h3-4H2,1-2H3", 
+                      m.getInChI( Property.USE_CALCULATED ) );
     }
+    
     
     @Test
     public void testDeleteStructure() throws Exception {
