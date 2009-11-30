@@ -15,7 +15,7 @@ import java.util.Collection;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.cdk.ui.views.IMoleculesEditorModel;
-import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 
@@ -25,7 +25,7 @@ import net.bioclipse.structuredb.domain.TextAnnotation;
  */
 public class DBMoleculesEditorModel implements IMoleculesEditorModel {
 
-    private IStructuredbManager structuredb 
+    private IJavaStructuredbManager structuredb 
         = Activator.getDefault().getStructuredbManager();
     private TextAnnotation annotation;
     private String databaseName;

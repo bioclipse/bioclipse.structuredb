@@ -1,16 +1,16 @@
 CREATE CACHED TABLE RealNumberProperty (
-	id         VARCHAR(36) NOT NULL,
+    id         VARCHAR(36) NOT NULL,
     name       VARCHAR(50) NOT NULL,
-	baseObject VARCHAR(36) NOT NULL,
+    baseObject VARCHAR(36) NOT NULL,
 
-	PRIMARY KEY (id)
+    PRIMARY KEY (id)
 );
 
 ALTER TABLE RealNumberProperty 
-	ADD UNIQUE (id);
+    ADD UNIQUE (id);
 ALTER TABLE RealNumberProperty
-	ADD UNIQUE (name);
+    ADD UNIQUE (name);
 ALTER TABLE RealNumberProperty 
-	ADD FOREIGN KEY (baseObject) 
-	REFERENCES BaseObject(id) 
-	ON DELETE CASCADE;
+    ADD FOREIGN KEY (baseObject) 
+    REFERENCES BaseObject(id) 
+    ON DELETE CASCADE;

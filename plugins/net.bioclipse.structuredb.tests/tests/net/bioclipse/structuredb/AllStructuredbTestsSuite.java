@@ -10,7 +10,6 @@
  *******************************************************************************/
 package net.bioclipse.structuredb;
 
-import net.bioclipse.structuredb.business.BusinessTestsSuite;
 import net.bioclipse.structuredb.domain.AllDomainTestsSuite;
 import net.bioclipse.structuredb.internalbusiness.InternalBusinessTestsSuite;
 import net.bioclipse.structuredb.persistence.AllPersistencyTestsSuite;
@@ -25,8 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @RunWith(value=Suite.class)
-@SuiteClasses( value = { BusinessTestsSuite.class,
-                         AllDomainTestsSuite.class,
+@SuiteClasses( value = { AllDomainTestsSuite.class,
                          InternalBusinessTestsSuite.class, 
                          AllPersistencyTestsSuite.class, } )
 public class AllStructuredbTestsSuite {

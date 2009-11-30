@@ -13,6 +13,7 @@ package net.bioclipse.structuredb.business;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -32,6 +33,7 @@ import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.core.util.TimeCalculater;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.jobs.BioclipseUIJob;
+import net.bioclipse.managers.business.IBioclipseManager;
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener.DatabaseUpdateType;
@@ -59,33 +61,30 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 /**
  * @author jonalv
  */
-public class StructuredbManager implements IStructuredbManager {
+public class StructuredbManager implements IBioclipseManager {
 
     private Logger logger = Logger.getLogger(StructuredbManager.class);
 
     private static final Pattern databaseNamePattern 
         = Pattern.compile( "(.*?)\\.sdb.*" );
     
-    /*
-     * This isn't super if cdk starts using AOP for fancy stuff in the 
-     * future but we don't want the recorded variant and this is a 
-     * solution that is reasonably easy to test. Should cdk start using 
-     * fancy stuff real integration testing running the OSGI layer is 
-     * needed and this instance would need to come from the OSGI service 
-     * container
-     */
-    private CDKManager cdk = new CDKManager();
-
+    protected ICDKManager cdk 
+        = net.bioclipse.cdk.business.Activator.getDefault()
+             .getJavaScriptCDKManager();
+    
     //Package protected for testing purposes
     Map<String, IStructuredbInstanceManager> internalManagers
-        = new HashMap<String, IStructuredbInstanceManager>();
+        = Collections.synchronizedMap( 
+              new HashMap<String, IStructuredbInstanceManager>() );
 
     //Package protected for testing purposes
     Map<String, ApplicationContext> applicationContexts
-        = new HashMap<String, ApplicationContext>();
+        = Collections.synchronizedMap( 
+              new HashMap<String, ApplicationContext>() );
 
     private Collection<IStructureDBChangeListener> listeners 
-        = new HashSet<IStructureDBChangeListener>();;
+        = Collections.synchronizedSet( 
+              new HashSet<IStructureDBChangeListener>() );
 
     public StructuredbManager() {
         File[] files = HsqldbUtil.getInstance()
@@ -291,9 +290,7 @@ public class StructuredbManager implements IStructuredbManager {
         int moleculesRead = 0;
         monitor.subTask("reading " + moleculesRead + "/" + entries);
         try {
-            iterator = cdk.createMoleculeIterator( 
-                           file, 
-                           new SubProgressMonitor(monitor, 0) ); 
+            iterator = cdk.createMoleculeIterator( file );
         } 
         catch ( CoreException e ) {
             throw new IllegalArgumentException( "Could not open file:" + 
@@ -401,13 +398,6 @@ public class StructuredbManager implements IStructuredbManager {
         return dBMolecules;
     }
 
-    public void addMoleculesFromSDF( String databaseName, 
-                                     String filePath )
-                throws BioclipseException {
-
-        throw new IllegalStateException("This manager method should not be called");
-    }
-
     public Iterator<DBMolecule> subStructureSearchIterator( 
             String databaseName,
             IMolecule queryMolecule,
@@ -434,7 +424,7 @@ public class StructuredbManager implements IStructuredbManager {
                                 queryStructure ),
             cdk,
             (ICDKMolecule)queryMolecule, 
-            this, 
+            (IJavaStructuredbManager) this, 
             monitor,
             ticks );
    }
@@ -447,12 +437,6 @@ public class StructuredbManager implements IStructuredbManager {
         return subStructureSearchIterator( databaseName, 
                                            molecule, 
                                            null );
-    }
-
-    public List<DBMolecule> subStructureSearch( String databaseName,
-                                                IMolecule molecule ) 
-                           throws BioclipseException {
-        throw new IllegalStateException("This method should never be called");
     }
 
     public List<DBMolecule> subStructureSearch( String databaseName,
@@ -516,13 +500,6 @@ public class StructuredbManager implements IStructuredbManager {
         }
         fireAnnotationsChanged();
         updateDatabaseDecorators();
-    }
-
-    public List<DBMolecule> smartsQuery( String databaseName, 
-                                         String smarts ) {
-        throw new IllegalStateException( 
-                      "Oops something is wrong, " +
-        		      "this method shouldn't have been called" );
     }
 
     public Iterator<DBMolecule> smartsQueryIterator( String databaseName,
@@ -724,13 +701,6 @@ public class StructuredbManager implements IStructuredbManager {
         }
     }
 
-    public void addMoleculesFromFiles( String dbName, 
-                                       List<?> selectedFiles ) {
-        throw new IllegalStateException(
-            "This method should not have been called. " +
-            "Something is probably wrong in CreateJobAdvice.java" );
-    }
-
     public void addMoleculesFromFiles( String dbName,
                                        List<?> files,
                                        IProgressMonitor monitor ) {
@@ -781,22 +751,6 @@ public class StructuredbManager implements IStructuredbManager {
                 throw new RuntimeException("Ooops", e);
             }
         }
-    }
-
-    public void smartsQuery( String dbName,
-                             String smarts,
-                             BioclipseUIJob<List<?>> uiJob ) {
-        throw new IllegalStateException("This method should never be called");
-    }
-
-    public void subStructureSearch( String dbName,
-                                    IMolecule molecule,
-                                    BioclipseUIJob<List<?>> uijob ) {
-        throw new IllegalStateException("This method should never be called");
-    }
-
-    public void deleteDatabase( String databaseName ) {
-        throw new IllegalStateException("This method should never be called");
     }
 
     public Iterator<DBMolecule> allStructuresIterator( String databaseName ) {

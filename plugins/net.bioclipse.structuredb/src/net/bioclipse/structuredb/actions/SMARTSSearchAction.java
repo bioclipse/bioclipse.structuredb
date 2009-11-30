@@ -19,7 +19,7 @@ import net.bioclipse.core.domain.IBioObject;
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.structuredb.StructureDBInstance;
-import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 import net.bioclipse.structuredb.business.StructuredbManager;
 import net.bioclipse.structuredb.business.StructuredbManager.SMARTSQueryResultList;
 import net.bioclipse.structuredb.dialogs.SMARTSQueryPromptDialog;
@@ -76,7 +76,7 @@ public class SMARTSSearchAction extends ActionDelegate {
 
         final IUIManager ui 
             = net.bioclipse.ui.business.Activator.getDefault().getUIManager();
-        final IStructuredbManager structuredb 
+        final IJavaStructuredbManager structuredb 
             = net.bioclipse.structuredb.Activator.getDefault()
                                                  .getStructuredbManager();
         try {

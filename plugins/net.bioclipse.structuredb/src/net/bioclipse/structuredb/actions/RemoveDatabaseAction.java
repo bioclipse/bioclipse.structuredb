@@ -14,7 +14,7 @@ import java.util.Iterator;
 
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.StructureDBInstance;
-import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -34,7 +34,7 @@ public class RemoveDatabaseAction extends ActionDelegate {
     @Override
     public void run(IAction action) {
         
-        IStructuredbManager manager = Activator
+        IJavaStructuredbManager manager = Activator
                                       .getDefault()
                                       .getStructuredbManager();
         

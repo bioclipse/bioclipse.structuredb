@@ -20,6 +20,8 @@ import net.bioclipse.core.TestClasses;
 import net.bioclipse.core.TestMethods;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IMolecule;
+import net.bioclipse.jobs.BioclipseJob;
+import net.bioclipse.jobs.BioclipseJobUpdateHook;
 import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.managers.business.IBioclipseManager;
 import net.bioclipse.structuredb.domain.Annotation;
@@ -37,7 +39,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 @TestClasses("net.bioclipse.structuredb.business.StructuredbManagerTest," + 
              "net.bioclipse.structuredb.business.CoverageTest," + 
              "net.bioclipse.structuredb.business.BioclipseManagerTests")
-public interface IStructuredbManager extends IBioclipseManager {
+public interface IJavaStructuredbManager extends IBioclipseManager {
 
     /**
      * Creates a local database instance.
@@ -68,6 +70,16 @@ public interface IStructuredbManager extends IBioclipseManager {
                        		           "exists, otherwise does nothing" )
     public void deleteDatabase( String databaseName );
 
+    /**
+     * Removes a local database instance with a given name if such 
+     * a database exists, otherwise does nothing.
+     *
+     * @param databaseName name of the database instance to be deleted
+     */
+    @TestMethods("testRemovingDatabaseInstance")
+    public BioclipseJob<Void> deleteDatabase( String databaseName, 
+                                              BioclipseJobUpdateHook<Void> h );
+    
     /**
      * Retrieves all Molecules with a given name from a database with a
      * given name.
