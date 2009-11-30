@@ -159,7 +159,7 @@ public class StructuredbManager implements IBioclipseManager {
                 (IStructuredbInstanceManager)
                 applicationContexts.get( databaseName)
                                    .getBean("structuredbInstanceManager") );
-        logger.info( "A new local instance of Structuredb named"
+        logger.info( "A new local instance of Structuredb named "
                       + databaseName + " has been created" );
         fireDatabasesChanged();
         updateDatabaseDecorators();

@@ -30,6 +30,7 @@ import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.domain.IMolecule.Property;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.structuredb.business.IJavaStructuredbManager;
+import net.bioclipse.structuredb.business.IStructuredbManager;
 import net.bioclipse.structuredb.business.StructuredbManager;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
@@ -43,7 +44,7 @@ import org.junit.Test;
 
 public abstract class AbstractStructuredbManagerPluginTest {
 
-    protected static IJavaStructuredbManager structuredb;
+    protected static IStructuredbManager structuredb;
     protected static ICDKManager cdk;
     protected static IUIManager ui;
     
@@ -212,6 +213,10 @@ public abstract class AbstractStructuredbManagerPluginTest {
             structuredb.createTextAnnotation( database1,
                                               "test2",
                                               "annotation3" );
+        
+        assertTrue( structuredb.allAnnotations( database1 )
+                              .contains( annotation1 ) );
+        
         assertNotNull( annotation1 );
         assertNotNull( annotation2 );
         assertNotNull( annotation3 );
@@ -237,6 +242,10 @@ public abstract class AbstractStructuredbManagerPluginTest {
             structuredb.createRealNumberAnnotation( database1,
                                                     "testProperty2",
                                                     2 );
+        
+        assertTrue( structuredb.allAnnotations( database1 )
+                    .contains( annotation1 ) );
+        
         assertNotNull( annotation1 );
         assertNotNull( annotation2 );
         assertNotNull( annotation3 );
@@ -441,7 +450,7 @@ public abstract class AbstractStructuredbManagerPluginTest {
         ICDKMolecule butane  = cdk.fromSMILES( butaneSmiles );
         
         DBMolecule butaneStructure = structuredb.createMolecule( database1, 
-                                                                 "indole", 
+                                                                 "butane", 
                                                                  butane );
         
         Iterator<DBMolecule> iterator 
