@@ -54,7 +54,7 @@
 	</resultMap>
 
 	<resultMap class="TextAnnotation" id="TextAnnotation" extends="Annotation">
-		<result property="value" column="value" />
+		<result property="persistValue" column="value" />
 		<result property="property" column="property" select="TextProperty.getById" /> 
 	</resultMap>
 	
@@ -133,8 +133,8 @@
 	</insert>
 	
 	<insert id="TextAnnotation.insert">
-		INSERT INTO TextAnnotation (   id,     annotation, val    ,   textProperty   )
-		                    VALUES ( '$id$', '$id$',     '$value$', '$property.id$' );
+		INSERT INTO TextAnnotation (   id,     annotation, val           ,   textProperty  )
+		                    VALUES ( '$id$', '$id$',     '$persistValue$', '$property.id$' );
 	</insert>
 	
 	<insert id="RealNumberAnnotation.insert">

@@ -33,7 +33,7 @@ public class TextAnnotationDao extends AnnotationDao<TextAnnotation>
     public TextAnnotationDao() {
         super( TextAnnotation.class );
     }
-
+    
     @Override
     public void insert(TextAnnotation annotation) {
         super.insert( annotation );

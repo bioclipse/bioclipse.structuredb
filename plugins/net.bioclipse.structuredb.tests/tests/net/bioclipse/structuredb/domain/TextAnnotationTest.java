@@ -10,6 +10,7 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.domain;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -44,5 +45,14 @@ public class TextAnnotationTest {
     
         assertTrue( textAnnotation.getProperty() == property );
         assertTrue( property.getAnnotations().contains(textAnnotation) );
+    }
+    
+    @Test
+    public void testEscapingBobbyTables() {
+        TextAnnotation bobbyTables 
+            = new TextAnnotation( "Robert'); DROP TABLE Students;--", 
+                                  new TextProperty("label") );
+        assertEquals( "Robert\\'); DROP TABLE Students;--", 
+                      bobbyTables.getPersistValue() );
     }
 }
