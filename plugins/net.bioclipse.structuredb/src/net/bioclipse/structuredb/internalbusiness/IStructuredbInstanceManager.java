@@ -198,4 +198,14 @@ public interface IStructuredbInstanceManager {
      * 
      */
     public void dropDataBase(IProgressMonitor monitor);
+
+    /**
+     * Makes the DBMolecule s annotated with the Annotation a in the database. 
+     * Used when it is important that the Annotation does not keep a complete
+     * list of all molecules with it.
+     * 
+     * @param s
+     * @param a
+     */
+    public void annotate( DBMolecule s, Annotation a );
 }

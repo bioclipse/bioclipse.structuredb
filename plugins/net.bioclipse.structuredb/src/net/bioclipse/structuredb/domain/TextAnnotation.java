@@ -41,7 +41,7 @@ public class TextAnnotation extends Annotation {
     }
     
     String getPersistValue() {
-        return value.replaceAll( "'", "\\\\'" );
+        return value.replaceAll( "'", "''" );
     }
     
     void setPersistValue(String persistedValue) {

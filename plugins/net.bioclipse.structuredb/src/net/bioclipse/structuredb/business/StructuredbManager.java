@@ -40,6 +40,7 @@ import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener.DatabaseUpdateType;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.Property;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextAnnotation;
@@ -340,30 +341,29 @@ public class StructuredbManager implements IBioclipseManager {
             }
             
             manager.insertMoleculeInAnnotation( s, label.getId() );
-            s.addAnnotation( label );
+//            s.addAnnotation( label );
             
-//            Map<?, ?> properties = molecule.getAtomContainer().getProperties();
-//            
-//            for ( Object o : properties.keySet() ) {
-//                String key = o.toString();
-//                
-//                Property p = manager.retrievePropertyByName( key );
-//                if ( p == null ) {
-//                    p = new TextProperty(key);
-//                    manager.insertTextProperty( (TextProperty) p );
-//                }
-//                if ( !(p instanceof TextProperty) ) {
-//                    p = new TextProperty( "Stringified:" + key );
-//                    manager.insertTextProperty( (TextProperty) p );
-//                }
-//                Annotation a = new TextAnnotation( properties.get( key )
-//                                                             .toString(), 
-//                                                   (TextProperty)p );
-//                manager.insertTextAnnotation( (TextAnnotation) a );
-//                s.addAnnotation( a );
-//            }
+            Map<?, ?> properties = molecule.getAtomContainer().getProperties();
             
-            manager.update( s );
+            for ( Object o : properties.keySet() ) {
+                String key = o.toString();
+                
+                Property p = manager.retrievePropertyByName( key );
+                if ( p == null ) {
+                    p = new TextProperty(key);
+                    manager.insertTextProperty( (TextProperty) p );
+                }
+                if ( !(p instanceof TextProperty) ) {
+                    p = new TextProperty( "Stringified:" + key );
+                    manager.insertTextProperty( (TextProperty) p );
+                }
+                Annotation a = new TextAnnotation( properties.get( key )
+                                                             .toString(), 
+                                                   (TextProperty)p );
+                manager.insertTextAnnotation( (TextAnnotation) a );
+                manager.annotate(s, a);
+                
+            }
             
             monitor.worked( maintTaskTick );
         }

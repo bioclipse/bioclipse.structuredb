@@ -52,7 +52,7 @@ public class TextAnnotationTest {
         TextAnnotation bobbyTables 
             = new TextAnnotation( "Robert'); DROP TABLE Students;--", 
                                   new TextProperty("label") );
-        assertEquals( "Robert\\'); DROP TABLE Students;--", 
+        assertEquals( "Robert''); DROP TABLE Students;--", 
                       bobbyTables.getPersistValue() );
     }
 }

@@ -244,4 +244,13 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
                              "DBMolecule.numberOfMoleculesWithLabel",
                              annotation.getId() );
     }
+
+    public void annotate( DBMolecule m, Annotation a ) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put( "dBMoleculeId",  m.getId() );
+        params.put( "annotationId", a.getId() );
+        getSqlMapClientTemplate().update( "DBMoleculeAnnotation.connect",
+                                          params ); 
+    }
 }
