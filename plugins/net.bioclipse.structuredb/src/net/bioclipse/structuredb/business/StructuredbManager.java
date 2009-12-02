@@ -676,8 +676,11 @@ public class StructuredbManager implements IBioclipseManager {
     public int numberOfMoleculesInLabel( String databaseName,
                                          TextAnnotation annotation ) {
 
-        return internalManagers.get( databaseName )
-                               .numberOfMoleculesInLabel(annotation);
+        IStructuredbInstanceManager m = internalManagers.get( databaseName );
+        if ( m != null ) {
+            return m.numberOfMoleculesInLabel(annotation);
+        }
+        return 0;
     }
 
     public int numberOfMoleculesInDatabaseInstance( String databaseName ) {
