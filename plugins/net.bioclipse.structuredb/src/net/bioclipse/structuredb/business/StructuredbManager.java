@@ -36,6 +36,7 @@ import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.jobs.IReturner;
 import net.bioclipse.managers.business.IBioclipseManager;
 import net.bioclipse.structuredb.Activator;
+import net.bioclipse.structuredb.FileStoreKeeper;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener.DatabaseUpdateType;
 import net.bioclipse.structuredb.domain.Annotation;
@@ -661,8 +662,11 @@ public class StructuredbManager implements IBioclipseManager {
 
     public List<TextAnnotation> allLabels( String databaseName ) {
 
-        return internalManagers.get( databaseName )
-                              .allLabels();
+        IStructuredbInstanceManager m = internalManagers.get( databaseName ); 
+        if ( m == null ) {
+            return Collections.EMPTY_LIST;
+        }
+        return  m.allLabels();
     }
 
     public DBMolecule moleculeAtIndexInLabel( String databaseName, int index,
@@ -685,8 +689,11 @@ public class StructuredbManager implements IBioclipseManager {
 
     public int numberOfMoleculesInDatabaseInstance( String databaseName ) {
 
-        return internalManagers.get( databaseName )
-                               .numberOfMolecules();
+        IStructuredbInstanceManager m = internalManagers.get( databaseName );
+        if ( m == null ) {
+            return 0;
+        }
+        return m.numberOfMolecules();
     }
     
     private void updateDatabaseDecorators() {
@@ -757,5 +764,22 @@ public class StructuredbManager implements IBioclipseManager {
         internalManagers.get( dbName ).update( molecule );
         fireAnnotationsChanged();
         updateDatabaseDecorators();
+    }
+    
+    public void deleteAllDatabases(IProgressMonitor m) {
+        m.beginTask( "Deleting databases (can not be aborted)", 
+                     IProgressMonitor.UNKNOWN );
+        for ( String databaseName : new HashSet<String>( 
+                                            internalManagers.keySet() ) ) {
+            internalManagers.remove( databaseName );
+            applicationContexts.remove( databaseName );
+            HsqldbUtil.getInstance().remove( databaseName + ".sdb" );
+        }
+        
+        FileStoreKeeper.FILE_STORE.deleteAll();
+        
+        fireDatabasesChanged();
+        updateDatabaseDecorators();
+        m.done();
     }
 }

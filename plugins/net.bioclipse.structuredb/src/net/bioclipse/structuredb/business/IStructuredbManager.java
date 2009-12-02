@@ -518,4 +518,6 @@ public interface IStructuredbManager extends IBioclipseManager {
                                          String sdfile,
                                          NullProgressMonitor monitor );
     
+        @PublishedMethod( methodSummary = "Removes all StructureDB databases" )
+        public void deleteAllDatabases(); 
 }

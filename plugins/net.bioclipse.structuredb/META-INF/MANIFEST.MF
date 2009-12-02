@@ -42,6 +42,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.views,
  net.bioclipse.filestore,
  net.bioclipse.inchi,
+ org.eclipse.jface,
  org.openscience.cdk.inchi,
  net.sf.jniinchi
 Eclipse-LazyStart: true

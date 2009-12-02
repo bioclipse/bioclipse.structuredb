@@ -208,4 +208,5 @@ public interface IStructuredbInstanceManager {
      * @param a
      */
     public void annotate( DBMolecule s, Annotation a );
+    
 }
