@@ -33,6 +33,7 @@ import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.core.util.TimeCalculater;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.jobs.BioclipseUIJob;
+import net.bioclipse.jobs.IReturner;
 import net.bioclipse.managers.business.IBioclipseManager;
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Structuredb;
@@ -424,7 +425,6 @@ public class StructuredbManager implements IBioclipseManager {
                                 queryStructure ),
             cdk,
             (ICDKMolecule)queryMolecule, 
-            (IJavaStructuredbManager) this, 
             monitor,
             ticks );
    }
@@ -610,15 +610,6 @@ public class StructuredbManager implements IBioclipseManager {
         updateDatabaseDecorators();
     }
 
-    public void addMoleculesFromSDF( String databaseName, IFile file ) 
-                throws BioclipseException {
-
-        addMoleculesFromSDF( databaseName, 
-                             file, 
-                             new NullProgressMonitor() );
-        updateDatabaseDecorators();
-    }
-
     public RealNumberAnnotation createRealNumberAnnotation( 
                                                   String databaseName,
                                                   String propertyName,
@@ -737,7 +728,7 @@ public class StructuredbManager implements IBioclipseManager {
                 
                     addMoleculesFromSDF( 
                         dbName, 
-                        f, 
+                        f,
                         new SubProgressMonitor( monitor, 
                                                 ticks/fileList.size() ) );
                 }

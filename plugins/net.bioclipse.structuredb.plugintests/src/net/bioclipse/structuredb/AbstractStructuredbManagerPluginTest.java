@@ -29,6 +29,7 @@ import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.domain.IMolecule.Property;
 import net.bioclipse.hsqldb.HsqldbUtil;
+import net.bioclipse.jobs.BioclipseJobUpdateHook;
 import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 import net.bioclipse.structuredb.business.StructuredbManager;
@@ -38,6 +39,8 @@ import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.ui.business.IUIManager;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -64,7 +67,7 @@ public abstract class AbstractStructuredbManagerPluginTest {
             List<IMolecule> molecules = new ArrayList<IMolecule>();
             molecules.add( cdk.fromSMILES( "C" ) );
             molecules.add( cdk.fromSMILES( "CC" ) );
-            cdk.saveSDFile( sdfile, molecules );
+            cdk.saveSDFile( sdfile, molecules, new NullProgressMonitor() );
             fileCreated = true;
         }
     }
@@ -259,7 +262,9 @@ public abstract class AbstractStructuredbManagerPluginTest {
 
     @Test
     public void testImportingSDFFile() throws Exception {
-        structuredb.addMoleculesFromSDF( database1, sdfile );
+        Job j = structuredb.addMoleculesFromSDF( database1, 
+                                                 sdfile );
+        j.join();
         boolean foundAnnotation = false;
         List<Annotation> l = structuredb.allAnnotations( database1 );
         for ( Annotation annotation : l ) {
@@ -497,9 +502,11 @@ public abstract class AbstractStructuredbManagerPluginTest {
     
     @Test
     public void testAddMoleculesFromSDF() throws BioclipseException, 
-                                                 FileNotFoundException {
-        structuredb.addMoleculesFromSDF( database1, 
-                                         sdfile );
+                                                 FileNotFoundException, 
+                                                 InterruptedException {
+        Job j = structuredb.addMoleculesFromSDF( database1,
+                                                 sdfile );
+        j.join();
         boolean foundAnnotation = false;
         Annotation annotation = null;
         List<Annotation> l = structuredb.allAnnotations( database1 );
