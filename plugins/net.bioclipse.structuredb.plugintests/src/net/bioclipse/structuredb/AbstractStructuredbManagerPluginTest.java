@@ -520,4 +520,24 @@ public abstract class AbstractStructuredbManagerPluginTest {
         assertEquals( 2, annotation.getDBMolecules().size() );
     }
     
+    @Test
+    public void testAnnotate() throws Exception {
+        Annotation a = structuredb.createTextAnnotation( database1, 
+                                                         "test", 
+                                                         "annotation1" );
+        DBMolecule m = structuredb.createMolecule( database1, 
+                                                   "test", 
+                                                   cdk.fromSMILES( "CCC" ) );
+        structuredb.annotate( database1, m, a );
+        List<DBMolecule> molecules = structuredb.allMolecules( database1 );
+        DBMolecule loaded = null;
+        for ( DBMolecule ml : molecules ) {
+            if (ml.equals( m )) {
+                loaded = ml;
+            }
+        }
+        assertNotNull( loaded );
+        assertTrue( structuredb.allAnnotations( database1 ).contains( a ) );
+        assertTrue( loaded.getAnnotations().contains( a ) );
+    }
 }

@@ -782,4 +782,9 @@ public class StructuredbManager implements IBioclipseManager {
         updateDatabaseDecorators();
         m.done();
     }
+    
+    public void annotate( String databaseName, DBMolecule m, Annotation a ) {
+        checkDatabaseName( databaseName );
+        internalManagers.get( databaseName ).annotate( m, a );
+    }
 }

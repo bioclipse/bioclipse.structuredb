@@ -520,4 +520,12 @@ public interface IStructuredbManager extends IBioclipseManager {
     
         @PublishedMethod( methodSummary = "Removes all StructureDB databases" )
         public void deleteAllDatabases(); 
+
+        @PublishedMethod( 
+            methodSummary = "Annotates a molecule with an annotation in the " +
+            		        "database. Used when it is important that the " +
+            		        "Annotation does not keep a complete list of all " +
+            		        "molecules with it.",
+            params = "String databaseName, DBMolecule m, Annotation a" )
+        public void annotate( String databaseName, DBMolecule m, Annotation a );
 }
