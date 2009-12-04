@@ -124,6 +124,10 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
         DomainType loadedObject1 = dao.getById( object1.getId() );
         assertNotNull( "The lodaded object should not be null", 
                        loadedObject1 );
+        assertEquals( "The loaded object should be equal to the origianl " +
+        		      "object", 
+        		      object1, 
+        		      loadedObject1 );
         assertTrue( "The loaded object should have values equal to " 
                         + "the original object", 
         		    object1.hasValuesEqualTo(loadedObject1) );

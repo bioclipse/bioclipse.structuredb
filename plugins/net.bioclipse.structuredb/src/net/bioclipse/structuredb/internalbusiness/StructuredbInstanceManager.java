@@ -206,4 +206,9 @@ public class StructuredbInstanceManager
         }
         monitor.subTask( "Almost done" );
     }
+
+    public void annotate( DBMolecule s, Annotation a ) {
+
+       dBMoleculeDao.annotate(s, a); 
+    }
 }

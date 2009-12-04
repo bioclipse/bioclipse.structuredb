@@ -33,6 +33,12 @@
                     label="Create new local Structure Database..."
                     menubarPath="additions"
                     tooltip="Open a dialog for creating a new Structure Database"/>
+            <action class="net.bioclipse.structuredb.actions.RemoveAllDatabasesAction"
+                    enablesFor="1"
+                    id="net.bioclipse.structuredb.actions.RemoveAllDatabasesAction"
+                    label="Remove all StructureDB databases"
+                    menubarPath="additions"
+                    tooltip="Removes all instances of the StructureDB database"/>
         </objectContribution>
         
         <objectContribution adaptable="false"

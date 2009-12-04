@@ -98,7 +98,7 @@ public class BaseObject implements IBioObject, Comparable {
         if( !(obj instanceof BaseObject) ) {
             return false;
         }
-        return id.equals( ( (BaseObject)obj ).getId() );
+        return getId().equals( ( (BaseObject)obj ).getId() );
     }
 
     /**

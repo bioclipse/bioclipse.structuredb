@@ -13,8 +13,10 @@ package net.bioclipse.structuredb.persistency.dao;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.WeakHashMap;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
@@ -102,8 +104,9 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
     
     private class StructureIterator implements Iterator<DBMolecule> {
         
+        private final int CACHE_SIZE = 10;
+        private Queue<DBMolecule> cache = new LinkedList<DBMolecule>();
         private SqlMapClient sqlMapClient;
-        private DBMolecule nextStructure = null;
         private int skip = 0;
         private String sqlMapId;
         private Object queryParam = null;
@@ -125,34 +128,28 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
         @SuppressWarnings("unchecked")
         public boolean hasNext() {
 
-            try {
-                List<DBMolecule> result = (List<DBMolecule>)sqlMapClient
-                                         .queryForList( sqlMapId,
-                                                        queryParam,
-                                                        skip,
-                                                        1 );
-                if(result.size() != 1) {
-                    nextStructure = null;
-                    return false;
+            if ( cache.isEmpty() ) {
+                List<DBMolecule> result = null;
+                try {
+                    result = (List<DBMolecule>)sqlMapClient
+                                                  .queryForList( sqlMapId,
+                                                                 queryParam,
+                                                                 skip,
+                                                                 CACHE_SIZE );
+                    skip += CACHE_SIZE;
                 }
-                else {
-                    nextStructure = result.get( 0 );
-                    return true;
+                catch ( SQLException e ) {
+                    throw new RuntimeException("Failed to load molecules", e);
                 }
-            } 
-            catch ( SQLException e ) {
-                throw new RuntimeException(e);
+                cache.addAll( result );
             }
+            
+            return !cache.isEmpty();
         }
 
         public DBMolecule next() {
-            if( nextStructure != null ) {
-                skip++;
-                return nextStructure;
-            }
-            if( hasNext() ) {
-                skip++;
-                return nextStructure;
+            if ( hasNext() ) {
+                return cache.poll();
             }
             throw new IllegalStateException(
                 "There is no next structure" );
@@ -243,5 +240,14 @@ public class DBMoleculeDao extends GenericDao<DBMolecule>
         return (Integer) getSqlMapClientTemplate().queryForObject(
                              "DBMolecule.numberOfMoleculesWithLabel",
                              annotation.getId() );
+    }
+
+    public void annotate( DBMolecule m, Annotation a ) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put( "dBMoleculeId",  m.getId() );
+        params.put( "annotationId", a.getId() );
+        getSqlMapClientTemplate().update( "DBMoleculeAnnotation.connect",
+                                          params ); 
     }
 }

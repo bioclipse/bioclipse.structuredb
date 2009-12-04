@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Structuredb Plug-in
 Bundle-SymbolicName: net.bioclipse.structuredb; singleton:=true
-Bundle-Version: 2.1.0.v20090807
+Bundle-Version: 2.2.0.RC2
 Bundle-Activator: net.bioclipse.structuredb.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -42,6 +42,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.views,
  net.bioclipse.filestore,
  net.bioclipse.inchi,
+ org.eclipse.jface,
  org.openscience.cdk.inchi,
  net.sf.jniinchi
 Eclipse-LazyStart: true

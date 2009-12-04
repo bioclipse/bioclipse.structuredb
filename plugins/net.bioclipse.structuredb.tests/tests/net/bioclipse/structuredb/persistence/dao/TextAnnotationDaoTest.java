@@ -53,4 +53,13 @@ public class TextAnnotationDaoTest
         assertTrue( textAnnotationDao.getAllLabels().contains( a ) );
         assertFalse( textAnnotationDao.getAllLabels().contains( b ) );
     }
+    
+    public void testPersistingBobbyTables() {
+        TextAnnotation bobbyTables 
+            = new TextAnnotation( "Robert'); DROP TABLE Students;--", 
+                                  new TextProperty("label") );
+        dao.insert( bobbyTables );
+        ITextAnnotationDao textAnnotationDao = (ITextAnnotationDao)dao;
+        assertTrue( textAnnotationDao.getAllLabels().contains( bobbyTables ) );
+    }
 }

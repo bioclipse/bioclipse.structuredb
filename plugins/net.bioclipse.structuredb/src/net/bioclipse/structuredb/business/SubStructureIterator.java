@@ -33,7 +33,6 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
     private Iterator<DBMolecule> parent;
     private ICDKManager cdk;
     private ICDKMolecule subStructure;
-    private IJavaStructuredbManager structuredb;
     private IProgressMonitor monitor;
     private int ticks;
     private int currentTick = 0;
@@ -42,13 +41,11 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
     public SubStructureIterator( Iterator<DBMolecule> iterator, 
                                  ICDKManager cdk,
                                  ICDKMolecule subStructure,
-                                 IJavaStructuredbManager structuredbManager, 
                                  IProgressMonitor monitor,
                                  int ticks) {
         parent   = iterator;
         this.cdk = cdk;
         this.subStructure = subStructure;
-        this.structuredb = structuredbManager;
         this.monitor = monitor;
         this.ticks = ticks;
         this.startTime = System.currentTimeMillis();

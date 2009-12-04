@@ -33,12 +33,15 @@ import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.core.util.TimeCalculater;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.jobs.BioclipseUIJob;
+import net.bioclipse.jobs.IReturner;
 import net.bioclipse.managers.business.IBioclipseManager;
 import net.bioclipse.structuredb.Activator;
+import net.bioclipse.structuredb.FileStoreKeeper;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener.DatabaseUpdateType;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
+import net.bioclipse.structuredb.domain.Property;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextAnnotation;
@@ -159,7 +162,7 @@ public class StructuredbManager implements IBioclipseManager {
                 (IStructuredbInstanceManager)
                 applicationContexts.get( databaseName)
                                    .getBean("structuredbInstanceManager") );
-        logger.info( "A new local instance of Structuredb named"
+        logger.info( "A new local instance of Structuredb named "
                       + databaseName + " has been created" );
         fireDatabasesChanged();
         updateDatabaseDecorators();
@@ -339,30 +342,29 @@ public class StructuredbManager implements IBioclipseManager {
             }
             
             manager.insertMoleculeInAnnotation( s, label.getId() );
-            s.addAnnotation( label );
+//            s.addAnnotation( label );
             
-//            Map<?, ?> properties = molecule.getAtomContainer().getProperties();
-//            
-//            for ( Object o : properties.keySet() ) {
-//                String key = o.toString();
-//                
-//                Property p = manager.retrievePropertyByName( key );
-//                if ( p == null ) {
-//                    p = new TextProperty(key);
-//                    manager.insertTextProperty( (TextProperty) p );
-//                }
-//                if ( !(p instanceof TextProperty) ) {
-//                    p = new TextProperty( "Stringified:" + key );
-//                    manager.insertTextProperty( (TextProperty) p );
-//                }
-//                Annotation a = new TextAnnotation( properties.get( key )
-//                                                             .toString(), 
-//                                                   (TextProperty)p );
-//                manager.insertTextAnnotation( (TextAnnotation) a );
-//                s.addAnnotation( a );
-//            }
+            Map<?, ?> properties = molecule.getAtomContainer().getProperties();
             
-            manager.update( s );
+            for ( Object o : properties.keySet() ) {
+                String key = o.toString();
+                
+                Property p = manager.retrievePropertyByName( key );
+                if ( p == null ) {
+                    p = new TextProperty(key);
+                    manager.insertTextProperty( (TextProperty) p );
+                }
+                if ( !(p instanceof TextProperty) ) {
+                    p = new TextProperty( "Stringified:" + key );
+                    manager.insertTextProperty( (TextProperty) p );
+                }
+                Annotation a = new TextAnnotation( properties.get( key )
+                                                             .toString(), 
+                                                   (TextProperty)p );
+                manager.insertTextAnnotation( (TextAnnotation) a );
+                manager.annotate(s, a);
+                
+            }
             
             monitor.worked( maintTaskTick );
         }
@@ -424,7 +426,6 @@ public class StructuredbManager implements IBioclipseManager {
                                 queryStructure ),
             cdk,
             (ICDKMolecule)queryMolecule, 
-            (IJavaStructuredbManager) this, 
             monitor,
             ticks );
    }
@@ -610,15 +611,6 @@ public class StructuredbManager implements IBioclipseManager {
         updateDatabaseDecorators();
     }
 
-    public void addMoleculesFromSDF( String databaseName, IFile file ) 
-                throws BioclipseException {
-
-        addMoleculesFromSDF( databaseName, 
-                             file, 
-                             new NullProgressMonitor() );
-        updateDatabaseDecorators();
-    }
-
     public RealNumberAnnotation createRealNumberAnnotation( 
                                                   String databaseName,
                                                   String propertyName,
@@ -670,8 +662,11 @@ public class StructuredbManager implements IBioclipseManager {
 
     public List<TextAnnotation> allLabels( String databaseName ) {
 
-        return internalManagers.get( databaseName )
-                              .allLabels();
+        IStructuredbInstanceManager m = internalManagers.get( databaseName ); 
+        if ( m == null ) {
+            return Collections.EMPTY_LIST;
+        }
+        return  m.allLabels();
     }
 
     public DBMolecule moleculeAtIndexInLabel( String databaseName, int index,
@@ -685,14 +680,20 @@ public class StructuredbManager implements IBioclipseManager {
     public int numberOfMoleculesInLabel( String databaseName,
                                          TextAnnotation annotation ) {
 
-        return internalManagers.get( databaseName )
-                               .numberOfMoleculesInLabel(annotation);
+        IStructuredbInstanceManager m = internalManagers.get( databaseName );
+        if ( m != null ) {
+            return m.numberOfMoleculesInLabel(annotation);
+        }
+        return 0;
     }
 
     public int numberOfMoleculesInDatabaseInstance( String databaseName ) {
 
-        return internalManagers.get( databaseName )
-                               .numberOfMolecules();
+        IStructuredbInstanceManager m = internalManagers.get( databaseName );
+        if ( m == null ) {
+            return 0;
+        }
+        return m.numberOfMolecules();
     }
     
     private void updateDatabaseDecorators() {
@@ -737,7 +738,7 @@ public class StructuredbManager implements IBioclipseManager {
                 
                     addMoleculesFromSDF( 
                         dbName, 
-                        f, 
+                        f,
                         new SubProgressMonitor( monitor, 
                                                 ticks/fileList.size() ) );
                 }
@@ -763,5 +764,27 @@ public class StructuredbManager implements IBioclipseManager {
         internalManagers.get( dbName ).update( molecule );
         fireAnnotationsChanged();
         updateDatabaseDecorators();
+    }
+    
+    public void deleteAllDatabases(IProgressMonitor m) {
+        m.beginTask( "Deleting databases (can not be aborted)", 
+                     IProgressMonitor.UNKNOWN );
+        for ( String databaseName : new HashSet<String>( 
+                                            internalManagers.keySet() ) ) {
+            internalManagers.remove( databaseName );
+            applicationContexts.remove( databaseName );
+            HsqldbUtil.getInstance().remove( databaseName + ".sdb" );
+        }
+        
+        FileStoreKeeper.FILE_STORE.deleteAll();
+        
+        fireDatabasesChanged();
+        updateDatabaseDecorators();
+        m.done();
+    }
+    
+    public void annotate( String databaseName, DBMolecule m, Annotation a ) {
+        checkDatabaseName( databaseName );
+        internalManagers.get( databaseName ).annotate( m, a );
     }
 }

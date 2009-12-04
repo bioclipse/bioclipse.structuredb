@@ -29,6 +29,7 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
         = Activator.getDefault().getStructuredbManager();
     private TextAnnotation annotation;
     private String databaseName;
+    private int numberOfMolecules = -1;
     
     public DBMoleculesEditorModel( String databaseName,
                                    TextAnnotation annotation ) {
@@ -44,7 +45,12 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
     }
 
     public int getNumberOfMolecules() {
-        return structuredb.numberOfMoleculesInLabel(databaseName, annotation);
+        if ( numberOfMolecules == -1 ) {
+            numberOfMolecules = structuredb.numberOfMoleculesInLabel(
+                                    databaseName, 
+                                    annotation);
+        }
+        return numberOfMolecules;
     }
 
     public void markDirty( int index, ICDKMolecule moleculeToSave ) {

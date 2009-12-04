@@ -161,8 +161,28 @@ public class HsqldbUtil {
                     "Could not perform shutdown statement", e);
         }
         urls.remove( url );
-        
-        for ( File f : files ) {
+        String lockFileName = databaseName + ".lck";
+        boolean foundLock;
+        do {
+            foundLock = false;
+            for ( File f : fileFolder.listFiles() ) {
+                if ( f.getName().equals( lockFileName ) ) {
+                    foundLock = true;
+                    break;
+                }
+            }
+            if ( foundLock ) {
+                try {
+                    Thread.sleep( 100 );
+                }
+                catch ( InterruptedException e ) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        while ( foundLock ); 
+        for ( File f : fileFolder.listFiles() ) {
             if( f.getName().contains( databaseName ) ) {
                 f.delete();
             }

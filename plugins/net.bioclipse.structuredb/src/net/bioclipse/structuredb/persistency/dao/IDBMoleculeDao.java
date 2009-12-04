@@ -59,4 +59,10 @@ public interface IDBMoleculeDao extends IGenericDao<DBMolecule> {
                                                  int index );
 
     public int getNumberOfMoleculesWithAnnotation( Annotation label );
+
+    /**
+     * @param s
+     * @param a
+     */
+    public void annotate( DBMolecule s, Annotation a );
 }

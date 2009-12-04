@@ -119,6 +119,30 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
                     loaded.getAnnotations().contains(annotation) );
     }
     
+    public void testAnnotate() {
+        TextAnnotation annotation = new TextAnnotation();
+        ITextAnnotationDao textAnnotationDao 
+            = (ITextAnnotationDao) 
+              applicationContext.getBean("textAnnotationDao");
+        addAuditInformation(annotation);
+        textAnnotationDao.insert(annotation);
+        
+        DBMolecule dBMolecule = new DBMolecule();
+        dBMolecule.setAtomContainer( object1.getAtomContainer() );
+
+        addAuditInformation(dBMolecule);
+        dao.insert( dBMolecule );
+        
+        ((IDBMoleculeDao)dao).annotate( dBMolecule, annotation );
+        
+        DBMolecule loaded = dao.getById( dBMolecule.getId() );
+        assertNotNull("The lodaded object should not be null", loaded);
+        assertNotSame(dBMolecule, loaded);
+        assertTrue( dBMolecule.hasValuesEqualTo(loaded) );
+        assertTrue( "Should contain the annotation", 
+                    loaded.getAnnotations().contains(annotation) );
+    }
+    
     @Override
     public void testUpdate() {
         super.testUpdate();

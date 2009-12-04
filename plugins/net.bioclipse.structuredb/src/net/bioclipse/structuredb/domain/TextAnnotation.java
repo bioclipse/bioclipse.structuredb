@@ -39,6 +39,14 @@ public class TextAnnotation extends Annotation {
         this.setValue( textAnnotation.getValue() );
         this.property = new TextProperty( textAnnotation.getProperty() );
     }
+    
+    String getPersistValue() {
+        return value.replaceAll( "'", "''" );
+    }
+    
+    void setPersistValue(String persistedValue) {
+        this.value = persistedValue;
+    }
 
     public String getValue() {
         return value;

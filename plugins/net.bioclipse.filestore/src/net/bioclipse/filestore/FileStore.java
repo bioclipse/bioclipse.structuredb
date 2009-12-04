@@ -171,4 +171,26 @@ public class FileStore {
         delete(key);
         store(key, newContent);
     }
+
+    /**
+     * 
+     */
+    public void deleteAll() {
+        deleteAllInDirectory(root);
+    }
+    
+    static public void deleteAllInDirectory(File path) {
+        if ( path.exists() ) {
+            for ( File f : path.listFiles() ) {
+                if ( f.isDirectory() ) {
+                    deleteAllInDirectory(f);
+                    f.delete();
+                }
+                else {
+                    f.delete();
+                }
+            }
+        }
+    }
+
 }
