@@ -459,7 +459,7 @@ public class DBMolecule extends BaseObject
     }
 
     public Object getProperty( String propertyKey, Property urgency ) {
-        for ( Annotation a : this.annotations ) {
+        for ( Annotation a : getAnnotations() ) {
             if ( a.getProperty().getName().equals( propertyKey ) ) {
                 return a.getValue();
             }
