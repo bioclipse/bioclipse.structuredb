@@ -10,6 +10,7 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.business;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -528,4 +529,13 @@ public interface IStructuredbManager extends IBioclipseManager {
             		        "molecules with it.",
             params = "String databaseName, DBMolecule m, Annotation a" )
         public void annotate( String databaseName, DBMolecule m, Annotation a );
+        
+        /**
+         * @param databaseName
+         * @param annotation
+         * @return
+         */
+        public Collection<Object> 
+               getAvailableProperties( String databaseName,
+                                       TextAnnotation annotation );
 }

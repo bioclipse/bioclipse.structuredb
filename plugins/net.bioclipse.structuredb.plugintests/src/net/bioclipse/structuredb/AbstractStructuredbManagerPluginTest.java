@@ -19,6 +19,7 @@ import static org.junit.Assert.fail;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -539,5 +540,43 @@ public abstract class AbstractStructuredbManagerPluginTest {
         assertNotNull( loaded );
         assertTrue( structuredb.allAnnotations( database1 ).contains( a ) );
         assertTrue( loaded.getAnnotations().contains( a ) );
+    }
+    
+    @Test
+    public void testGetAvailablePropertiesFromAnnotation() 
+                throws BioclipseException {
+        
+        DBMolecule m1 = structuredb.createMolecule( database1, 
+                                                    "C", 
+                                                    cdk.fromSMILES( "C" ) );
+        DBMolecule m2 = structuredb.createMolecule( database1, 
+                                                    "CC", 
+                                                    cdk.fromSMILES( "CC" ) );
+        DBMolecule m3 = structuredb.createMolecule( database1, 
+                                                    "CCC", 
+                                                    cdk.fromSMILES( "CCC" ) );
+        TextAnnotation ta 
+            = structuredb.createTextAnnotation( database1, "label", "label" );
+        structuredb.annotate( database1, m1, ta );
+        structuredb.annotate( database1, m2, ta );
+        
+        TextAnnotation a1 
+            = structuredb.createTextAnnotation( database1, "p1", "a1" );
+        structuredb.annotate( database1, m1, a1 );
+        
+        RealNumberAnnotation a2 
+            = structuredb.createRealNumberAnnotation( database1, "p2", 12 );
+        structuredb.annotate( database1, m2, a2 );
+        
+        TextAnnotation a3
+            = structuredb.createTextAnnotation( database1, "p3", "a3" );
+        structuredb.annotate( database1, m3, a3 );
+        
+        Collection<Object> properties 
+            = structuredb.getAvailableProperties( database1, ta );
+        
+        assertTrue(  properties.contains( "p1" ) );
+        assertTrue(  properties.contains( "p2" ) );
+        assertFalse( properties.contains( "p3" ) );
     }
 }

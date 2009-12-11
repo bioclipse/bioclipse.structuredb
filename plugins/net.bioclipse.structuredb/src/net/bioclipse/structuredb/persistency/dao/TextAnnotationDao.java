@@ -10,6 +10,8 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.persistency.dao;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,6 +80,23 @@ public class TextAnnotationDao extends AnnotationDao<TextAnnotation>
     public List<TextAnnotation> getAllLabels() {
         return getSqlMapClientTemplate()
                    .queryForList( "TextAnnotation.getAllLabels" );
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<String> 
+           getAvailableProperties( TextAnnotation annotation ) {
+        Collection<String> result = new LinkedList<String>();
+        
+        result.addAll( 
+            getSqlMapClientTemplate()
+                .queryForList( "TextAnnotation.getAvailableTextProperties", 
+                               annotation.getId() ) );
+        result.addAll( 
+            getSqlMapClientTemplate()
+                .queryForList( 
+                    "TextAnnotation.getAvailableRealNumberProperties", 
+                    annotation.getId() ) );
+        return result;
     }
 
 

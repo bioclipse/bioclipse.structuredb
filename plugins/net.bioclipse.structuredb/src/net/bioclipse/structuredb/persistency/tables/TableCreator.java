@@ -44,6 +44,7 @@ public class TableCreator {
             "TextAnnotation.sql",
             "TextProperty.sql",
             "RealNumberProperty.sql",
+            "Indexes.sql",
           };
 
     public static final TableCreator INSTANCE = new TableCreator();

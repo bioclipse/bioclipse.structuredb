@@ -62,4 +62,5 @@ public class TextAnnotationDaoTest
         ITextAnnotationDao textAnnotationDao = (ITextAnnotationDao)dao;
         assertTrue( textAnnotationDao.getAllLabels().contains( bobbyTables ) );
     }
+    
 }

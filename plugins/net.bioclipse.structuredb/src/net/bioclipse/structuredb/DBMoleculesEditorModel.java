@@ -12,6 +12,7 @@ package net.bioclipse.structuredb;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.cdk.ui.views.IMoleculesEditorModel;
@@ -64,7 +65,8 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
     }
 
     public Collection<Object> getAvailableProperties() {
-        return new ArrayList(){ {add( annotation.getProperty().getName() );} };
+        return new LinkedList();
+//        return structuredb.getAvailableProperties(databaseName, annotation);
     }
 
     public <T> void setPropertyFor( int index, String property, T value ) {

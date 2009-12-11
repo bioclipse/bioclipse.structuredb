@@ -458,6 +458,52 @@
             AND sl.AnnotationId = #annotationId#
     </select>
     
+    <select id="TextAnnotation.getAvailableTextProperties"
+            parameterClass="String"
+            resultClass="String" >
+        SELECT DISTINCT
+            p.name
+        FROM
+            TextProperty p, 
+            TextAnnotation ta, 
+            Annotation a, 
+            Annotation q, 
+            DBMolecule m, 
+            DBMoleculeAnnotation mqa, 
+            DBMoleculeAnnotation ma
+        WHERE
+            #value# = q.id 
+            AND q.id = mqa.annotationId 
+            AND mqa.dBMoleculeId = m.id
+            AND m.id = ma.dBMoleculeId
+            AND ma.annotationId = a.id
+            AND a.id = ta.id
+            AND p.id = ta.textProperty
+    </select>
+    
+    <select id="TextAnnotation.getAvailableRealNumberProperties"
+            parameterClass="String"
+            resultClass="String" >
+        SELECT DISTINCT
+            p.name
+        FROM
+            RealNumberProperty p, 
+            RealNumberAnnotation ra, 
+            Annotation a, 
+            Annotation q, 
+            DBMolecule m, 
+            DBMoleculeAnnotation mqa, 
+            DBMoleculeAnnotation ma
+        WHERE
+            #value# = q.id 
+            AND q.id = mqa.annotationId 
+            AND mqa.dBMoleculeId = m.id
+            AND m.id = ma.dBMoleculeId
+            AND ma.annotationId = a.id
+            AND a.id = ra.id
+            AND p.id = ra.realNumberProperty
+    </select>
+    
 <!--+
     | DELETE STATEMENTS
     +-->	

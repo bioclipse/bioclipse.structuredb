@@ -787,4 +787,12 @@ public class StructuredbManager implements IBioclipseManager {
         checkDatabaseName( databaseName );
         internalManagers.get( databaseName ).annotate( m, a );
     }
+    
+    public Collection<String> 
+           getAvailableProperties( String databaseName,
+                                   TextAnnotation annotation ) {
+        checkDatabaseName( databaseName );
+        return internalManagers.get(databaseName)
+                               .getAvailableProperties(annotation);
+    }
 }

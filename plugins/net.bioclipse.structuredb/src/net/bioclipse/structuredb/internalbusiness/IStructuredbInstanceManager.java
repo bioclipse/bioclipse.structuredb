@@ -10,6 +10,7 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -208,5 +209,12 @@ public interface IStructuredbInstanceManager {
      * @param a
      */
     public void annotate( DBMolecule s, Annotation a );
+
+    /**
+     * @param annotation
+     * @return
+     */
+    public Collection<String> 
+           getAvailableProperties( TextAnnotation annotation );
     
 }

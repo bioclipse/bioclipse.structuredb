@@ -10,27 +10,9 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.business;
 
-import java.util.Iterator;
-import java.util.List;
-
-import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.PublishedClass;
-import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.TestClasses;
-import net.bioclipse.core.TestMethods;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.IMolecule;
-import net.bioclipse.jobs.BioclipseJob;
-import net.bioclipse.jobs.BioclipseJobUpdateHook;
-import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.managers.business.IBioclipseManager;
-import net.bioclipse.structuredb.domain.Annotation;
-import net.bioclipse.structuredb.domain.DBMolecule;
-import net.bioclipse.structuredb.domain.RealNumberAnnotation;
-import net.bioclipse.structuredb.domain.TextAnnotation;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * @author jonalv

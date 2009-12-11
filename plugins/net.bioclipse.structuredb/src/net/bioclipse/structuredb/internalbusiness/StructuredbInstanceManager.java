@@ -10,6 +10,7 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -210,5 +211,11 @@ public class StructuredbInstanceManager
     public void annotate( DBMolecule s, Annotation a ) {
 
        dBMoleculeDao.annotate(s, a); 
+    }
+
+    public Collection<String> 
+           getAvailableProperties( TextAnnotation annotation ) {
+
+        return textAnnotationDao.getAvailableProperties( annotation );
     }
 }
