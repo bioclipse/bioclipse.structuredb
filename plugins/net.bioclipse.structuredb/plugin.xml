@@ -73,13 +73,6 @@
         <objectContribution adaptable="false"
                             id="net.bioclipse.structuredb.label"
                             objectClass="net.bioclipse.structuredb.Label">
-            <action
-                class="net.bioclipse.structuredb.actions.OpenAnnotationAction"
-                enablesFor="+"
-                id="net.bioclipse.structuredb.action.OpenAnnotation"
-                label="Open"
-                menubarPath="additions">
-           </action>
            <action
                class="net.bioclipse.structuredb.actions.RemoveAnnotationAction"
                enablesFor="+"
@@ -103,6 +96,10 @@
             <includes>
                 <contentExtension isRoot="true"
                                   pattern="net.bioclipse.structuredb.databaseContent">
+                </contentExtension>
+                <contentExtension
+                      isRoot="false"
+                      pattern="net.bioclipse.databases.content.label">
                 </contentExtension>
             </includes>
         </viewerContentBinding>
@@ -137,6 +134,30 @@
                     </instanceof>
                </possibleDropTargets>
        	    </dropAssistant>
+        </navigatorContent>
+        <navigatorContent
+              activeByDefault="true"
+              contentProvider="net.bioclipse.structuredb.viewer.DatabaseContentProvider"
+              icon="icons/many_molecules.png"
+              id="net.bioclipse.databases.content.label"
+              labelProvider="net.bioclipse.structuredb.viewer.DatabaseLabelProvider"
+              name="Label">
+           <triggerPoints>
+              <or>
+                 <instanceof
+                       value="net.bioclipse.structuredb.Label">
+                 </instanceof>
+              </or>
+           </triggerPoints>
+           <actionProvider
+                 class="net.bioclipse.structuredb.actions.OpenActionProvider">
+           </actionProvider>
+           <enablement>
+              <instanceof
+                    value="net.bioclipse.structuredb.Label">
+              </instanceof>
+           </enablement>
+           <possibleChildren></possibleChildren>
         </navigatorContent>
     </extension>
     
