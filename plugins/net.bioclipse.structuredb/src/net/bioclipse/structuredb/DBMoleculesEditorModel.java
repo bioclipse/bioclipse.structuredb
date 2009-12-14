@@ -65,8 +65,8 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
     }
 
     public Collection<Object> getAvailableProperties() {
-        return new LinkedList();
-//        return structuredb.getAvailableProperties(databaseName, annotation);
+//        return new LinkedList();
+        return structuredb.getAvailableProperties(databaseName, annotation);
     }
 
     public <T> void setPropertyFor( int index, String property, T value ) {

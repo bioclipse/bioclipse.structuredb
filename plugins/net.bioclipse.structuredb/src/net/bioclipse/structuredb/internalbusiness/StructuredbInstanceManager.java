@@ -10,6 +10,7 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.internalbusiness;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -216,6 +217,14 @@ public class StructuredbInstanceManager
     public Collection<String> 
            getAvailableProperties( TextAnnotation annotation ) {
 
-        return textAnnotationDao.getAvailableProperties( annotation );
+//        return textAnnotationDao.getAvailableProperties( annotation );
+        Collection<String> results = new ArrayList<String>();
+        for ( TextProperty p : textPropertyDao.getAll() ) {
+            results.add( p.getName() );
+        }
+        for ( RealNumberProperty p : realNumberPropertyDao.getAll() ) {
+            results.add( p.getName() );
+        }
+        return results;
     }
 }
