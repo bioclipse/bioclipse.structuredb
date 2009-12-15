@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.bioclipse.core.domain.RecordableList;
-import net.bioclipse.core.util.TimeCalculater;
+import net.bioclipse.core.util.TimeCalculator;
 import net.bioclipse.structuredb.FileStoreKeeper;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
@@ -202,7 +202,7 @@ public class StructuredbInstanceManager
                                         iterator.next().getFileStoreKey() ) );
             monitor.worked( 1 );
             monitor.subTask( "(Estimating " + 
-                TimeCalculater.generateTimeRemainEst( startTime, 
+                TimeCalculator.generateTimeRemainEst( startTime, 
                                                       i++, 
                                                       ticks ) + " remaining" );
         }

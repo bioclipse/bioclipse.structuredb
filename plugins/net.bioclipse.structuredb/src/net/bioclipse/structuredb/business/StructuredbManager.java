@@ -30,7 +30,7 @@ import net.bioclipse.core.ResourcePathTransformer;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.domain.RecordableList;
-import net.bioclipse.core.util.TimeCalculater;
+import net.bioclipse.core.util.TimeCalculator;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.jobs.IReturner;
@@ -315,7 +315,7 @@ public class StructuredbManager implements IBioclipseManager {
             if ( entries < 500 || current++ % 50 == 0 ) {
                 if ( System.currentTimeMillis() - start > 5000 ) {
                     timeEstimation 
-                        = " (" + TimeCalculater
+                        = " (" + TimeCalculator
                                      .generateTimeRemainEst( start, 
                                                              moleculesRead, 
                                                              entries )

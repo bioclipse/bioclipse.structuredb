@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 
-import net.bioclipse.core.util.TimeCalculater;
+import net.bioclipse.core.util.TimeCalculator;
 import net.bioclipse.structuredb.FileStoreKeeper;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
@@ -122,7 +122,7 @@ public abstract class AnnotationDao<T extends Annotation> extends GenericDao<T>
                 if ( (i+1) % 50 == 0 ) {
                     monitor.subTask( "Molecules deleted: " + (i+1) + "/" 
                                      + dbMoleculeIds.size() + " ( " 
-                                     + TimeCalculater.generateTimeRemainEst( 
+                                     + TimeCalculator.generateTimeRemainEst( 
                                          startTime, 
                                          i+1, 
                                          size ) + ")" );

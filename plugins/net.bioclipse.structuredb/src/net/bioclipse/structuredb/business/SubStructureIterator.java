@@ -16,7 +16,7 @@ import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.util.TimeCalculater;
+import net.bioclipse.core.util.TimeCalculator;
 import net.bioclipse.structuredb.domain.DBMolecule;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -76,7 +76,7 @@ public class SubStructureIterator implements Iterator<DBMolecule> {
                            + ++currentTick +"/" + ticks;
                 if ( System.currentTimeMillis() - startTime > 5000 ) {
                     s += " (" 
-                      + TimeCalculater.generateTimeRemainEst( startTime, 
+                      + TimeCalculator.generateTimeRemainEst( startTime, 
                                                               currentTick, 
                                                               ticks )
                       + ")"; 

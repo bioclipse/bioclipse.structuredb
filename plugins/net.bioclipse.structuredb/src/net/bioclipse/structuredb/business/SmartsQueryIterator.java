@@ -22,7 +22,7 @@ import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.cdk.exceptions.TimedOutException;
 import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.util.TimeCalculater;
+import net.bioclipse.core.util.TimeCalculator;
 import net.bioclipse.structuredb.domain.DBMolecule;
 
 
@@ -84,7 +84,7 @@ public class SmartsQueryIterator implements Iterator<DBMolecule> {
                 monitor.worked( 1 );
                 monitor.subTask( 
                     current++ + "/" + numOfMolecules + " processed. (" 
-                    + TimeCalculater.generateTimeRemainEst( startTime, 
+                    + TimeCalculator.generateTimeRemainEst( startTime, 
                                                             current, 
                                                             numOfMolecules )
                     + ")" );
