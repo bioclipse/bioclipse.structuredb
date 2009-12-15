@@ -465,12 +465,15 @@ public class StructuredbManager implements IBioclipseManager {
     }
 
     public void deleteAnnotation( String databaseName, 
-                                  Annotation annotation ) {
+                                  Annotation annotation,
+                                  IProgressMonitor monitor ) {
 
+        monitor.beginTask( "Deleting Annotation", IProgressMonitor.UNKNOWN );
         checkDatabaseName(databaseName);
         internalManagers.get( databaseName ).delete( annotation );
         fireAnnotationsChanged();
         updateDatabaseDecorators();
+        monitor.done();
     }
 
     public void deleteStructure( String databaseName, 
