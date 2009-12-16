@@ -16,6 +16,7 @@ import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.StructureDBInstance;
 import net.bioclipse.structuredb.Label;
 import net.bioclipse.structuredb.business.IJavaStructuredbManager;
+import net.bioclipse.structuredb.dialogs.ConfirmDeleteLabelDialog;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -48,9 +49,9 @@ public class RemoveAnnotationAction extends ActionDelegate {
         
         if ( selection instanceof IStructuredSelection ) {
             IStructuredSelection ss = (IStructuredSelection) selection;
-            Iterator i = ss.iterator();
-            while ( i.hasNext() ) {
-                Object o = i.next();
+            
+            if ( ss.size() == 1 ) {
+                Object o = ss.getFirstElement();
                 if (o instanceof Label) {
                     Label m = (Label)o;
                     
@@ -86,6 +87,52 @@ public class RemoveAnnotationAction extends ActionDelegate {
                     }
                 }
             }
+            else {
+                Iterator i = ss.iterator();
+                boolean keepAsking = true;
+                int response = -1;
+                while ( i.hasNext() ) {
+                    Object o = i.next();
+                    if (o instanceof Label) {
+                        Label m = (Label)o;
+                        
+                        net.bioclipse.structuredb.domain.Annotation annotation 
+                            = m.getAnnotation();
+                        
+                        if (keepAsking) {
+                            ConfirmDeleteLabelDialog dialog 
+                                = new ConfirmDeleteLabelDialog( 
+                                          PlatformUI.getWorkbench()
+                                                    .getActiveWorkbenchWindow()
+                                                    .getShell(), 
+                                          annotation.getValue() + "" );
+                            response = dialog.open();
+                            keepAsking = !dialog.getApplyToAll();
+                        }
+                        
+                        switch ( response ) {
+                            case ConfirmDeleteLabelDialog.CANCEL:
+                                return;
+                            case ConfirmDeleteLabelDialog.REMOVE:
+                                deleteWithStructures(m.getParent().getName(), 
+                                                     annotation);
+                                break;
+                            case ConfirmDeleteLabelDialog.KEEP:
+                                manager.deleteAnnotation( 
+                                    m.getParent().getName(), 
+                                    annotation );
+                                break;
+                            default:
+                                throw new IllegalStateException(
+                                    "Don't know how to handle return value: "
+                                    + response + " returned by " 
+                                    + "net.bioclipse.structuredb.dialogs." 
+                                    + "ConfirmDeleteLabelDialog.open()");
+                        }
+                    }
+                }
+            }
+            
         }
     }
     
