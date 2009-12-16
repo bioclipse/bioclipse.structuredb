@@ -32,13 +32,15 @@
                     id="net.bioclipse.structuredb.actions.CreateStructuredbAction"
                     label="Create new local Structure Database..."
                     menubarPath="additions"
-                    tooltip="Open a dialog for creating a new Structure Database"/>
+                    tooltip="Open a dialog for creating a new Structure Database"
+                    icon="icons/new_db_with_mol_16.png"/>
             <action class="net.bioclipse.structuredb.actions.RemoveAllDatabasesAction"
                     enablesFor="1"
                     id="net.bioclipse.structuredb.actions.RemoveAllDatabasesAction"
                     label="Remove all StructureDB databases"
                     menubarPath="additions"
-                    tooltip="Removes all instances of the StructureDB database"/>
+                    tooltip="Removes all instances of the StructureDB database"
+                    icon="icons/delete_obj.gif"/>
         </objectContribution>
         
         <objectContribution adaptable="false"
@@ -49,13 +51,15 @@
                     id="net.bioclipse.structuredb.actions.RemoveDatabaseAction"
                     label="Delete"
                     menubarPath="additions"
-                    tooltip="Deletes the database and everything in it"/>
+                    tooltip="Deletes the database and everything in it"
+                    icon="icons/delete_obj.gif" />
             <action class="net.bioclipse.structuredb.actions.SubStructureSearchAction"
                     enablesFor="1"
                     id="net.bioclipse.structuredb.actions.SubStructureSearchAction"
                     label="Sub Structure Search..."
                     menubarPath="additions"
-                    tooltip="Open a dialog to select molecule to search for sub structures in this database"/>
+                    tooltip="Open a dialog to select molecule to search for sub structures in this database"
+                    icon="icons/substructureSearch.gif"/>
             <action class="net.bioclipse.structuredb.actions.SMARTSSearchAction"
                     enablesFor="1"
                     id="net.bioclipse.structuredb.actions.SMARTSSearchAction"
@@ -67,7 +71,8 @@
                     id="net.bioclipse.structuredb.actions.ImportMoleculesAction"
                     label="Import..."
                     menubarPath="additions"
-                    tooltip="Open a dialog to select molecules to add to this database"/>
+                    tooltip="Open a dialog to select molecules to add to this database"
+                    icon="icons/import_mol.gif"/>
         </objectContribution>
         
         <objectContribution adaptable="false"
@@ -79,7 +84,8 @@
                id="net.bioclipse.structuredb.actions.RemoveLabelAction"
                label="Delete"
                menubarPath="additions"
-               tooltip="Deletes the Label" />
+               tooltip="Deletes the Label"
+               icon="icons/delete_obj.gif" />
            <action
                 class="net.bioclipse.structuredb.actions.RenameAnnotationAction"
                 enablesFor="1"
@@ -138,7 +144,7 @@
         <navigatorContent
               activeByDefault="true"
               contentProvider="net.bioclipse.structuredb.viewer.DatabaseContentProvider"
-              icon="icons/many_molecules.png"
+              icon="icons/label.png"
               id="net.bioclipse.databases.content.label"
               labelProvider="net.bioclipse.structuredb.viewer.DatabaseLabelProvider"
               name="Label">

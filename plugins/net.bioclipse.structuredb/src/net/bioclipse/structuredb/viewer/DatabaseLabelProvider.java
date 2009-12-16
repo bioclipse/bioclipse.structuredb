@@ -42,10 +42,10 @@ public class DatabaseLabelProvider extends LabelProvider
                 new Image( Display.getDefault(), 
                            DatabaseLabelProvider.class.getResourceAsStream( 
                                "/icons/db_with_mol_16.png") ) );
-           put( "molecules",
+           put( "label",
                 new Image( Display.getDefault(),
                            DatabaseLabelProvider.class.getResourceAsStream( 
-                               "/icons/many_molecules.png") ) );
+                               "/icons/label.png") ) );
         }
     };
     
@@ -64,7 +64,7 @@ public class DatabaseLabelProvider extends LabelProvider
             return images.get( "db_mol" );
         }
         if ( obj instanceof Label ) {
-            return images.get( "molecules" );
+            return images.get( "label" );
         }
         return PlatformUI.getWorkbench()
                          .getSharedImages()
