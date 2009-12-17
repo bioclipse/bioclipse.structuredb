@@ -13,11 +13,13 @@ package net.bioclipse.structuredb.business;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.TestMethods;
 import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.domain.BioObject;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.jobs.BioclipseJob;
 import net.bioclipse.jobs.BioclipseJobUpdateHook;
@@ -41,6 +43,22 @@ import org.eclipse.core.runtime.jobs.Job;
  */
 public interface IStructuredbManager extends IBioclipseManager {
 
+    public class ImportStatistics {
+        
+        long importTime;
+        Map<Integer, Exception> failures;
+        int importedMolecules;
+        
+        public ImportStatistics(long importTime,
+                                Map<Integer, Exception> failures,
+                                int importedMolecules) {
+            super();
+            this.importTime = importTime;
+            this.failures = failures;
+            this.importedMolecules = importedMolecules;
+        }
+    }
+    
         /**
          * Creates a local database instance.
          *
@@ -538,4 +556,14 @@ public interface IStructuredbManager extends IBioclipseManager {
         public Collection<Object> 
                getAvailableProperties( String databaseName,
                                        TextAnnotation annotation );
+        
+        /**
+         * @param dbName
+         * @param selectedFiles
+         * @param bioclipseUIJob
+         */
+        public void addMoleculesFromFiles( 
+                        String dbName,
+                        List<IFile> selectedFiles,
+                        BioclipseUIJob<ImportStatistics> uiJob );
 }

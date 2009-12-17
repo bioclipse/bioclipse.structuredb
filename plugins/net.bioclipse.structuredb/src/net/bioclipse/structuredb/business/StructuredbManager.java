@@ -39,6 +39,7 @@ import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.FileStoreKeeper;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.business.IStructureDBChangeListener.DatabaseUpdateType;
+import net.bioclipse.structuredb.business.IStructuredbManager.ImportStatistics;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.Property;
@@ -258,11 +259,14 @@ public class StructuredbManager implements IBioclipseManager {
 
     public void addMoleculesFromSDF( String databaseName, 
                                      IFile file,
+                                     IReturner<ImportStatistics> returner,
                                      IProgressMonitor monitor )
-                throws BioclipseException {
+                            throws BioclipseException {
         
         IStructuredbInstanceManager manager 
             = internalManagers.get(databaseName);
+        
+        Map<Integer, Exception> failures = new HashMap<Integer, Exception>();
         
         checkDatabaseName(databaseName);
         if (monitor == null) {
@@ -291,6 +295,7 @@ public class StructuredbManager implements IBioclipseManager {
         
         Iterator<ICDKMolecule> iterator;
         int moleculesRead = 0;
+        int importedMolecules = 0;
         monitor.subTask("reading " + moleculesRead + "/" + entries);
         try {
             iterator = cdk.createMoleculeIterator( file );
@@ -310,63 +315,69 @@ public class StructuredbManager implements IBioclipseManager {
         long start = System.currentTimeMillis();
         int current = 0;
         while ( iterator.hasNext() && !monitor.isCanceled()) {
-            String timeEstimation = "";
-            
-            if ( entries < 500 || current++ % 50 == 0 ) {
-                if ( System.currentTimeMillis() - start > 5000 ) {
-                    timeEstimation 
-                        = " (" + TimeCalculator
-                                     .generateTimeRemainEst( start, 
-                                                             moleculesRead, 
-                                                             entries )
-                          + " for file: " + file.getName() + ")";
-                }
-                monitor.subTask( "Read: " + moleculesRead + "/" + entries 
-                                 + timeEstimation );
-            }
-
-
-            ICDKMolecule molecule = iterator.next();
-            moleculesRead++;
-            
-            Object title = molecule.getAtomContainer()
-                                   .getProperty(CDKConstants.TITLE);
-
-            DBMolecule s = new DBMolecule( title == null ? ""
-                                                         : title.toString(),
-                                           molecule );
-
-            if ( "".equals( s.getName() ) ) {
-                s.setName( "\"" + s.toSMILES(
-                ) + "\"" );
-            }
-            
-            manager.insertMoleculeInAnnotation( s, label.getId() );
-//            s.addAnnotation( label );
-            
-            Map<?, ?> properties = molecule.getAtomContainer().getProperties();
-            
-            for ( Object o : properties.keySet() ) {
-                String key = o.toString();
+            try {
+                String timeEstimation = "";
                 
-                Property p = manager.retrievePropertyByName( key );
-                if ( p == null ) {
-                    p = new TextProperty(key);
-                    manager.insertTextProperty( (TextProperty) p );
+                if ( entries < 500 || current++ % 50 == 0 ) {
+                    if ( System.currentTimeMillis() - start > 5000 ) {
+                        timeEstimation 
+                            = " (" + TimeCalculator
+                                         .generateTimeRemainEst( start, 
+                                                                 moleculesRead, 
+                                                                 entries )
+                              + " for file: " + file.getName() + ")";
+                    }
+                    monitor.subTask( "Read: " + moleculesRead + "/" + entries 
+                                     + timeEstimation );
                 }
-                if ( !(p instanceof TextProperty) ) {
-                    p = new TextProperty( "Stringified:" + key );
-                    manager.insertTextProperty( (TextProperty) p );
-                }
-                Annotation a = new TextAnnotation( properties.get( key )
-                                                             .toString(), 
-                                                   (TextProperty)p );
-                manager.insertTextAnnotation( (TextAnnotation) a );
-                manager.annotate(s, a);
+    
+    
+                ICDKMolecule molecule = iterator.next();
+                moleculesRead++;
                 
+                Object title = molecule.getAtomContainer()
+                                       .getProperty(CDKConstants.TITLE);
+    
+                DBMolecule s = new DBMolecule( title == null ? ""
+                                                             : title.toString(),
+                                               molecule );
+    
+                if ( "".equals( s.getName() ) ) {
+                    s.setName( "\"" + s.toSMILES(
+                    ) + "\"" );
+                }
+                
+                manager.insertMoleculeInAnnotation( s, label.getId() );
+    //            s.addAnnotation( label );
+                
+                Map<?, ?> properties = molecule.getAtomContainer().getProperties();
+                
+                for ( Object o : properties.keySet() ) {
+                    String key = o.toString();
+                    
+                    Property p = manager.retrievePropertyByName( key );
+                    if ( p == null ) {
+                        p = new TextProperty(key);
+                        manager.insertTextProperty( (TextProperty) p );
+                    }
+                    if ( !(p instanceof TextProperty) ) {
+                        p = new TextProperty( "Stringified:" + key );
+                        manager.insertTextProperty( (TextProperty) p );
+                    }
+                    Annotation a = new TextAnnotation( properties.get( key )
+                                                                 .toString(), 
+                                                       (TextProperty)p );
+                    manager.insertTextAnnotation( (TextAnnotation) a );
+                    manager.annotate(s, a);
+                    
+                }
+                
+                monitor.worked( maintTaskTick );
+                importedMolecules++;
             }
-            
-            monitor.worked( maintTaskTick );
+            catch (Exception e) {
+                failures.put( moleculesRead, e );
+            }
         }
         long end = System.currentTimeMillis();
         logger.debug("addMoleculesFromSDF took " + (end - start) + " ms");
@@ -374,6 +385,12 @@ public class StructuredbManager implements IBioclipseManager {
         monitor.done();
         fireAnnotationsChanged(); 
         updateDatabaseDecorators();
+        
+        
+        returner.completeReturn( new ImportStatistics( 
+                                         System.currentTimeMillis() - start, 
+                                         failures, 
+                                         importedMolecules ) );
     }
 
     public List<String> allDatabaseNames() {
@@ -707,11 +724,15 @@ public class StructuredbManager implements IBioclipseManager {
 
     public void addMoleculesFromFiles( String dbName,
                                        List<?> files,
+                                       IReturner<ImportStatistics> returner,
                                        IProgressMonitor monitor ) {
-        
+        long start = System.currentTimeMillis();
         int ticks = 1000000;
         monitor.beginTask( "Importing from files", ticks );
         List<IFile> fileList = new ArrayList<IFile>();
+        int importedMolecules = 0;
+        Map<Integer, Exception> failures = new HashMap<Integer, Exception>();
+        
         for ( Object o : files ) {
             if ( o instanceof IFile ) {
                 fileList.add( (IFile) o );
@@ -738,12 +759,25 @@ public class StructuredbManager implements IBioclipseManager {
                      id.equals( "net.bioclipse.contenttypes.sdf3d" ) ||
                      id.equals( "net.bioclipse.contenttypes.sdf0d" ) ) { 
                     
-                
+                    class Returner implements IReturner<ImportStatistics> {
+                        ImportStatistics statistics;
+                        public void completeReturn( ImportStatistics object ) {
+                            statistics = object;
+                        }
+                        public void partialReturn( ImportStatistics object ) {}
+                    }
+                        
+                    Returner r = new Returner();
+                    
                     addMoleculesFromSDF( 
-                        dbName, 
-                        f,
-                        new SubProgressMonitor( monitor, 
-                                                ticks/fileList.size() ) );
+                             dbName, 
+                             f,
+                             r,
+                             new SubProgressMonitor( monitor, 
+                                                     ticks/fileList.size() ) );
+                    failures.putAll( r.statistics.failures );
+                    importedMolecules += r.statistics.importedMolecules;
+                    
                 }
                 else {
                     for ( ICDKMolecule m : cdk.loadMolecules( f ) ) {
@@ -755,6 +789,11 @@ public class StructuredbManager implements IBioclipseManager {
                 throw new RuntimeException("Ooops", e);
             }
         }
+        
+        returner.completeReturn( new ImportStatistics(
+                                         System.currentTimeMillis() - start,
+                                         failures, 
+                                         importedMolecules ) );
     }
 
     public Iterator<DBMolecule> allStructuresIterator( String databaseName ) {
