@@ -18,8 +18,11 @@ import net.bioclipse.chemoinformatics.dialogs.PickMoleculesDialog;
 import net.bioclipse.core.domain.IBioObject;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.util.LogUtils;
+import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.structuredb.StructureDBInstance;
 import net.bioclipse.structuredb.business.IJavaStructuredbManager;
+import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.dialogs.ImportCompleteDialog;
 import net.bioclipse.ui.business.IUIManager;
 
 import org.apache.log4j.Logger;
@@ -74,7 +77,24 @@ public class ImportMoleculesAction extends ActionDelegate {
         IJavaStructuredbManager structuredb 
             = net.bioclipse.structuredb.Activator.getDefault()
                                                  .getStructuredbManager();
-        structuredb.addMoleculesFromFiles( dbName, selectedFiles );
+        structuredb.addMoleculesFromFiles( 
+            dbName, 
+            selectedFiles, 
+            new BioclipseUIJob<IStructuredbManager.ImportStatistics>() {
+
+
+            @Override
+            public void runInUI() {
+                ImportCompleteDialog dialog 
+                    = new ImportCompleteDialog( 
+                              PlatformUI.getWorkbench()
+                                        .getActiveWorkbenchWindow()
+                                        .getShell() );
+                dialog.open();
+            }
+            
+        } );
+        
     }
 
     @Override
