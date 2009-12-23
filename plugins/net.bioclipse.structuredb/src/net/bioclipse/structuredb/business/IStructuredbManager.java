@@ -45,9 +45,9 @@ public interface IStructuredbManager extends IBioclipseManager {
 
     public class ImportStatistics {
         
-        long importTime;
-        Map<Integer, Exception> failures;
-        int importedMolecules;
+        public long importTime;
+        public Map<Integer, Exception> failures;
+        public int importedMolecules;
         
         public ImportStatistics(long importTime,
                                 Map<Integer, Exception> failures,
@@ -227,20 +227,23 @@ public interface IStructuredbManager extends IBioclipseManager {
                                            "name. The molecules are " +
                                            "annotated with file_origin" )
         @TestMethods("testAddMoleculesFromSDF")
-        public BioclipseJob<Void> addMoleculesFromSDF( String databaseName, 
-                                                       String filePath ) 
+        public void addMoleculesFromSDF( String databaseName, 
+                                         String filePath ) 
                                   throws BioclipseException;
 
-        /**
-         * @param databaseName
-         * @param file
-         * @param monitor
-         * @throws BioclipseException
-         */
-        public void addMoleculesFromSDF( String databaseName, 
-                                         IFile file, 
-                                         IProgressMonitor monitor ) 
-                    throws BioclipseException;
+//        /**
+//         * @param databaseName
+//         * @param file
+//         * @param monitor
+//         * @throws BioclipseException
+//         */
+//        public BioclipseJob<ImportStatistics> 
+//                   addMoleculesFromSDF( 
+//                       String databaseName, 
+//                       IFile file,
+//                       BioclipseJobUpdateHook<ImportStatistics>,
+//                       IProgressMonitor monitor ) 
+//                    throws BioclipseException;
         
         
         /**
@@ -535,7 +538,7 @@ public interface IStructuredbManager extends IBioclipseManager {
          */
         public void addMoleculesFromSDF( String database1,
                                          String sdfile,
-                                         NullProgressMonitor monitor );
+                                         IProgressMonitor monitor );
     
         @PublishedMethod( methodSummary = "Removes all StructureDB databases" )
         public void deleteAllDatabases(); 
@@ -562,8 +565,9 @@ public interface IStructuredbManager extends IBioclipseManager {
          * @param selectedFiles
          * @param bioclipseUIJob
          */
-        public void addMoleculesFromFiles( 
-                        String dbName,
-                        List<IFile> selectedFiles,
-                        BioclipseUIJob<ImportStatistics> uiJob );
+        public BioclipseJob<ImportStatistics> 
+                   addMoleculesFromFiles( 
+                       String dbName,
+                       List<IFile> selectedFiles,
+                       BioclipseUIJob<ImportStatistics> uiJob );
 }

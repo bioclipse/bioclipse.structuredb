@@ -18,16 +18,19 @@ import net.bioclipse.chemoinformatics.dialogs.PickMoleculesDialog;
 import net.bioclipse.core.domain.IBioObject;
 import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.util.LogUtils;
+import net.bioclipse.core.util.TimeCalculator;
 import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.structuredb.StructureDBInstance;
 import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 import net.bioclipse.structuredb.business.IStructuredbManager;
+import net.bioclipse.structuredb.business.IStructuredbManager.ImportStatistics;
 import net.bioclipse.structuredb.dialogs.ImportCompleteDialog;
 import net.bioclipse.ui.business.IUIManager;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
@@ -67,6 +70,36 @@ public class ImportMoleculesAction extends ActionDelegate {
         }
     }
     
+    public static class ImportMoleculesUIJob 
+                  extends BioclipseUIJob<ImportStatistics> {
+
+        @Override
+        public void runInUI() {
+            ImportStatistics s = getReturnValue();
+            if (s.failures.size() > 0) {
+                ImportCompleteDialog dialog 
+                    = new ImportCompleteDialog( 
+                              PlatformUI.getWorkbench()
+                                        .getActiveWorkbenchWindow()
+                                        .getShell(),
+                              getReturnValue() );
+            
+                dialog.open();
+            }
+            else {
+                MessageDialog.openInformation( 
+                    PlatformUI.getWorkbench()
+                              .getActiveWorkbenchWindow()
+                              .getShell(),
+                    "Import complete",
+                    "Imported " + s.importedMolecules + " molecules " +
+                        " in " + TimeCalculator.millisecsToString( 
+                                                    s.importTime )  
+                    ); 
+            }
+        }
+    }
+    
     /**
      * @param name
      * @param selectedFiles
@@ -80,21 +113,7 @@ public class ImportMoleculesAction extends ActionDelegate {
         structuredb.addMoleculesFromFiles( 
             dbName, 
             selectedFiles, 
-            new BioclipseUIJob<IStructuredbManager.ImportStatistics>() {
-
-
-            @Override
-            public void runInUI() {
-                ImportCompleteDialog dialog 
-                    = new ImportCompleteDialog( 
-                              PlatformUI.getWorkbench()
-                                        .getActiveWorkbenchWindow()
-                                        .getShell() );
-                dialog.open();
-            }
-            
-        } );
-        
+            new ImportMoleculesUIJob() );
     }
 
     @Override

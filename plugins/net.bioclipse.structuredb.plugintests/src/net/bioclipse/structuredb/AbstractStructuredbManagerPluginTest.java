@@ -31,9 +31,11 @@ import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.domain.IMolecule.Property;
 import net.bioclipse.hsqldb.HsqldbUtil;
 import net.bioclipse.jobs.BioclipseJobUpdateHook;
+import net.bioclipse.jobs.IReturner;
 import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 import net.bioclipse.structuredb.business.IStructuredbManager;
 import net.bioclipse.structuredb.business.StructuredbManager;
+import net.bioclipse.structuredb.business.IStructuredbManager.ImportStatistics;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
@@ -263,9 +265,10 @@ public abstract class AbstractStructuredbManagerPluginTest {
 
     @Test
     public void testImportingSDFFile() throws Exception {
-        Job j = structuredb.addMoleculesFromSDF( database1, 
-                                                 sdfile );
-        j.join();
+        structuredb.addMoleculesFromSDF( 
+            database1, 
+            sdfile,
+            new NullProgressMonitor() );
         boolean foundAnnotation = false;
         List<Annotation> l = structuredb.allAnnotations( database1 );
         for ( Annotation annotation : l ) {
@@ -505,9 +508,10 @@ public abstract class AbstractStructuredbManagerPluginTest {
     public void testAddMoleculesFromSDF() throws BioclipseException, 
                                                  FileNotFoundException, 
                                                  InterruptedException {
-        Job j = structuredb.addMoleculesFromSDF( database1,
-                                                 sdfile );
-        j.join();
+        structuredb.addMoleculesFromSDF( 
+            database1,
+            sdfile,
+            new NullProgressMonitor() );
         boolean foundAnnotation = false;
         Annotation annotation = null;
         List<Annotation> l = structuredb.allAnnotations( database1 );

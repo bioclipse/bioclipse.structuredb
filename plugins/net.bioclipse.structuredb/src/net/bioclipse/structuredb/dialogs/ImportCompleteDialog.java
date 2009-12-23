@@ -17,6 +17,7 @@ import java.util.Map;
 
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.core.util.TimeCalculator;
+import net.bioclipse.structuredb.business.IStructuredbManager.ImportStatistics;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -61,9 +62,12 @@ public class ImportCompleteDialog extends TitleAreaDialog {
      * Create the dialog
      * @param parentShell
      */
-    public ImportCompleteDialog(Shell parentShell) {
-
+    public ImportCompleteDialog(Shell parentShell, ImportStatistics s) {
         super( parentShell );
+        this.failures = s.failures;
+        this.numberOfImportedMolecules = s.importedMolecules + "";
+        this.importTime = s.importTime;
+        this.fileName = "?";
     }
 
     /**
@@ -83,9 +87,10 @@ public class ImportCompleteDialog extends TitleAreaDialog {
         fd_importerdLabel.top = new FormAttachment(0, 5);
         fd_importerdLabel.left = new FormAttachment(0, 5);
         importerdLabel.setLayoutData(fd_importerdLabel);
-        importerdLabel.setText( "Importerd " + numberOfImportedMolecules 
-                                + " in " + TimeCalculator.millisecsToString( 
-                                               importTime ) + "." );
+        importerdLabel.setText( "Imported " + numberOfImportedMolecules 
+                                + "molecules in " 
+                                + TimeCalculator.millisecsToString(importTime ) 
+                                + "." );
 
         final Label label = new Label(container, SWT.NONE);
         final FormData fd_label = new FormData();

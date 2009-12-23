@@ -257,10 +257,9 @@ public class StructuredbManager implements IBioclipseManager {
         return "structuredb";
     }
 
-    public void addMoleculesFromSDF( String databaseName, 
-                                     IFile file,
-                                     IReturner<ImportStatistics> returner,
-                                     IProgressMonitor monitor )
+    public ImportStatistics addMoleculesFromSDF( String databaseName, 
+                                                 IFile file,
+                                                 IProgressMonitor monitor )
                             throws BioclipseException {
         
         IStructuredbInstanceManager manager 
@@ -387,10 +386,9 @@ public class StructuredbManager implements IBioclipseManager {
         updateDatabaseDecorators();
         
         
-        returner.completeReturn( new ImportStatistics( 
-                                         System.currentTimeMillis() - start, 
-                                         failures, 
-                                         importedMolecules ) );
+        return new ImportStatistics( System.currentTimeMillis() - start, 
+                                     failures, 
+                                     importedMolecules );
     }
 
     public List<String> allDatabaseNames() {
@@ -767,16 +765,14 @@ public class StructuredbManager implements IBioclipseManager {
                         public void partialReturn( ImportStatistics object ) {}
                     }
                         
-                    Returner r = new Returner();
-                    
-                    addMoleculesFromSDF( 
+                    ImportStatistics s 
+                        = addMoleculesFromSDF( 
                              dbName, 
                              f,
-                             r,
                              new SubProgressMonitor( monitor, 
                                                      ticks/fileList.size() ) );
-                    failures.putAll( r.statistics.failures );
-                    importedMolecules += r.statistics.importedMolecules;
+                    failures.putAll( s.failures );
+                    importedMolecules += s.importedMolecules;
                     
                 }
                 else {
