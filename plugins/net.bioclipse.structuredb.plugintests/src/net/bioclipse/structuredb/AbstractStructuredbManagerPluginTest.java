@@ -583,4 +583,31 @@ public abstract class AbstractStructuredbManagerPluginTest {
         assertTrue(  properties.contains( "p2" ) );
         assertFalse( properties.contains( "p3" ) );
     }
+    
+    @Test
+    public void testBug1798RenameLabel() throws Exception {
+        DBMolecule m = structuredb.createMolecule( database1, 
+                                                   "test", 
+                                                   cdk.fromSMILES( "CCC" ) );
+        TextAnnotation a 
+            = structuredb.createTextAnnotation( database1, 
+                                                "test",
+                                                "annotation" );
+        structuredb.annotate( database1, m, a );
+        a.setValue( "edited" );
+        structuredb.save( database1, a );
+
+        Annotation loaded = annotationByValue( a.getValue() );
+        
+        List<DBMolecule> dBMolecules = loaded.getDBMolecules();
+        assertEquals( 1, dBMolecules.size() );
+        
+        assertEquals( m, dBMolecules.get( 0 ) );
+        
+        a.removeDBMolecule( m );
+        structuredb.save( database1, a );
+        loaded = annotationByValue( a.getValue() );
+        
+        assertEquals( 0, loaded.getDBMolecules().size() );
+    }
 }
