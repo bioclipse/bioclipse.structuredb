@@ -11,8 +11,11 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
+import testData.TestData;
+import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
+import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
 import net.bioclipse.structuredb.persistency.dao.ITextAnnotationDao;
 
 
@@ -63,4 +66,19 @@ public class TextAnnotationDaoTest
         assertTrue( textAnnotationDao.getAllLabels().contains( bobbyTables ) );
     }
     
+    public void testForBug1798() throws Exception {
+        IDBMoleculeDao dBMoleculeDao 
+            = (IDBMoleculeDao) applicationContext.getBean("dBMoleculeDao");
+    
+        DBMolecule dBMolecule = new DBMolecule( "CycloOctan",
+                                                TestData.getCycloOctan() );
+        
+        dBMoleculeDao.insert(dBMolecule);
+        dBMoleculeDao.annotate( dBMolecule, object1 );
+        object1.setValue( "edited" );
+        dao.update(object1);
+        
+        TextAnnotation loaded = dao.getById( object1.getId() );
+        assertEquals( 1, loaded.getDBMolecules().size() );
+    }
 }
