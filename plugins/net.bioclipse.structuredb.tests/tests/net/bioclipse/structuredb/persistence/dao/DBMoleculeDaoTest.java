@@ -133,6 +133,8 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         addAuditInformation(dBMolecule);
         dao.insert( dBMolecule );
         
+        int moleculesBefore = annotation.getDBMolecules().size();
+        
         ((IDBMoleculeDao)dao).annotate( dBMolecule, annotation );
         
         DBMolecule loaded = dao.getById( dBMolecule.getId() );
@@ -142,7 +144,8 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
                     loaded.getAnnotations().contains(annotation) );
         TextAnnotation LoadedAnnotation 
             = textAnnotationDao.getById( annotation.getId() );
-        assertTrue(LoadedAnnotation.getDBMolecules().size() > 1);
+        assertEquals( LoadedAnnotation.getDBMolecules().size(), 
+                      moleculesBefore + 1 );
     }
     
     @Override
