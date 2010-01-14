@@ -570,4 +570,10 @@ public interface IStructuredbManager extends IBioclipseManager {
                        String dbName,
                        List<IFile> selectedFiles,
                        BioclipseUIJob<ImportStatistics> uiJob );
+        
+        /**
+         * @param id
+         * @return
+         */
+        public Annotation getAnnotationById( String databaseName, String id );
 }

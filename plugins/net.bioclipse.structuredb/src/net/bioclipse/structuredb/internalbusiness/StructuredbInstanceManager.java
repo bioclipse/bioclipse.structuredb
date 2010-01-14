@@ -26,6 +26,7 @@ import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 import net.bioclipse.structuredb.domain.TextProperty;
+import net.bioclipse.structuredb.persistency.dao.AnnotationDao;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -226,5 +227,18 @@ public class StructuredbInstanceManager
             results.add( p.getName() );
         }
         return results;
+    }
+
+    public Annotation getAnnotationById( String id ) {
+        Annotation result;
+        result = textAnnotationDao.getById( id );
+        if ( result != null ) {
+            return result;
+        }
+        result = realNumberAnnotationDao.getById( id );
+        if ( result != null ) {
+            return result;
+        }
+        return null;
     }
 }

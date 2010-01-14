@@ -509,6 +509,11 @@ public class StructuredbManager implements IBioclipseManager {
     public void save( String databaseName, Annotation annotation ) {
 
         checkDatabaseName(databaseName);
+        
+        //TODO: Figure out why this call is needed
+        //Without it it seems this annotation suddenly annotates 0 mols, why?
+        annotation.getDBMolecules().size();
+        
         if ( annotation instanceof TextAnnotation ) {
             internalManagers.get( databaseName )
                             .update( (TextAnnotation)annotation );
@@ -832,5 +837,10 @@ public class StructuredbManager implements IBioclipseManager {
         checkDatabaseName( databaseName );
         return internalManagers.get(databaseName)
                                .getAvailableProperties(annotation);
+    }
+    
+    public Annotation getAnnotationById( String databaseName, String id ) {
+        checkDatabaseName( databaseName );
+        return internalManagers.get( databaseName ).getAnnotationById(id);
     }
 }

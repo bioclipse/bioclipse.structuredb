@@ -12,8 +12,10 @@ package net.bioclipse.structuredb.actions;
 
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.Label;
+import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 import net.bioclipse.structuredb.dialogs.RenameLabelDialog;
 import net.bioclipse.structuredb.domain.Annotation;
+import net.bioclipse.structuredb.domain.TextAnnotation;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.IAction;
@@ -54,11 +56,19 @@ public class RenameAnnotationAction extends ActionDelegate {
                                           .getShell(), 
                                           label.getName() );
                         if ( d.open() == d.OK ) {
-                            label.getAnnotation().setValue( d.getName() );
-                            Activator.getDefault()
-                                     .getStructuredbManager()
-                                     .save( label.getParent().getName(), 
-                                            label.getAnnotation() );
+                            
+                            IJavaStructuredbManager structuredb 
+                                = Activator.getDefault()
+                                           .getStructuredbManager();
+                            Annotation annotation = label.getAnnotation();
+                            TextAnnotation loaded 
+                                = (TextAnnotation)
+                                  structuredb.getAnnotationById(
+                                      label.getParent().getName(),
+                                      annotation.getId() );
+                            loaded.setValue( d.getName() );
+                            structuredb.save( label.getParent().getName(), 
+                                              loaded );
                         }
                     }
                 }

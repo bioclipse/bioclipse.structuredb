@@ -216,5 +216,11 @@ public interface IStructuredbInstanceManager {
      */
     public Collection<String> 
            getAvailableProperties( TextAnnotation annotation );
+
+    /**
+     * @param id
+     * @return
+     */
+    public Annotation getAnnotationById( String id );
     
 }

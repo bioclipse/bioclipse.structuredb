@@ -594,6 +594,9 @@ public abstract class AbstractStructuredbManagerPluginTest {
                                                 "test",
                                                 "annotation" );
         structuredb.annotate( database1, m, a );
+        a = (TextAnnotation) 
+            structuredb.getAnnotationById( database1, a.getId() );
+        
         a.setValue( "edited" );
         structuredb.save( database1, a );
 
