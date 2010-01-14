@@ -163,7 +163,6 @@
                     value="net.bioclipse.structuredb.Label">
               </instanceof>
            </enablement>
-           <possibleChildren></possibleChildren>
         </navigatorContent>
     </extension>
     

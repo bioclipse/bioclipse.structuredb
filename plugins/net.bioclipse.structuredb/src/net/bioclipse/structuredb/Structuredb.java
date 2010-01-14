@@ -52,7 +52,7 @@ public class Structuredb implements IStructureDBChangeListener {
         for ( String s : Activator.getDefault()
                         .getStructuredbManager()
                         .allDatabaseNames() ) {
-            StructureDBInstance instance = new StructureDBInstance(s);
+            StructureDBInstance instance = new StructureDBInstance(s, this);
             children.add( instance );
         }
         cachedChildren = children;

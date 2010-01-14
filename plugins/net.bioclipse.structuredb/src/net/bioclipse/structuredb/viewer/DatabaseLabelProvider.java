@@ -23,6 +23,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.progress.PendingUpdateAdapter;
 
 /**
  * @author jonalv
@@ -65,6 +66,9 @@ public class DatabaseLabelProvider extends LabelProvider
         }
         if ( obj instanceof Label ) {
             return images.get( "label" );
+        }
+        if (obj instanceof PendingUpdateAdapter) {
+            return null;
         }
         return PlatformUI.getWorkbench()
                          .getSharedImages()

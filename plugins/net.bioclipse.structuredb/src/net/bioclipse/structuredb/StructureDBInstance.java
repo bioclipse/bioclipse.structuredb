@@ -17,21 +17,29 @@ import net.bioclipse.structuredb.business.IStructureDBChangeListener;
 import net.bioclipse.structuredb.business.IJavaStructuredbManager;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
+import org.eclipse.ui.progress.IElementCollector;
 
 /**
  * @author jonalv
  *
  */
 public class StructureDBInstance implements IStructureDBChangeListener,
-                                            IDatabasesElement {
+                                            IDatabasesElement,
+                                            IDeferredWorkbenchAdapter {
 
     private Logger logger = Logger.getLogger( this.getClass() );
     private String name;
     private List<Label> cachedChildren;
+    private Structuredb parent;
     
-    public StructureDBInstance( String name ) {
+    public StructureDBInstance( String name, Structuredb structuredb ) {
         this.name = name;
         Activator.getDefault().getStructuredbManager().addListener(this);
+        this.parent = structuredb;
     }
     
     public List<Label> getChildren() {
@@ -71,5 +79,35 @@ public class StructureDBInstance implements IStructureDBChangeListener,
 
         return Activator.getDefault().getStructuredbManager()
                                      .numberOfMoleculesInDatabaseInstance(name);
+    }
+
+    public void fetchDeferredChildren( Object object,
+                                       IElementCollector collector,
+                                       IProgressMonitor monitor ) {
+        collector.add( getChildren().toArray(), monitor );
+    }
+
+    public ISchedulingRule getRule( Object object ) {
+        return null;
+    }
+
+    public boolean isContainer() {
+        return true;
+    }
+
+    public Object[] getChildren( Object o ) {
+        return getChildren().toArray();
+    }
+
+    public ImageDescriptor getImageDescriptor( Object object ) {
+        return null;
+    }
+
+    public String getLabel( Object o ) {
+        return name;
+    }
+
+    public Object getParent( Object o ) {
+        return parent;
     }
 }

@@ -16,8 +16,11 @@ import net.bioclipse.structuredb.StructureDBInstance;
 import net.bioclipse.structuredb.Structuredb;
 import net.bioclipse.structuredb.StructuredbFactory;
 
+import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.ui.progress.DeferredTreeContentManager;
+import org.eclipse.ui.progress.PendingUpdateAdapter;
 
 /**
  * @author jonalv
@@ -25,7 +28,13 @@ import org.eclipse.jface.viewers.Viewer;
  */
 public class DatabaseContentProvider implements ITreeContentProvider {
 
+    private DeferredTreeContentManager contentManager;
+    
     public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+        if (v instanceof AbstractTreeViewer) {
+            contentManager = new DeferredTreeContentManager(
+                                     (AbstractTreeViewer) v );
+        }
     }
 
     public void dispose() {
@@ -47,8 +56,7 @@ public class DatabaseContentProvider implements ITreeContentProvider {
         }
         
         if (parentElement instanceof StructureDBInstance) {
-            StructureDBInstance instance = (StructureDBInstance) parentElement;
-            return instance.getChildren().toArray();
+            return contentManager.getChildren( parentElement );
         }
         
         return new Object[0];
@@ -64,7 +72,10 @@ public class DatabaseContentProvider implements ITreeContentProvider {
             return true;
         }
         if ( element instanceof StructureDBInstance ) {
-            return true;
+            return contentManager.mayHaveChildren( element );
+        }
+        if ( element instanceof PendingUpdateAdapter ) {
+            return false;
         }
         if ( element instanceof Label ) {
             return false;
