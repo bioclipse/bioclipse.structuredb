@@ -485,8 +485,7 @@ public class DBMolecule extends BaseObject
      * @see net.bioclipse.cdk.domain.ICDKMolecule#setProperty(java.lang.String, java.lang.Object)
      */
     public void setProperty( String propertyKey, Object value ) {
-
-        throw new UnsupportedOperationException();
+        logger.error( "FIXME: DBMolecule.setProperty not implemented" );
     }
 
     public void setFileStoreKey( String fileStoreKey ) {
