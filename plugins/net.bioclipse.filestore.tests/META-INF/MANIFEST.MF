@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests Plug-in
 Bundle-SymbolicName: net.bioclipse.filestore.tests
-Bundle-Version: 0.1.0
+Bundle-Version: 2.2.0.v20100127
 Bundle-Activator: net.bioclipse.filestore.tests.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.junit4,
