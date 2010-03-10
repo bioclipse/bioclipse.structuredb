@@ -243,13 +243,10 @@
     		<include refid="BaseObject-fields" />, 
             <include refid="DBMolecule-fields" />
         FROM
-            DBMolecule s INNER JOIN BaseObject b ON s.baseObject = b.id,
-            DBMoleculeAnnotation ma,
-            Annotation a 
+            DBMolecule s INNER JOIN BaseObject b ON s.baseObject = b.id
+                         INNER JOIN DBMoleculeAnnotation ma ON s.id = ma.dBMoleculeId
         WHERE
-            s.id = ma.dBMoleculeId AND
-            ma.annotationId = a.id AND
-            a.id = #value#
+            ma.annotationId = #value#
     </select>
 	
 	<select id="DBMolecule.getAnnotations" resultMap="Annotation" parameterClass="String">
