@@ -322,6 +322,9 @@ public class DBMolecule extends BaseObject
 
     @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter) {
+        if ( IAtomContainer.class.equals( adapter ) ) {
+            return getAtomContainer();
+        }
         return super.getAdapter(adapter );
     }
     
