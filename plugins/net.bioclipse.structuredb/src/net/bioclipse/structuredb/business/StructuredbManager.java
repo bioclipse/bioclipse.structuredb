@@ -299,7 +299,7 @@ public class StructuredbManager implements IBioclipseManager {
         try {
             iterator = cdk.createMoleculeIterator( file );
         } 
-        catch ( CoreException e ) {
+        catch ( Exception e ) {
             throw new IllegalArgumentException( "Could not open file:" + 
                                                 file );
         } 
