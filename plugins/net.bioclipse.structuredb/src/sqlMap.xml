@@ -45,6 +45,18 @@
 		</discriminator>
 	</resultMap>
 	
+	<resultMap class="Annotation" 
+	           id="Annotation-N" >
+	    <result property="id"         column="idA"                                     />
+        <result property="created"    column="createdA"                                />
+        <result property="edited"     column="editedA"                                 />
+		<result property="DBMolecules" column="idA" select="Annotation.getDBMolecules"  />
+		<discriminator column="sortOf" javaType="String">
+			<subMap value="Text"       resultMap="TextAnnotation-N"/>
+			<subMap value="RealNumber" resultMap="RealNumberAnnotation-N"/>
+		</discriminator>
+	</resultMap>
+	
 	<resultMap class="DBMolecule" id="DBMolecule" extends="BaseObject">
 		<result property="annotations"          column="id" select="DBMolecule.getAnnotations" />
 		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
@@ -53,6 +65,19 @@
 		<result property="name"                 column="name"                           />
 	</resultMap>
 
+	<resultMap class="DBMolecule" 
+	           id="DBMolecule-N"
+	           groupBy="DBMolecule.id">
+	    <result property="id"         column="idM"                                              />
+        <result property="created"    column="createdM"                                         />
+        <result property="edited"     column="editedM"                                          />
+		<result property="annotations"          column="id" resultMap="Annotation-N"            />
+		<result property="persistedFingerprint" column="persistedFingerprint" jdbcType="binary" />
+		<result property="SMILES"               column="SMILES"                                 />
+		<result property="fileStoreKey"         column="fileStoreKey"                           />
+		<result property="name"                 column="name"                                   />
+	</resultMap>
+	
 	<resultMap class="TextAnnotation" id="TextAnnotation" extends="Annotation">
 		<result property="persistValue" column="value" />
 		<result property="property" column="property" select="TextProperty.getById" /> 
@@ -63,6 +88,15 @@
 		<result property="property" column="property" select="RealNumberProperty.getById" />
 	</resultMap>
 	
+	<resultMap class="TextAnnotation" id="TextAnnotation-N" extends="Annotation-N">
+		<result property="persistValue" column="value" />
+		<result property="property" column="property" select="TextProperty.getById" /> 
+	</resultMap>
+	
+	<resultMap class="RealNumberAnnotation" id="RealNumberAnnotation-N" extends="Annotation-N">
+		<result property="value" column="value" />
+		<result property="property" column="property" select="RealNumberProperty.getById" />
+	</resultMap>
 	<resultMap class="TextProperty" id="TextProperty" extends="BaseObject">
 		<result property="name" column="name" />
 	</resultMap>
@@ -238,13 +272,28 @@
             s.name = #value#
     </select>
     
-    <select id="DBMolecule.atIndexInLabel" resultMap="DBMolecule" parameterClass="String">
+    <select id="DBMolecule.atIndexInLabel" 
+            resultMap="DBMolecule-N" 
+            parameterClass="String">
     	SELECT
-    		<include refid="BaseObject-fields" />, 
-            <include refid="DBMolecule-fields" />
+       		bM.id         AS idM,
+	        bM.created    AS createdM,
+		    bM.edited     AS editedM,
+       		bA.id         AS idA,
+	        bA.created    AS createdA,
+		    bA.edited     AS editedA,
+            <include refid="DBMolecule-fields" />,
+			<include refid="Annotation-fields" />,
+			<include refid="TextAnnotation-fields" />,
+			<include refid="RealNumberAnnotation-fields" />
+	
         FROM
-            DBMolecule s INNER JOIN BaseObject b ON s.baseObject = b.id
+            DBMolecule s INNER JOIN BaseObject bM ON s.baseObject = bM.id
                          INNER JOIN DBMoleculeAnnotation ma ON s.id = ma.dBMoleculeId
+                         INNER JOIN Annotation a ON a.id = ma.annotationId
+                         INNER JOIN BaseObject bA ON a.baseObject = bA.id
+                         LEFT OUTER JOIN TextAnnotation t ON t.annotation = a.id
+                         LEFT OUTER JOIN RealNumberAnnotation r ON r.annotation = a.id
         WHERE
             ma.annotationId = #value#
     </select>
