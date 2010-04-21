@@ -1,4 +1,4 @@
-/*******************************************************************************
+/* *****************************************************************************
  * Copyright (c) 2009  Arvid Berg <goglepox@users.sourceforge.net>
  *
  * All rights reserved. This program and the accompanying materials

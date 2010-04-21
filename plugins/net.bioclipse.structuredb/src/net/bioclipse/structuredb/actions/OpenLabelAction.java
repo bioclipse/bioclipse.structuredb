@@ -1,4 +1,4 @@
-/*******************************************************************************
+/* *****************************************************************************
  * Copyright (c) 2007 - 2009  Jonathan Alvarsson <jonalv@users.sourceforge.net>
  * Copyright (c) 2009  Arvid Berg <goglepox@users.sourceforge.net>
  *
