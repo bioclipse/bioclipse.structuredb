@@ -43,7 +43,6 @@ Require-Bundle: org.eclipse.ui,
  net.bioclipse.filestore,
  net.bioclipse.inchi,
  org.eclipse.jface,
- net.sf.jniinchi.standard;bundle-version="0.7.0",
  org.openscience.cdk.sinchi;bundle-version="1.3.5"
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
@@ -61,6 +60,7 @@ Import-Package: net.sf.cglib.beans,
  net.sf.cglib.core,
  net.sf.cglib.proxy,
  net.sf.cglib.reflect,
+ net.sf.jniinchi,
  org.apache.commons.logging;version="1.0.4",
  org.apache.log4j
 Bundle-Vendor: The Bioclipse Team
