@@ -16,7 +16,7 @@ import java.util.List;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
 import net.bioclipse.chemoinformatics.util.ChemoinformaticUtils;
-import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.api.BioclipseException;
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.structuredb.Activator;
 import net.bioclipse.structuredb.StructureDBInstance;

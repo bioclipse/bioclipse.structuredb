@@ -17,7 +17,7 @@ import java.util.List;
 
 import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
-import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.api.BioclipseException;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;

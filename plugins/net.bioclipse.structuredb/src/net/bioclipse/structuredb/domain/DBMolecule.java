@@ -22,8 +22,8 @@ import java.util.UUID;
 
 import net.bioclipse.cdk.business.Activator;
 import net.bioclipse.cdk.domain.ICDKMolecule;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.RecordableList;
+import net.bioclipse.core.api.BioclipseException;
+import net.bioclipse.core.api.domain.RecordableList;
 import net.bioclipse.inchi.InChI;
 import net.bioclipse.structuredb.FileStoreKeeper;
 import net.sf.jniinchi.INCHI_RET;
@@ -103,7 +103,7 @@ public class DBMolecule extends BaseObject
         this.name = name;
         try {
             fingerPrint = cdkMolecule.getFingerprint(
-                net.bioclipse.core.domain.IMolecule
+                net.bioclipse.core.api.domain.IMolecule
                     .Property.USE_CACHED_OR_CALCULATED
             );
         }
@@ -351,20 +351,20 @@ public class DBMolecule extends BaseObject
         annotations.remove( annotation );
     }
 
-    public List<net.bioclipse.core.domain.IMolecule> getConformers() {
-        List<net.bioclipse.core.domain.IMolecule> result 
-            = new RecordableList<net.bioclipse.core.domain.IMolecule>();
+    public List<net.bioclipse.core.api.domain.IMolecule> getConformers() {
+        List<net.bioclipse.core.api.domain.IMolecule> result 
+            = new RecordableList<net.bioclipse.core.api.domain.IMolecule>();
         result.add( this );
         return result;
     }
 
-    public BitSet getFingerprint(net.bioclipse.core.domain.IMolecule.Property 
+    public BitSet getFingerprint(net.bioclipse.core.api.domain.IMolecule.Property 
             urgency) 
                   throws BioclipseException {
-        if (urgency == net.bioclipse.core.domain.IMolecule.Property.USE_CACHED)
+        if (urgency == net.bioclipse.core.api.domain.IMolecule.Property.USE_CACHED)
             return fingerPrint;
         
-        if (urgency == net.bioclipse.core.domain.IMolecule.Property.USE_CALCULATED) {
+        if (urgency == net.bioclipse.core.api.domain.IMolecule.Property.USE_CALCULATED) {
             Fingerprinter fp = new Fingerprinter();
             try {
                 fingerPrint = fp.getFingerprint( getAtomContainer() );
@@ -387,7 +387,7 @@ public class DBMolecule extends BaseObject
         this.name = name;
     }
 
-    public String getInChI( net.bioclipse.core.domain.IMolecule.Property 
+    public String getInChI( net.bioclipse.core.api.domain.IMolecule.Property 
                             urgency  ) throws BioclipseException {
         switch ( urgency ) {
             case USE_CACHED:
@@ -440,7 +440,7 @@ public class DBMolecule extends BaseObject
         }
     }
 
-    public String getInChIKey( net.bioclipse.core.domain.IMolecule.Property 
+    public String getInChIKey( net.bioclipse.core.api.domain.IMolecule.Property 
                                urgency ) throws BioclipseException {
         switch ( urgency ) {
             case USE_CACHED:

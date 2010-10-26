@@ -14,8 +14,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.IBioObject;
+import net.bioclipse.core.api.BioclipseException;
+import net.bioclipse.core.api.domain.IBioObject;
+import net.bioclipse.core.api.managers.IBioclipseUIJob;
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.structuredb.StructureDBInstance;
@@ -81,7 +82,7 @@ public class SMARTSSearchAction extends ActionDelegate {
                                                  .getStructuredbManager();
         try {
             
-            BioclipseUIJob<List<?>> uiJob = new BioclipseUIJob<List<?>>() {
+            IBioclipseUIJob<List<?>> uiJob = new BioclipseUIJob<List<?>>() {
                 @Override
                 public void runInUI() {
                     if ( getReturnValue().isEmpty() ) {

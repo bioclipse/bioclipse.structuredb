@@ -16,16 +16,17 @@ import java.util.List;
 import java.util.Map;
 
 import net.bioclipse.cdk.domain.ICDKMolecule;
-import net.bioclipse.core.PublishedMethod;
-import net.bioclipse.core.TestMethods;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.BioObject;
-import net.bioclipse.core.domain.IMolecule;
-import net.bioclipse.jobs.BioclipseJob;
+import net.bioclipse.core.api.BioclipseException;
+import net.bioclipse.core.api.domain.BioObject;
+import net.bioclipse.core.api.domain.IMolecule;
+import net.bioclipse.core.api.jobs.IBioclipseJob;
+import net.bioclipse.core.api.jobs.IReturner;
+import net.bioclipse.core.api.managers.IBioclipseManager;
+import net.bioclipse.core.api.managers.IBioclipseUIJob;
+import net.bioclipse.core.api.managers.PublishedMethod;
+import net.bioclipse.core.api.managers.TestMethods;
 import net.bioclipse.jobs.BioclipseJobUpdateHook;
-import net.bioclipse.jobs.BioclipseUIJob;
-import net.bioclipse.jobs.IReturner;
-import net.bioclipse.managers.business.IBioclipseManager;
+import net.bioclipse.structuredb.business.IStructuredbManager.ImportStatistics;
 import net.bioclipse.structuredb.domain.Annotation;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
@@ -95,7 +96,7 @@ public interface IStructuredbManager extends IBioclipseManager {
          * @param databaseName name of the database instance to be deleted
          */
         @TestMethods("testRemovingDatabaseInstance")
-        public BioclipseJob<Void> deleteDatabase( String databaseName, 
+        public IBioclipseJob<Void> deleteDatabase( String databaseName, 
                                                   BioclipseJobUpdateHook<Void> h );
         
         /**
@@ -499,7 +500,7 @@ public interface IStructuredbManager extends IBioclipseManager {
          */
         public void smartsQuery( String dbName,
                                  String smarts,
-                                 BioclipseUIJob<List<?>> uiJob );
+                                 IBioclipseUIJob<List<?>> uiJob );
 
         /**
          * @param dbName
@@ -508,7 +509,7 @@ public interface IStructuredbManager extends IBioclipseManager {
          */
         public void subStructureSearch( String dbName,
                                         IMolecule molecule,
-                                        BioclipseUIJob<List<?>> uijob );
+                                        IBioclipseUIJob<List<?>> uijob );
         
         public void deleteDatabase(String databaseName, IProgressMonitor monitor);
      
@@ -565,11 +566,11 @@ public interface IStructuredbManager extends IBioclipseManager {
          * @param selectedFiles
          * @param bioclipseUIJob
          */
-        public BioclipseJob<ImportStatistics> 
+        public IBioclipseJob<ImportStatistics> 
                    addMoleculesFromFiles( 
                        String dbName,
                        List<IFile> selectedFiles,
-                       BioclipseUIJob<ImportStatistics> uiJob );
+                       IBioclipseUIJob<ImportStatistics> uiJob );
         
         /**
          * @param id

@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import net.bioclipse.core.domain.RecordableList;
+import net.bioclipse.core.api.domain.RecordableList;
 import net.bioclipse.core.util.TimeCalculator;
 import net.bioclipse.structuredb.FileStoreKeeper;
 import net.bioclipse.structuredb.domain.Annotation;

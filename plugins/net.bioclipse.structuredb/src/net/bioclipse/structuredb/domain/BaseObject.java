@@ -24,7 +24,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.PlatformUI;
 
-import net.bioclipse.core.domain.IBioObject;
+import net.bioclipse.core.api.domain.IBioObject;
 
 /**
  * A baseclass for all domain objects. 

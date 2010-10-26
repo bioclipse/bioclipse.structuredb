@@ -15,9 +15,10 @@ import java.util.List;
 
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.chemoinformatics.dialogs.PickMoleculeDialog;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.IBioObject;
-import net.bioclipse.core.domain.IMolecule;
+import net.bioclipse.core.api.BioclipseException;
+import net.bioclipse.core.api.domain.IBioObject;
+import net.bioclipse.core.api.domain.IMolecule;
+import net.bioclipse.core.api.managers.IBioclipseUIJob;
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.jobs.BioclipseUIJob;
 import net.bioclipse.structuredb.StructureDBInstance;
@@ -84,7 +85,7 @@ public class SubStructureSearchAction extends ActionDelegate {
                                                   .getJavaCDKManager();
         try {
             IMolecule molecule = cdk.loadMolecule( selectedFile );
-            BioclipseUIJob<List<?>> uijob = new BioclipseUIJob<List<?>>() {
+            IBioclipseUIJob<List<?>> uijob = new BioclipseUIJob<List<?>>() {
 
                 @Override
                 public void runInUI() {

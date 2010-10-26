@@ -15,7 +15,7 @@ import java.util.Iterator;
 import net.bioclipse.cdk.business.CDKManager;
 import net.bioclipse.cdk.business.ICDKManager;
 import net.bioclipse.cdk.domain.ICDKMolecule;
-import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.api.BioclipseException;
 import net.bioclipse.core.util.TimeCalculator;
 import net.bioclipse.structuredb.domain.DBMolecule;
 

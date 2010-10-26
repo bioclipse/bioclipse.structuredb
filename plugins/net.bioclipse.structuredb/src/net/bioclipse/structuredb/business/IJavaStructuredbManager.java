@@ -10,9 +10,9 @@
  ******************************************************************************/
 package net.bioclipse.structuredb.business;
 
-import net.bioclipse.core.PublishedClass;
-import net.bioclipse.core.TestClasses;
-import net.bioclipse.managers.business.IBioclipseManager;
+import net.bioclipse.core.api.managers.IBioclipseManager;
+import net.bioclipse.core.api.managers.PublishedClass;
+import net.bioclipse.core.api.managers.TestClasses;
 import net.bioclipse.structuredb.domain.TextAnnotation;
 
 /**
