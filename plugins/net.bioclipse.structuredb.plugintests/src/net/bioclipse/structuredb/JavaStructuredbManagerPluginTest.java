@@ -12,7 +12,7 @@ package net.bioclipse.structuredb;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import net.bioclipse.jobs.BioclipseJobUpdateHook;
+import net.bioclipse.core.api.jobs.BioclipseJobUpdateHook;
 
 import org.eclipse.core.runtime.jobs.Job;
 import org.junit.After;
