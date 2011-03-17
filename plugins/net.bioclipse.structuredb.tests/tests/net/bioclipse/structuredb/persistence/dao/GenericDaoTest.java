@@ -19,6 +19,7 @@ import net.bioclipse.structuredb.persistence.HsqldbTestServerManager;
 import net.bioclipse.structuredb.persistency.dao.IGenericDao;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,8 +113,8 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
      */
     public void testGetAll() {
         List<DomainType> objects = dao.getAll();
-        assertTrue( objects.contains(object1) );
-        assertTrue( objects.contains(object2) );
+        Assert.assertTrue( objects.contains(object1) );
+        Assert.assertTrue( objects.contains(object2) );
     }
     
     /**
@@ -122,16 +123,16 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
      */
     public void testGetById() {
         DomainType loadedObject1 = dao.getById( object1.getId() );
-        assertNotNull( "The lodaded object should not be null", 
-                       loadedObject1 );
-        assertEquals( "The loaded object should be equal to the origianl " +
+        Assert.assertNotNull( "The lodaded object should not be null", 
+                              loadedObject1 );
+        Assert.assertEquals( "The loaded object should be equal to the origianl " +
         		      "object", 
         		      object1, 
         		      loadedObject1 );
-        assertTrue( "The loaded object should have values equal to " 
+        Assert.assertTrue( "The loaded object should have values equal to " 
                         + "the original object", 
         		    object1.hasValuesEqualTo(loadedObject1) );
-        assertNotSame( "The loaded object and the original object should "
+        Assert.assertNotSame( "The loaded object and the original object should "
                            + "not be the same",  
                        object1, 
                        loadedObject1 );
@@ -158,16 +159,16 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
         
         dao.delete( object1.getId() );
         DomainType loadedObject1 = dao.getById( object1.getId() );
-        assertNull(loadedObject1);
+        Assert.assertNull(loadedObject1);
         
         int numberInBaseTableAfter = jdbcTemplate.queryForInt(sqlBaseObject);
-        assertEquals( "The entry should be deleted", 
+        Assert.assertEquals( "The entry should be deleted", 
                       numberInBaseTableBefore - 1, 
                       numberInBaseTableAfter );
         
         int numberInDomainTableAfter = jdbcTemplate
                                        .queryForInt(sqlDomainObject);
-        assertEquals( "The entry should be deleted", 
+        Assert.assertEquals( "The entry should be deleted", 
                       numberInDomainTableBefore - 1, 
                       numberInDomainTableAfter );
     }
@@ -180,7 +181,7 @@ public abstract class GenericDaoTest<DomainType extends BaseObject>
         Timestamp before = loadedObject1.getEdited();
         dao.update(loadedObject1);
         loadedObject1 = dao.getById( object1.getId() );
-        assertFalse( "timestamp should have changed", 
+        Assert.assertFalse( "timestamp should have changed", 
                      before.equals( loadedObject1.getEdited() ) );
     }
     

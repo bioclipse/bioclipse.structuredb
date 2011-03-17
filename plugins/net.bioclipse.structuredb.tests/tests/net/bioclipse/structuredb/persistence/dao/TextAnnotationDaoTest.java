@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
+import org.junit.Assert;
+
 import testData.TestData;
 import net.bioclipse.structuredb.domain.DBMolecule;
 import net.bioclipse.structuredb.domain.TextAnnotation;
@@ -35,13 +37,13 @@ public class TextAnnotationDaoTest
         object1.setProperty( property );
         dao.update( object1 );
         TextAnnotation loaded = dao.getById( object1.getId() );
-        assertTrue( object1.hasValuesEqualTo(loaded) );
+        Assert.assertTrue( object1.hasValuesEqualTo(loaded) );
         
         TextAnnotation newAnnotation = new TextAnnotation();
         newAnnotation.setProperty( property );
         dao.insert( newAnnotation );
         loaded = dao.getById( newAnnotation.getId() );
-        assertTrue( newAnnotation.hasValuesEqualTo( loaded ) );
+        Assert.assertTrue( newAnnotation.hasValuesEqualTo( loaded ) );
     }
     
     public void testGetAllLabels() {
@@ -53,8 +55,8 @@ public class TextAnnotationDaoTest
         dao.insert( b );
         
         ITextAnnotationDao textAnnotationDao = (ITextAnnotationDao)dao;
-        assertTrue( textAnnotationDao.getAllLabels().contains( a ) );
-        assertFalse( textAnnotationDao.getAllLabels().contains( b ) );
+        Assert.assertTrue( textAnnotationDao.getAllLabels().contains( a ) );
+        Assert.assertFalse( textAnnotationDao.getAllLabels().contains( b ) );
     }
     
     public void testPersistingBobbyTables() {
@@ -63,7 +65,7 @@ public class TextAnnotationDaoTest
                                   new TextProperty("label") );
         dao.insert( bobbyTables );
         ITextAnnotationDao textAnnotationDao = (ITextAnnotationDao)dao;
-        assertTrue( textAnnotationDao.getAllLabels().contains( bobbyTables ) );
+        Assert.assertTrue( textAnnotationDao.getAllLabels().contains( bobbyTables ) );
     }
     
     public void testForBug1798() throws Exception {
@@ -79,6 +81,6 @@ public class TextAnnotationDaoTest
         dao.update(object1);
         
         TextAnnotation loaded = dao.getById( object1.getId() );
-        assertEquals( 1, loaded.getDBMolecules().size() );
+        Assert.assertEquals( 1, loaded.getDBMolecules().size() );
     }
 }

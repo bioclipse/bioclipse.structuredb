@@ -7,7 +7,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  net.bioclipse.structuredb,
  net.bioclipse.hsqldb,
- org.junit4,
  slf4j.api,
  net.bioclipse.core,
  net.bioclipse.cdk.business,
@@ -28,5 +27,8 @@ Bundle-ClassPath: .,
  libs/spring-mock.jar,
  libs/slf4j-simple-1.5.0.jar
 Import-Package: org.apache.commons.logging;version="1.0.4",
- org.apache.log4j
+ org.apache.log4j,
+ org.junit;version="4.8.1",
+ org.junit.runner;version="4.8.1",
+ org.junit.runners;version="4.8.1"
 Export-Package: net.bioclipse.structuredb

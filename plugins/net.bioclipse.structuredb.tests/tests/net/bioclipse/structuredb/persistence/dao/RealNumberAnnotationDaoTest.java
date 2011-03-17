@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
+import org.junit.Assert;
+
 import net.bioclipse.structuredb.domain.RealNumberAnnotation;
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextAnnotation;
@@ -32,12 +34,12 @@ public class RealNumberAnnotationDaoTest
         object1.setProperty( property );
         dao.update( object1 );
         RealNumberAnnotation loaded = dao.getById( object1.getId() );
-        assertTrue( object1.hasValuesEqualTo(loaded) );
+        Assert.assertTrue( object1.hasValuesEqualTo(loaded) );
         
         RealNumberAnnotation newAnnotation = new RealNumberAnnotation();
         newAnnotation.setProperty( property );
         dao.insert( newAnnotation );
         loaded = dao.getById( newAnnotation.getId() );
-        assertTrue( newAnnotation.hasValuesEqualTo( loaded ) );
+        Assert.assertTrue( newAnnotation.hasValuesEqualTo( loaded ) );
     }
 }

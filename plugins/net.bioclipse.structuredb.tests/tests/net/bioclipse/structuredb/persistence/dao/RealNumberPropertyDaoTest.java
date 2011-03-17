@@ -10,6 +10,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
+import org.junit.Assert;
+
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.persistency.dao.IRealNumberPropertyDao;
 
@@ -40,6 +42,6 @@ public class RealNumberPropertyDaoTest
         dao.insert( property );
         RealNumberProperty loaded 
             = realNumberPropertyDao.getByName( property.getName() );
-        assertTrue( property.hasValuesEqualTo( loaded ) );
+        Assert.assertTrue( property.hasValuesEqualTo( loaded ) );
     }
 }

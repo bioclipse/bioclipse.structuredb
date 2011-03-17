@@ -27,6 +27,7 @@ import net.bioclipse.structuredb.persistency.dao.IAnnotationDao;
 import net.bioclipse.structuredb.persistency.dao.IDBMoleculeDao;
 import net.bioclipse.structuredb.persistency.dao.ITextAnnotationDao;
 
+import org.junit.Assert;
 import org.openscience.cdk.exception.CDKException;
 
 import testData.TestData;
@@ -88,11 +89,11 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         dao.insert(dBMolecule);
         
         DBMolecule loaded = dao.getById( dBMolecule.getId() );
-        assertNotNull("The lodaded object should not be null", loaded);
-        assertNotSame(dBMolecule, loaded);
-        assertTrue( dBMolecule.hasValuesEqualTo(loaded) );
-        assertTrue( "Should contain the annotation",
-                    loaded.getAnnotations().contains(annotation) );
+        Assert.assertNotNull("The lodaded object should not be null", loaded);
+        Assert.assertNotSame(dBMolecule, loaded);
+        Assert.assertTrue( dBMolecule.hasValuesEqualTo(loaded) );
+        Assert.assertTrue( "Should contain the annotation",
+                           loaded.getAnnotations().contains(annotation) );
     }
 
     public void testPersistDBMoleculeWithAnnotationId() {
@@ -112,11 +113,11 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
                                                     annotation.getId() );
         
         DBMolecule loaded = dao.getById( dBMolecule.getId() );
-        assertNotNull("The lodaded object should not be null", loaded);
-        assertNotSame(dBMolecule, loaded);
-        assertTrue( dBMolecule.hasValuesEqualTo(loaded) );
-        assertTrue( "Should contain the annotation", 
-                    loaded.getAnnotations().contains(annotation) );
+        Assert.assertNotNull("The lodaded object should not be null", loaded);
+        Assert.assertNotSame(dBMolecule, loaded);
+        Assert.assertTrue( dBMolecule.hasValuesEqualTo(loaded) );
+        Assert.assertTrue( "Should contain the annotation", 
+                           loaded.getAnnotations().contains(annotation) );
     }
     
     public void testAnnotate() {
@@ -138,14 +139,14 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         ((IDBMoleculeDao)dao).annotate( dBMolecule, annotation );
         
         DBMolecule loaded = dao.getById( dBMolecule.getId() );
-        assertNotNull("The lodaded object should not be null", loaded);
-        assertNotSame(dBMolecule, loaded);
-        assertTrue( "Should contain the annotation", 
-                    loaded.getAnnotations().contains(annotation) );
+        Assert.assertNotNull("The lodaded object should not be null", loaded);
+        Assert.assertNotSame(dBMolecule, loaded);
+        Assert.assertTrue( "Should contain the annotation", 
+                           loaded.getAnnotations().contains(annotation) );
         TextAnnotation LoadedAnnotation 
             = textAnnotationDao.getById( annotation.getId() );
-        assertEquals( LoadedAnnotation.getDBMolecules().size(), 
-                      moleculesBefore + 1 );
+        Assert.assertEquals( LoadedAnnotation.getDBMolecules().size(), 
+                             moleculesBefore + 1 );
     }
     
     @Override
@@ -169,12 +170,12 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         dBMolecule.setName("edited");
         dao.update(dBMolecule);
         DBMolecule updated = dao.getById( dBMolecule.getId() );
-        assertTrue( dBMolecule.hasValuesEqualTo(updated) );
+        Assert.assertTrue( dBMolecule.hasValuesEqualTo(updated) );
     }
     
     public void testGetByName() throws CDKException {
 
-        assertTrue( dao.getAll().containsAll(dBMolecules) );
+    	Assert.assertTrue( dao.getAll().containsAll(dBMolecules) );
         
         DBMolecule other = new DBMolecule( "CycloPropan", 
                                            TestData.getCycloPropane() );
@@ -183,10 +184,10 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         
         List<DBMolecule> saved = ( (IDBMoleculeDao)dao ).getByName(
                                   molecule1.getName() );
-        assertTrue(  saved.contains(molecule1) );
-        assertFalse( saved.contains(other)     );
-        assertTrue( saved.size() == 1);
-        assertTrue( saved.get(0).getFingerPrint()
+        Assert.assertTrue(  saved.contains(molecule1) );
+        Assert.assertFalse( saved.contains(other)     );
+        Assert.assertTrue( saved.size() == 1);
+        Assert.assertTrue( saved.get(0).getFingerPrint()
                                 .equals( molecule1.getFingerPrint() ) );
     }
     
@@ -199,17 +200,17 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         };
         Iterator<DBMolecule> iterator 
             = ( (IDBMoleculeDao)dao ).allStructuresIterator();
-        assertTrue( iterator.hasNext() );
+        Assert.assertTrue( iterator.hasNext() );
         int numberof = 0;
         while( iterator.hasNext() ) {
-            assertTrue( dBMolecules.contains( iterator.next() ) );
+        	Assert.assertTrue( dBMolecules.contains( iterator.next() ) );
             numberof++;
         }
-        assertEquals( 2, numberof );
+        Assert.assertEquals( 2, numberof );
     }
     
     public void testNumberOfStructures() {
-        assertEquals( 2, ((IDBMoleculeDao)dao).numberOfStructures() );
+    	Assert.assertEquals( 2, ((IDBMoleculeDao)dao).numberOfStructures() );
     }
     
     public void testFingerPrintSearch() {
@@ -227,8 +228,8 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
                 foundObject2 = true;
             }
         }
-        assertTrue(  foundObject1 );
-        assertFalse( foundObject2 );
+        Assert.assertTrue(  foundObject1 );
+        Assert.assertFalse( foundObject2 );
     }
     
     public void testGetAnnotations() {
@@ -243,8 +244,8 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         molecule1.addAnnotation( annotation );
         dao.update( molecule1 );
         DBMolecule loaded = dao.getById( molecule1.getId() );
-        assertEquals( 1, loaded.getAnnotations().size() );
-        assertEquals( annotation, molecule1.getAnnotations().get( 0 ) );
+        Assert.assertEquals( 1, loaded.getAnnotations().size() );
+        Assert.assertEquals( annotation, molecule1.getAnnotations().get( 0 ) );
     }
     
     public void testGetMoleculeAtIndexInParamater() throws BioclipseException {
@@ -267,7 +268,7 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         }
 
         for ( int i = 0 ; i < SMILES.size() ; i++ ) {
-            assertTrue( 
+        	Assert.assertTrue( 
                 SMILES.contains( 
                     dbMoleculeDao.getMoleculeAtIndexInLabel( annotation, i )
                                  .toSMILES() ) );
@@ -282,9 +283,9 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
               applicationContext.getBean("textAnnotationDao");
         textAnnotationDao.insert( annotation );
         IDBMoleculeDao dbMoleculeDao = (IDBMoleculeDao)dao;
-        assertEquals( 0, 
-                      dbMoleculeDao.getNumberOfMoleculesWithAnnotation( 
-                          annotation ) );
+        Assert.assertEquals( 0, 
+                             dbMoleculeDao.getNumberOfMoleculesWithAnnotation( 
+                                 annotation ) );
         object1.addAnnotation( annotation );
         object2.addAnnotation( annotation );
         
@@ -294,12 +295,12 @@ public class DBMoleculeDaoTest extends GenericDaoTest<DBMolecule> {
         
         manager.update( annotation );
         
-        assertEquals( 2, 
-                      textAnnotationDao.getById( annotation.getId() )
-                                       .getDBMolecules().size() );
+        Assert.assertEquals( 2, 
+                             textAnnotationDao.getById( annotation.getId() )
+                                              .getDBMolecules().size() );
         
-        assertEquals( 2, 
-                      dbMoleculeDao.getNumberOfMoleculesWithAnnotation( 
-                          annotation ) );
+        Assert.assertEquals( 2, 
+                             dbMoleculeDao.getNumberOfMoleculesWithAnnotation( 
+                                  annotation ) );
     }
 }

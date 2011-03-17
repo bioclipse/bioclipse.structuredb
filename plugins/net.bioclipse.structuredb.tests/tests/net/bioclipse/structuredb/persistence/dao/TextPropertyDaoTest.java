@@ -11,10 +11,12 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
+import org.junit.Assert;
+
 import net.bioclipse.structuredb.domain.RealNumberProperty;
 import net.bioclipse.structuredb.domain.TextProperty;
 import net.bioclipse.structuredb.persistency.dao.IRealNumberPropertyDao;
-import net.bioclipse.structuredb.persistency.dao.ITextPropertyDao;
+import net.bioclipse.structuredb.persistency.dao.ITextPropertyDao; 
 
 
 /**
@@ -43,6 +45,6 @@ public class TextPropertyDaoTest
         dao.insert( property );
         TextProperty loaded 
             = textPropertyDao.getByName( property.getName() );
-        assertTrue( property.hasValuesEqualTo( loaded ) );
+        Assert.assertTrue( property.hasValuesEqualTo( loaded ) );
     }
 }

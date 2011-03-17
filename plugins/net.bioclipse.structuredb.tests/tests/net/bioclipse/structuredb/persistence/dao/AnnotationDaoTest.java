@@ -10,6 +10,8 @@
  *******************************************************************************/
 package net.bioclipse.structuredb.persistence.dao;
 
+import  org.junit.Assert;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.openscience.cdk.exception.CDKException;
 
@@ -44,11 +46,11 @@ public abstract class AnnotationDaoTest<T extends Annotation>
         dBMoleculeDao.insert(dBMolecule);
         object1.addDBMolecule(dBMolecule);
         dao.update(object1);
-        assertTrue( dBMolecule.getAnnotations().contains( object1 ) );
+        Assert.assertTrue( dBMolecule.getAnnotations().contains( object1 ) );
         super.testDelete();
         
         dBMolecule = dBMoleculeDao.getById( dBMolecule.getId() );
-        assertFalse( dBMolecule.getAnnotations().contains( object1 ) );
+        Assert.assertFalse( dBMolecule.getAnnotations().contains( object1 ) );
     }
     
     public void testDeleteWithStructures() throws Exception {
@@ -62,12 +64,12 @@ public abstract class AnnotationDaoTest<T extends Annotation>
         dBMoleculeDao.insert(dBMolecule);
         object1.addDBMolecule(dBMolecule);
         dao.update(object1);
-        assertTrue( dBMolecule.getAnnotations().contains( object1 ) );
+        Assert.assertTrue( dBMolecule.getAnnotations().contains( object1 ) );
         ( (IAnnotationDao<Annotation>)dao )
             .deleteWithStructures( object1, new NullProgressMonitor() );
         
-        assertNull( dBMoleculeDao.getById( dBMolecule.getId() ) );
-        assertNull( dao.getById( object1.getId() ) );
+        Assert.assertNull( dBMoleculeDao.getById( dBMolecule.getId() ) );
+        Assert.assertNull( dao.getById( object1.getId() ) );
     }
     
     public void testGetDBMolecules() throws Exception {
@@ -83,7 +85,7 @@ public abstract class AnnotationDaoTest<T extends Annotation>
         object1.addDBMolecule( dBMolecule );
         dao.update( object1 );
         Annotation loaded = dao.getById( object1.getId() );
-        assertEquals( 1, loaded.getDBMolecules().size() );
-        assertEquals( dBMolecule, object1.getDBMolecules().get( 0 ) );
+        Assert.assertEquals( 1, loaded.getDBMolecules().size() );
+        Assert.assertEquals( dBMolecule, object1.getDBMolecules().get( 0 ) );
     }
 }
