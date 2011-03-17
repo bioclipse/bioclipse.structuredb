@@ -43,7 +43,7 @@ Require-Bundle: org.eclipse.ui,
  net.bioclipse.filestore,
  net.bioclipse.inchi,
  org.eclipse.jface,
- org.openscience.cdk.sinchi;bundle-version="1.3.5"
+ org.openscience.cdk.inchi;bundle-version="1.3.8"
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  libs/commons-dbcp-1.2.1.jar,
