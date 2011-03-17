@@ -6,8 +6,10 @@ Bundle-Version: 2.2.0.v20100127
 Bundle-Activator: net.bioclipse.hsqldb.Activator
 Require-Bundle: org.eclipse.core.runtime,
  net.bioclipse.hsqldb,
- net.bioclipse.core,
- org.junit4
+ net.bioclipse.core
 Eclipse-LazyStart: true
-Import-Package: org.apache.log4j
+Import-Package: org.apache.log4j,
+ org.junit;version="4.8.1",
+ org.junit.runner;version="4.8.1",
+ org.junit.runners;version="4.8.1"
 Export-Package: net.bioclipse.hsqldb
