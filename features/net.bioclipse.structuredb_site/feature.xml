@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.bioclipse.structuredb_site"
+      label="Bioclipse-StructureDB Update Site"
+      version="1.0.0.qualifier"
+      provider-name="The Bioclipse Team">
+
+   <includes
+         id="net.bioclipse.structuredb_feature"
+         version="0.0.0"/>
+
+   <requires>
+      <import feature="net.bioclipse.core_feature" version="2.5.0.qualifier"/>
+   </requires>
+
+</feature>
