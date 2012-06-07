@@ -4,13 +4,14 @@
     <extension point="net.bioclipse.usermanager.accountType">
         <AccountType name="net.bioclipse.structuredb.AccountType">
             <property name="net.bioclipse.structuredb.url"
-                      required="true">
+                      required="true"
+                      secret="false">
             </property>
             <property name="net.bioclipse.structuredb.type"
-                      required="true">
+                      required="true" secret="false">
             </property>
             <property name="net.bioclipse.structuredb.name"
-                      required="true">
+                      required="true" secret="false">
             </property>
         </AccountType>
     </extension>
