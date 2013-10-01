@@ -41,7 +41,6 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
 import org.openscience.cdk.interfaces.IChemFile;
-import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.io.CMLReader;
 import org.openscience.cdk.io.CMLWriter;
 import org.openscience.cdk.smiles.SmilesGenerator;
@@ -84,7 +83,7 @@ public class DBMolecule extends BaseObject
 
         Fingerprinter fingerprinter = new Fingerprinter();
         try {
-            fingerPrint = fingerprinter.getFingerprint(molecule);
+            fingerPrint = fingerprinter.getBitFingerprint(molecule).asBitSet();
             persistedFingerPrint = makePersistedFingerPrint(fingerPrint);
         } catch (Exception e) {
             //If this happens often maybe something else is needed
@@ -208,10 +207,10 @@ public class DBMolecule extends BaseObject
     }
 
     public String toSMILES() {
-        if ( "".equals( smiles ) && atomContainer instanceof IMolecule ) {
+        if ( "".equals( smiles ) && atomContainer instanceof IAtomContainer ) {
             if (atomContainer.getAtomCount() < 100) {
                 SmilesGenerator sg = new SmilesGenerator();
-                smiles = sg.createSMILES( (IMolecule)atomContainer );
+                smiles = sg.createSMILES( atomContainer );
             }
             else {
                 logger.warn( "Not generating SMILES. " +
@@ -367,7 +366,7 @@ public class DBMolecule extends BaseObject
         if (urgency == net.bioclipse.core.domain.IMolecule.Property.USE_CALCULATED) {
             Fingerprinter fp = new Fingerprinter();
             try {
-                fingerPrint = fp.getFingerprint( getAtomContainer() );
+                fingerPrint = fp.getBitFingerprint( getAtomContainer() ).asBitSet();
             } 
             catch (Exception e) {
                 throw new BioclipseException(

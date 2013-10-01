@@ -54,6 +54,12 @@ public class DBMoleculesEditorModel implements IMoleculesEditorModel {
         return numberOfMolecules;
     }
 
+    @Override
+    public boolean isDirty( int index ) {
+
+        // TODO Auto-generated method stub
+        return false;
+    }
     public void markDirty( int index, ICDKMolecule moleculeToSave ) {
 
         // TODO Implement this method

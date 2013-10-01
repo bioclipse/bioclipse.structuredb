@@ -15,7 +15,6 @@ import java.io.InputStream;
 
 import org.openscience.cdk.AtomContainer;
 import org.openscience.cdk.ChemObject;
-import org.openscience.cdk.Molecule;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.io.MDLReader;
 
@@ -42,7 +41,7 @@ public abstract class TestData {
     public static AtomContainer readFromFile(String path) throws CDKException {
         InputStream ins = TestData.class.getClassLoader().getResourceAsStream(path);
         MDLReader reader = new MDLReader(ins);
-        return (AtomContainer) reader.read( (ChemObject)new Molecule() );
+        return (AtomContainer) reader.read( (ChemObject) new AtomContainer() );
     }
     
     public static String getTestSDFFilePath() {
