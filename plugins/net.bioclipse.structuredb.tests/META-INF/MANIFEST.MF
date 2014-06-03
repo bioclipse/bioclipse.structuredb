@@ -7,7 +7,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  net.bioclipse.structuredb,
  net.bioclipse.hsqldb,
- slf4j.api,
  net.bioclipse.core,
  net.bioclipse.cdk.business,
  net.bioclipse.usermanager,
@@ -30,5 +29,6 @@ Import-Package: org.apache.commons.logging;version="1.0.4",
  org.apache.log4j,
  org.junit;version="4.8.1",
  org.junit.runner;version="4.8.1",
- org.junit.runners;version="4.8.1"
+ org.junit.runners;version="4.8.1",
+ org.slf4j
 Export-Package: net.bioclipse.structuredb
